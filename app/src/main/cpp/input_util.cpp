@@ -31,11 +31,9 @@ int _motion_range_cache_items = 0;
 
 static bool _init_done = false;
 static bool _key_state[OURKEY_COUNT] = {0};
-#ifdef __ANDROID__
 static _getAxisValue_sig _getAxisValue = NULL;
-#endif
+
 static void _init() {
-#ifdef __ANDROID__
     if (_init_done) {
         return;
     }
@@ -54,11 +52,9 @@ static void _init() {
     } else {
         LOGD("Failed to open libandroid.so.");
     }
-#endif
 }
 
 static int _translate_keycode(int code) {
-#ifdef __ANDROID__
     switch (code) {
         case AKEYCODE_DPAD_LEFT:
             return OURKEY_LEFT;
@@ -79,7 +75,6 @@ static int _translate_keycode(int code) {
         default:
             return -1;
     }
-#endif
 }
 
 static void _report_key_state(int keyCode, bool state, CookedEventCallback callback) {
@@ -107,7 +102,6 @@ static void _report_key_states_from_axes(float x, float y, CookedEventCallback c
     _report_key_state(OURKEY_DOWN, y > 0.5f, callback);
 }
 
-#ifdef __ANDROID__
 static bool _process_keys(bool isJoy, AInputEvent *event, CookedEventCallback callback) {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY) {
         int action = AKeyEvent_getAction(event);
@@ -138,7 +132,6 @@ static bool _process_keys(bool isJoy, AInputEvent *event, CookedEventCallback ca
     }
     return false;
 }
-#endif
 
 static void _look_up_motion_range(int deviceId, int source,
         float *outMinX, float *outMaxX, float *outMinY, float *outMaxY) {
@@ -189,7 +182,6 @@ static void _look_up_motion_range(int deviceId, int source,
     *outMaxY = newItem->maxY;
 }
 
-#ifdef __ANDROID__
 static bool CookEvent_Joy(AInputEvent *event, CookedEventCallback callback) {
     struct CookedEvent ev;
     memset(&ev, 0, sizeof(ev));
@@ -199,9 +191,7 @@ static bool CookEvent_Joy(AInputEvent *event, CookedEventCallback callback) {
     _process_keys(true, event, callback);
     return callback(&ev);
 }
-#endif
 
-#ifdef __ANDROID__
 static bool CookEvent_Motion(AInputEvent *event, CookedEventCallback callback) {
     int src = AInputEvent_getSource(event);
     int action = AMotionEvent_getAction(event);
@@ -259,9 +249,6 @@ static bool CookEvent_Motion(AInputEvent *event, CookedEventCallback callback) {
     return (src != SOURCE_TOUCH_NAVIGATION);
 }
 
-#endif
-
-#ifdef __ANDROID__
 bool CookEvent(AInputEvent *event, CookedEventCallback callback) {
     int type = AInputEvent_getType(event);
     int src = AInputEvent_getSource(event);
@@ -293,5 +280,4 @@ bool CookEvent(AInputEvent *event, CookedEventCallback callback) {
 
     return false;
 }
-#endif
 

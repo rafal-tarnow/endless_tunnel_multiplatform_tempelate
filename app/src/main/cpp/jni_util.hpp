@@ -17,11 +17,9 @@
 #define endlesstunnel_jniutil_hpp
 
 struct JniSetup {
-#ifdef __ANDROID__
     jclass clazz; // activity class
     jobject thiz; // activity object
     JNIEnv *env;  // jni env
-#endif
 };
 
 // Does JNI setup (if needed) and returns a struct with convenience objects.

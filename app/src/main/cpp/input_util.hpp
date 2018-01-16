@@ -46,8 +46,7 @@ struct CookedEvent {
 };
 
 typedef bool (*CookedEventCallback)(struct CookedEvent *event);
-#ifdef __ANDROID__
 bool CookEvent(AInputEvent *event, CookedEventCallback callback);
-#endif
+
 #endif
 

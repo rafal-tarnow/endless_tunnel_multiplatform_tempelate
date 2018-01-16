@@ -15,11 +15,8 @@
  */
 #include "SystemAbstraction/Game/common.hpp"
 #include "jni_util.hpp"
-#ifdef __ANDROID__
 #include "native_engine.hpp"
-#endif
 
-#ifdef __ANDROID__
 static struct JniSetup _jni_setup = {0};
 
 struct JniSetup* GetJNISetup() {
@@ -30,7 +27,5 @@ struct JniSetup* GetJNISetup() {
     }
     return &_jni_setup;
 }
-
-#endif
 
 
