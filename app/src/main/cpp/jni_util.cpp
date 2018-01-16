@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "common.hpp"
+#include "SystemAbstraction/Game/common.hpp"
 #include "jni_util.hpp"
 #ifdef __ANDROID__
 #include "native_engine.hpp"

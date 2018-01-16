@@ -39,8 +39,8 @@ add_library(game SHARED
      SystemAbstraction/Game/ascii_to_geom.cpp
      SystemAbstraction/Game/dialog_scene.cpp
      SystemAbstraction/Game/indexbuf.cpp
-     SystemAbstraction/Game/input_util.cpp
-     SystemAbstraction/Game/jni_util.cpp
+     input_util.cpp
+     jni_util.cpp
      native_engine.cpp
      SystemAbstraction/Game/obstacle.cpp
      SystemAbstraction/Game/obstacle_generator.cpp

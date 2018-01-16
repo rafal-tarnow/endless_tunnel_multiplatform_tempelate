@@ -18,7 +18,6 @@ SOURCES += main.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/welcome_scene.cpp \
     ../app/src/main/cpp/SystemAbstraction/system_abstraction.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/shape_renderer.cpp \
-    ../app/src/main/cpp/SystemAbstraction/Game/jni_util.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/scene.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/shader.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/vertexbuf.cpp \
@@ -26,7 +25,6 @@ SOURCES += main.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/text_renderer.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/ui_scene.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/util.cpp \
-    ../app/src/main/cpp/SystemAbstraction/Game/input_util.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/our_shader.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/tex_quad.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/obstacle.cpp \
@@ -52,7 +50,6 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/Game/shape_renderer.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/engine.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/common.hpp \
-    ../app/src/main/cpp/SystemAbstraction/Game/jni_util.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/our_key_codes.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/joystick-support.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/scene.hpp \
@@ -63,7 +60,6 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/Game/text_renderer.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/ui_scene.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/util.hpp \
-    ../app/src/main/cpp/SystemAbstraction/Game/input_util.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/our_shader.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/tex_quad.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/obstacle.hpp \

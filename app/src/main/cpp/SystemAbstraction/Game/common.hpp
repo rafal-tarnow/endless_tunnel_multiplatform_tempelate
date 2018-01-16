@@ -42,9 +42,9 @@ extern "C" {
 #   define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, DEBUG_TAG, __VA_ARGS__))
 #   define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, DEBUG_TAG, __VA_ARGS__))
 #else
-#   define LOGD(...) (__VA_ARGS__)
-#   define LOGI(...) (__VA_ARGS__)
-#   define LOGW(...) (__VA_ARGS__)
+#   define LOGD(...) (printf(__VA_ARGS__))
+#   define LOGI(...) (printf(__VA_ARGS__))
+#   define LOGW(...) (printf(__VA_ARGS__))
 #   define LOGE(...) (printf(__VA_ARGS__))
 #endif
 

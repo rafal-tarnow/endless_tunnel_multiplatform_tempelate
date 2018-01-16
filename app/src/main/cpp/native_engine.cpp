@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include "SystemAbstraction/Game/common.hpp"
-#include "SystemAbstraction/Game/input_util.hpp"
+#include "input_util.hpp"
 #include "SystemAbstraction/Game/joystick-support.hpp"
 #include "SystemAbstraction/Game/scene_manager.hpp"
 #include "SystemAbstraction/Game/welcome_scene.hpp"
