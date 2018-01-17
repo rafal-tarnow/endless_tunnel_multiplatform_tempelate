@@ -20,7 +20,7 @@
 #include "engine.hpp"
 #include "obstacle_generator.hpp"
 #include "obstacle.hpp"
-#include "sfxman.hpp"
+#include "../system_audio.hpp"
 #include "shape_renderer.hpp"
 #include "text_renderer.hpp"
 #include "util.hpp"

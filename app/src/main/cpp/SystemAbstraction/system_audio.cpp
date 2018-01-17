@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "./SystemAbstraction/system_log.hpp"
+#include "system_log.hpp"
 #include <random>
-#include "sfxman.hpp"
+#include "system_audio.hpp"
 
 #define SAMPLES_PER_SEC 8000
 #define BUF_SAMPLES_MAX SAMPLES_PER_SEC*5 // 5 seconds

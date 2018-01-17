@@ -21,7 +21,7 @@
 #include <SLES/OpenSLES_Android.h>
 #endif
 
-#include "engine.hpp"
+#include "./Game/engine.hpp"
 
 /* Sound effect manager. This class is a singleton that manages sound effect
  * playback. Sound effects are defined by recipes (which are strings) that

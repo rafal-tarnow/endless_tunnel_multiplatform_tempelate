@@ -48,7 +48,7 @@ add_library(game SHARED
      SystemAbstraction/Game/play_scene.cpp
      SystemAbstraction/Game/scene.cpp
      SystemAbstraction/Game/scene_manager.cpp
-     SystemAbstraction/Game/sfxman.cpp
+     SystemAbstraction/system_audio.cpp
      SystemAbstraction/Game/shader.cpp
      SystemAbstraction/Game/shape_renderer.cpp
      SystemAbstraction/system_abstraction.cpp
