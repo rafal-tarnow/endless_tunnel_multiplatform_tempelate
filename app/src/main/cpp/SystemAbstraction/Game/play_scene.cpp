@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 #include <cstdio>
+#include "../system_log.hpp"
+
 #include "anim.hpp"
 #include "ascii_to_geom.hpp"
 #include "game_consts.hpp"

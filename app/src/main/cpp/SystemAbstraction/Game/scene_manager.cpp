@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include "../system_log.hpp"
 #include "common.hpp"
 #include "scene.hpp"
 #include "scene_manager.hpp"

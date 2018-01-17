@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "../system_log.hpp"
 #include "vertexbuf.hpp"
 
 VertexBuf::VertexBuf(GLfloat *geomData, int dataSize, int stride) {

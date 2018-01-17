@@ -18,6 +18,7 @@
 #include "SystemAbstraction/Game/joystick-support.hpp"
 #include "SystemAbstraction/Game/our_key_codes.hpp"
 #include "SystemAbstraction/Game/util.hpp"
+#include "SystemAbstraction/system_log.hpp"
 
 // cached device motion ranges
 struct DeviceMotionRange {

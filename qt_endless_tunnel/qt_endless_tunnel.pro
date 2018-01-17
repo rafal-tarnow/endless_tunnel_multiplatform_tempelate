@@ -47,6 +47,7 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/Game/scene_manager.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/welcome_scene.hpp \
     ../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp \
+    ../app/src/main/cpp/SystemAbstraction/system_log.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/shape_renderer.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/engine.hpp \
     ../app/src/main/cpp/SystemAbstraction/Game/common.hpp \

@@ -20,6 +20,7 @@
 #include "SystemAbstraction/Game/welcome_scene.hpp"
 #include "native_engine.hpp"
 #include "./SystemAbstraction/system_abstraction.hpp"
+#include "./SystemAbstraction/system_log.hpp"
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 1

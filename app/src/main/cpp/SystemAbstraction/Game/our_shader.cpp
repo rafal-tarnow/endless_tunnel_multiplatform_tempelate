@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include "../system_log.hpp"
 #include "our_shader.hpp"
 #include "./data/our_shader.inl"
 
