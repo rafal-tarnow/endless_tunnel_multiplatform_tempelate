@@ -30,7 +30,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
 # Import the CMakeLists.txt for the glm library
-add_subdirectory(glm)
+add_subdirectory(SystemAbstraction/Game/glm)
 
 # now build app's shared lib
 add_library(game SHARED

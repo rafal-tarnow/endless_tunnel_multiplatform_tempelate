@@ -1,7 +1,6 @@
 #include <iostream>
 #include <assert.h>
 #include <string.h>
-#include <SOIL/SOIL.h>
 #include "opengl_includes.hpp"
 #include "../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp"
 
