@@ -25,14 +25,17 @@ add_library(native_app_glue STATIC
 set(CMAKE_SHARED_LINKER_FLAGS
     "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate")
 
-# Set common compiler options
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
-# Import the CMakeLists.txt for the glm library
-add_subdirectory(SystemAbstraction/Game/glm)
 
-# now build app's shared lib
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Game/SOIL/src)
+
+add_subdirectory(SystemAbstraction/Game/glm)
+add_subdirectory(SystemAbstraction/Game/SOIL)
+
+
 add_library(game SHARED
      android_main.cpp
      SystemAbstraction/Game/anim.cpp
@@ -74,4 +77,5 @@ target_link_libraries(game
      GLESv2
      glm
      log
-     OpenSLES)
+     OpenSLES
+     SOIL)

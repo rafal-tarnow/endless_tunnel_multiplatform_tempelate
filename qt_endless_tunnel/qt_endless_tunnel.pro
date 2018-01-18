@@ -3,6 +3,11 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+LIBS += -lX11
+LIBS += -lXrender
+LIBS += -lGLEW
+LIBS += -lGL
+
 LIBS += -lGLESv2
 LIBS += -lglfw
 
@@ -10,7 +15,7 @@ DEFINES += GLM_FORCE_SIZE_T_LENGTH
 DEFINES += GLM_FORCE_RADIANS
 
 INCLUDEPATH += . ../app/src/main/cpp/SystemAbstraction/Game/
-
+INCLUDEPATH += . ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src
 
 SOURCES += main.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/glm/detail/glm.cpp \
@@ -41,7 +46,11 @@ SOURCES += main.cpp \
     ../app/src/main/cpp/SystemAbstraction/Game/data/cube_geom.inl \
     ../app/src/main/cpp/SystemAbstraction/Game/data/our_shader.inl \
     ../app/src/main/cpp/SystemAbstraction/Game/data/strings.inl \
-    ../app/src/main/cpp/SystemAbstraction/Game/data/tunnel_geom.inl
+    ../app/src/main/cpp/SystemAbstraction/Game/data/tunnel_geom.inl \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/image_DXT.c \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/image_helper.c \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/SOIL.c \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/stb_image_aug.c
 
 HEADERS += \
     opengl_includes.hpp \
@@ -218,7 +227,13 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/Game/welcome_scene.hpp \
     ../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp \
     ../app/src/main/cpp/SystemAbstraction/system_audio.hpp \
-    ../app/src/main/cpp/SystemAbstraction/system_log.hpp
+    ../app/src/main/cpp/SystemAbstraction/system_log.hpp \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/image_DXT.h \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/image_helper.h \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/SOIL.h \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/stb_image_aug.h \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/stbi_DDS_aug.h \
+    ../app/src/main/cpp/SystemAbstraction/Game/SOIL/src/stbi_DDS_aug_c.h
 
 DISTFILES += \
     ../app/src/main/cpp/SystemAbstraction/Game/glm/CMakeLists.txt

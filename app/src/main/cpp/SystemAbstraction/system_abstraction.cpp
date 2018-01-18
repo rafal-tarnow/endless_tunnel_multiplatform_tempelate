@@ -2,6 +2,7 @@
 #include "system_abstraction.hpp"
 #include "./Game/scene_manager.hpp"
 #include "./Game/welcome_scene.hpp"
+#include <SOIL.h>
 
 static SceneManager *mgr = SceneManager::GetInstance();
 

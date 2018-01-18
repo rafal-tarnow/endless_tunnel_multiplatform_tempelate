@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <string.h>
+#include <SOIL.h>
 #include "opengl_includes.hpp"
 #include "../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp"
 
@@ -13,8 +14,8 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-static  GLuint CURRENT_WINDOW_WIDTH = 1920;
-static  GLuint CURRENT_WINDOW_HEIGHT = 1080;
+static  GLuint CURRENT_WINDOW_WIDTH = 320;
+static  GLuint CURRENT_WINDOW_HEIGHT = 240;
 
 GLFWwindow* window;
 
