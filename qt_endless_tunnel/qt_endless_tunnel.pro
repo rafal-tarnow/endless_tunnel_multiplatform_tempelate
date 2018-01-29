@@ -1,3 +1,6 @@
+DEFINES += GLM_FORCE_SIZE_T_LENGTH
+DEFINES += GLM_FORCE_RADIANS
+
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/SOIL/soil_qt.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/glm/glm_qt.pri)
 
@@ -14,9 +17,6 @@ LIBS += -lGL
 LIBS += -lGLESv2
 LIBS += -lglfw
 
-
-DEFINES += GLM_FORCE_SIZE_T_LENGTH
-DEFINES += GLM_FORCE_RADIANS
 
 INCLUDEPATH += . ../app/src/main/cpp/SystemAbstraction/Application/
 

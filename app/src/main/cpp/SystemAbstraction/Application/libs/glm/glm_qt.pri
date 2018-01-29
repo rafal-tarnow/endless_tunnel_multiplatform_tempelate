@@ -4,7 +4,6 @@ INCLUDEPATH += $$PWD/..
 HEADERS += \
     $$PWD/detail/_features.hpp \
     $$PWD/detail/_fixes.hpp \
-    $$PWD/detail/_literals.hpp \
     $$PWD/detail/_noise.hpp \
     $$PWD/detail/_swizzle.hpp \
     $$PWD/detail/_swizzle_func.hpp \
@@ -14,18 +13,9 @@ HEADERS += \
     $$PWD/detail/func_geometric.hpp \
     $$PWD/detail/func_integer.hpp \
     $$PWD/detail/func_matrix.hpp \
-    $$PWD/detail/func_noise.hpp \
     $$PWD/detail/func_packing.hpp \
     $$PWD/detail/func_trigonometric.hpp \
     $$PWD/detail/func_vector_relational.hpp \
-    $$PWD/detail/hint.hpp \
-    $$PWD/detail/intrinsic_common.hpp \
-    $$PWD/detail/intrinsic_exponential.hpp \
-    $$PWD/detail/intrinsic_geometric.hpp \
-    $$PWD/detail/intrinsic_integer.hpp \
-    $$PWD/detail/intrinsic_matrix.hpp \
-    $$PWD/detail/intrinsic_trigonometric.hpp \
-    $$PWD/detail/intrinsic_vector_relational.hpp \
     $$PWD/detail/precision.hpp \
     $$PWD/detail/setup.hpp \
     $$PWD/detail/type_float.hpp \
@@ -47,8 +37,12 @@ HEADERS += \
     $$PWD/detail/type_vec2.hpp \
     $$PWD/detail/type_vec3.hpp \
     $$PWD/detail/type_vec4.hpp \
+    $$PWD/gtc/bitfield.hpp \
+    $$PWD/gtc/color_space.hpp \
     $$PWD/gtc/constants.hpp \
     $$PWD/gtc/epsilon.hpp \
+    $$PWD/gtc/functions.hpp \
+    $$PWD/gtc/integer.hpp \
     $$PWD/gtc/matrix_access.hpp \
     $$PWD/gtc/matrix_integer.hpp \
     $$PWD/gtc/matrix_inverse.hpp \
@@ -58,42 +52,42 @@ HEADERS += \
     $$PWD/gtc/quaternion.hpp \
     $$PWD/gtc/random.hpp \
     $$PWD/gtc/reciprocal.hpp \
+    $$PWD/gtc/round.hpp \
+    $$PWD/gtc/type_aligned.hpp \
     $$PWD/gtc/type_precision.hpp \
     $$PWD/gtc/type_ptr.hpp \
     $$PWD/gtc/ulp.hpp \
+    $$PWD/gtc/vec1.hpp \
     $$PWD/gtx/associated_min_max.hpp \
     $$PWD/gtx/bit.hpp \
     $$PWD/gtx/closest_point.hpp \
     $$PWD/gtx/color_space.hpp \
     $$PWD/gtx/color_space_YCoCg.hpp \
+    $$PWD/gtx/common.hpp \
     $$PWD/gtx/compatibility.hpp \
     $$PWD/gtx/component_wise.hpp \
-    $$PWD/gtx/constants.hpp \
     $$PWD/gtx/dual_quaternion.hpp \
-    $$PWD/gtx/epsilon.hpp \
     $$PWD/gtx/euler_angles.hpp \
     $$PWD/gtx/extend.hpp \
-    $$PWD/gtx/extented_min_max.hpp \
+    $$PWD/gtx/extended_min_max.hpp \
     $$PWD/gtx/fast_exponential.hpp \
     $$PWD/gtx/fast_square_root.hpp \
     $$PWD/gtx/fast_trigonometry.hpp \
     $$PWD/gtx/gradient_paint.hpp \
     $$PWD/gtx/handed_coordinate_space.hpp \
-    $$PWD/gtx/inertia.hpp \
-    $$PWD/gtx/int_10_10_10_2.hpp \
+    $$PWD/gtx/hash.hpp \
     $$PWD/gtx/integer.hpp \
     $$PWD/gtx/intersect.hpp \
     $$PWD/gtx/io.hpp \
     $$PWD/gtx/log_base.hpp \
     $$PWD/gtx/matrix_cross_product.hpp \
+    $$PWD/gtx/matrix_decompose.hpp \
     $$PWD/gtx/matrix_interpolation.hpp \
     $$PWD/gtx/matrix_major_storage.hpp \
     $$PWD/gtx/matrix_operation.hpp \
     $$PWD/gtx/matrix_query.hpp \
     $$PWD/gtx/matrix_transform_2d.hpp \
     $$PWD/gtx/mixed_product.hpp \
-    $$PWD/gtx/multiple.hpp \
-    $$PWD/gtx/noise.hpp \
     $$PWD/gtx/norm.hpp \
     $$PWD/gtx/normal.hpp \
     $$PWD/gtx/normalize_dot.hpp \
@@ -104,27 +98,31 @@ HEADERS += \
     $$PWD/gtx/polar_coordinates.hpp \
     $$PWD/gtx/projection.hpp \
     $$PWD/gtx/quaternion.hpp \
-    $$PWD/gtx/random.hpp \
+    $$PWD/gtx/range.hpp \
     $$PWD/gtx/raw_data.hpp \
-    $$PWD/gtx/reciprocal.hpp \
     $$PWD/gtx/rotate_normalized_axis.hpp \
     $$PWD/gtx/rotate_vector.hpp \
+    $$PWD/gtx/scalar_multiplication.hpp \
     $$PWD/gtx/scalar_relational.hpp \
-    $$PWD/gtx/simd_mat4.hpp \
-    $$PWD/gtx/simd_quat.hpp \
-    $$PWD/gtx/simd_vec4.hpp \
     $$PWD/gtx/spline.hpp \
     $$PWD/gtx/std_based_type.hpp \
     $$PWD/gtx/string_cast.hpp \
     $$PWD/gtx/transform.hpp \
     $$PWD/gtx/transform2.hpp \
-    $$PWD/gtx/ulp.hpp \
-    $$PWD/gtx/unsigned_int.hpp \
-    $$PWD/gtx/vec1.hpp \
+    $$PWD/gtx/type_aligned.hpp \
+    $$PWD/gtx/type_trait.hpp \
     $$PWD/gtx/vector_angle.hpp \
     $$PWD/gtx/vector_query.hpp \
     $$PWD/gtx/wrap.hpp \
-    $$PWD/virtrev/xstream.hpp \
+    $$PWD/simd/common.h \
+    $$PWD/simd/exponential.h \
+    $$PWD/simd/geometric.h \
+    $$PWD/simd/integer.h \
+    $$PWD/simd/matrix.h \
+    $$PWD/simd/packing.h \
+    $$PWD/simd/platform.h \
+    $$PWD/simd/trigonometric.h \
+    $$PWD/simd/vector_relational.h \
     $$PWD/common.hpp \
     $$PWD/exponential.hpp \
     $$PWD/ext.hpp \
@@ -149,5 +147,8 @@ HEADERS += \
     $$PWD/vec4.hpp \
     $$PWD/vector_relational.hpp
 
-SOURCES += \
-    $$PWD/detail/glm.cpp
+#SOURCES += \
+#    $$PWD/detail/glm.cpp
+
+
+
