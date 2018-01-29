@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "SystemAbstraction/Game/common.hpp"
+#include "SystemAbstraction/Application/common.hpp"
 #include "input_util.hpp"
-#include "SystemAbstraction/Game/joystick-support.hpp"
-#include "SystemAbstraction/Game/scene_manager.hpp"
-#include "SystemAbstraction/Game/welcome_scene.hpp"
+#include "SystemAbstraction/Application/joystick-support.hpp"
+#include "SystemAbstraction/Application/scene_manager.hpp"
+#include "SystemAbstraction/Application/welcome_scene.hpp"
 #include "native_engine.hpp"
 #include "./SystemAbstraction/system_abstraction.hpp"
 #include "./SystemAbstraction/system_log.hpp"

@@ -29,9 +29,9 @@ extern "C" {
 #   include <android_native_app_glue.h>
 #endif
 }
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 #define BUFFER_OFFSET(i) ((char*)NULL + (i))

@@ -29,39 +29,39 @@ set(CMAKE_SHARED_LINKER_FLAGS
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/SOIL/src)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Game/SOIL/src)
-
-add_subdirectory(SystemAbstraction/Game/glm)
-add_subdirectory(SystemAbstraction/Game/SOIL)
+add_subdirectory(SystemAbstraction/Application/libs/glm)
+add_subdirectory(SystemAbstraction/Application/libs/SOIL)
 
 
 add_library(game SHARED
      android_main.cpp
-     SystemAbstraction/Game/anim.cpp
-     SystemAbstraction/Game/ascii_to_geom.cpp
-     SystemAbstraction/Game/dialog_scene.cpp
-     SystemAbstraction/Game/indexbuf.cpp
+     SystemAbstraction/Application/anim.cpp
+     SystemAbstraction/Application/ascii_to_geom.cpp
+     SystemAbstraction/Application/dialog_scene.cpp
+     SystemAbstraction/Application/indexbuf.cpp
      input_util.cpp
      jni_util.cpp
      native_engine.cpp
-     SystemAbstraction/Game/obstacle.cpp
-     SystemAbstraction/Game/obstacle_generator.cpp
-     SystemAbstraction/Game/our_shader.cpp
-     SystemAbstraction/Game/play_scene.cpp
-     SystemAbstraction/Game/scene.cpp
-     SystemAbstraction/Game/scene_manager.cpp
+     SystemAbstraction/Application/obstacle.cpp
+     SystemAbstraction/Application/obstacle_generator.cpp
+     SystemAbstraction/Application/our_shader.cpp
+     SystemAbstraction/Application/play_scene.cpp
+     SystemAbstraction/Application/scene.cpp
+     SystemAbstraction/Application/scene_manager.cpp
      SystemAbstraction/system_audio.cpp
-     SystemAbstraction/Game/shader.cpp
-     SystemAbstraction/Game/shape_renderer.cpp
+     SystemAbstraction/Application/shader.cpp
+     SystemAbstraction/Application/shape_renderer.cpp
      SystemAbstraction/system_abstraction.cpp
-     SystemAbstraction/Game/tex_quad.cpp
-     SystemAbstraction/Game/text_renderer.cpp
-     SystemAbstraction/Game/texture.cpp
-     SystemAbstraction/Game/ui_scene.cpp
-     SystemAbstraction/Game/util.cpp
-     SystemAbstraction/Game/vertexbuf.cpp
-     SystemAbstraction/Game/welcome_scene.cpp)
+     SystemAbstraction/Application/tex_quad.cpp
+     SystemAbstraction/Application/text_renderer.cpp
+     SystemAbstraction/Application/texture.cpp
+     SystemAbstraction/Application/ui_scene.cpp
+     SystemAbstraction/Application/util.cpp
+     SystemAbstraction/Application/vertexbuf.cpp
+     SystemAbstraction/Application/welcome_scene.cpp)
 
 target_include_directories(game PRIVATE
      ${CMAKE_CURRENT_SOURCE_DIR}
