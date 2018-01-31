@@ -1,20 +1,6 @@
-#
-# Copyright (C) The Android Open Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 cmake_minimum_required(VERSION 3.4.1)
+
+
 
 # build native_app_glue as a static lib
 add_library(native_app_glue STATIC
@@ -29,9 +15,12 @@ set(CMAKE_SHARED_LINKER_FLAGS
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/libfreetype/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/SOIL/src)
 
+add_subdirectory(SystemAbstraction/Application/libs/libfreetype)
 add_subdirectory(SystemAbstraction/Application/libs/glm)
 add_subdirectory(SystemAbstraction/Application/libs/SOIL)
 
@@ -78,4 +67,5 @@ target_link_libraries(game
      glm
      log
      OpenSLES
-     SOIL)
+     SOIL
+     freetype)

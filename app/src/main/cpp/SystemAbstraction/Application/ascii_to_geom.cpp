@@ -21,7 +21,7 @@
 
 SimpleGeom* AsciiArtToGeom(const char *art, float scale) {
     // figure out width and height
-    LOGD("Creating geometry from ASCII art.");
+    GEOM_DEBUG("Creating geometry from ASCII art.");
     GEOM_DEBUG("Ascii art source:\n%s", art);
     int rows = 1;
     int curCols = 0, cols = 0;
@@ -224,7 +224,7 @@ SimpleGeom* AsciiArtToGeom(const char *art, float scale) {
     delete [] indicesArray;
     indicesArray = NULL;
 
-    LOGD("Created geometry from ascii art: %d vertices, %d indices", vertices, indices);
+    GEOM_DEBUG("Created geometry from ascii art: %d vertices, %d indices", vertices, indices);
 
     return out;
 }
