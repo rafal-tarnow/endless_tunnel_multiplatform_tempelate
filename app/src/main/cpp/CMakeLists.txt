@@ -69,5 +69,6 @@ target_link_libraries(game
      log
      OpenSLES
      SOIL
+     library_opengles_2
      libfreetype
-     library_opengles_2)
+     )

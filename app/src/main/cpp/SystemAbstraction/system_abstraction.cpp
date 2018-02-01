@@ -4,7 +4,12 @@
 #include "./Application/welcome_scene.hpp"
 #include "./Application/data/coin_2.png.hpp"
 #include "system_log.hpp"
+#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <SOIL.h>
+#include <sstream>
+#include <iomanip>
+
+using namespace  std;
 
 static SceneManager *mgr = SceneManager::GetInstance();
 
@@ -35,33 +40,35 @@ void drawGlyphToConsole(FT_Face &face){
 
 DE_Rectangle rectangle;
 
+TextRenderer_v2 * textRenderer_v2 = nullptr;
+
 void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 {
 
-    FT_Library ft;
+    //    FT_Library ft;
 
-    if (FT_Init_FreeType(&ft))
-        LOGD("ERROR::FREETYPE: Could not init FreeType Library\n");
+    //    if (FT_Init_FreeType(&ft))
+    //        LOGD("ERROR::FREETYPE: Could not init FreeType Library\n");
 
-    FT_Face face;
-    if (FT_New_Memory_Face(ft,design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf , 0, &face))
-        LOGD("ERROR::FREETYPE: Failed to load font\n");
+    //    FT_Face face;
+    //    if (FT_New_Memory_Face(ft,design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf , 0, &face))
+    //        LOGD("ERROR::FREETYPE: Failed to load font\n");
 
-    FT_Set_Pixel_Sizes(face, 0, 32);
+    //    FT_Set_Pixel_Sizes(face, 0, 32);
 
-    if (FT_Load_Char(face, 'W', FT_LOAD_RENDER /*| FT_LOAD_TARGET_MONO*/))
-        LOGD("ERROR::FREETYTPE: Failed to load Glyph\n");
+    //    if (FT_Load_Char(face, 'W', FT_LOAD_RENDER /*| FT_LOAD_TARGET_MONO*/))
+    //        LOGD("ERROR::FREETYTPE: Failed to load Glyph\n");
 
-    LOGD("width = %ld\n", face->glyph->metrics.width);
-    LOGD("height = %ld\n", face->glyph->metrics.height);
+    //    LOGD("width = %ld\n", face->glyph->metrics.width);
+    //    LOGD("height = %ld\n", face->glyph->metrics.height);
 
-    LOGD("bitmap.width = %d\n", face->glyph->bitmap.width);
-    LOGD("bitmap.rows = %d\n", face->glyph->bitmap.rows);
-    LOGD("bitmap.pitch = %d\n", face->glyph->bitmap.pitch);
+    //    LOGD("bitmap.width = %d\n", face->glyph->bitmap.width);
+    //    LOGD("bitmap.rows = %d\n", face->glyph->bitmap.rows);
+    //    LOGD("bitmap.pitch = %d\n", face->glyph->bitmap.pitch);
 
-    drawGlyphToConsole(face);
+    //    drawGlyphToConsole(face);
 
-    FT_Done_FreeType(ft);
+    //    FT_Done_FreeType(ft);
 
     mgr->StartGraphics();
 
@@ -71,6 +78,9 @@ void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 
     DE_initShader();
     DE_initRectangle(&rectangle, textureId);
+
+    textRenderer_v2 = new TextRenderer_v2(width,height);
+    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, 90);
 }
 
 void SystemAbstraction::onPause()
@@ -87,6 +97,8 @@ void SystemAbstraction::onResize(unsigned int width, unsigned int height)
 {
     mgr->SetScreenSize(width, height);
     glViewport(0, 0, width, height);
+
+    textRenderer_v2->onVievportResize(width, height);
 }
 
 void SystemAbstraction::onRenderFirstFrame()
@@ -105,7 +117,15 @@ void SystemAbstraction::onRenderFrame()
     rectangle.projection = glm::mat4(1);
     rectangle.view = glm::mat4(1);
 
-    DE_drawRectangle(&rectangle);
+    // DE_drawRectangle(&rectangle);
+
+    static int cash = 0;
+    stringstream text;
+    text << std::fixed << std::setprecision(0) << "$ "<< cash++;
+
+
+    textRenderer_v2->RenderText(text.str(), 0, 50);
+
 }
 
 void SystemAbstraction::onScroll(double yoffset)
