@@ -2,12 +2,13 @@
 #include "system_abstraction.hpp"
 #include "./Application/scene_manager.hpp"
 #include "./Application/welcome_scene.hpp"
+#include "./Application/data/coin_2.png.hpp"
 #include "system_log.hpp"
 #include <SOIL.h>
 
 static SceneManager *mgr = SceneManager::GetInstance();
 
-
+#include "./Application/libs/library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp"
 #include "./Application/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -31,6 +32,8 @@ void drawGlyphToConsole(FT_Face &face){
         LOGD("\n");
     }
 }
+
+DE_Rectangle rectangle;
 
 void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 {
@@ -61,6 +64,13 @@ void SystemAbstraction::onInit(unsigned int width, unsigned int height)
     FT_Done_FreeType(ft);
 
     mgr->StartGraphics();
+
+    //GLuint textureId = SOIL_load_OGL_texture("dupa", 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+    GLuint textureId = SOIL_load_OGL_texture_from_memory(coin_2_png, size_of_coin_2_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+
+
+    DE_initShader();
+    DE_initRectangle(&rectangle, textureId);
 }
 
 void SystemAbstraction::onPause()
@@ -86,7 +96,16 @@ void SystemAbstraction::onRenderFirstFrame()
 
 void SystemAbstraction::onRenderFrame()
 {
-    mgr->DoFrame();
+   // mgr->DoFrame();
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    rectangle.model = glm::mat4(1);
+    rectangle.projection = glm::mat4(1);
+    rectangle.view = glm::mat4(1);
+
+    DE_drawRectangle(&rectangle);
 }
 
 void SystemAbstraction::onScroll(double yoffset)
@@ -102,9 +121,9 @@ void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event
 void SystemAbstraction::onKeyboard(ButtonEvent event,int key, int x, int y )
 {
     if(event == EVENT_DOWN) {
-       // mgr->OnKeyDown(key);
+        // mgr->OnKeyDown(key);
     }else if(event == EVENT_UP){
-       // mgr->OnKeyUp(key);
+        // mgr->OnKeyUp(key);
     }
 }
 

@@ -1,6 +1,7 @@
 DEFINES += GLM_FORCE_SIZE_T_LENGTH
 DEFINES += GLM_FORCE_RADIANS
 
+include(../app/src/main/cpp/SystemAbstraction/Application/libs/library_opengles_2/library_opengles_2.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/libfreetype.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/SOIL/soil_qt.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/glm/glm_qt.pri)
@@ -82,7 +83,8 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp \
     ../app/src/main/cpp/SystemAbstraction/system_audio.hpp \
     ../app/src/main/cpp/SystemAbstraction/system_log.hpp \
-    ../app/src/main/cpp/SystemAbstraction/Application/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp
+    ../app/src/main/cpp/SystemAbstraction/Application/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp \
+    ../app/src/main/cpp/SystemAbstraction/Application/data/coin_2.png.hpp
 
 
 
