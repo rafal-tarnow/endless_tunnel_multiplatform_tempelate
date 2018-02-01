@@ -19,11 +19,12 @@ add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/libfreetype/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/SOIL/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs)
 
 add_subdirectory(SystemAbstraction/Application/libs/libfreetype)
 add_subdirectory(SystemAbstraction/Application/libs/glm)
 add_subdirectory(SystemAbstraction/Application/libs/SOIL)
-
+add_subdirectory(SystemAbstraction/Application/libs/library_opengles_2)
 
 add_library(game SHARED
      android_main.cpp
@@ -68,4 +69,5 @@ target_link_libraries(game
      log
      OpenSLES
      SOIL
-     libfreetype)
+     libfreetype
+     library_opengles_2)
