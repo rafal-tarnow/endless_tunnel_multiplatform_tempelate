@@ -1,0 +1,116 @@
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  "C"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_C
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/basepic.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/basepic.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftadvanc.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftadvanc.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftapi.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftapi.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftbase.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftbase.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftbbox.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftbbox.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftbdf.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftbdf.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftbitmap.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftbitmap.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftcalc.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftcalc.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftdbgmem.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftdbgmem.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftfntfmt.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftfntfmt.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftfstype.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftfstype.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftgasp.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftgasp.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftgloadr.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftgloadr.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftglyph.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftglyph.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftgxval.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftgxval.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/fthash.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/fthash.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftinit.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftinit.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftmac.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftmac.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftmm.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftmm.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftobjs.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftobjs.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftotval.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftotval.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftoutln.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftoutln.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftpatent.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftpatent.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftpic.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftpic.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftrfork.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftrfork.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftsnames.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftsnames.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftstream.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftstream.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftstroke.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftstroke.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftsynth.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftsynth.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftsystem.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftsystem.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/fttrigon.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/fttrigon.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/ftutil.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/ftutil.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/base/md5.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/base/md5.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/adler32.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/adler32.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/ftgzip.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/ftgzip.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/infblock.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/infblock.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/infcodes.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/infcodes.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/inflate.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/inflate.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/inftrees.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/inftrees.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/gzip/zutil.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/gzip/zutil.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/pngshim.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/pngshim.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/sfdriver.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/sfdriver.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/sfnt.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/sfnt.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/sfntpic.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/sfntpic.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/sfobjs.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/sfobjs.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttbdf.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttbdf.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttcmap.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttcmap.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttkern.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttkern.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttload.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttload.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttmtx.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttmtx.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttpost.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttpost.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/sfnt/ttsbit.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/sfnt/ttsbit.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/smooth/ftgrays.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/smooth/ftgrays.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/smooth/ftsmooth.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/smooth/ftsmooth.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/smooth/ftspic.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/smooth/ftspic.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/smooth/smooth.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/smooth/smooth.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/truetype.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/truetype.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttdriver.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttdriver.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttgload.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttgload.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttgxvar.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttgxvar.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttinterp.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttinterp.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttobjs.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttobjs.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttpic.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttpic.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttpload.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttpload.c.o"
+  "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/src/truetype/ttsubpix.c" "/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/CMakeFiles/libfreetype.dir/src/truetype/ttsubpix.c.o"
+  )
+set(CMAKE_C_COMPILER_ID "GNU")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_C
+  "FT2_BUILD_LIBRARY"
+  )
+
+# The include file search paths:
+set(CMAKE_C_TARGET_INCLUDE_PATH
+  "src/autofit"
+  "src/base"
+  "src/bdf"
+  "src/cache"
+  "src/cff"
+  "src/cid"
+  "src/gxvalid"
+  "src/gzip"
+  "src/lzw"
+  "src/otvalid"
+  "src/pcf"
+  "src/pfr"
+  "src/psaux"
+  "src/pshinter"
+  "src/psnames"
+  "src/raster"
+  "src/sfnt"
+  "src/smooth"
+  "src/truetype"
+  "src/type1"
+  "src/type42"
+  "src/winfonts"
+  "include/freetype/config"
+  "include/freetype/internal/services"
+  "include/freetype/internal"
+  "include/freetype"
+  "include"
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

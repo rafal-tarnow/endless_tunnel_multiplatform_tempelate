@@ -64,8 +64,8 @@ target_link_libraries(game
      atomic
      EGL
      GLESv2
-     glm
+    # glm
      log
      OpenSLES
      SOIL
-     freetype)
+     libfreetype)

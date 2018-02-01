@@ -39,23 +39,23 @@ include_directories(
    include
     )
 
-add_library (libfreetype SHARED
-    src/autofit/afangles.c
-    src/autofit/afblue.c
-    src/autofit/afcjk.c
-    src/autofit/afdummy.c
-    src/autofit/afglobal.c
-    src/autofit/afhints.c
-    src/autofit/afindic.c
-    src/autofit/aflatin.c
-    #src/autofit/aflatin2.c
-    src/autofit/afloader.c
-    src/autofit/afmodule.c
-    src/autofit/afpic.c
-    src/autofit/afranges.c
-    src/autofit/afshaper.c
-    src/autofit/afwarp.c
-    src/autofit/autofit.c
+add_library (libfreetype STATIC
+#    src/autofit/afangles.c
+#    src/autofit/afblue.c
+#    src/autofit/afcjk.c
+#    src/autofit/afdummy.c
+#    src/autofit/afglobal.c
+#    src/autofit/afhints.c
+#    src/autofit/afindic.c
+#    src/autofit/aflatin.c
+#    src/autofit/aflatin2.c
+#    src/autofit/afloader.c
+#    src/autofit/afmodule.c
+#    src/autofit/afpic.c
+#    src/autofit/afranges.c
+#    src/autofit/afshaper.c
+#    src/autofit/afwarp.c
+#    src/autofit/autofit.c
     src/base/basepic.c
     src/base/ftadvanc.c
     src/base/ftapi.c
@@ -64,9 +64,9 @@ add_library (libfreetype SHARED
     src/base/ftbdf.c
     src/base/ftbitmap.c
     src/base/ftcalc.c
-    src/base/ftcid.c
+#    src/base/ftcid.c
     src/base/ftdbgmem.c
-    src/base/ftdebug.c
+#    src/base/ftdebug.c
     src/base/ftfntfmt.c
     src/base/ftfstype.c
     src/base/ftgasp.c
@@ -75,14 +75,14 @@ add_library (libfreetype SHARED
     src/base/ftgxval.c
     src/base/fthash.c
     src/base/ftinit.c
-    src/base/ftlcdfil.c
+#    src/base/ftlcdfil.c
     src/base/ftmac.c
     src/base/ftmm.c
     src/base/ftobjs.c
     src/base/ftotval.c
     src/base/ftoutln.c
     src/base/ftpatent.c
-    src/base/ftpfr.c
+#    src/base/ftpfr.c
     src/base/ftpic.c
     src/base/ftrfork.c
     src/base/ftsnames.c
@@ -91,23 +91,23 @@ add_library (libfreetype SHARED
     src/base/ftsynth.c
     src/base/ftsystem.c
     src/base/fttrigon.c
-    src/base/fttype1.c
+#    src/base/fttype1.c
     src/base/ftutil.c
-    src/base/ftwinfnt.c
+#    src/base/ftwinfnt.c
     src/base/md5.c
 #   src/bdf/bdf.c
 #   src/bdf/bdfdrivr.c
 #   src/bdf/bdflib.c
-    src/bzip2/ftbzip2.c
-    src/cache/ftcache.c
-    src/cache/ftcbasic.c
-    src/cache/ftccache.c
-    src/cache/ftccmap.c
-    src/cache/ftcglyph.c
-    src/cache/ftcimage.c
-    src/cache/ftcmanag.c
-    src/cache/ftcmru.c
-    src/cache/ftcsbits.c
+#    src/bzip2/ftbzip2.c
+#    src/cache/ftcache.c
+#    src/cache/ftcbasic.c
+#    src/cache/ftccache.c
+#    src/cache/ftccmap.c
+#    src/cache/ftcglyph.c
+#    src/cache/ftcimage.c
+#    src/cache/ftcmanag.c
+#    src/cache/ftcmru.c
+#    src/cache/ftcsbits.c
 #   src/cff/cf2arrst.c
 #   src/cff/cf2blues.c
 #   src/cff/cf2error.c
@@ -163,17 +163,17 @@ add_library (libfreetype SHARED
     src/gzip/inftrees.c
 #    src/gzip/infutil.c
     src/gzip/zutil.c
-    src/lzw/ftlzw.c
-    src/lzw/ftzopen.c
-    src/otvalid/otvalid.c
-    src/otvalid/otvbase.c
-    src/otvalid/otvcommn.c
-    src/otvalid/otvgdef.c
-    src/otvalid/otvgpos.c
-    src/otvalid/otvgsub.c
-    src/otvalid/otvjstf.c
-    src/otvalid/otvmath.c
-    src/otvalid/otvmod.c
+#    src/lzw/ftlzw.c
+#    src/lzw/ftzopen.c
+#    src/otvalid/otvalid.c
+#    src/otvalid/otvbase.c
+#    src/otvalid/otvcommn.c
+#    src/otvalid/otvgdef.c
+#    src/otvalid/otvgpos.c
+#    src/otvalid/otvgsub.c
+#    src/otvalid/otvjstf.c
+#    src/otvalid/otvmath.c
+#    src/otvalid/otvmod.c
 #   src/pcf/pcf.c
 #   src/pcf/pcfdrivr.c
 #   src/pcf/pcfread.c
@@ -185,26 +185,26 @@ add_library (libfreetype SHARED
 #   src/pfr/pfrload.c
 #   src/pfr/pfrobjs.c
 #   src/pfr/pfrsbit.c
-    src/psaux/afmparse.c
-    src/psaux/psaux.c
-    src/psaux/psauxmod.c
-    src/psaux/psconv.c
-    src/psaux/psobjs.c
-    src/psaux/t1cmap.c
-    src/psaux/t1decode.c
-    src/pshinter/pshalgo.c
-    src/pshinter/pshglob.c
-    src/pshinter/pshinter.c
-    src/pshinter/pshmod.c
-    src/pshinter/pshpic.c
-    src/pshinter/pshrec.c
-    src/psnames/psmodule.c
-    src/psnames/psnames.c
-    src/psnames/pspic.c
-    src/raster/ftraster.c
-    src/raster/ftrend1.c
-    src/raster/raster.c
-    src/raster/rastpic.c
+#    src/psaux/afmparse.c
+#    src/psaux/psaux.c
+#    src/psaux/psauxmod.c
+#    src/psaux/psconv.c
+#    src/psaux/psobjs.c
+#    src/psaux/t1cmap.c
+#    src/psaux/t1decode.c
+#    src/pshinter/pshalgo.c
+#    src/pshinter/pshglob.c
+#    src/pshinter/pshinter.c
+#    src/pshinter/pshmod.c
+#    src/pshinter/pshpic.c
+#    src/pshinter/pshrec.c
+#    src/psnames/psmodule.c
+#    src/psnames/psnames.c
+#    src/psnames/pspic.c
+#    src/raster/ftraster.c
+#    src/raster/ftrend1.c
+#    src/raster/raster.c
+#    src/raster/rastpic.c
     src/sfnt/pngshim.c
     src/sfnt/sfdriver.c
     src/sfnt/sfnt.c
@@ -218,7 +218,7 @@ add_library (libfreetype SHARED
     src/sfnt/ttpost.c
     src/sfnt/ttsbit.c
     src/smooth/ftgrays.c
-    src/smooth/ftsmooth.c
+#    src/smooth/ftsmooth.c
     src/smooth/ftspic.c
     src/smooth/smooth.c
     src/truetype/truetype.c

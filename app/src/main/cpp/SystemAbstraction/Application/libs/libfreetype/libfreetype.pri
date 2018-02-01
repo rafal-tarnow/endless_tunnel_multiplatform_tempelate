@@ -1,7 +1,7 @@
 QMAKE_CFLAGS += -DFT2_BUILD_LIBRARY
 
 INCLUDEPATH += $$PWD/include
-#DEPENDPATH += $$PWD
+DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/src/autofit/afangles.h \
@@ -260,22 +260,22 @@ HEADERS += \
     $$PWD/include/ft2build.h
 
 SOURCES += \
-    $$PWD/src/autofit/afangles.c \
-    $$PWD/src/autofit/afblue.c \
-    $$PWD/src/autofit/afcjk.c \
-    $$PWD/src/autofit/afdummy.c \
-    $$PWD/src/autofit/afglobal.c \
-    $$PWD/src/autofit/afhints.c \
-    $$PWD/src/autofit/afindic.c \
-    $$PWD/src/autofit/aflatin.c \
-    #$$PWD/src/autofit/aflatin2.c \
-    $$PWD/src/autofit/afloader.c \
-    $$PWD/src/autofit/afmodule.c \
-    $$PWD/src/autofit/afpic.c \
-    $$PWD/src/autofit/afranges.c \
-    $$PWD/src/autofit/afshaper.c \
-    $$PWD/src/autofit/afwarp.c \
-    $$PWD/src/autofit/autofit.c \
+#    $$PWD/src/autofit/afangles.c \
+#    $$PWD/src/autofit/afblue.c \
+#    $$PWD/src/autofit/afcjk.c \
+#    $$PWD/src/autofit/afdummy.c \
+#    $$PWD/src/autofit/afglobal.c \
+#    $$PWD/src/autofit/afhints.c \
+#    $$PWD/src/autofit/afindic.c \
+#    $$PWD/src/autofit/aflatin.c \
+#    $$PWD/src/autofit/aflatin2.c \
+#    $$PWD/src/autofit/afloader.c \
+#    $$PWD/src/autofit/afmodule.c \
+#    $$PWD/src/autofit/afpic.c \
+#    $$PWD/src/autofit/afranges.c \
+#    $$PWD/src/autofit/afshaper.c \
+#    $$PWD/src/autofit/afwarp.c \
+#    $$PWD/src/autofit/autofit.c \
     $$PWD/src/base/basepic.c \
     $$PWD/src/base/ftadvanc.c \
     $$PWD/src/base/ftapi.c \
@@ -284,9 +284,9 @@ SOURCES += \
     $$PWD/src/base/ftbdf.c \
     $$PWD/src/base/ftbitmap.c \
     $$PWD/src/base/ftcalc.c \
-    $$PWD/src/base/ftcid.c \
+#    $$PWD/src/base/ftcid.c \
     $$PWD/src/base/ftdbgmem.c \
-    $$PWD/src/base/ftdebug.c \
+#    $$PWD/src/base/ftdebug.c \
     $$PWD/src/base/ftfntfmt.c \
     $$PWD/src/base/ftfstype.c \
     $$PWD/src/base/ftgasp.c \
@@ -295,14 +295,14 @@ SOURCES += \
     $$PWD/src/base/ftgxval.c \
     $$PWD/src/base/fthash.c \
     $$PWD/src/base/ftinit.c \
-    $$PWD/src/base/ftlcdfil.c \
+#    $$PWD/src/base/ftlcdfil.c \
     $$PWD/src/base/ftmac.c \
     $$PWD/src/base/ftmm.c \
     $$PWD/src/base/ftobjs.c \
     $$PWD/src/base/ftotval.c \
     $$PWD/src/base/ftoutln.c \
     $$PWD/src/base/ftpatent.c \
-    $$PWD/src/base/ftpfr.c \
+#    $$PWD/src/base/ftpfr.c \
     $$PWD/src/base/ftpic.c \
     $$PWD/src/base/ftrfork.c \
     $$PWD/src/base/ftsnames.c \
@@ -311,23 +311,23 @@ SOURCES += \
     $$PWD/src/base/ftsynth.c \
     $$PWD/src/base/ftsystem.c \
     $$PWD/src/base/fttrigon.c \
-    $$PWD/src/base/fttype1.c \
+#    $$PWD/src/base/fttype1.c \
     $$PWD/src/base/ftutil.c \
-    $$PWD/src/base/ftwinfnt.c \
+#    $$PWD/src/base/ftwinfnt.c \
     $$PWD/src/base/md5.c \
 #    $$PWD/src/bdf/bdf.c \
 #    $$PWD/src/bdf/bdfdrivr.c \
 #    $$PWD/src/bdf/bdflib.c \
-    $$PWD/src/bzip2/ftbzip2.c \
-    $$PWD/src/cache/ftcache.c \
-    $$PWD/src/cache/ftcbasic.c \
-    $$PWD/src/cache/ftccache.c \
-    $$PWD/src/cache/ftccmap.c \
-    $$PWD/src/cache/ftcglyph.c \
-    $$PWD/src/cache/ftcimage.c \
-    $$PWD/src/cache/ftcmanag.c \
-    $$PWD/src/cache/ftcmru.c \
-    $$PWD/src/cache/ftcsbits.c \
+#    $$PWD/src/bzip2/ftbzip2.c \
+#    $$PWD/src/cache/ftcache.c \
+#    $$PWD/src/cache/ftcbasic.c \
+#    $$PWD/src/cache/ftccache.c \
+#    $$PWD/src/cache/ftccmap.c \
+#    $$PWD/src/cache/ftcglyph.c \
+#    $$PWD/src/cache/ftcimage.c \
+#    $$PWD/src/cache/ftcmanag.c \
+#    $$PWD/src/cache/ftcmru.c \
+#    $$PWD/src/cache/ftcsbits.c \
 #    $$PWD/src/cff/cf2arrst.c \
 #    $$PWD/src/cff/cf2blues.c \
 #    $$PWD/src/cff/cf2error.c \
@@ -383,17 +383,17 @@ SOURCES += \
     $$PWD/src/gzip/inftrees.c \
 #    $$PWD/src/gzip/infutil.c \
     $$PWD/src/gzip/zutil.c \
-    $$PWD/src/lzw/ftlzw.c \
-    $$PWD/src/lzw/ftzopen.c \
-    $$PWD/src/otvalid/otvalid.c \
-    $$PWD/src/otvalid/otvbase.c \
-    $$PWD/src/otvalid/otvcommn.c \
-    $$PWD/src/otvalid/otvgdef.c \
-    $$PWD/src/otvalid/otvgpos.c \
-    $$PWD/src/otvalid/otvgsub.c \
-    $$PWD/src/otvalid/otvjstf.c \
-    $$PWD/src/otvalid/otvmath.c \
-    $$PWD/src/otvalid/otvmod.c \
+#    $$PWD/src/lzw/ftlzw.c \
+#    $$PWD/src/lzw/ftzopen.c \
+#    $$PWD/src/otvalid/otvalid.c \
+#    $$PWD/src/otvalid/otvbase.c \
+#    $$PWD/src/otvalid/otvcommn.c \
+#    $$PWD/src/otvalid/otvgdef.c \
+#    $$PWD/src/otvalid/otvgpos.c \
+#    $$PWD/src/otvalid/otvgsub.c \
+#    $$PWD/src/otvalid/otvjstf.c \
+#    $$PWD/src/otvalid/otvmath.c \
+#    $$PWD/src/otvalid/otvmod.c \
 #    $$PWD/src/pcf/pcf.c \
 #    $$PWD/src/pcf/pcfdrivr.c \
 #    $$PWD/src/pcf/pcfread.c \
@@ -405,26 +405,26 @@ SOURCES += \
 #    $$PWD/src/pfr/pfrload.c \
 #    $$PWD/src/pfr/pfrobjs.c \
 #    $$PWD/src/pfr/pfrsbit.c \
-    $$PWD/src/psaux/afmparse.c \
-    $$PWD/src/psaux/psaux.c \
-    $$PWD/src/psaux/psauxmod.c \
-    $$PWD/src/psaux/psconv.c \
-    $$PWD/src/psaux/psobjs.c \
-    $$PWD/src/psaux/t1cmap.c \
-    $$PWD/src/psaux/t1decode.c \
-    $$PWD/src/pshinter/pshalgo.c \
-    $$PWD/src/pshinter/pshglob.c \
-    $$PWD/src/pshinter/pshinter.c \
-    $$PWD/src/pshinter/pshmod.c \
-    $$PWD/src/pshinter/pshpic.c \
-    $$PWD/src/pshinter/pshrec.c \
-    $$PWD/src/psnames/psmodule.c \
-    $$PWD/src/psnames/psnames.c \
-    $$PWD/src/psnames/pspic.c \
-    $$PWD/src/raster/ftraster.c \
-    $$PWD/src/raster/ftrend1.c \
-    $$PWD/src/raster/raster.c \
-    $$PWD/src/raster/rastpic.c \
+#    $$PWD/src/psaux/afmparse.c \
+#    $$PWD/src/psaux/psaux.c \
+#    $$PWD/src/psaux/psauxmod.c \
+#    $$PWD/src/psaux/psconv.c \
+#    $$PWD/src/psaux/psobjs.c \
+#    $$PWD/src/psaux/t1cmap.c \
+#    $$PWD/src/psaux/t1decode.c \
+#    $$PWD/src/pshinter/pshalgo.c \
+#    $$PWD/src/pshinter/pshglob.c \
+#    $$PWD/src/pshinter/pshinter.c \
+#    $$PWD/src/pshinter/pshmod.c \
+#    $$PWD/src/pshinter/pshpic.c \
+#    $$PWD/src/pshinter/pshrec.c \
+#    $$PWD/src/psnames/psmodule.c \
+#    $$PWD/src/psnames/psnames.c \
+#    $$PWD/src/psnames/pspic.c \
+#    $$PWD/src/raster/ftraster.c \
+#    $$PWD/src/raster/ftrend1.c \
+#    $$PWD/src/raster/raster.c \
+#    $$PWD/src/raster/rastpic.c \
     $$PWD/src/sfnt/pngshim.c \
     $$PWD/src/sfnt/sfdriver.c \
     $$PWD/src/sfnt/sfnt.c \
@@ -463,70 +463,3 @@ SOURCES += \
 #    $$PWD/src/type42/type42.c \
 #    $$PWD/src/winfonts/winfnt.c
 
-#DISTFILES += \
-#    $$PWD/src/base/Jamfile \
-#    $$PWD/src/bdf/Jamfile \
-#    $$PWD/src/bzip2/Jamfile \
-#    $$PWD/src/cache/Jamfile \
-#    $$PWD/src/cff/Jamfile \
-#    $$PWD/src/cid/Jamfile \
-#    $$PWD/src/gxvalid/Jamfile \
-#    $$PWD/src/gzip/Jamfile \
-#    $$PWD/src/lzw/Jamfile \
-#    $$PWD/src/otvalid/Jamfile \
-#    $$PWD/src/pcf/Jamfile \
-#    $$PWD/src/pfr/Jamfile \
-#    $$PWD/src/psaux/Jamfile \
-#    $$PWD/src/pshinter/Jamfile \
-#    $$PWD/src/psnames/Jamfile \
-#    $$PWD/src/raster/Jamfile \
-#    $$PWD/src/sfnt/Jamfile \
-#    $$PWD/src/smooth/Jamfile \
-#    $$PWD/src/truetype/Jamfile \
-#    $$PWD/src/type1/Jamfile \
-#    $$PWD/src/type42/Jamfile \
-#    $$PWD/src/winfonts/Jamfile \
-#    $$PWD/src/Jamfile \
-#    $$PWD/src/autofit/module.mk \
-#    $$PWD/src/base/rules.mk \
-#    $$PWD/src/bdf/module.mk \
-#    $$PWD/src/bdf/rules.mk \
-#    $$PWD/src/bzip2/rules.mk \
-#    $$PWD/src/cache/rules.mk \
-#    $$PWD/src/cff/module.mk \
-#    $$PWD/src/cff/rules.mk \
-#    $$PWD/src/cid/module.mk \
-#    $$PWD/src/cid/rules.mk \
-#    $$PWD/src/gxvalid/module.mk \
-#    $$PWD/src/gxvalid/rules.mk \
-#    $$PWD/src/gzip/rules.mk \
-#    $$PWD/src/lzw/rules.mk \
-#    $$PWD/src/otvalid/module.mk \
-#    $$PWD/src/otvalid/rules.mk \
-#    $$PWD/src/pcf/module.mk \
-#    $$PWD/src/pcf/rules.mk \
-#    $$PWD/src/pfr/module.mk \
-#    $$PWD/src/pfr/rules.mk \
-#    $$PWD/src/psaux/module.mk \
-#    $$PWD/src/psaux/rules.mk \
-#    $$PWD/src/pshinter/module.mk \
-#    $$PWD/src/pshinter/rules.mk \
-#    $$PWD/src/psnames/module.mk \
-#    $$PWD/src/psnames/rules.mk \
-#    $$PWD/src/raster/module.mk \
-#    $$PWD/src/raster/rules.mk \
-#    $$PWD/src/sfnt/module.mk \
-#    $$PWD/src/sfnt/rules.mk \
-#    $$PWD/src/smooth/module.mk \
-#    $$PWD/src/smooth/rules.mk \
-#    $$PWD/src/truetype/module.mk \
-#    $$PWD/src/truetype/rules.mk \
-#    $$PWD/src/type1/module.mk \
-#    $$PWD/src/type1/rules.mk \
-#    $$PWD/src/type42/module.mk \
-#    $$PWD/src/type42/rules.mk \
-#    $$PWD/src/winfonts/module.mk \
-#    $$PWD/src/winfonts/rules.mk \
-#    $$PWD/src/bdf/README \
-#    $$PWD/src/gxvalid/README \
-#    $$PWD/src/pcf/README

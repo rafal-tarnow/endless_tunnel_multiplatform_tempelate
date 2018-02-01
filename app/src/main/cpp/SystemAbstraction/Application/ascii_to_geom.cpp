@@ -16,8 +16,8 @@
 #include "ascii_to_geom.hpp"
 #include "../system_log.hpp"
 
-#define GEOM_DEBUG LOGD
-//#define GEOM_DEBUG
+//#define GEOM_DEBUG LOGD
+#define GEOM_DEBUG
 
 SimpleGeom* AsciiArtToGeom(const char *art, float scale) {
     // figure out width and height
