@@ -5,6 +5,7 @@ include(../app/src/main/cpp/SystemAbstraction/Application/libs/library_opengles_
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/libfreetype.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/SOIL/soil_qt.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/glm/glm_qt.pri)
+include(../app/src/main/cpp/SystemAbstraction/Application/libs/Box2D/Box2D.pri)
 
 TEMPLATE = app
 CONFIG += console c++11

@@ -8,6 +8,7 @@
 #include <SOIL.h>
 #include <sstream>
 #include <iomanip>
+#include <Box2D/Box2D.h>
 
 using namespace  std;
 
@@ -41,6 +42,8 @@ void drawGlyphToConsole(FT_Face &face){
 DE_Rectangle rectangle;
 
 TextRenderer_v2 * textRenderer_v2 = nullptr;
+
+b2World* world;
 
 void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 {
@@ -81,6 +84,23 @@ void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 
     textRenderer_v2 = new TextRenderer_v2(width,height);
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, 90);
+
+
+    world = new b2World(b2Vec2(0.0,-1.81));
+
+    b2BodyDef bodydef;
+
+    bodydef.position.Set(10,10);
+    bodydef.type=b2_dynamicBody;
+    b2Body* body=world->CreateBody(&bodydef);
+
+    b2PolygonShape shape;
+    shape.SetAsBox(10/2,10/2);
+
+    b2FixtureDef fixturedef;
+    fixturedef.shape=&shape;
+    fixturedef.density=1.0;
+    body->CreateFixture(&fixturedef);
 }
 
 void SystemAbstraction::onPause()
@@ -125,6 +145,11 @@ void SystemAbstraction::onRenderFrame()
 
 
     textRenderer_v2->RenderText(text.str(), 0, 50);
+
+
+    world->Step(1.0/30.0,8,3);
+    static int i = 0;
+    LOGD("World->step %d\n", i++);
 
 }
 
@@ -180,4 +205,5 @@ void SystemAbstraction::onTimerTick()
 void SystemAbstraction::onUninit()
 {
     mgr->KillGraphics();
+    delete world;
 }

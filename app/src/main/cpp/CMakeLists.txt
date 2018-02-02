@@ -25,6 +25,7 @@ add_subdirectory(SystemAbstraction/Application/libs/libfreetype)
 add_subdirectory(SystemAbstraction/Application/libs/glm)
 add_subdirectory(SystemAbstraction/Application/libs/SOIL)
 add_subdirectory(SystemAbstraction/Application/libs/library_opengles_2)
+add_subdirectory(SystemAbstraction/Application/libs/Box2D)
 
 add_library(game SHARED
      android_main.cpp
@@ -58,7 +59,7 @@ target_include_directories(game PRIVATE
      ${CMAKE_CURRENT_SOURCE_DIR}/data
      ${ANDROID_NDK}/sources/android/native_app_glue)
 
-# add lib dependencies
+
 target_link_libraries(game
      android
      native_app_glue
@@ -71,4 +72,5 @@ target_link_libraries(game
      SOIL
      library_opengles_2
      libfreetype
+     Box2D
      )
