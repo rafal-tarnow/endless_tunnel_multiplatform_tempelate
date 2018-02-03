@@ -26,9 +26,11 @@
 class WelcomeScene : public UiScene {
     protected:
         // IDs for our buttons:
-        int mPlayButtonId;
+        int mPlayTunnelButtonId;
+        int mPlayCapAfriButtonId;
         int mStoryButtonId;
         int mAboutButtonId;
+
 
         virtual void RenderBackground();
         virtual void OnButtonClicked(int id);

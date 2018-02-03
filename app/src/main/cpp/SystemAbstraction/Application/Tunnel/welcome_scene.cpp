@@ -35,6 +35,11 @@
 #define BUTTON_PLAY_SIZE 0.4f, 0.4f
 #define BUTTON_PLAY_FONT_SCALE 1.0f
 
+// button geometry
+#define BUTTON_CAPAFRI_POS center, 0.15f
+#define BUTTON_CAPAFRI_SIZE 0.7f, 0.2f
+#define BUTTON_CAPAFRI_FONT_SCALE 0.7f
+
 // size of all side buttons (story, about)
 #define BUTTON_SIDEBUTTON_WIDTH (center - 0.4f)
 #define BUTTON_SIDEBUTTON_HEIGHT 0.2f
@@ -59,14 +64,14 @@ void WelcomeScene::RenderBackground() {
 void WelcomeScene::OnButtonClicked(int id) {
     SceneManager *mgr = SceneManager::GetInstance();
 
-    if (id == mPlayButtonId) {
+    if (id == mPlayTunnelButtonId) {
         mgr->RequestNewScene(new PlayScene());
-    } else if (id == mStoryButtonId) {
-        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK,
-                DialogScene::ACTION_RETURN));
+    }else if(id == mPlayCapAfriButtonId){
+        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
+    }else if (id == mStoryButtonId) {
+        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
     } else if (id == mAboutButtonId) {
-        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_ABOUT)->SetSingleButton(S_OK,
-                DialogScene::ACTION_RETURN));
+        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_ABOUT)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
     }
 }
 
@@ -83,12 +88,17 @@ void WelcomeScene::DoFrame() {
 
 void WelcomeScene::UpdateWidgetStates() {
     // Build navigation
-    AddNav(mPlayButtonId, UI_DIR_LEFT, mStoryButtonId);
-    AddNav(mPlayButtonId, UI_DIR_RIGHT, mAboutButtonId);
+    AddNav(mPlayTunnelButtonId, UI_DIR_LEFT, mStoryButtonId);
+    AddNav(mPlayTunnelButtonId, UI_DIR_RIGHT, mAboutButtonId);
 
-    AddNav(mStoryButtonId, UI_DIR_RIGHT, mPlayButtonId);
+    AddNav(mStoryButtonId, UI_DIR_RIGHT, mPlayTunnelButtonId);
 
-    AddNav(mAboutButtonId, UI_DIR_LEFT, mPlayButtonId);
+    AddNav(mAboutButtonId, UI_DIR_LEFT, mPlayTunnelButtonId);
+
+    AddNav(mPlayTunnelButtonId, UI_DIR_DOWN, mPlayCapAfriButtonId);
+    AddNav(mPlayCapAfriButtonId, UI_DIR_UP, mPlayTunnelButtonId);
+    AddNav(mPlayCapAfriButtonId, UI_DIR_RIGHT, mAboutButtonId);
+    AddNav(mPlayCapAfriButtonId, UI_DIR_LEFT, mStoryButtonId);
 
 }
 
@@ -107,9 +117,15 @@ void WelcomeScene::OnCreateWidgets() {
             ->SetFontScale(TITLE_FONT_SCALE)->SetTransition(UiWidget::TRANS_FROM_TOP);
 
     // create the "play" button
-    mPlayButtonId = NewWidget()->SetText(S_PLAY)->SetTextColor(BUTTON_COLOR)
+    mPlayTunnelButtonId = NewWidget()->SetText(S_PLAY)->SetTextColor(BUTTON_COLOR)
             ->SetCenter(BUTTON_PLAY_POS)->SetSize(BUTTON_PLAY_SIZE)
             ->SetFontScale(BUTTON_PLAY_FONT_SCALE)->SetIsButton(true)
+            ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
+
+    // create the "play" button
+    mPlayCapAfriButtonId = NewWidget()->SetText(S_CAP_AFRI)->SetTextColor(BUTTON_COLOR)
+            ->SetCenter(BUTTON_CAPAFRI_POS)->SetSize(BUTTON_CAPAFRI_SIZE)
+            ->SetFontScale(BUTTON_CAPAFRI_FONT_SCALE)->SetIsButton(true)
             ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
 
     // story button
@@ -125,7 +141,7 @@ void WelcomeScene::OnCreateWidgets() {
             ->SetTransition(UiWidget::TRANS_FROM_RIGHT)->GetId();
 
     // "Play" button is the default button
-    SetDefaultButton(mPlayButtonId);
+    SetDefaultButton(mPlayTunnelButtonId);
 
     // enable/disable widgets as appropriate to signed in state
     UpdateWidgetStates();

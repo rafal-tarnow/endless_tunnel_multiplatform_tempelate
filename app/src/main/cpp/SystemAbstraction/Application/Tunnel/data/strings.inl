@@ -30,6 +30,7 @@
 
 #define S_TITLE "Endless Tunnel"
 #define S_PLAY "Play!"
+#define S_CAP_AFRI "Capitan Africa!"
 
 #define S_PLEASE_WAIT "Please wait..."
 
