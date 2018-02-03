@@ -41,6 +41,7 @@ add_library(game SHARED
      SystemAbstraction/Application/Tunnel/obstacle_generator.cpp
      SystemAbstraction/Application/Tunnel/our_shader.cpp
      SystemAbstraction/Application/Tunnel/play_scene.cpp
+     SystemAbstraction/Application/Tunnel/play_capafri_scene.cpp
      SystemAbstraction/Application/Tunnel/scene.cpp
      SystemAbstraction/Application/Tunnel/scene_manager.cpp
      SystemAbstraction/system_audio.cpp

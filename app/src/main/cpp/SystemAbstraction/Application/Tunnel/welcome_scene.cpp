@@ -16,6 +16,7 @@
 #include "anim.hpp"
 #include "dialog_scene.hpp"
 #include "play_scene.hpp"
+#include "play_capafri_scene.hpp"
 #include "welcome_scene.hpp"
 
 #include "./data/blurb.inl"
@@ -67,7 +68,7 @@ void WelcomeScene::OnButtonClicked(int id) {
     if (id == mPlayTunnelButtonId) {
         mgr->RequestNewScene(new PlayScene());
     }else if(id == mPlayCapAfriButtonId){
-        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
+        mgr->RequestNewScene(new PlayCapAfriScene());
     }else if (id == mStoryButtonId) {
         mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
     } else if (id == mAboutButtonId) {
