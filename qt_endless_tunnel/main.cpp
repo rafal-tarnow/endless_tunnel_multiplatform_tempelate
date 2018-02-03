@@ -74,8 +74,8 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-static  GLuint CURRENT_WINDOW_WIDTH = 1920;
-static  GLuint CURRENT_WINDOW_HEIGHT = 1080;
+static  GLuint CURRENT_WINDOW_WIDTH = 480;
+static  GLuint CURRENT_WINDOW_HEIGHT = 320;
 
 GLFWwindow* window;
 

@@ -557,7 +557,9 @@ android_app* NativeEngine::GetAndroidApp() {
 
 bool NativeEngine::InitGLObjects() {
     if (!mHasGLObjects) {
-        SystemAbstraction::onInit(0, 0);
+
+        //TODO wczytywanie rozmiaru okna
+        SystemAbstraction::onInit(1920, 1080);
         _log_opengl_error(glGetError());
         mHasGLObjects = true;
     }

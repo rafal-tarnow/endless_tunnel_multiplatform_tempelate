@@ -6,6 +6,7 @@ include(../app/src/main/cpp/SystemAbstraction/Application/libs/libfreetype/libfr
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/SOIL/soil_qt.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/glm/glm_qt.pri)
 include(../app/src/main/cpp/SystemAbstraction/Application/libs/Box2D/Box2D.pri)
+include(../app/src/main/cpp/SystemAbstraction/Application/CapAfri/CapAfri.pri)
 
 TEMPLATE = app
 CONFIG += console c++11
