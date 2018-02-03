@@ -1,8 +1,10 @@
 #pragma once
 
+
+//TODO tablice umieszczac w plikach cpp zeby nie robic ich statcznych
 const static int size_of_design_graffiti_agentorange_www_myfontfree_com_ttf = 40954;
 
-unsigned char design_graffiti_agentorange_www_myfontfree_com_ttf[size_of_design_graffiti_agentorange_www_myfontfree_com_ttf] = {
+static unsigned char design_graffiti_agentorange_www_myfontfree_com_ttf[size_of_design_graffiti_agentorange_www_myfontfree_com_ttf] = {
     0x00, 0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x30, 0x00, 0x03,
     0x00, 0xc0, 0x4f, 0x53, 0x2f, 0x32, 0x53, 0x25, 0x5d, 0x37,
     0x00, 0x00, 0x9e, 0xec, 0x00, 0x00, 0x00, 0x56, 0x50, 0x43,
