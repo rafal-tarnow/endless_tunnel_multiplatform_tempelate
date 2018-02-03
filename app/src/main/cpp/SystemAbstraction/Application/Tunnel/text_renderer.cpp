@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../system_log.hpp"
+#include "../../system_log.hpp"
 #include "ascii_to_geom.hpp"
 #include "text_renderer.hpp"
 #include "util.hpp"

@@ -21,7 +21,7 @@
 #include <SLES/OpenSLES_Android.h>
 #endif
 
-#include "./Application/engine.hpp"
+#include "./Application/Tunnel/engine.hpp"
 
 /* Sound effect manager. This class is a singleton that manages sound effect
  * playback. Sound effects are defined by recipes (which are strings) that

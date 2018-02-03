@@ -16,7 +16,7 @@
 #ifndef endlesstunnel_native_engine_hpp
 #define endlesstunnel_native_engine_hpp
 
-#include "SystemAbstraction/Application/common.hpp"
+#include "SystemAbstraction/Application/Tunnel/common.hpp"
 
 struct NativeEngineSavedState {};
 

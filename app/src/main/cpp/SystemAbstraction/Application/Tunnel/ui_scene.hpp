@@ -16,7 +16,7 @@
 #ifndef endlesstunnel_ui_scene_hpp
 #define endlesstunnel_ui_scene_hpp
 
-#include "../system_abstraction.hpp"
+#include "../../system_abstraction.hpp"
 #include "ascii_to_geom.hpp"
 #include "engine.hpp"
 #include "shape_renderer.hpp"

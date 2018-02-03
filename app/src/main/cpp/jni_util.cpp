@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "SystemAbstraction/Application/common.hpp"
+#include "SystemAbstraction/Application/Tunnel/common.hpp"
 #include "jni_util.hpp"
 #include "native_engine.hpp"
 

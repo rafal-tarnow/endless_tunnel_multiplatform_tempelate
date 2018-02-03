@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include "ascii_to_geom.hpp"
-#include "../system_log.hpp"
+#include "../../system_log.hpp"
 
 //#define GEOM_DEBUG LOGD
 #define GEOM_DEBUG

@@ -16,8 +16,8 @@
 #ifndef endlesstunnel_input_util_hpp
 #define endlesstunnel_input_util_hpp
 
-#include "SystemAbstraction/Application/engine.hpp"
-#include "SystemAbstraction/Application/our_key_codes.hpp"
+#include "SystemAbstraction/Application/Tunnel/engine.hpp"
+#include "SystemAbstraction/Application/Tunnel/our_key_codes.hpp"
 
 // event type
 #define COOKED_EVENT_TYPE_JOY 0

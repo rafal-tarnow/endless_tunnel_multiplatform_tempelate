@@ -1,8 +1,8 @@
 
 #include "system_abstraction.hpp"
-#include "./Application/scene_manager.hpp"
-#include "./Application/welcome_scene.hpp"
-#include "./Application/data/coin_2.png.hpp"
+#include "./Application/Tunnel/scene_manager.hpp"
+#include "./Application/Tunnel/welcome_scene.hpp"
+#include "./Application/Tunnel/data/coin_2.png.hpp"
 #include "system_log.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <SOIL.h>
@@ -15,7 +15,7 @@ using namespace  std;
 static SceneManager *mgr = SceneManager::GetInstance();
 
 #include "./Application/libs/library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp"
-#include "./Application/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
+#include "./Application/Tunnel/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 

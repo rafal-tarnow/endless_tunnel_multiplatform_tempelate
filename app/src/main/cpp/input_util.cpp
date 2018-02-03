@@ -15,9 +15,9 @@
  */
 #include <dlfcn.h>
 #include "input_util.hpp"
-#include "SystemAbstraction/Application/joystick-support.hpp"
-#include "SystemAbstraction/Application/our_key_codes.hpp"
-#include "SystemAbstraction/Application/util.hpp"
+#include "SystemAbstraction/Application/Tunnel/joystick-support.hpp"
+#include "SystemAbstraction/Application/Tunnel/our_key_codes.hpp"
+#include "SystemAbstraction/Application/Tunnel/util.hpp"
 #include "SystemAbstraction/system_log.hpp"
 
 // cached device motion ranges

@@ -16,11 +16,11 @@
 #ifndef endlesstunnel_play_scene_h
 #define endlesstunnel_play_scene_h
 
-#include "../system_abstraction.hpp"
+#include "../../system_abstraction.hpp"
 #include "engine.hpp"
 #include "obstacle_generator.hpp"
 #include "obstacle.hpp"
-#include "../system_audio.hpp"
+#include "../../system_audio.hpp"
 #include "shape_renderer.hpp"
 #include "text_renderer.hpp"
 #include "util.hpp"
