@@ -21,7 +21,7 @@
 void Scene::OnInstall() {}
 void Scene::DoFrame() {}
 void Scene::OnUninstall() {}
-void Scene::OnStartGraphics() {}
+void Scene::OnStartGraphics(int width, int height) {}
 void Scene::OnKillGraphics() {}
 void Scene::OnPointerDown(int pointerId, const struct PointerCoords* coords) {}
 void Scene::OnPointerUp(int pointerId, const struct PointerCoords* coords) {}

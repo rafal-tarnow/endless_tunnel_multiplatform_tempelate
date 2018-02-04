@@ -26,7 +26,7 @@ class Scene {
     public:
         // Called when graphics context is initialized. This is when textures,
         // geometry, etc should be initialized.
-        virtual void OnStartGraphics();
+        virtual void OnStartGraphics(int width, int height);
 
         // Called when the graphics context is about to be shut down. Tear down
         // all geometry, textures, etc.

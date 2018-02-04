@@ -62,7 +62,7 @@ void SceneManager::InstallScene(Scene *newScene) {
 
     // if we had graphics before, start them again.
     if (hadGraphics) {
-        StartGraphics();
+        StartGraphics(mScreenWidth, mScreenHeight);
     }
 }
 
@@ -91,13 +91,15 @@ void SceneManager::KillGraphics() {
     }
 }
 
-void SceneManager::StartGraphics() {
+void SceneManager::StartGraphics(int width, int height) {
+    this->SetScreenSize(width,height);
+
     if (!mHasGraphics) {
         LOGD("SceneManager: starting graphics.");
         mHasGraphics = true;
         if (mCurScene) {
             LOGD("SceneManager: calling mCurScene->OnStartGraphics.");
-            mCurScene->OnStartGraphics();
+            mCurScene->OnStartGraphics(mScreenWidth, mScreenHeight);
         }
     }
 }

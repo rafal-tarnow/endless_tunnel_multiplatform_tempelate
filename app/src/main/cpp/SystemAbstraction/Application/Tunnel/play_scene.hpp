@@ -32,7 +32,7 @@ class OurShader;
 class PlayScene : public Scene {
     public:
         PlayScene();
-        virtual void OnStartGraphics();
+        virtual void OnStartGraphics(int width, int height);
         virtual void OnKillGraphics();
         virtual void DoFrame();
         virtual void OnPointerDown(int pointerId, const struct PointerCoords *coords);
@@ -47,14 +47,14 @@ class PlayScene : public Scene {
     protected:
         // shaders
         OurShader *mOurShader;
-        TrivialShader *mTrivialShader;
+        TrivialShader *mmTrivialShader;
 
         // the wall texture
         Texture *mWallTexture;
 
         // shape and text renderers we use when rendering the HUD
-        ShapeRenderer *mShapeRenderer;
-        TextRenderer *mTextRenderer;
+        ShapeRenderer *mmShapeRenderer;
+        TextRenderer *mmTextRenderer;
 
         // matrices
         glm::mat4 mViewMat, mProjMat;

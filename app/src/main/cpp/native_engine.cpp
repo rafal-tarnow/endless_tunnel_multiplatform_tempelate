@@ -555,11 +555,26 @@ android_app* NativeEngine::GetAndroidApp() {
     return mApp;
 }
 
-bool NativeEngine::InitGLObjects() {
-    if (!mHasGLObjects) {
+bool NativeEngine::InitGLObjects()
+{
+    if (!mHasGLObjects)
+    {
+        int width, height;
+        width = height = 0;
 
-        //TODO wczytywanie rozmiaru okna
-        SystemAbstraction::onInit(1920, 1080);
+        if (mEglDisplay != EGL_NO_DISPLAY && mEglSurface != EGL_NO_SURFACE)
+        {
+            eglQuerySurface(mEglDisplay, mEglSurface, EGL_WIDTH, &width);
+            eglQuerySurface(mEglDisplay, mEglSurface, EGL_HEIGHT, &height);
+
+            if (width != mSurfWidth || height != mSurfHeight)
+            {
+                mSurfWidth = width;
+                mSurfHeight = height;
+            }
+        }
+
+        SystemAbstraction::onInit(mSurfWidth, mSurfHeight);
         _log_opengl_error(glGetError());
         mHasGLObjects = true;
     }

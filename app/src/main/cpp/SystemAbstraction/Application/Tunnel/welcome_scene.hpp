@@ -42,7 +42,7 @@ class WelcomeScene : public UiScene {
         ~WelcomeScene();
 
         virtual void OnCreateWidgets();
-        virtual void OnStartGraphics();
+        virtual void OnStartGraphics(int width, int height);
         virtual void OnKillGraphics();
 
         virtual void DoFrame();

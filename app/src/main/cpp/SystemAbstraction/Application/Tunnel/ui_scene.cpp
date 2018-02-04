@@ -65,7 +65,7 @@ UiWidget* UiScene::NewWidget() {
     return widget;
 }
 
-void UiScene::OnStartGraphics() {
+void UiScene::OnStartGraphics(int width, int height) {
     mTrivialShader = new TrivialShader();
     mTrivialShader->Compile();
     mTextRenderer = new TextRenderer(mTrivialShader);

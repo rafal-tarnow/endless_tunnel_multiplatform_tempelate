@@ -91,7 +91,7 @@ class UiScene : public Scene {
         virtual ~UiScene();
 
 
-        virtual void OnStartGraphics();
+        virtual void OnStartGraphics(int width, int height);
         virtual void OnKillGraphics();
         virtual void DoFrame();
         virtual void OnPointerDown(int pointerId, const struct PointerCoords *coords);

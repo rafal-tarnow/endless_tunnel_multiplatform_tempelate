@@ -23,7 +23,6 @@
 #include "play_scene.hpp"
 #include "util.hpp"
 #include "welcome_scene.hpp"
-#include "welcome_scene.hpp"
 
 #include "./data/ascii_art.inl"
 #include "./data/cube_geom.inl"
@@ -61,9 +60,9 @@ static const char* TONE_BONUS[] = {
 
 PlayScene::PlayScene() : Scene() {
     mOurShader = NULL;
-    mTrivialShader = NULL;
-    mTextRenderer = NULL;
-    mShapeRenderer = NULL;
+    mmTrivialShader = NULL;
+    mmTextRenderer = NULL;
+    mmShapeRenderer = NULL;
     mShipSteerX = mShipSteerZ = 0.0f;
     mFilteredSteerX = mFilteredSteerZ = 0.0f;
 
@@ -235,12 +234,12 @@ static unsigned char* _gen_wall_texture() {
     return pixel_data;
 }
 
-void PlayScene::OnStartGraphics() {
+void PlayScene::OnStartGraphics(int width, int height) {
     // build shaders
     mOurShader = new OurShader();
     mOurShader->Compile();
-    mTrivialShader = new TrivialShader();
-    mTrivialShader->Compile();
+    mmTrivialShader = new TrivialShader();
+    mmTrivialShader->Compile();
 
     // build projection matrix
     UpdateProjectionMatrix();
@@ -269,15 +268,15 @@ void PlayScene::OnStartGraphics() {
     mLifeGeom = AsciiArtToGeom(ART_LIFE, LIFE_ICON_SCALE);
 
     // create text renderer and shape renderer
-    mTextRenderer = new TextRenderer(mTrivialShader);
-    mShapeRenderer = new ShapeRenderer(mTrivialShader);
+    mmTextRenderer = new TextRenderer(mmTrivialShader);
+    mmShapeRenderer = new ShapeRenderer(mmTrivialShader);
 }
 
 void PlayScene::OnKillGraphics() {
-    CleanUp(&mTextRenderer);
-    CleanUp(&mShapeRenderer);
+    CleanUp(&mmTextRenderer);
+    CleanUp(&mmShapeRenderer);
     CleanUp(&mOurShader);
-    CleanUp(&mTrivialShader);
+    CleanUp(&mmTrivialShader);
     CleanUp(&mTunnelGeom);
     CleanUp(&mCubeGeom);
     CleanUp(&mWallTexture);
@@ -607,8 +606,8 @@ void PlayScene::RenderHUD() {
     }
     score_str[i] = '\0';
 
-    mTextRenderer->SetFontScale(SCORE_FONT_SCALE);
-    mTextRenderer->RenderText(score_str, SCORE_POS_X, SCORE_POS_Y);
+    mmTextRenderer->SetFontScale(SCORE_FONT_SCALE);
+    mmTextRenderer->RenderText(score_str, SCORE_POS_X, SCORE_POS_Y);
 
     // render current sign
     if (mSignText) {
@@ -622,10 +621,10 @@ void PlayScene::RenderHUD() {
             modelMat = glm::scale(modelMat, glm::vec3(1.0f, scale, 1.0f));
         }
 
-        mTextRenderer->SetMatrix(modelMat);
-        mTextRenderer->SetFontScale(SIGN_FONT_SCALE);
-        mTextRenderer->RenderText(mSignText, aspect * 0.5f, 0.5f);
-        mTextRenderer->ResetMatrix();
+        mmTextRenderer->SetMatrix(modelMat);
+        mmTextRenderer->SetFontScale(SIGN_FONT_SCALE);
+        mmTextRenderer->RenderText(mSignText, aspect * 0.5f, 0.5f);
+        mmTextRenderer->ResetMatrix();
     }
 
     // render life icons
@@ -636,7 +635,7 @@ void PlayScene::RenderHUD() {
     int ubound = (mBlinkingHeart && BlinkFunc(0.2f)) ? mLives + 1 : mLives;
     for (int i = 0; i < ubound; i++) {
         mat = orthoMat * modelMat;
-        mTrivialShader->RenderSimpleGeom(&mat, mLifeGeom);
+        mmTrivialShader->RenderSimpleGeom(&mat, mLifeGeom);
         modelMat = glm::translate(modelMat, glm::vec3(LIFE_SPACING_X, 0.0f, 0.0f));
     }
 
@@ -650,7 +649,7 @@ void PlayScene::RenderMenu() {
 
     glDisable(GL_DEPTH_TEST);
 
-    RenderBackgroundAnimation(mShapeRenderer);
+    RenderBackgroundAnimation(mmShapeRenderer);
 
     float scaleFactor = SineWave(1.0f, MENUITEM_PULSE_AMOUNT, MENUITEM_PULSE_PERIOD, 0.0f);
 
@@ -659,11 +658,11 @@ void PlayScene::RenderMenu() {
         float thisFactor = (mMenuSel == i) ? scaleFactor : 1.0f;
         float y = 1.0f - (i + 1) / ((float)mMenuItemCount + 1);
         float x = aspect * 0.5f;
-        mTextRenderer->SetFontScale(thisFactor * MENUITEM_FONT_SCALE);
-        mTextRenderer->SetColor(mMenuSel == i ? MENUITEM_SEL_COLOR : MENUITEM_COLOR);
-        mTextRenderer->RenderText(mMenuItemText[mMenuItems[i]], x, y);
+        mmTextRenderer->SetFontScale(thisFactor * MENUITEM_FONT_SCALE);
+        mmTextRenderer->SetColor(mMenuSel == i ? MENUITEM_SEL_COLOR : MENUITEM_COLOR);
+        mmTextRenderer->RenderText(mMenuItemText[mMenuItems[i]], x, y);
     }
-    mTextRenderer->ResetColor();
+    mmTextRenderer->ResetColor();
 
     glEnable(GL_DEPTH_TEST);
 }

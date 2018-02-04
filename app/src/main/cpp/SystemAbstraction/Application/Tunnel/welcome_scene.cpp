@@ -103,8 +103,8 @@ void WelcomeScene::UpdateWidgetStates() {
 
 }
 
-void WelcomeScene::OnStartGraphics() {
-    UiScene::OnStartGraphics();
+void WelcomeScene::OnStartGraphics(int width, int height) {
+    UiScene::OnStartGraphics(width, height);
 }
 
 void WelcomeScene::OnCreateWidgets() {

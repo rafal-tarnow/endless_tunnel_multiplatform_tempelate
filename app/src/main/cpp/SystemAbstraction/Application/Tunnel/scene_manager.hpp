@@ -34,7 +34,7 @@ class SceneManager {
         SceneManager();
         void SetScreenSize(int width, int height);
         void KillGraphics();
-        void StartGraphics();
+        void StartGraphics(int width, int height);
 
         // Returns screen width in pixels
         int GetScreenWidth() { return mScreenWidth; }

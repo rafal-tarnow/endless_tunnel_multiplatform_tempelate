@@ -159,8 +159,7 @@ TextRenderer_v2 * textRenderer_v2 = nullptr;
 
 void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 {
-
-    mgr->StartGraphics();
+    mgr->StartGraphics(width, height);
 
     textRenderer_v2 = new TextRenderer_v2(width,height);
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, 90);
