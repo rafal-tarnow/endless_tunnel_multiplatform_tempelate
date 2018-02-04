@@ -100,48 +100,36 @@ Game::Game(unsigned int win_width,unsigned int win_height)
       unsigned char pixels[] = {
               255, 255, 255, 255};
 
-//      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_FLOAT, pixels);
-//      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-//      glBindTexture(GL_TEXTURE_2D, 0);
-
-   //  tex = SOIL_load_OGL_texture("./data/png/coin_2.png", 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-
-
-
-    LOGD("1.11");
-
-
-      DE_initRectangle_1(&rectangle, tex, -1, 1, 1, -1, 0);
-    LOGD("1.12");
 }
 
 
 void Game::loadLevel()
 {
     LOGD("1.9.1");
-    ground = new Ground(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
+    groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
     LOGD("1.9.2");
     car = new Car(1.0f, 5.0f, world);
-    LOGD("1.9.3");
-    float x_coin_position = 10;
-    LOGD("1.9.4");
-    for(int i = 0; i < 100; i++)
-    {
-        coin = new CircleCoin(x_coin_position,0.75,0.25, world);
-        x_coin_position += 5.0f;
-    }
-    LOGD("1.9.5");
+
+    //TODO dorobic delete circle coin
+    coin = new CircleCoin(9.0, 3.0,0.25, world);
+    coin = new CircleCoin(15.0, 8.0,0.25, world);
+    coin = new CircleCoin(18.0, 10.0,0.25, world);
+    coin = new CircleCoin(21.0, 11.0,0.25, world);
+    coin = new CircleCoin(23.0, 12.0,0.25, world);
+    coin = new CircleCoin(26.0, 12.0,0.25, world);
+    coin = new CircleCoin(34.0, 13.0,0.25, world);
+    coin = new CircleCoin(36.0, 13.0,0.25, world);
+    coin = new CircleCoin(41.0, 13.0,0.25, world);
+    coin = new CircleCoin(43.0, 13.0,0.25, world);
+    coin = new CircleCoin(45.0, 13.0,0.25, world);
 }
 
 Game::~Game()
 {
     TextureManager::deleteAllTextures();
     delete background;
-    delete ground;
+    delete groundChain;
     delete world;
-     DE_deleteRectangle(&rectangle);
 }
 
 
@@ -258,19 +246,12 @@ void Game::systemCallback_Render()
     static int cash = 0;
     stringstream text;
     if(car){
-        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
+        text << std::fixed << std::setprecision(0) << "X "<<car->getXPosition() << " Y " << car->getYPosition();
     }else{
         text << "$ 0";
     }
 
     textRenderer_v2->RenderText(text.str(), current_window_width*0.03, current_window_height*0.9);
-
-    rectangle.projection = glm::mat4(1);
-    rectangle.view = glm::mat4(1);
-    rectangle.model = glm::mat4(1);
-
-
-    //DE_drawRectangle(&rectangle);
 
     glFlush();
 }

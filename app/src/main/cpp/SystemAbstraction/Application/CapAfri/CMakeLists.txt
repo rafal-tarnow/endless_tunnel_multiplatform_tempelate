@@ -10,5 +10,6 @@ add_library (CapAfri STATIC
     Bodies/coin_circle_body.cpp
     Bodies/coordinates_body.cpp
     Bodies/ground_body.cpp
+    Bodies/ground_body_chain.cpp
     game.cpp
 )

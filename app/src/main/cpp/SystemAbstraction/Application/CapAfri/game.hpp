@@ -1,7 +1,7 @@
 #pragma once
 #include <Box2D/Box2D.h>
 #include <GLES2/gl2.h>
-#include "./Bodies/ground_body.hpp"
+#include "./Bodies/ground_body_chain.hpp"
 #include "./Bodies/background_body.hpp"
 #include "./Bodies/car_body.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
@@ -47,7 +47,7 @@ private:
     float box_zero_offset_meters = 0.0f;
 
     b2World* world;
-    Ground * ground = nullptr;
+    GroundChain * groundChain = nullptr;
     BackGround * background = nullptr;
 
     Car * car = nullptr;
@@ -60,6 +60,5 @@ private:
 
     GLfloat zoom = 1.0f;
 
-    DE_Rectangle rectangle;
 
 };

@@ -130,6 +130,11 @@ float Car::getXPosition(){
     return carBody_body->GetPosition().x;
 }
 
+float Car::getYPosition()
+{
+    return carBody_body->GetPosition().y;
+}
+
 void Car::render(glm::mat4 projection, glm::mat4 view)
 {
    // frontWhellJoint->SetMotorSpeed(required_car_speed);

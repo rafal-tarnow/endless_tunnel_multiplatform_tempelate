@@ -4,6 +4,7 @@ HEADERS += \
     $$PWD/Bodies/coin_circle_body.hpp \
     $$PWD/Bodies/coordinates_body.hpp \
     $$PWD/Bodies/ground_body.hpp \
+    $$PWD/Bodies/ground_body_chain.hpp \
     $$PWD/data/car.png.hpp \
     $$PWD/data/coin_2.png.hpp \
     $$PWD/data/ground.png.hpp \
@@ -18,4 +19,5 @@ SOURCES += \
     $$PWD/Bodies/coin_circle_body.cpp \
     $$PWD/Bodies/coordinates_body.cpp \
     $$PWD/Bodies/ground_body.cpp \
+    $$PWD/Bodies/ground_body_chain.cpp \
     $$PWD/game.cpp

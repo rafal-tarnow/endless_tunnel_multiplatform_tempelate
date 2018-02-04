@@ -18,6 +18,7 @@ public:
     void getPosition(float *x, float *y);
     b2Vec2 getPosition();
     float getXPosition();
+    float getYPosition();
 
     void render(glm::mat4 projection, glm::mat4 view);
 private:
