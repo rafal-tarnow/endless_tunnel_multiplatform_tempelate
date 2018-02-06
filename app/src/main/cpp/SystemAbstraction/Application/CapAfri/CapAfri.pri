@@ -11,7 +11,8 @@ HEADERS += \
     $$PWD/data/kolo.png.hpp \
     $$PWD/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp \
     $$PWD/game.hpp \
-    $$PWD/renderable_object.hpp
+    $$PWD/renderable_object.hpp \
+    $$PWD/map_editor.hpp
 
 SOURCES += \
     $$PWD/Bodies/background_body.cpp \
@@ -20,4 +21,5 @@ SOURCES += \
     $$PWD/Bodies/coordinates_body.cpp \
     $$PWD/Bodies/ground_body.cpp \
     $$PWD/Bodies/ground_body_chain.cpp \
-    $$PWD/game.cpp
+    $$PWD/game.cpp \
+    $$PWD/map_editor.cpp

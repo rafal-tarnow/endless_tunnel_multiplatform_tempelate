@@ -21,23 +21,15 @@ void CircleCoin::drawCircleSquare(b2Vec2 position,float radius,float angle)
 }
 
 CircleCoin::CircleCoin(float32 x,float32 y,float32 radius, b2World* world){
-    LOGD("1.9.4.1.1");
     b2BodyDef bodydef;
-    LOGD("1.9.4.1.2");
     bodydef.position.Set(x,y);
-    LOGD("1.9.4.1.3");
     bodydef.type=b2_dynamicBody;
-    LOGD("1.9.4.1.4");
     bodydef.gravityScale = 0.0f;
-    LOGD("1.9.4.1.5");
     body=world->CreateBody(&bodydef);
-    LOGD("1.9.4.1.6");
     body->SetUserData((RenderableObject *)this);
-    LOGD("1.9.4.1.7");
     b2CircleShape shape;
     shape.m_radius = radius; //radius
     shape.m_p.Set(0,0); //position, relative to body position
-    LOGD("1.9.4.1.8");
 
     b2FixtureDef fixturedef;
     fixturedef.shape=&shape;

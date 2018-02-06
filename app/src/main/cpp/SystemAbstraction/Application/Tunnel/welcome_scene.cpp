@@ -17,6 +17,7 @@
 #include "dialog_scene.hpp"
 #include "play_scene.hpp"
 #include "play_capafri_scene.hpp"
+#include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
 
 #include "./data/blurb.inl"
@@ -37,9 +38,13 @@
 #define BUTTON_PLAY_FONT_SCALE 1.0f
 
 // button geometry
-#define BUTTON_CAPAFRI_POS center, 0.15f
-#define BUTTON_CAPAFRI_SIZE 0.7f, 0.2f
-#define BUTTON_CAPAFRI_FONT_SCALE 0.7f
+#define BUTTON_ENDLESS_TUNNEL_POS center, 0.15f
+#define BUTTON_ENDLESS_TUNNEL_SIZE 0.7f, 0.2f
+#define BUTTON_ENDLESS_TUNNEL_FONT_SCALE 0.7f
+
+#define BUTTON_MAP_EDITOR_POS center + 0.6f, 0.15f
+#define BUTTON_MAP_EDITOR_SIZE 0.4f, 0.2f
+#define BUTTON_MAP_EDITOR_FONT_SCALE 0.5f
 
 // size of all side buttons (story, about)
 #define BUTTON_SIDEBUTTON_WIDTH (center - 0.4f)
@@ -65,13 +70,24 @@ void WelcomeScene::RenderBackground() {
 void WelcomeScene::OnButtonClicked(int id) {
     SceneManager *mgr = SceneManager::GetInstance();
 
-    if (id == mPlayTunnelButtonId) {
-        mgr->RequestNewScene(new PlayScene());
-    }else if(id == mPlayCapAfriButtonId){
+    if (id == mPlayCapAfriButtonId)
+    {
         mgr->RequestNewScene(new PlayCapAfriScene());
-    }else if (id == mStoryButtonId) {
+    }
+    else if(id == mmPlayTunnelButtonId)
+    {
+        mgr->RequestNewScene(new PlayScene());
+    }
+    else if(id == mMapEditorButtonId)
+    {
+        mgr->RequestNewScene(new MapEditorScene());
+    }
+    else if (id == mStoryButtonId)
+    {
         mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
-    } else if (id == mAboutButtonId) {
+    }
+    else if (id == mAboutButtonId)
+    {
         mgr->RequestNewScene((new DialogScene())->SetText(BLURB_ABOUT)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
     }
 }
@@ -89,17 +105,20 @@ void WelcomeScene::DoFrame() {
 
 void WelcomeScene::UpdateWidgetStates() {
     // Build navigation
-    AddNav(mPlayTunnelButtonId, UI_DIR_LEFT, mStoryButtonId);
-    AddNav(mPlayTunnelButtonId, UI_DIR_RIGHT, mAboutButtonId);
-
-    AddNav(mStoryButtonId, UI_DIR_RIGHT, mPlayTunnelButtonId);
-
-    AddNav(mAboutButtonId, UI_DIR_LEFT, mPlayTunnelButtonId);
-
-    AddNav(mPlayTunnelButtonId, UI_DIR_DOWN, mPlayCapAfriButtonId);
-    AddNav(mPlayCapAfriButtonId, UI_DIR_UP, mPlayTunnelButtonId);
-    AddNav(mPlayCapAfriButtonId, UI_DIR_RIGHT, mAboutButtonId);
     AddNav(mPlayCapAfriButtonId, UI_DIR_LEFT, mStoryButtonId);
+    AddNav(mPlayCapAfriButtonId, UI_DIR_RIGHT, mAboutButtonId);
+
+    AddNav(mStoryButtonId, UI_DIR_RIGHT, mPlayCapAfriButtonId);
+
+    AddNav(mAboutButtonId, UI_DIR_LEFT, mPlayCapAfriButtonId);
+
+    AddNav(mPlayCapAfriButtonId, UI_DIR_DOWN, mmPlayTunnelButtonId);
+    AddNav(mmPlayTunnelButtonId, UI_DIR_UP, mPlayCapAfriButtonId);
+    AddNav(mmPlayTunnelButtonId, UI_DIR_RIGHT, mMapEditorButtonId);
+    AddNav(mmPlayTunnelButtonId, UI_DIR_LEFT, mStoryButtonId);
+
+    AddNav(mMapEditorButtonId, UI_DIR_UP, mAboutButtonId);
+    AddNav(mMapEditorButtonId, UI_DIR_LEFT, mmPlayTunnelButtonId);
 
 }
 
@@ -118,15 +137,21 @@ void WelcomeScene::OnCreateWidgets() {
             ->SetFontScale(TITLE_FONT_SCALE)->SetTransition(UiWidget::TRANS_FROM_TOP);
 
     // create the "play" button
-    mPlayTunnelButtonId = NewWidget()->SetText(S_PLAY)->SetTextColor(BUTTON_COLOR)
+    mPlayCapAfriButtonId = NewWidget()->SetText(S_PLAY)->SetTextColor(BUTTON_COLOR)
             ->SetCenter(BUTTON_PLAY_POS)->SetSize(BUTTON_PLAY_SIZE)
             ->SetFontScale(BUTTON_PLAY_FONT_SCALE)->SetIsButton(true)
             ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
 
-    // create the "play" button
-    mPlayCapAfriButtonId = NewWidget()->SetText(S_CAP_AFRI)->SetTextColor(BUTTON_COLOR)
-            ->SetCenter(BUTTON_CAPAFRI_POS)->SetSize(BUTTON_CAPAFRI_SIZE)
-            ->SetFontScale(BUTTON_CAPAFRI_FONT_SCALE)->SetIsButton(true)
+    // create the "Endless Tunnel" button
+    mmPlayTunnelButtonId = NewWidget()->SetText(S_ENDLESS_TUNNEL)->SetTextColor(BUTTON_COLOR)
+            ->SetCenter(BUTTON_ENDLESS_TUNNEL_POS)->SetSize(BUTTON_ENDLESS_TUNNEL_SIZE)
+            ->SetFontScale(BUTTON_ENDLESS_TUNNEL_FONT_SCALE)->SetIsButton(true)
+            ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
+
+    // create the "Map Editor" button
+    mMapEditorButtonId = NewWidget()->SetText(S_MAP_EDITOR)->SetTextColor(BUTTON_COLOR)
+            ->SetCenter(BUTTON_MAP_EDITOR_POS)->SetSize(BUTTON_MAP_EDITOR_SIZE)
+            ->SetFontScale(BUTTON_MAP_EDITOR_FONT_SCALE)->SetIsButton(true)
             ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
 
     // story button
@@ -142,7 +167,7 @@ void WelcomeScene::OnCreateWidgets() {
             ->SetTransition(UiWidget::TRANS_FROM_RIGHT)->GetId();
 
     // "Play" button is the default button
-    SetDefaultButton(mPlayTunnelButtonId);
+    SetDefaultButton(mPlayCapAfriButtonId);
 
     // enable/disable widgets as appropriate to signed in state
     UpdateWidgetStates();

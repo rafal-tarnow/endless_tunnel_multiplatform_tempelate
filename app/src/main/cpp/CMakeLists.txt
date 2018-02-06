@@ -15,6 +15,7 @@ set(CMAKE_SHARED_LINKER_FLAGS
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/libfreetype/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
@@ -42,6 +43,7 @@ add_library(game SHARED
      SystemAbstraction/Application/Tunnel/our_shader.cpp
      SystemAbstraction/Application/Tunnel/play_scene.cpp
      SystemAbstraction/Application/Tunnel/play_capafri_scene.cpp
+     SystemAbstraction/Application/Tunnel/map_editor_scene.cpp
      SystemAbstraction/Application/Tunnel/scene.cpp
      SystemAbstraction/Application/Tunnel/scene_manager.cpp
      SystemAbstraction/system_audio.cpp

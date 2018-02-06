@@ -20,7 +20,7 @@ public:
         MOUSE_RIGHT_BUTTON,
 
         MOUSE_LEFT,
-        MOUSE_ENTERED
+        MOUSEa_ENTERED
     }MouseButton;
 
     typedef enum{

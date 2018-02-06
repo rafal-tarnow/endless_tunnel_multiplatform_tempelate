@@ -28,9 +28,10 @@
 #define S_START_OVER "Start Over"
 #define S_RESUME "Start from checkpoint"
 
-#define S_TITLE "Endless Tunnel"
+#define S_TITLE "Capitan Africa"
 #define S_PLAY "Play!"
-#define S_CAP_AFRI "Capitan Africa!"
+#define S_ENDLESS_TUNNEL "Endless Tunnel!"
+#define S_MAP_EDITOR "Map Editor"
 
 #define S_PLEASE_WAIT "Please wait..."
 

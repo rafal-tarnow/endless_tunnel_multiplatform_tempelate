@@ -1,19 +1,17 @@
-
-#include "system_abstraction.hpp"
-#include "./Application/Tunnel/scene_manager.hpp"
-#include "./Application/Tunnel/welcome_scene.hpp"
-#include "system_log.hpp"
-#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
-#include <SOIL.h>
-#include <sstream>
-#include <iomanip>
-#include <CapAfri/game.hpp>
-
-using namespace  std;
-
-
-
-//static Game *game = nullptr;
+//#include "system_abstraction.hpp"
+//
+//#include "system_log.hpp"
+//#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
+//#include <SOIL.h>
+//#include <sstream>
+//#include <iomanip>
+//#include <CapAfri/map_editor.hpp>
+//
+//using namespace  std;
+//
+//
+//
+//MapEditor * mapEditor;
 //static unsigned int current_width = 640;
 //static unsigned int current_height = 480;
 //
@@ -22,10 +20,7 @@ using namespace  std;
 //{
 //    current_width = width;
 //    current_height = height;
-//    LOGD("1");
-//    game = new Game(width, height);
-//    LOGD("2");
-//    game->systemCallback_WindowResize(width, height);
+//    mapEditor = new MapEditor(current_width, current_height);
 //}
 //
 //void SystemAbstraction::onPause()
@@ -42,7 +37,7 @@ using namespace  std;
 //{
 //    current_width = width;
 //    current_height = height;
-//    game->systemCallback_WindowResize(width, height);
+//    mapEditor->systemCallback_WindowResize(current_width, current_height);
 //}
 //
 //void SystemAbstraction::onRenderFirstFrame()
@@ -52,14 +47,12 @@ using namespace  std;
 //
 //void SystemAbstraction::onRenderFrame()
 //{
-//    game->systemCallback_Render();
-//    game->systemCallback_TimerTick();
-//
+//    mapEditor->systemCallback_Render();
 //}
 //
 //void SystemAbstraction::onScroll(double yoffset)
 //{
-//
+//    mapEditor->systemCallback_Scroll(yoffset);
 //}
 //
 //void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y)
@@ -69,12 +62,12 @@ using namespace  std;
 //
 //void SystemAbstraction::onKeyboard(ButtonEvent event,int key, int x, int y )
 //{
-//
+//    mapEditor->systemCallback_keyboard(event, key, 0 , 0);
 //}
 //
 //bool SystemAbstraction::onBackKeyPressed()
 //{
-// return true;
+//    return true;
 //}
 //
 //void SystemAbstraction::onJoyUpdate(float joyX, float joyY)
@@ -84,33 +77,17 @@ using namespace  std;
 //
 //void SystemAbstraction::onPointerDown(int pointerId, const struct PointerCoords *coords)
 //{
-//    if(coords->x > current_width/2)
-//    {
-//        game->systemCallback_keyboard(SystemAbstraction::EVENT_DOWN, 'd', coords->x, coords->y);
-//    }
 //
-//    if(coords->x < current_width/2)
-//    {
-//        game->systemCallback_keyboard(SystemAbstraction::EVENT_DOWN, 'a', coords->x, coords->y);
-//    }
 //}
 //
 //void SystemAbstraction::onPointerUp(int pointerId, const struct PointerCoords *coords)
 //{
-//    if(coords->x > current_width/2)
-//    {
-//        game->systemCallback_keyboard(SystemAbstraction::EVENT_UP, 'd', coords->x, coords->y);
-//    }
 //
-//    if(coords->x < current_width/2)
-//    {
-//        game->systemCallback_keyboard(SystemAbstraction::EVENT_UP, 'a', coords->x, coords->y);
-//    }
 //}
 //
 //void SystemAbstraction::onPointerMove(int pointerId, const struct PointerCoords *coords)
 //{
-//
+//    mapEditor->systemCallback_mousePosition(coords->x,coords->y);
 //}
 //
 //void SystemAbstraction::onTimerTick()
@@ -120,11 +97,23 @@ using namespace  std;
 //
 //void SystemAbstraction::onUninit()
 //{
-//   // delete game;
+//
 //}
+//
 
 
 
+#include "system_abstraction.hpp"
+#include "./Application/Tunnel/scene_manager.hpp"
+#include "./Application/Tunnel/welcome_scene.hpp"
+#include "system_log.hpp"
+#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
+#include <SOIL.h>
+#include <sstream>
+#include <iomanip>
+#include <CapAfri/game.hpp>
+
+using namespace  std;
 
 
 static SceneManager *mgr = SceneManager::GetInstance();
@@ -162,7 +151,8 @@ void SystemAbstraction::onInit(unsigned int width, unsigned int height)
     mgr->StartGraphics(width, height);
 
     textRenderer_v2 = new TextRenderer_v2(width,height);
-    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, 90);
+    GLuint font_size = float(height)*0.083f;
+    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, font_size);
 
 }
 

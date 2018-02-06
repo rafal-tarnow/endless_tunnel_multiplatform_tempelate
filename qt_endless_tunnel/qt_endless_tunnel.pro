@@ -23,6 +23,7 @@ LIBS += -lglfw
 
 
 INCLUDEPATH += . ../app/src/main/cpp/SystemAbstraction/Application/
+INCLUDEPATH += . ../app/src/main/cpp/SystemAbstraction/
 
 
 SOURCES += main.cpp \
