@@ -1,6 +1,5 @@
 #pragma once
 
-
 //TODO tablice umieszczac w plikach cpp zeby nie robic ich statcznych
 const static int size_of_design_graffiti_agentorange_www_myfontfree_com_ttf = 40954;
 

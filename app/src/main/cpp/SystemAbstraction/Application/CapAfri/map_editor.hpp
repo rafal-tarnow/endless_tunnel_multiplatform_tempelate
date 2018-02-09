@@ -3,6 +3,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include <library_opengles_2/RenderableObjects/SimpleObjects/GridLines.hpp>
 #include <system_abstraction.hpp>
+#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 
 class MapEditor{
 public:
@@ -29,7 +30,7 @@ public:
 
 private:
     float camera_position_x = 0;
-        float camera_position_y = 0;
+    float camera_position_y = 0;
     void windowCoordinatesToBoxCoordinates(double x, double y, float &x_out, float &y_out);
     double current_mouse_x_pos = 0;
     double current_mouse_y_pos = 0;
@@ -46,7 +47,12 @@ private:
 
     GLfloat zoom = 1.0f;
 
-       CGridLines * gridLines;
+    CGridLines * gridLines;
     GLuint redDotTextureId = 0;
+
+    string mapFileOpenErrorString;
+    string mapFilePath;
+    int mapFileOpenErrno = 0;
+    TextRenderer_v2 * textRenderer_v2;
 
 };

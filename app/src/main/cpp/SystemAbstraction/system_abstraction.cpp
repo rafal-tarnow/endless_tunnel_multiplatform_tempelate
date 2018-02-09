@@ -143,17 +143,9 @@ void drawGlyphToConsole(FT_Face &face){
     }
 }
 
-
-TextRenderer_v2 * textRenderer_v2 = nullptr;
-
 void SystemAbstraction::onInit(unsigned int width, unsigned int height)
 {
     mgr->StartGraphics(width, height);
-
-    textRenderer_v2 = new TextRenderer_v2(width,height);
-    GLuint font_size = float(height)*0.083f;
-    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, font_size);
-
 }
 
 void SystemAbstraction::onPause()
@@ -170,8 +162,6 @@ void SystemAbstraction::onResize(unsigned int width, unsigned int height)
 {
     mgr->SetScreenSize(width, height);
     glViewport(0, 0, width, height);
-
-    textRenderer_v2->onVievportResize(width, height);
 }
 
 void SystemAbstraction::onRenderFirstFrame()
@@ -191,13 +181,6 @@ void SystemAbstraction::onRenderFrame()
     //rectangle.view = glm::mat4(1);
 
     // DE_drawRectangle(&rectangle);
-
-    static int cash = 0;
-    stringstream text;
-    text << std::fixed << std::setprecision(0) << "$ "<< cash++;
-
-
-    textRenderer_v2->RenderText(text.str(), 0, 50);
 
 }
 

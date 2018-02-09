@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SOIL.h>
 #include "./data/red_dot.png.hpp"
+#include <system_paths.hpp>
+#include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 
 using namespace std;
 
@@ -24,6 +26,24 @@ MapEditor::MapEditor(int win_width, int win_height)
     gridLines = new CGridLines(0, 1000, 50, 0);
 
     viewMatrix = glm::lookAt(glm::vec3(0,0, 10.0f),glm::vec3(0, 0, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    textRenderer_v2 = new TextRenderer_v2(win_width, win_height);
+    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, win_height*0.06);
+
+
+    mapFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.map";
+
+    FILE * mapFile = fopen(mapFilePath.c_str(), "ab+");
+
+    if(mapFile == NULL)
+    {
+        mapFileOpenErrno = errno;
+        mapFileOpenErrorString = strerror(mapFileOpenErrno);
+    }
+    else
+    {
+        fclose(mapFile);
+    }
 }
 
 MapEditor::~MapEditor()
@@ -40,6 +60,14 @@ void MapEditor::systemCallback_Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    if(mapFileOpenErrno != 0)
+    {
+        textRenderer_v2->RenderText("ERROR WHILE OPEN FILE:",current_window_width*0.1,current_window_height*0.6);
+        textRenderer_v2->RenderText(mapFilePath,current_window_width*0.1,current_window_height*0.5);
+        textRenderer_v2->RenderText(mapFileOpenErrorString,current_window_width*0.1,current_window_height*0.4);
+        return;
+    }
 
     glLineWidth(1.0);
 

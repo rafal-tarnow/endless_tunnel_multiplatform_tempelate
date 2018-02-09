@@ -47,9 +47,10 @@ add_library(game SHARED
      SystemAbstraction/Application/Tunnel/scene.cpp
      SystemAbstraction/Application/Tunnel/scene_manager.cpp
      SystemAbstraction/system_audio.cpp
+     SystemAbstraction/system_abstraction.cpp
+     SystemAbstraction/system_paths.cpp
      SystemAbstraction/Application/Tunnel/shader.cpp
      SystemAbstraction/Application/Tunnel/shape_renderer.cpp
-     SystemAbstraction/system_abstraction.cpp
      SystemAbstraction/Application/Tunnel/tex_quad.cpp
      SystemAbstraction/Application/Tunnel/text_renderer.cpp
      SystemAbstraction/Application/Tunnel/texture.cpp
