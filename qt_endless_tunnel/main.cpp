@@ -64,6 +64,7 @@
 #include <SOIL.h>
 #include "opengl_includes.hpp"
 #include "../app/src/main/cpp/SystemAbstraction/system_abstraction.hpp"
+#include <system_paths.hpp>
 
 using namespace std;
 
@@ -103,6 +104,9 @@ void enableMultisample(int msaa)
 
 void initialization()
 {
+    string configPath = getenv("HOME");
+    configPath += "/.config";
+    systemInput_initConfigPath(configPath);
     SystemAbstraction::onInit(CURRENT_WINDOW_WIDTH, CURRENT_WINDOW_HEIGHT);
 }
 

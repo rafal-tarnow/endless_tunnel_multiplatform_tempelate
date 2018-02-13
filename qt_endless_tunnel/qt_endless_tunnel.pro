@@ -55,7 +55,9 @@ SOURCES += main.cpp \
     ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/data/our_shader.inl \
     ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/data/strings.inl \
     ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/data/tunnel_geom.inl \
-    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/play_capafri_scene.cpp
+    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/play_capafri_scene.cpp \
+    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/map_editor_scene.cpp \
+    ../app/src/main/cpp/SystemAbstraction/system_paths.cpp
 
 HEADERS += \
     opengl_includes.hpp \
@@ -89,7 +91,9 @@ HEADERS += \
     ../app/src/main/cpp/SystemAbstraction/system_log.hpp \
     ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp \
     ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/data/coin_2.png.hpp \
-    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/play_capafri_scene.hpp
+    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/play_capafri_scene.hpp \
+    ../app/src/main/cpp/SystemAbstraction/Application/Tunnel/map_editor_scene.hpp \
+    ../app/src/main/cpp/SystemAbstraction/system_paths.hpp
 
 
 
