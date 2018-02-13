@@ -24,16 +24,23 @@ MapEditor::MapEditor(int win_width, int win_height)
 
     DE_initShader();
     redDotTextureId = SOIL_load_OGL_texture_from_memory(red_dot_png, size_of_red_dot_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-    DE_initRectangle(&testRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
+    DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
 
     gridLines = new CGridLines(0, 1000, 50, 0);
 
-    viewMatrix = glm::lookAt(glm::vec3(0,0, 10.0f),glm::vec3(0, 0, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    cameraViewMatrix = glm::lookAt(glm::vec3(0,0, 10.0f),glm::vec3(0, 0, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     textRenderer_v2 = new TextRenderer_v2(win_width, win_height);
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, win_height*0.06);
 
+    //COORDINATES LINES
+    float xlineVerticles[6] = {-1000.0f, 0.0f, 0.0f, 1000.0f, 0.0f, 0.0f};
+    LS_initLineStrip(&x_lineStrip,xlineVerticles,6);
 
+    float ylineVerticles[6] = {0.0f, 1000.0f, 0.0f, 0.0f, -1000.0f, 0.0f};
+    LS_initLineStrip(&y_lineStrip,ylineVerticles,6);
+
+    //LEVEL LOAD
     mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
     mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
     if(mapFileOpenErrno)
@@ -45,11 +52,11 @@ MapEditor::MapEditor(int win_width, int win_height)
 MapEditor::~MapEditor()
 {
     delete gridLines;
-    DE_deleteRectangle(&testRectangle);
+    DE_deleteRectangle(&redDotPointerRectangle);
+    LS_deleteLineStrip(&x_lineStrip);
+    LS_deleteLineStrip(&y_lineStrip);
     glDeleteTextures(1,&redDotTextureId);
 }
-
-glm::mat4 rectModel = glm::mat4(1);
 
 void MapEditor::systemCallback_Render()
 {
@@ -67,17 +74,23 @@ void MapEditor::systemCallback_Render()
 
     glLineWidth(1.0);
 
-    glm::mat4 PVM = projectionMatrix*viewMatrix*glm::mat4(1);
+    glm::mat4 PVM = cameraProjectionMatrix*cameraViewMatrix*glm::mat4(1);
 
     gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
 
-    testRectangle.projection = projectionMatrix;
-    testRectangle.view = viewMatrix;
-    testRectangle.model = rectModel;
+    redDotPointerRectangle.projection = cameraProjectionMatrix;
+    redDotPointerRectangle.view = cameraViewMatrix;
+    redDotPointerRectangle.model = rectModel;
 
-    DE_drawRectangle(&testRectangle);
+    DE_drawRectangle(&redDotPointerRectangle);
 
 
+    for(unsigned int i = 0; i < dots.size(); i++)
+    {
+        glm::mat4 model = glm::translate(glm::mat4(1),dots[i]);
+        redDotPointerRectangle.model = model;
+        DE_drawRectangle(&redDotPointerRectangle);
+    }
 
 
 
@@ -113,6 +126,16 @@ void MapEditor::systemCallback_Render()
     //    textRenderer_v2->RenderText(text.str(), current_window_width - 200.0f, current_window_height - 50.0f);
 
 
+//DRAW COORDINATES LINES
+    x_lineStrip.projection = cameraProjectionMatrix;
+    x_lineStrip.view = cameraViewMatrix;
+    x_lineStrip.model = glm::mat4(1);
+    LS_drawLineStrip(&x_lineStrip, 2);
+
+    y_lineStrip.projection = cameraProjectionMatrix;
+    y_lineStrip.view = cameraViewMatrix;
+    y_lineStrip.model = glm::mat4(1);
+    LS_drawLineStrip(&y_lineStrip, 2);
 
     glFlush();
 }
@@ -129,7 +152,7 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 
     box_view_width_in_meters = 30.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
-    projectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+    cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
 }
 
 void MapEditor::systemCallback_Scroll(double yoffset){
@@ -150,23 +173,60 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
     box_view_width_in_meters = 30.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
-    projectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+
+
+
+
+    cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+
+
+    float x_ndc, y_ndc;
+    get_ndc_coordinates(&x_ndc, &y_ndc);
+
+    if(x_ndc > 0)
+    {
+        camera_position_x += 1;
+    }
+    else
+    {
+        camera_position_x -= 1;
+    }
+
+    if(y_ndc > 0)
+    {
+        camera_position_y += 1;
+    }
+    else
+    {
+        camera_position_y -= 1;
+    }
+    updateCameraViewMatrix();
 }
 
 void MapEditor::systemCallback_mouseButton(MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
-    cout << " MapEditor::systemCallback_mouseButton(...)" << endl;
-    //float world_x, world_y;
-    // windowCoordinatesToBoxCoordinates(window_x, window_y, world_x, world_y);
+    current_mouse_x_pos = window_x;
+    current_mouse_y_pos = window_y;
+
+
 
     if ((mouseButton == MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
-
-
+        float world_x, world_y;
+        windowCoordinatesToBoxCoordinates(window_x, window_y, world_x, world_y);
+        dots.push_back(glm::vec3(world_x, world_y, 0.0f));
     }else if((mouseButton == MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
 
     }
+
+
+}
+
+void MapEditor::get_ndc_coordinates(float * x_ndc, float * y_ndc)
+{
+    *x_ndc = (current_mouse_x_pos/current_window_width)*2.0f - 1.0f;
+    *y_ndc = -(current_mouse_y_pos/current_window_height)*2.0f + 1.0f;
 }
 
 void MapEditor::systemCallback_mousePosition(double x, double y)
@@ -177,14 +237,11 @@ void MapEditor::systemCallback_mousePosition(double x, double y)
     float x_ndc = 0.0f;
     float y_ndc = 0.0f;
 
-    x_ndc = (x/current_window_width)*2.0f - 1.0f;
-    y_ndc = -(y/current_window_height)*2.0f + 1.0f;
+    get_ndc_coordinates(&x_ndc, &y_ndc);
 
     cout << "x_ndc = " << x_ndc << " y_ndc = " << y_ndc << endl;
 
-
-    glm::mat4 PV_I = glm::inverse(projectionMatrix*viewMatrix);
-
+    glm::mat4 PV_I = glm::inverse(cameraProjectionMatrix*cameraViewMatrix);
     glm::vec4 world_position = PV_I*glm::vec4(x_ndc, y_ndc, 0.0f, 1.0f);
 
     //    float x_world, y_world;
@@ -199,6 +256,7 @@ void MapEditor::systemCallback_mousePosition(double x, double y)
 
 void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
 {
+
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){
         camera_position_x += 1.0f;
     }
@@ -208,14 +266,19 @@ void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, un
     }
 
     if((key == 'w' || key == 'W') && (event == SystemAbstraction::EVENT_DOWN)){
-       camera_position_y += 1.0f;
+        camera_position_y += 1.0f;
     }
 
     if((key == 's' || key == 'S') && (event == SystemAbstraction::EVENT_DOWN)){
         camera_position_y -= 1.0f;
     }
 
-      viewMatrix = glm::lookAt(glm::vec3(camera_position_x, camera_position_y, 10.0f),glm::vec3(camera_position_x, camera_position_y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    updateCameraViewMatrix();
+}
+
+void MapEditor::updateCameraViewMatrix()
+{
+    cameraViewMatrix = glm::lookAt(glm::vec3(camera_position_x, camera_position_y, 10.0f),glm::vec3(camera_position_x, camera_position_y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void MapEditor::windowCoordinatesToBoxCoordinates(double x, double y, float &x_out, float &y_out)

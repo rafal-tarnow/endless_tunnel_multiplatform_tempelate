@@ -44,7 +44,6 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     GLfloat y_bottom_right = y_top_left - height;
 
 
-    LS_initShader();
     float data[6*3] = {-300.0f,0.0f, 0.0f,
     10.0f, 2.0f, 0.0f,
     20.0f, 10.0f, 0.0f,
@@ -64,6 +63,6 @@ void GroundChain::render(glm::mat4 projection, glm::mat4 view){
     lineStripRenderer.view = view;
     lineStripRenderer.model = glm::mat4(1);
 
-    LS_drawLineStrip(&lineStripRenderer);
+    LS_drawLineStrip(&lineStripRenderer, 10.0f);
 }
 
