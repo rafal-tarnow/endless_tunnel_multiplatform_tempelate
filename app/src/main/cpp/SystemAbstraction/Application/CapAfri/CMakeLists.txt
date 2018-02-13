@@ -13,4 +13,5 @@ add_library (CapAfri STATIC
     Bodies/ground_body_chain.cpp
     game.cpp
     map_editor.cpp
+    level.cpp
 )

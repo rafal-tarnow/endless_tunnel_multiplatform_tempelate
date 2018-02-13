@@ -15,3 +15,23 @@ string getStandardCommonReadWriteDirecory()
     return text;
 #endif
 }
+
+
+string mConfigPath;
+
+void systemInput_initConfigPath(string configPath)
+{
+    mConfigPath = configPath;
+}
+
+string getAppConfigFilePath()
+{
+    if(mConfigPath.empty())
+    {
+        LOGD("ERROR Config path must be inited by system before use!");
+        exit(EXIT_FAILURE);
+    } else
+    {
+        return mConfigPath;
+    }
+}

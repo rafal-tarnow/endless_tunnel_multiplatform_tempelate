@@ -21,6 +21,7 @@
 #include "native_engine.hpp"
 #include "./SystemAbstraction/system_abstraction.hpp"
 #include "./SystemAbstraction/system_log.hpp"
+#include "./SystemAbstraction/system_paths.hpp"
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 1
@@ -62,6 +63,8 @@ NativeEngine::NativeEngine(struct android_app *app) {
 
     VLOGD("NativeEngine: querying API level.");
     LOGD("NativeEngine: API version %d.", mApiVersion);
+
+    systemInput_initConfigPath(app->activity->internalDataPath);
 }
 
 NativeEngine* NativeEngine::GetInstance() {

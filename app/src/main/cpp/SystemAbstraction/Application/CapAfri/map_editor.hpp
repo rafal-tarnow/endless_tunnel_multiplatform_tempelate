@@ -4,6 +4,7 @@
 #include <library_opengles_2/RenderableObjects/SimpleObjects/GridLines.hpp>
 #include <system_abstraction.hpp>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
+#include "level.hpp"
 
 class MapEditor{
 public:
@@ -54,5 +55,5 @@ private:
     string mapFilePath;
     int mapFileOpenErrno = 0;
     TextRenderer_v2 * textRenderer_v2;
-
+    Level level;
 };

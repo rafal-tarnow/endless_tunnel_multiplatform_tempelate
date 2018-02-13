@@ -1,9 +1,11 @@
 #include "map_editor.hpp"
 #include <system_opengl_include.hpp>
+#include <system_log.hpp>
 #include <iostream>
 #include <SOIL.h>
 #include "./data/red_dot.png.hpp"
 #include <system_paths.hpp>
+#include <system_log.hpp>
 #include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 
 using namespace std;
@@ -12,6 +14,7 @@ MapEditor::MapEditor(int win_width, int win_height)
 {
     current_window_width = win_width;
     current_window_height = win_height;
+    systemCallback_WindowResize(current_window_width, current_window_height);
 
     //glEnable(GL_MULTISAMPLE);
     glEnable (GL_BLEND);
@@ -31,18 +34,11 @@ MapEditor::MapEditor(int win_width, int win_height)
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, win_height*0.06);
 
 
-    mapFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.map";
-
-    FILE * mapFile = fopen(mapFilePath.c_str(), "ab+");
-
-    if(mapFile == NULL)
+    mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
+    mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
+    if(mapFileOpenErrno)
     {
-        mapFileOpenErrno = errno;
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
-    }
-    else
-    {
-        fclose(mapFile);
     }
 }
 
