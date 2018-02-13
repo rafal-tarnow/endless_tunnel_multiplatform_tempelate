@@ -119,6 +119,11 @@ void MapEditorScene::OnPointerUp(int pointerId, const struct PointerCoords *coor
     }
 }
 
+void MapEditorScene::OnScroll(double yoffset)
+{
+    mapEditor->systemCallback_Scroll(yoffset);
+}
+
 void MapEditorScene::OnPointerMove(int pointerId, const struct PointerCoords *coords) {
     float x = coords->x, y = coords->y;
     if (mMenu && mMenuTouchActive) {

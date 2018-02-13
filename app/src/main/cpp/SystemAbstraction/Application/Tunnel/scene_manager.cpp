@@ -132,6 +132,13 @@ void SceneManager::OnPointerUp(int pointerId, const struct PointerCoords *coords
     }
 }
 
+void SceneManager::OnScroll(double yoffset)
+{
+    if (mHasGraphics && mCurScene) {
+        mCurScene->OnScroll(yoffset);
+    }
+}
+
 void SceneManager::OnPointerMove(int pointerId, const struct PointerCoords *coords) {
     if (mHasGraphics && mCurScene) {
         mCurScene->OnPointerMove(pointerId, coords);

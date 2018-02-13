@@ -186,7 +186,7 @@ void SystemAbstraction::onRenderFrame()
 
 void SystemAbstraction::onScroll(double yoffset)
 {
-
+    mgr->OnScroll(yoffset);
 }
 
 void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y)

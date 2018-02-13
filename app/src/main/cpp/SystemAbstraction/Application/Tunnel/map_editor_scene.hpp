@@ -22,6 +22,7 @@ public:
     virtual void DoFrame();
     virtual void OnPointerDown(int pointerId, const struct PointerCoords *coords);
     virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
+    virtual void OnScroll(double yoffset);
     virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
     virtual bool OnBackKeyPressed();
     virtual void OnScreenResized(int width, int height);

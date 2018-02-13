@@ -67,6 +67,9 @@ class SceneManager {
         // Reports that a pointer (e.g. touchscreen, touchpad, etc) moved
         void OnPointerMove(int pointerId, const struct PointerCoords *coords);
 
+
+        void OnScroll(double yoffset);
+
         // Reports that the back key was pressed
         bool OnBackKeyPressed();
 
