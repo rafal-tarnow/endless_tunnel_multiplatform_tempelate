@@ -22,7 +22,6 @@ MapEditor::MapEditor(int win_width, int win_height)
 
     glClearColor(0.0,0.0,0.0,1.0);
 
-    DE_initShader();
     redDotTextureId = SOIL_load_OGL_texture_from_memory(red_dot_png, size_of_red_dot_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
     DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
 
@@ -35,10 +34,10 @@ MapEditor::MapEditor(int win_width, int win_height)
 
     //COORDINATES LINES
     float xlineVerticles[6] = {-1000.0f, 0.0f, 0.0f, 1000.0f, 0.0f, 0.0f};
-    LS_initLineStrip(&x_lineStrip,xlineVerticles,6);
+    LS_init(&x_lineStrip,xlineVerticles,6);
 
     float ylineVerticles[6] = {0.0f, 1000.0f, 0.0f, 0.0f, -1000.0f, 0.0f};
-    LS_initLineStrip(&y_lineStrip,ylineVerticles,6);
+    LS_init(&y_lineStrip,ylineVerticles,6);
 
     //LEVEL LOAD
     mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
@@ -47,14 +46,20 @@ MapEditor::MapEditor(int win_width, int win_height)
     {
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
+
+    //GROUND LINE
+    //    float verticles[6] = {1.0f, 1.0f, 0.0f, 3.0f, 2.0f, 0.0f};
+    //    LS_initLineStrip(&lineStripGround, verticles, 6);
+
+    LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 MapEditor::~MapEditor()
 {
     delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
-    LS_deleteLineStrip(&x_lineStrip);
-    LS_deleteLineStrip(&y_lineStrip);
+    LS_delete(&x_lineStrip);
+    LS_delete(&y_lineStrip);
     glDeleteTextures(1,&redDotTextureId);
 }
 
@@ -72,70 +77,87 @@ void MapEditor::systemCallback_Render()
         return;
     }
 
-    glLineWidth(1.0);
-
-    glm::mat4 PVM = cameraProjectionMatrix*cameraViewMatrix*glm::mat4(1);
-
-    gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
-
-    redDotPointerRectangle.projection = cameraProjectionMatrix;
-    redDotPointerRectangle.view = cameraViewMatrix;
-    redDotPointerRectangle.model = rectModel;
-
-    DE_drawRectangle(&redDotPointerRectangle);
-
-
-    for(unsigned int i = 0; i < dots.size(); i++)
+    glDisable(GL_DEPTH_TEST);
     {
-        glm::mat4 model = glm::translate(glm::mat4(1),dots[i]);
-        redDotPointerRectangle.model = model;
+
+        glLineWidth(1.0);
+
+        glm::mat4 PVM = cameraProjectionMatrix*cameraViewMatrix*glm::mat4(1);
+
+        gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
+
+        redDotPointerRectangle.projection = cameraProjectionMatrix;
+        redDotPointerRectangle.view = cameraViewMatrix;
+        redDotPointerRectangle.model = redDotCursorModel;
+
         DE_drawRectangle(&redDotPointerRectangle);
+
+        if(dots.empty())
+        {
+            glm::vec3 point = glm::vec3(0.5f, 0.5f ,0.0f);
+            dots.push_back(point);
+        }
+
+        for(unsigned int i = 0; i < dots.size(); i++)
+        {
+            glm::mat4 model = glm::translate(glm::mat4(1),dots[i]);
+            redDotPointerRectangle.model = model;
+            DE_drawRectangle(&redDotPointerRectangle);
+        }
+
+
+
+        //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+        //    if(car != nullptr)
+        //    {
+        //        float x, y;
+        //        car->getPosition(&x,&y);
+        //        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        //    }
+
+        //    b2Body* tmp=world->GetBodyList();
+        //    while(tmp)
+        //    {
+        //        if(tmp->GetUserData() != nullptr){
+        //            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
+        //        }
+        //        tmp=tmp->GetNext();
+        //    }
+
+
+
+        //    static int cash = 0;
+        //    stringstream text;
+        //    if(car){
+        //        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
+        //    }else{
+        //        text << "$ 0";
+        //    }
+
+        //    textRenderer_v2->RenderText(text.str(), current_window_width - 200.0f, current_window_height - 50.0f);
+
+
+        //DRAW COORDINATES LINES
+        x_lineStrip.projection = cameraProjectionMatrix;
+        x_lineStrip.view = cameraViewMatrix;
+        x_lineStrip.model = glm::mat4(1);
+        LS_draw(&x_lineStrip, 2);
+
+        y_lineStrip.projection = cameraProjectionMatrix;
+        y_lineStrip.view = cameraViewMatrix;
+        y_lineStrip.model = glm::mat4(1);
+        LS_draw(&y_lineStrip, 2);
+
+        //DRAW GROUND LINE
+        lineStripGround.projection = cameraProjectionMatrix;
+        lineStripGround.view = cameraViewMatrix;
+        lineStripGround.model = glm::mat4(1);
+        LS_draw(&lineStripGround, 3);
+
     }
-
-
-
-    //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-    //    if(car != nullptr)
-    //    {
-    //        float x, y;
-    //        car->getPosition(&x,&y);
-    //        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //    }
-
-    //    b2Body* tmp=world->GetBodyList();
-    //    while(tmp)
-    //    {
-    //        if(tmp->GetUserData() != nullptr){
-    //            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
-    //        }
-    //        tmp=tmp->GetNext();
-    //    }
-
-
-
-    //    static int cash = 0;
-    //    stringstream text;
-    //    if(car){
-    //        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
-    //    }else{
-    //        text << "$ 0";
-    //    }
-
-    //    textRenderer_v2->RenderText(text.str(), current_window_width - 200.0f, current_window_height - 50.0f);
-
-
-//DRAW COORDINATES LINES
-    x_lineStrip.projection = cameraProjectionMatrix;
-    x_lineStrip.view = cameraViewMatrix;
-    x_lineStrip.model = glm::mat4(1);
-    LS_drawLineStrip(&x_lineStrip, 2);
-
-    y_lineStrip.projection = cameraProjectionMatrix;
-    y_lineStrip.view = cameraViewMatrix;
-    y_lineStrip.model = glm::mat4(1);
-    LS_drawLineStrip(&y_lineStrip, 2);
+    glEnable(GL_DEPTH_TEST);
 
     glFlush();
 }
@@ -181,7 +203,7 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
 
     float x_ndc, y_ndc;
-    get_ndc_coordinates(&x_ndc, &y_ndc);
+    get_ndc_coordinates(current_mouse_x_pos, current_mouse_y_pos, &x_ndc, &y_ndc);
 
     if(x_ndc > 0)
     {
@@ -203,19 +225,23 @@ void MapEditor::systemCallback_Scroll(double yoffset){
     updateCameraViewMatrix();
 }
 
-void MapEditor::systemCallback_mouseButton(MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
+void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
+    LOGD("MapEditor::systemCallback_mouseButton()\n");
     current_mouse_x_pos = window_x;
     current_mouse_y_pos = window_y;
 
 
-
-    if ((mouseButton == MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
+    if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
-        float world_x, world_y;
-        windowCoordinatesToBoxCoordinates(window_x, window_y, world_x, world_y);
-        dots.push_back(glm::vec3(world_x, world_y, 0.0f));
-    }else if((mouseButton == MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
+        glm::vec3 world_position;
+        windowCoordinatesToBoxCoordinates(window_x, window_y, world_position);
+        dots.push_back(world_position);
+
+        level.ground_verticles.push_back(world_position);
+        LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+    }
+    else if((mouseButton == SystemAbstraction::MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
 
     }
@@ -223,7 +249,7 @@ void MapEditor::systemCallback_mouseButton(MouseButton mouseButton, SystemAbstra
 
 }
 
-void MapEditor::get_ndc_coordinates(float * x_ndc, float * y_ndc)
+void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc)
 {
     *x_ndc = (current_mouse_x_pos/current_window_width)*2.0f - 1.0f;
     *y_ndc = -(current_mouse_y_pos/current_window_height)*2.0f + 1.0f;
@@ -233,25 +259,12 @@ void MapEditor::systemCallback_mousePosition(double x, double y)
 {
     current_mouse_x_pos = x;
     current_mouse_y_pos = y;
-    cout << "MapEditor::systemCallback_mousePosition(...) x = " << x << " y = " << y << endl;
-    float x_ndc = 0.0f;
-    float y_ndc = 0.0f;
-
-    get_ndc_coordinates(&x_ndc, &y_ndc);
-
-    cout << "x_ndc = " << x_ndc << " y_ndc = " << y_ndc << endl;
-
-    glm::mat4 PV_I = glm::inverse(cameraProjectionMatrix*cameraViewMatrix);
-    glm::vec4 world_position = PV_I*glm::vec4(x_ndc, y_ndc, 0.0f, 1.0f);
-
-    //    float x_world, y_world;
-    //    windowCoordinatesToBoxCoordinates(x,y,x_world, y_world);
-
-    cout << "World coordinates x_world = " << world_position.x << " y_world = " << world_position.y << endl;
-
-    rectModel = glm::translate(glm::mat4(1),glm::vec3(world_position.x, world_position.y, 0.0f));
 
 
+    glm::vec3 world_position;
+    windowCoordinatesToBoxCoordinates(x,y,world_position);
+
+    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(world_position.x, world_position.y, 0.0f));
 }
 
 void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
@@ -281,14 +294,14 @@ void MapEditor::updateCameraViewMatrix()
     cameraViewMatrix = glm::lookAt(glm::vec3(camera_position_x, camera_position_y, 10.0f),glm::vec3(camera_position_x, camera_position_y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void MapEditor::windowCoordinatesToBoxCoordinates(double x, double y, float &x_out, float &y_out)
-{
-    float x_in = (float)x;
-    float y_in = (float)y;
+void MapEditor::windowCoordinatesToBoxCoordinates(double x_window, double y_window, glm::vec3 & world_position)
+{   
+    float x_ndc = 0.0f;
+    float y_ndc = 0.0f;
 
-    float szerokosc_okna_do_szerokosci_swiata = current_window_width / box_view_width_in_meters;
-    float wysokosc_okna_do_wysokosci_swiata = current_window_height / box_view_height_in_meters;
+    get_ndc_coordinates(x_window, y_window, &x_ndc, &y_ndc);
 
-    x_out = (x_in / szerokosc_okna_do_szerokosci_swiata);// - camera_x_position_m;
-    y_out = ((current_window_height - y_in) / wysokosc_okna_do_wysokosci_swiata);// - camera_y_position_m;
+    glm::mat4 PV_I = glm::inverse(cameraProjectionMatrix*cameraViewMatrix);
+    world_position = PV_I*glm::vec4(x_ndc, y_ndc, 0.0f, 1.0f);
+    world_position.z = 0.0f;
 }

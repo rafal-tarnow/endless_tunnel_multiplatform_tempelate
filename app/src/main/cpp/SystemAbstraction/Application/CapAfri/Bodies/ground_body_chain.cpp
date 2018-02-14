@@ -50,11 +50,11 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     45.f, 13.0f, 0.0f,
     58.0f, 0.0f, 0.0f,
     100.0f, 0.0f, 0.0f};
-    LS_initLineStrip(&lineStripRenderer, data,6*3);
+    LS_init(&lineStripRenderer, data,6*3);
 }
 
 GroundChain::~GroundChain(){
-    LS_deleteLineStrip(&lineStripRenderer);
+    LS_delete(&lineStripRenderer);
 }
 
 void GroundChain::render(glm::mat4 projection, glm::mat4 view){
@@ -63,6 +63,6 @@ void GroundChain::render(glm::mat4 projection, glm::mat4 view){
     lineStripRenderer.view = view;
     lineStripRenderer.model = glm::mat4(1);
 
-    LS_drawLineStrip(&lineStripRenderer, 10.0f);
+    LS_draw(&lineStripRenderer, 10.0f);
 }
 

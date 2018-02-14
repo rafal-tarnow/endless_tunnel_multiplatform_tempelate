@@ -44,20 +44,14 @@ A a;
 
 Game::Game(unsigned int win_width,unsigned int win_height)
 {
-    LOGD("1.1");
     current_window_width = win_width;
     current_window_height = win_height;
 
-    LOGD("1.2");
-    DE_initShader();
-
-    LOGD("1.3");
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(win_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(current_window_width,current_window_height);
    // textRenderer_v2->Load("./data/font/design_graffiti_agentorange_www_myfontfree_com.ttf", fontSize);
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fontSize);
-    LOGD("1.4");
 
     //glEnable(GL_MULTISAMPLE);
     glEnable (GL_BLEND);
@@ -65,7 +59,6 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
     glClearColor(0.98,1.0,0.55,1.0);
 
-    LOGD("1.5");
 
     //glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
     //glDepthFunc(GL_LEQUAL);			// The Type Of Depth Test To Do
@@ -73,32 +66,11 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     //glShadeModel(GL_SMOOTH);
 
 
-    LOGD("1.6");
     world = new b2World(b2Vec2(0.0,-1.81));
-    LOGD("1.7");
     world->SetContactListener(&a);
-    LOGD("1.8");
+
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
-    LOGD("1.9");
     loadLevel();
-
-    LOGD("1.10");
-    GLuint tex;
-//      glGenTextures(1, &tex);
-//      glBindTexture(GL_TEXTURE_2D, tex);
-
-  //    float pixels[] = {
-  //            0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-  //            1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
-  //    };
-
-//      unsigned char pixels[] = {
-//              255, 255, 255, 255,   255, 255, 255, 255,
-//              255, 255, 255, 255,   255, 255, 255, 255
-//      };
-
-      unsigned char pixels[] = {
-              255, 255, 255, 255};
 
 }
 

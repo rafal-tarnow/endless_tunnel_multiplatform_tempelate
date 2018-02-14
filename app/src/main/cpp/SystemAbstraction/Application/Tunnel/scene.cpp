@@ -25,6 +25,7 @@ void Scene::OnStartGraphics(int width, int height) {}
 void Scene::OnKillGraphics() {}
 void Scene::OnPointerDown(int pointerId, const struct PointerCoords* coords) {}
 void Scene::OnPointerUp(int pointerId, const struct PointerCoords* coords) {}
+void Scene::OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y) {}
 void Scene::OnScroll(double yoffset) {}
 void Scene::OnPointerMove(int pointerId, const struct PointerCoords* coords) {}
 bool Scene::OnBackKeyPressed() { return false; }

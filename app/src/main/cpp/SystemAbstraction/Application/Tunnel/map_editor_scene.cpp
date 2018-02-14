@@ -119,6 +119,11 @@ void MapEditorScene::OnPointerUp(int pointerId, const struct PointerCoords *coor
     }
 }
 
+void MapEditorScene::OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y)
+{
+    mapEditor->systemCallback_mouseButton(mouseButton, event, x, y);
+}
+
 void MapEditorScene::OnScroll(double yoffset)
 {
     mapEditor->systemCallback_Scroll(yoffset);

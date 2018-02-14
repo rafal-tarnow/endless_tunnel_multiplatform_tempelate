@@ -11,7 +11,6 @@ void BackGround::drawSquare(b2Vec2* points,b2Vec2 center,float angle,   GLuint t
 }
 
 BackGround::BackGround(float x_top_left, float y_top_left, float width, float height, b2World * world){
-    DE_initShader();
     DE_initRectangle(&rectangle,"./data/png/bg.png", width, height, -1.0f);
 }
 

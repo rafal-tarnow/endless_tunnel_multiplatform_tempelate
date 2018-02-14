@@ -132,6 +132,13 @@ void SceneManager::OnPointerUp(int pointerId, const struct PointerCoords *coords
     }
 }
 
+void SceneManager::OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y)
+{
+    if (mHasGraphics && mCurScene) {
+        mCurScene->OnMouseButton(mouseButton, event, x, y);
+    }
+}
+
 void SceneManager::OnScroll(double yoffset)
 {
     if (mHasGraphics && mCurScene) {

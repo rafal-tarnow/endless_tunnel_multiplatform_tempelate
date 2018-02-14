@@ -17,4 +17,6 @@ public:
     int loadLevelFromFile(string levelFilePath);
     void saveLevelToFile(string levelFileName);
     vector<CircleCoin *> coinsVector;
+
+       vector<glm::vec3> ground_verticles;
 };

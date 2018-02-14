@@ -16,6 +16,8 @@
 #ifndef endlesstunnel_scene_hpp
 #define endlesstunnel_scene_hpp
 
+#include <system_abstraction.hpp>
+
 struct PointerCoords;
 
 /* Represents a scene. A scene is an object that knows how to render itself to the
@@ -46,6 +48,8 @@ class Scene {
 
         // Called when a pointer goes up (e.g. touch, touchpad, etc)
         virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
+
+        virtual void OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
 
         virtual void OnScroll(double yoffset);
 

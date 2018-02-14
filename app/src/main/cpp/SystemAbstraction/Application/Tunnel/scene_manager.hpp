@@ -17,6 +17,7 @@
 #define endlesstunnel_scene_manager_h
 
 #include "our_key_codes.hpp"
+#include <system_abstraction.hpp>
 
 class Scene;
 
@@ -67,6 +68,7 @@ class SceneManager {
         // Reports that a pointer (e.g. touchscreen, touchpad, etc) moved
         void OnPointerMove(int pointerId, const struct PointerCoords *coords);
 
+        void OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
 
         void OnScroll(double yoffset);
 

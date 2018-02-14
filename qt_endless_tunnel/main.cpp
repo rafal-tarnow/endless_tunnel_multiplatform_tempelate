@@ -161,7 +161,6 @@ void cursor_position_callbask(GLFWwindow*,double,double)
 
 void mouse_button_callback(GLFWwindow* , int button, int action, int mods)
 {
-    cout << "mouse button callback " << endl;
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
 
