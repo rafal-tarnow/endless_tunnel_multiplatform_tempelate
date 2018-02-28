@@ -24,11 +24,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/li
 
 add_subdirectory(SystemAbstraction)
 add_subdirectory(SystemAbstraction/Application/CapAfri)
-add_subdirectory(SystemAbstraction/Application/libs/libfreetype)
 add_subdirectory(SystemAbstraction/Application/libs/glm)
 add_subdirectory(SystemAbstraction/Application/libs/SOIL)
 add_subdirectory(SystemAbstraction/Application/libs/library_opengles_2)
-add_subdirectory(SystemAbstraction/Application/libs/Box2D)
+
 
 add_library(game SHARED
      android_main.cpp
@@ -65,17 +64,15 @@ target_include_directories(game PRIVATE
 
 target_link_libraries(game
     system_abstraction
-     android
-     native_app_glue
-     atomic
-     EGL
-     GLESv2
+    android
+    native_app_glue
+    atomic
+    EGL
+    GLESv2
     # glm
-     log
-     OpenSLES
-     CapAfri
-     SOIL
-     library_opengles_2
-     libfreetype
-     Box2D
+    log
+    OpenSLES
+    CapAfri
+    SOIL
+    library_opengles_2
      )
