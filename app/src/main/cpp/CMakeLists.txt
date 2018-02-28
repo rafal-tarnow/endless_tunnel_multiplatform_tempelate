@@ -22,6 +22,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/li
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/SOIL/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs)
 
+add_subdirectory(SystemAbstraction)
 add_subdirectory(SystemAbstraction/Application/CapAfri)
 add_subdirectory(SystemAbstraction/Application/libs/libfreetype)
 add_subdirectory(SystemAbstraction/Application/libs/glm)
@@ -46,9 +47,6 @@ add_library(game SHARED
      SystemAbstraction/Application/Tunnel/map_editor_scene.cpp
      SystemAbstraction/Application/Tunnel/scene.cpp
      SystemAbstraction/Application/Tunnel/scene_manager.cpp
-     SystemAbstraction/system_audio.cpp
-     SystemAbstraction/system_abstraction.cpp
-     SystemAbstraction/system_paths.cpp
      SystemAbstraction/Application/Tunnel/shader.cpp
      SystemAbstraction/Application/Tunnel/shape_renderer.cpp
      SystemAbstraction/Application/Tunnel/tex_quad.cpp
@@ -66,6 +64,7 @@ target_include_directories(game PRIVATE
 
 
 target_link_libraries(game
+    system_abstraction
      android
      native_app_glue
      atomic
