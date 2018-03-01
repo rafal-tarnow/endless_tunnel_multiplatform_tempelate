@@ -13,20 +13,13 @@ set(CMAKE_SHARED_LINKER_FLAGS
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
-add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/libfreetype/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/SOIL/src)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs)
+
 
 add_subdirectory(SystemAbstraction)
-add_subdirectory(SystemAbstraction/Application/CapAfri)
-add_subdirectory(SystemAbstraction/Application/libs/glm)
-add_subdirectory(SystemAbstraction/Application/libs/SOIL)
-add_subdirectory(SystemAbstraction/Application/libs/library_opengles_2)
 
 
 add_library(game SHARED
@@ -72,7 +65,4 @@ target_link_libraries(game
     # glm
     log
     OpenSLES
-    CapAfri
-    SOIL
-    library_opengles_2
      )
