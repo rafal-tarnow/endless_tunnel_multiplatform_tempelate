@@ -34,6 +34,7 @@ add_library (system_abstraction STATIC
     system_audio.cpp
     system_abstraction.cpp
     system_paths.cpp
+    demo.cpp
 
     Application/Tunnel/anim.cpp
     Application/Tunnel/ascii_to_geom.cpp
@@ -71,4 +72,5 @@ target_link_libraries(system_abstraction
     SOIL
     libfreetype
     glm_static
+    nuklear_gles2
     )
