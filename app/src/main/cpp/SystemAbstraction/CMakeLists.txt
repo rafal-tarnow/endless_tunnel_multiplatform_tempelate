@@ -27,6 +27,9 @@ add_subdirectory(Application/CapAfri)
 
 add_subdirectory(Application/libs/library_opengles_2)
 
+#NUKLEAR GLES2
+add_subdirectory(Application/libs/nuklear/implementation)
+
 add_library (system_abstraction STATIC
     system_audio.cpp
     system_abstraction.cpp

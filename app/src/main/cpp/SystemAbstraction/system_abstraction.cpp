@@ -143,9 +143,14 @@ void drawGlyphToConsole(FT_Face &face){
     }
 }
 
-void SystemAbstraction::onInit(unsigned int width, unsigned int height)
+int SystemAbstraction::framebuffer_width = 0;
+int SystemAbstraction::framebuffer_height = 0;
+
+void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 {
-    mgr->StartGraphics(width, height);
+    framebuffer_width = fb_width;
+    framebuffer_height = fb_height;
+    mgr->StartGraphics(framebuffer_width, framebuffer_height);
 }
 
 void SystemAbstraction::onPause()
@@ -158,10 +163,12 @@ void SystemAbstraction::onResume()
     mgr->OnResume();
 }
 
-void SystemAbstraction::onResize(unsigned int width, unsigned int height)
+void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int fb_height)
 {
-    mgr->SetScreenSize(width, height);
-    glViewport(0, 0, width, height);
+    framebuffer_width = fb_width;
+    framebuffer_height = fb_height;
+    mgr->SetScreenSize(framebuffer_width, framebuffer_height);
+    glViewport(0, 0, framebuffer_width, framebuffer_height);
 }
 
 void SystemAbstraction::onRenderFirstFrame()
@@ -194,13 +201,18 @@ void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event
     mgr->OnMouseButton(mouseButton, event, x, y);
 }
 
-void SystemAbstraction::onKeyboard(ButtonEvent event,int key, int x, int y )
+void SystemAbstraction::onKey(ButtonEvent event, Key key, Mods mods, int x, int y)
 {
     if(event == EVENT_DOWN) {
         // mgr->OnKeyDown(key);
     }else if(event == EVENT_UP){
         // mgr->OnKeyUp(key);
     }
+}
+
+void SystemAbstraction::onChar(unsigned int codepoint)
+{
+
 }
 
 bool SystemAbstraction::onBackKeyPressed()

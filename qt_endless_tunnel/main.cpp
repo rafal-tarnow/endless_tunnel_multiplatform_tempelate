@@ -1,62 +1,3 @@
-//#include <iostream>
-//using namespace std;
-
-//#include "../app/src/main/cpp/SystemAbstraction/Application/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
-//#include "../app/src/main/cpp/SystemAbstraction/system_log.hpp"
-
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
-
-//#include <bitset>
-
-//void drawGlyphToConsole(FT_Face &face){
-//    for(unsigned int i = 0; i < face->glyph->bitmap.rows; i++){
-//        for(unsigned int j = 0; j < face->glyph->bitmap.width; j++){
-
-//            int alpha_value =   (int)(face->glyph->bitmap.buffer[i*face->glyph->bitmap.width + j]) / 26;
-
-//            if(alpha_value > 0){
-//                LOGD("%d", alpha_value);
-//            }else{
-//                LOGD(" ", alpha_value);
-//            }
-
-
-//        }
-//        LOGD("\n");
-//    }
-//}
-
-//int main()
-//{
-//    FT_Library ft;
-
-//    if (FT_Init_FreeType(&ft))
-//        LOGD("ERROR::FREETYPE: Could not init FreeType Library\n");
-
-//    FT_Face face;
-//    if (FT_New_Memory_Face(ft,design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf , 0, &face))
-//        LOGD("ERROR::FREETYPE: Failed to load font\n");
-
-//    FT_Set_Pixel_Sizes(face, 0, 32);
-
-//    if (FT_Load_Char(face, 'W', FT_LOAD_RENDER /*| FT_LOAD_TARGET_MONO*/))
-//        LOGD("ERROR::FREETYTPE: Failed to load Glyph\n");
-
-//    LOGD("width = %d\n", face->glyph->metrics.width);
-//    LOGD("height = %d\n", face->glyph->metrics.height);
-
-//    LOGD("bitmap.width = %d\n", face->glyph->bitmap.width);
-//    LOGD("bitmap.rows = %d\n", face->glyph->bitmap.rows);
-//    LOGD("bitmap.pitch = %d\n", face->glyph->bitmap.pitch);
-
-//    drawGlyphToConsole(face);
-
-//    FT_Done_FreeType(ft);
-//    return 0;
-//}
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -75,10 +16,16 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-static  GLuint CURRENT_WINDOW_WIDTH = 320;
-static  GLuint CURRENT_WINDOW_HEIGHT = 240;
+#define WINDOW_WIDTH 320
+#define WINDOW_HEIGHT 240
 
-GLFWwindow* window;
+GLFWwindow *win;
+int window_width = 0;
+int window_height = 0;
+int framebuffer_width=0;
+int framebuffer_height=0;
+float scale_x;
+float scale_y;
 
 
 void enableMultisample(int msaa)
@@ -102,79 +49,65 @@ void enableMultisample(int msaa)
     //    }
 }
 
-void initialization()
+
+
+
+
+
+
+
+//****************************************************************
+//**************** GLFW CALLBACK *********************************
+//****************************************************************
+
+void errorCallback(int e, const char *d)
 {
-    string configPath = getenv("HOME");
-    configPath += "/.config";
-    systemInput_initConfigPath(configPath);
-    SystemAbstraction::onInit(CURRENT_WINDOW_WIDTH, CURRENT_WINDOW_HEIGHT);
+    printf("Error %d: %s\n", e, d);
 }
 
-
-/* reshaped window */
-void reshape(GLFWwindow * , int width, int height) {
-    CURRENT_WINDOW_HEIGHT = height;
-    CURRENT_WINDOW_WIDTH = width;
-
-    SystemAbstraction::onResize(CURRENT_WINDOW_WIDTH, CURRENT_WINDOW_HEIGHT);
-
-}
-
-static bool isFirstFrame = true;
-
-void renderFunction()
+void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 {
-    if(isFirstFrame == true)
+    double win_cursor_x, win_cursor_y;
+    glfwGetCursorPos(win, &win_cursor_x, &win_cursor_y);
+
+    int fb_cursor_x = win_cursor_x*scale_x;
+    int fb_cursor_y = win_cursor_y*scale_y;
+
+    if(action == GLFW_PRESS)
     {
-        SystemAbstraction::onRenderFirstFrame();
-        isFirstFrame = false;
-    }else{
-        SystemAbstraction::onRenderFrame();
+        if(button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+        }
+        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+        }
+        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+        }
     }
-}
-
-void scroll_callback(GLFWwindow*,double xoffset,double yoffset){
-    cout << "scroll_callback xoffset = " << xoffset << " yoffset = " << yoffset << endl;
-    SystemAbstraction::onScroll(yoffset);
-}
-
-void cursor_position_callbask(GLFWwindow*,double,double)
-{
-    //cout << "cursor_position_callbask(GLFWwindow*,double,double)" << endl;
-
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
+    else if(action == GLFW_RELEASE)
+    {
+        if(button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+        }
+        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+        }
+        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+        {
+            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+        }
+    }
 
     PointerCoords coords;
     memset(&coords, 0, sizeof(coords));
-    coords.x = xpos;
-    coords.y = ypos;
-    coords.minX = 0;
-    coords.maxX = 0;
-    coords.minY = 0;
-    coords.maxY = 0;
-    coords.isScreen = true;
-
-    SystemAbstraction::onPointerMove(0, &coords);
-
-}
-
-void mouse_button_callback(GLFWwindow* , int button, int action, int mods)
-{
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
-
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, xpos, ypos);
-    }else if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
-        SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, xpos, ypos);
-    }
-
-
-    PointerCoords coords;
-    memset(&coords, 0, sizeof(coords));
-    coords.x = xpos;
-    coords.y = ypos;
+    coords.x = fb_cursor_x;
+    coords.y = fb_cursor_y;
     coords.minX = 0;
     coords.maxX = 0;
     coords.minY = 0;
@@ -188,14 +121,28 @@ void mouse_button_callback(GLFWwindow* , int button, int action, int mods)
     }
 }
 
-void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
+void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
+    PointerCoords coords;
+    memset(&coords, 0, sizeof(coords));
+    coords.x = xpos*scale_x;
+    coords.y = ypos*scale_y;
+    coords.minX = 0;
+    coords.maxX = 0;
+    coords.minY = 0;
+    coords.maxY = 0;
+    coords.isScreen = true;
+    SystemAbstraction::onPointerMove(0, &coords);
+}
 
-    if(action == GLFW_PRESS){
-        SystemAbstraction::onKeyboard(SystemAbstraction::EVENT_DOWN, key, 0 , 0);
-    }else if(action == GLFW_RELEASE){
-        SystemAbstraction::onKeyboard(SystemAbstraction::EVENT_UP, key, 0 , 0);
-    }
+void charCallback(GLFWwindow *win, unsigned int codepoint)
+{
+    SystemAbstraction::onChar(codepoint);
+}
+
+void keyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
+{
+    SystemAbstraction::onKey((SystemAbstraction::ButtonEvent)action, (SystemAbstraction::Key)key, (SystemAbstraction::Mods)mods, 0, 0);
 
     if(action == GLFW_RELEASE && (key == 'q' || key == 'Q'))
     {
@@ -203,33 +150,109 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
     }
 }
 
+void scrollCallback(GLFWwindow*,double xoffset,double yoff)
+{
+    yoff = yoff*scale_y;
+    SystemAbstraction::onScroll(yoff);
+}
+
+void framebufferSizeCallback(GLFWwindow * , int width, int height)
+{
+    int fb_width = width*scale_x;
+    int fb_height = height*scale_y;
+    SystemAbstraction::onFramebufferResize(fb_width, fb_height);
+}
+
+//****************************************************************
+//**************** END CALLBACK **********************************
+//****************************************************************
+
+
 void timerForGlut(int value){
     SystemAbstraction::onTimerTick();
 }
 
 
-
 int main(int , char** )
 {
-    InitGLFWWindow();
+    glfwSetErrorCallback(errorCallback);
+    if (!glfwInit())
+    {
+        fprintf(stdout, "[GFLW] failed to init!\n");
+        exit(EXIT_FAILURE);
+    }
+    // OPEN GL ES
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+
+    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, __FILE__, NULL, NULL);
+    glfwMakeContextCurrent(win);
+
+    //GLFW CALLBACK
+    glfwSetMouseButtonCallback(win, mouseButtonCallback);
+    glfwSetCursorPosCallback(win, cursorPosCallback);
+    glfwSetCharCallback(win, charCallback);
+    glfwSetKeyCallback(win, keyCallback);
+    glfwSetScrollCallback(win, scrollCallback);
+    glfwSetFramebufferSizeCallback(win, framebufferSizeCallback);
+
+    glfwMakeContextCurrent(win);
+    glfwSwapInterval(1);
+
+    //SCALE FAMEBUFFER TO WINDOW SIZE
+    glfwGetWindowSize(win, &window_width, &window_height);
+    glfwGetFramebufferSize(win, &framebuffer_width, &framebuffer_height);
+    scale_x = (float)framebuffer_width/(float)window_width;
+    scale_y = (float)framebuffer_height/(float)window_height;
+
+
+    //SYSTEM ABSTRACTION INIT
+    string homePath = getenv("HOME");
+    string configPath = homePath + "/.config";
+    systemInput_initConfigPath(configPath);
+    SystemAbstraction::onInit(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+    framebufferSizeCallback(win,WINDOW_WIDTH,WINDOW_HEIGHT);
+
+    printf("GL_VERSION  : %s\n", glGetString(GL_VERSION) );
+    printf("GL_RENDERER : %s\n", glGetString(GL_RENDERER) );
+
+    initFPS();
+
     printOpenGLVersion(); //this function must be invoked after Create Window
     enableMultisample(0);
 
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(win))
+    {
         //cout << "FPS = "  << calculateFPS() << endl;
+
         glfwPollEvents();
+
+        static bool isFirstFrame = true;
+        if(isFirstFrame == true)
         {
-            renderFunction();
-            static int time = 0;
-            timerForGlut(time++);
+            SystemAbstraction::onRenderFirstFrame();
+            isFirstFrame = false;
+        }else{
+            SystemAbstraction::onRenderFrame();
         }
-        glfwSwapBuffers(window);
+
+        static int time = 0;
+        timerForGlut(time++);
+
+        glfwSwapBuffers(win);
     }
 
+    //DELETE
+    SystemAbstraction::onUninit();
     glfwTerminate();
     return EXIT_SUCCESS;
 }
+
+
 
 void printOpenGLVersion(){
 
@@ -244,43 +267,7 @@ void printOpenGLVersion(){
     cout<<"\tGLSL: "<<glGetString (GL_SHADING_LANGUAGE_VERSION)<<endl;
 }
 
-void InitGLFWWindow(){
-    glfwInit();
 
-    if(1){ // OPEN GL ES
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    }else{
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-        //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-    }
-
-    window = glfwCreateWindow(CURRENT_WINDOW_WIDTH, CURRENT_WINDOW_HEIGHT, __FILE__, NULL, NULL);
-
-    glfwMakeContextCurrent(window);
-    glfwSetWindowSizeCallback(window, reshape);
-    glfwSetMouseButtonCallback(window, mouse_button_callback) ;
-    glfwSetCursorPosCallback(window, cursor_position_callbask);
-    glfwSetScrollCallback(window, scroll_callback);
-    glfwSetKeyCallback(window, key_callback);
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
-
-
-    initialization();
-    reshape(window,CURRENT_WINDOW_WIDTH,CURRENT_WINDOW_HEIGHT);
-
-    printf("GL_VERSION  : %s\n", glGetString(GL_VERSION) );
-    printf("GL_RENDERER : %s\n", glGetString(GL_RENDERER) );
-
-    initFPS();
-}
 
 
 
