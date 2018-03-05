@@ -188,22 +188,22 @@ void SystemAbstraction::onRenderFrame()
 
 void SystemAbstraction::onScroll(double yoffset)
 {
-    //demo_onScrollCallback(yoffset);
+    demo_onScrollCallback(yoffset);
 }
 
 void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y)
 {
-    //demo_onMouseButtonCallback(mouseButton, event, x, y);
+    demo_onMouseButtonCallback(mouseButton, event, x, y);
 }
 
 void SystemAbstraction::onKey(ButtonEvent event, Key key, Mods mods, int x, int y )
 {
-    //demo_onKeyCallback(event, key, mods, x, y);
+    demo_onKeyCallback(event, key, mods, x, y);
 }
 
 void SystemAbstraction::onChar(unsigned int codepoint)
 {
-    //demo_onCharCallback(codepoint);
+    demo_onCharCallback(codepoint);
 }
 
 bool SystemAbstraction::onBackKeyPressed()

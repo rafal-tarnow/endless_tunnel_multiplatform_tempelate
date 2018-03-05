@@ -1,6 +1,7 @@
 #include "demo.hpp"
 #include <math.h>
 #include <stdio.h>
+#include "system_log.hpp"
 
 /* ===============================================================
  *
@@ -565,6 +566,18 @@ void demo_onScrollCallback(double yoffset)
 
 void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y)
 {
+    LOGD("demo_onMouseButtonCallback x = %d y = %d", x, y);
+
+    struct nk_input *in;
+    in = &ctx.input;
+    in->mouse.pos.x = (float)x;
+    in->mouse.pos.y = (float)y;
+    in->mouse.prev.x = (float)x;
+    in->mouse.prev.y = (float)y;
+    in->mouse.delta.x = 0;
+    in->mouse.delta.y = 0;
+
+
     nk_input_button(&ctx, NK_BUTTON_LEFT, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
     nk_input_button(&ctx, NK_BUTTON_MIDDLE, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_MIDDLE_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
     nk_input_button(&ctx, NK_BUTTON_RIGHT, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
