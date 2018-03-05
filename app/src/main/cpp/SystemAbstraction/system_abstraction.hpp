@@ -163,6 +163,7 @@ public:
 
     //Compatible with glfw
     typedef enum{
+        MOD_NONE            = 0x0000,
         MOD_SHIFT           = 0x0001,
         MOD_CONTROL         = 0x0002,
         MOD_ALT             = 0x0004,

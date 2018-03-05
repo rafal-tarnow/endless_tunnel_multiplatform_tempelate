@@ -73,36 +73,36 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
     int fb_cursor_x = win_cursor_x*scale_x;
     int fb_cursor_y = win_cursor_y*scale_y;
 
-    if(action == GLFW_PRESS)
-    {
-        if(button == GLFW_MOUSE_BUTTON_LEFT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-    }
-    else if(action == GLFW_RELEASE)
-    {
-        if(button == GLFW_MOUSE_BUTTON_LEFT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-    }
+//    if(action == GLFW_PRESS)
+//    {
+//        if(button == GLFW_MOUSE_BUTTON_LEFT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//    }
+//    else if(action == GLFW_RELEASE)
+//    {
+//        if(button == GLFW_MOUSE_BUTTON_LEFT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//    }
 
     PointerCoords coords;
     memset(&coords, 0, sizeof(coords));
@@ -123,6 +123,12 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 
 void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
+
+    if(GLFW_RELEASE == glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+    {
+        return;
+    }
+
     PointerCoords coords;
     memset(&coords, 0, sizeof(coords));
     coords.x = xpos*scale_x;

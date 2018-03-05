@@ -147,6 +147,7 @@
 
 
 #include "system_abstraction.hpp"
+#include "system_log.hpp"
 #include "demo.hpp"
 
 int SystemAbstraction::framebuffer_width = 0;
@@ -187,22 +188,22 @@ void SystemAbstraction::onRenderFrame()
 
 void SystemAbstraction::onScroll(double yoffset)
 {
-    demo_onScrollCallback(yoffset);
+    //demo_onScrollCallback(yoffset);
 }
 
 void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y)
 {
-    demo_onMouseButtonCallback(mouseButton, event, x, y);
+    //demo_onMouseButtonCallback(mouseButton, event, x, y);
 }
 
 void SystemAbstraction::onKey(ButtonEvent event, Key key, Mods mods, int x, int y )
 {
-    demo_onKeyCallback(event, key, mods, x, y);
+    //demo_onKeyCallback(event, key, mods, x, y);
 }
 
 void SystemAbstraction::onChar(unsigned int codepoint)
 {
-    demo_onCharCallback(codepoint);
+    //demo_onCharCallback(codepoint);
 }
 
 bool SystemAbstraction::onBackKeyPressed()
@@ -217,16 +218,19 @@ void SystemAbstraction::onJoyUpdate(float joyX, float joyY)
 
 void SystemAbstraction::onPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-
+    LOGD("SystemAbstraction::onPointerDown x = %d y = %d\n", int(coords->x), int(coords->y));
+    demo_onMouseButtonCallback(MOUSE_LEFT_BUTTON, EVENT_DOWN, (int)coords->x, (int)coords->y);
 }
 
 void SystemAbstraction::onPointerUp(int pointerId, const struct PointerCoords *coords)
 {
-
+    LOGD("SystemAbstraction::onPointerUp x = %d y = %d\n", int(coords->x), int(coords->y));
+    demo_onMouseButtonCallback(MOUSE_LEFT_BUTTON, EVENT_UP, (int)coords->x, (int)coords->y);
 }
 
 void SystemAbstraction::onPointerMove(int pointerId, const struct PointerCoords *coords)
 {
+    LOGD("SystemAbstraction::    onPointerMove x = %d y = %d\n", int(coords->x), int(coords->y));
     demo_onPointerMoveCallback(pointerId, coords);
 }
 

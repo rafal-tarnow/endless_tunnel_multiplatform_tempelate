@@ -24,7 +24,7 @@
 #include "./SystemAbstraction/system_paths.hpp"
 
 // verbose debug logs on?
-#define VERBOSE_LOGGING 1
+#define VERBOSE_LOGGING 0
 
 #if VERBOSE_LOGGING
     #define VLOGD LOGD
@@ -243,10 +243,10 @@ static bool _cooked_event_callback(struct CookedEvent *event) {
             SystemAbstraction::onPointerMove(event->motionPointerId, &coords);
             return true;
         case COOKED_EVENT_TYPE_KEY_DOWN:
-            SystemAbstraction::onKeyboard(SystemAbstraction::EVENT_DOWN, event->keyCode,0,0);
+            SystemAbstraction::onKey(SystemAbstraction::EVENT_DOWN, (SystemAbstraction::Key)event->keyCode,SystemAbstraction::MOD_NONE,0,0);
             return true;
         case COOKED_EVENT_TYPE_KEY_UP:
-            SystemAbstraction::onKeyboard(SystemAbstraction::EVENT_UP, event->keyCode, 0,0);
+            SystemAbstraction::onKey(SystemAbstraction::EVENT_UP, (SystemAbstraction::Key)event->keyCode,SystemAbstraction::MOD_NONE, 0,0);
             return true;
         case COOKED_EVENT_TYPE_BACK:
             return SystemAbstraction::onBackKeyPressed();
@@ -520,7 +520,7 @@ void NativeEngine::DoFrame() {
                 width, height);
         mSurfWidth = width;
         mSurfHeight = height;
-        SystemAbstraction::onResize(mSurfWidth, mSurfHeight);
+        SystemAbstraction::onFramebufferResize(mSurfWidth, mSurfHeight);
 
     }
 
