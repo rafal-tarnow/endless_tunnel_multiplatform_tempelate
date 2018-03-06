@@ -124,10 +124,10 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
 
-    if(GLFW_RELEASE == glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
-    {
-        return;
-    }
+//    if(GLFW_RELEASE == glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+//    {
+//        return;
+//    }
 
     PointerCoords coords;
     memset(&coords, 0, sizeof(coords));

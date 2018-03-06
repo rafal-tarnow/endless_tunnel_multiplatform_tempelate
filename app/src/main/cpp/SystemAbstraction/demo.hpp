@@ -11,6 +11,7 @@ struct media {
     struct nk_font *font_18;
     struct nk_font *font_20;
     struct nk_font *font_22;
+    struct nk_font *font_30;
 
     struct nk_image unchecked;
     struct nk_image checked;

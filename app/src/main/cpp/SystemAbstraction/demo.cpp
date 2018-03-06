@@ -176,6 +176,24 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
     nk_spacing(ctx, 1);
 }
 
+void toolbox_demo(struct nk_context *ctx, struct media *media)
+{
+    nk_style_set_font(ctx, &media->font_30->handle);
+
+    nk_begin(ctx, "Toolbox", nk_rect(10,10,255,270),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    {
+        static const float ratio[] = {0.15f, 0.85f};
+        nk_style_set_font(ctx, &media->font_30->handle);
+        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_spacing(ctx, 1);
+
+        if (nk_button_label(ctx, "Save map"))
+            fprintf(stdout, "saved!\n");
+    }
+    nk_end(ctx);
+
+}
+
 void button_demo(struct nk_context *ctx, struct media *media)
 {
     static int option = 1;
@@ -184,100 +202,100 @@ void button_demo(struct nk_context *ctx, struct media *media)
     static int toggle2 = 1;
 
     nk_style_set_font(ctx, &media->font_20->handle);
-    nk_begin(ctx, "Button Demo", nk_rect(50,50,255,610),
-             NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-             NK_WINDOW_TITLE);
+    nk_begin(ctx, "Button Demo", nk_rect(50,50,255,610), NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE| NK_WINDOW_TITLE);
+    {
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  MENU
      *------------------------------------------------*/
-    nk_menubar_begin(ctx);
-    {
-        /* toolbar */
-        nk_layout_row_static(ctx, 40, 40, 4);
-        if (nk_menu_begin_image(ctx, "Music", media->play, nk_vec2(110,120)))
+        nk_menubar_begin(ctx);
         {
-            /* settings */
-            nk_layout_row_dynamic(ctx, 25, 1);
-            nk_menu_item_image_label(ctx, media->play, "Play", NK_TEXT_RIGHT);
-            nk_menu_item_image_label(ctx, media->stop, "Stop", NK_TEXT_RIGHT);
-            nk_menu_item_image_label(ctx, media->pause, "Pause", NK_TEXT_RIGHT);
-            nk_menu_item_image_label(ctx, media->next, "Next", NK_TEXT_RIGHT);
-            nk_menu_item_image_label(ctx, media->prev, "Prev", NK_TEXT_RIGHT);
-            nk_menu_end(ctx);
+            /* toolbar */
+            nk_layout_row_static(ctx, 40, 40, 4);
+            if (nk_menu_begin_image(ctx, "Music", media->play, nk_vec2(110,120)))
+            {
+                /* settings */
+                nk_layout_row_dynamic(ctx, 25, 1);
+                nk_menu_item_image_label(ctx, media->play, "Play", NK_TEXT_RIGHT);
+                nk_menu_item_image_label(ctx, media->stop, "Stop", NK_TEXT_RIGHT);
+                nk_menu_item_image_label(ctx, media->pause, "Pause", NK_TEXT_RIGHT);
+                nk_menu_item_image_label(ctx, media->next, "Next", NK_TEXT_RIGHT);
+                nk_menu_item_image_label(ctx, media->prev, "Prev", NK_TEXT_RIGHT);
+                nk_menu_end(ctx);
+            }
+            nk_button_image(ctx, media->tools);
+            nk_button_image(ctx, media->cloud);
+            nk_button_image(ctx, media->pen);
         }
-        nk_button_image(ctx, media->tools);
-        nk_button_image(ctx, media->cloud);
-        nk_button_image(ctx, media->pen);
-    }
-    nk_menubar_end(ctx);
+        nk_menubar_end(ctx);
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  BUTTON
      *------------------------------------------------*/
-    ui_header(ctx, media, "Push buttons");
-    ui_widget(ctx, media, 35);
-    if (nk_button_label(ctx, "Push me"))
-        fprintf(stdout, "pushed!\n");
-    ui_widget(ctx, media, 35);
-    if (nk_button_image_label(ctx, media->rocket, "Styled", NK_TEXT_CENTERED))
-        fprintf(stdout, "rocket!\n");
+        ui_header(ctx, media, "Push buttons");
+        ui_widget(ctx, media, 35);
+        if (nk_button_label(ctx, "Push me"))
+            fprintf(stdout, "pushed!\n");
+        ui_widget(ctx, media, 35);
+        if (nk_button_image_label(ctx, media->rocket, "Styled", NK_TEXT_CENTERED))
+            fprintf(stdout, "rocket!\n");
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  REPEATER
      *------------------------------------------------*/
-    ui_header(ctx, media, "Repeater");
-    ui_widget(ctx, media, 35);
-    if (nk_button_label(ctx, "Press me"))
-        fprintf(stdout, "pressed!\n");
+        ui_header(ctx, media, "Repeater");
+        ui_widget(ctx, media, 35);
+        if (nk_button_label(ctx, "Press me"))
+            fprintf(stdout, "pressed!\n");
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  TOGGLE
      *------------------------------------------------*/
-    ui_header(ctx, media, "Toggle buttons");
-    ui_widget(ctx, media, 35);
-    if (nk_button_image_label(ctx, (toggle0) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
-        toggle0 = !toggle0;
+        ui_header(ctx, media, "Toggle buttons");
+        ui_widget(ctx, media, 35);
+        if (nk_button_image_label(ctx, (toggle0) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
+            toggle0 = !toggle0;
 
-    ui_widget(ctx, media, 35);
-    if (nk_button_image_label(ctx, (toggle1) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
-        toggle1 = !toggle1;
+        ui_widget(ctx, media, 35);
+        if (nk_button_image_label(ctx, (toggle1) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
+            toggle1 = !toggle1;
 
-    ui_widget(ctx, media, 35);
-    if (nk_button_image_label(ctx, (toggle2) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
-        toggle2 = !toggle2;
+        ui_widget(ctx, media, 35);
+        if (nk_button_image_label(ctx, (toggle2) ? media->checked: media->unchecked, "Toggle", NK_TEXT_LEFT))
+            toggle2 = !toggle2;
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  RADIO
      *------------------------------------------------*/
-    ui_header(ctx, media, "Radio buttons");
-    ui_widget(ctx, media, 35);
-    if (nk_button_symbol_label(ctx, (option == 0)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
-        option = 0;
-    ui_widget(ctx, media, 35);
-    if (nk_button_symbol_label(ctx, (option == 1)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
-        option = 1;
-    ui_widget(ctx, media, 35);
-    if (nk_button_symbol_label(ctx, (option == 2)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
-        option = 2;
+        ui_header(ctx, media, "Radio buttons");
+        ui_widget(ctx, media, 35);
+        if (nk_button_symbol_label(ctx, (option == 0)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
+            option = 0;
+        ui_widget(ctx, media, 35);
+        if (nk_button_symbol_label(ctx, (option == 1)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
+            option = 1;
+        ui_widget(ctx, media, 35);
+        if (nk_button_symbol_label(ctx, (option == 2)?NK_SYMBOL_CIRCLE_OUTLINE:NK_SYMBOL_CIRCLE_SOLID, "Select", NK_TEXT_LEFT))
+            option = 2;
 
-    /*------------------------------------------------
+        /*------------------------------------------------
      *                  CONTEXTUAL
      *------------------------------------------------*/
-    nk_style_set_font(ctx, &media->font_18->handle);
-    if (nk_contextual_begin(ctx, NK_WINDOW_NO_SCROLLBAR, nk_vec2(150, 300), nk_window_get_bounds(ctx))) {
-        nk_layout_row_dynamic(ctx, 30, 1);
-        if (nk_contextual_item_image_label(ctx, media->copy, "Clone", NK_TEXT_RIGHT))
-            fprintf(stdout, "pressed clone!\n");
-        if (nk_contextual_item_image_label(ctx, media->del, "Delete", NK_TEXT_RIGHT))
-            fprintf(stdout, "pressed delete!\n");
-        if (nk_contextual_item_image_label(ctx, media->convert, "Convert", NK_TEXT_RIGHT))
-            fprintf(stdout, "pressed convert!\n");
-        if (nk_contextual_item_image_label(ctx, media->edit, "Edit", NK_TEXT_RIGHT))
-            fprintf(stdout, "pressed edit!\n");
-        nk_contextual_end(ctx);
+        nk_style_set_font(ctx, &media->font_18->handle);
+        if (nk_contextual_begin(ctx, NK_WINDOW_NO_SCROLLBAR, nk_vec2(150, 300), nk_window_get_bounds(ctx))) {
+            nk_layout_row_dynamic(ctx, 30, 1);
+            if (nk_contextual_item_image_label(ctx, media->copy, "Clone", NK_TEXT_RIGHT))
+                fprintf(stdout, "pressed clone!\n");
+            if (nk_contextual_item_image_label(ctx, media->del, "Delete", NK_TEXT_RIGHT))
+                fprintf(stdout, "pressed delete!\n");
+            if (nk_contextual_item_image_label(ctx, media->convert, "Convert", NK_TEXT_RIGHT))
+                fprintf(stdout, "pressed convert!\n");
+            if (nk_contextual_item_image_label(ctx, media->edit, "Edit", NK_TEXT_RIGHT))
+                fprintf(stdout, "pressed edit!\n");
+            nk_contextual_end(ctx);
+        }
+        nk_style_set_font(ctx, &media->font_14->handle);
     }
-    nk_style_set_font(ctx, &media->font_14->handle);
     nk_end(ctx);
 }
 
@@ -427,6 +445,7 @@ void demo_init(int width, int height)
             media.font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f, &cfg);
             media.font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f, &cfg);
             media.font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f, &cfg);
+            media.font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f, &cfg);
 
             image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
             device_upload_atlas(&device, image, w, h);
@@ -551,7 +570,7 @@ void demo_init(int width, int height)
 
 void demo_onCharCallback(unsigned int codepoint)
 {
-        nk_input_unicode(&ctx, codepoint);
+    nk_input_unicode(&ctx, codepoint);
 }
 
 void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords)
@@ -568,6 +587,7 @@ void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, Syst
 {
     LOGD("demo_onMouseButtonCallback x = %d y = %d", x, y);
 
+    //TouchEvent Support
     struct nk_input *in;
     in = &ctx.input;
     in->mouse.pos.x = (float)x;
@@ -618,9 +638,10 @@ void demo_render(int fb_width, int fb_height)
     nk_input_end(&ctx);
 
     /* GUI */
-    basic_demo(&ctx, &media);
-    button_demo(&ctx, &media);
-    grid_demo(&ctx, &media);
+    //basic_demo(&ctx, &media);
+    toolbox_demo(&ctx, &media);
+    //button_demo(&ctx, &media);
+    //grid_demo(&ctx, &media);
 
     /* Draw */
     glViewport(0, 0, fb_width, fb_height);
