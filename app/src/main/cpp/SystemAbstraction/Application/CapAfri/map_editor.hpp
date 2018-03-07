@@ -18,8 +18,10 @@ public:
     void systemCallback_Scroll(double yoffset);
     void systemCallback_Render();
     void systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
-    void systemCallback_mousePosition(double x, double y);
+    void systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords);
     void systemCallback_keyboard(SystemAbstraction::ButtonEvent, unsigned int key, int x, int y );
+    void systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords) ;
+    void systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords);
 
 private:
     void updateCameraViewMatrix();
@@ -28,8 +30,8 @@ private:
     double current_mouse_x_pos = 0;
     double current_mouse_y_pos = 0;
 
-    float current_window_width;
-    float current_window_height;
+    float framebuffer_width;
+    float framebuffer_height;
 
     float box_view_width_in_meters = 0;
     float box_view_height_in_meters = 0;

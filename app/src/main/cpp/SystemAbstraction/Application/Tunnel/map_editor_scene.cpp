@@ -99,7 +99,7 @@ void MapEditorScene::OnPointerDown(int pointerId, const struct PointerCoords *co
     }
     else
     {
-
+        mapEditor->systemCallback_OnPointerDown(pointerId, coords);
     }
 }
 
@@ -115,7 +115,7 @@ void MapEditorScene::OnPointerUp(int pointerId, const struct PointerCoords *coor
     }
     else
     {
-
+    mapEditor->systemCallback_OnPointerUp(pointerId, coords);
     }
 }
 
@@ -135,7 +135,7 @@ void MapEditorScene::OnPointerMove(int pointerId, const struct PointerCoords *co
         UpdateMenuSelFromTouch(x, y);
     }
 
-    mapEditor->systemCallback_mousePosition(coords->x,coords->y);
+    mapEditor->systemCallback_OnPointerMove(pointerId, coords);
 }
 
 void MapEditorScene::RenderMenu() {

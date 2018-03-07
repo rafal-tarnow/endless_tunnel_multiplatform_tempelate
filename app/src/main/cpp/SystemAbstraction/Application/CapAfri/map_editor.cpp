@@ -6,15 +6,17 @@
 #include "./data/red_dot.png.hpp"
 #include <system_paths.hpp>
 #include <system_log.hpp>
+#include "demo.hpp"
 #include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
+#include "../system_abstraction.hpp"
 
 using namespace std;
 
-MapEditor::MapEditor(int win_width, int win_height)
+MapEditor::MapEditor(int fb_width, int fb_height)
 {
-    current_window_width = win_width;
-    current_window_height = win_height;
-    systemCallback_WindowResize(current_window_width, current_window_height);
+    framebuffer_width = fb_width;
+    framebuffer_height = fb_height;
+    systemCallback_WindowResize(framebuffer_width, framebuffer_height);
 
     //glEnable(GL_MULTISAMPLE);
     glEnable (GL_BLEND);
@@ -29,8 +31,8 @@ MapEditor::MapEditor(int win_width, int win_height)
 
     cameraViewMatrix = glm::lookAt(glm::vec3(0,0, 10.0f),glm::vec3(0, 0, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    textRenderer_v2 = new TextRenderer_v2(win_width, win_height);
-    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, win_height*0.06);
+    textRenderer_v2 = new TextRenderer_v2(fb_width, fb_height);
+    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fb_height*0.06);
 
     //COORDINATES LINES
     float xlineVerticles[6] = {-1000.0f, 0.0f, 0.0f, 1000.0f, 0.0f, 0.0f};
@@ -52,6 +54,8 @@ MapEditor::MapEditor(int win_width, int win_height)
     //    LS_initLineStrip(&lineStripGround, verticles, 6);
 
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
+
+    demo_init(framebuffer_width, framebuffer_height);
 }
 
 MapEditor::~MapEditor()
@@ -61,21 +65,33 @@ MapEditor::~MapEditor()
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
     glDeleteTextures(1,&redDotTextureId);
+    demo_uninit();
 }
 
 void MapEditor::systemCallback_Render()
 {
 
+    glViewport(0, 0, framebuffer_width, framebuffer_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+
+
+
+
+
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
     if(mapFileOpenErrno != 0)
     {
-        textRenderer_v2->RenderText("ERROR WHILE OPEN FILE:",current_window_width*0.1,current_window_height*0.6);
-        textRenderer_v2->RenderText(mapFilePath,current_window_width*0.1,current_window_height*0.5);
-        textRenderer_v2->RenderText(mapFileOpenErrorString,current_window_width*0.1,current_window_height*0.4);
+        textRenderer_v2->RenderText("ERROR WHILE OPEN FILE:",framebuffer_width*0.1,framebuffer_height*0.6);
+        textRenderer_v2->RenderText(mapFilePath,framebuffer_width*0.1,framebuffer_height*0.5);
+        textRenderer_v2->RenderText(mapFileOpenErrorString,framebuffer_width*0.1,framebuffer_height*0.4);
         return;
     }
+
 
     glDisable(GL_DEPTH_TEST);
     {
@@ -159,18 +175,20 @@ void MapEditor::systemCallback_Render()
     }
     glEnable(GL_DEPTH_TEST);
 
+      demo_render(framebuffer_width,framebuffer_height);
+
     glFlush();
 }
 
 void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 {
-    current_window_width = win_width;
-    current_window_height = win_height;
-    glViewport (0, 0, (GLsizei) current_window_width, (GLsizei) current_window_height);
+    framebuffer_width = win_width;
+    framebuffer_height = win_height;
+    glViewport (0, 0, (GLsizei) framebuffer_width, (GLsizei) framebuffer_height);
 
     //    textRenderer_v2->onVievportResize(current_window_width, current_window_height);
 
-    float aspect = ((float)current_window_width)/((float)current_window_height);
+    float aspect = ((float)framebuffer_width)/((float)framebuffer_height);
 
     box_view_width_in_meters = 30.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
@@ -178,6 +196,9 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 }
 
 void MapEditor::systemCallback_Scroll(double yoffset){
+    demo_onScrollCallback(yoffset);
+    return;
+
     if(yoffset > 0)
     {
         zoom = zoom / 1.2;
@@ -191,7 +212,7 @@ void MapEditor::systemCallback_Scroll(double yoffset){
             zoom = 50.0;
     }
 
-    float aspect = ((float)current_window_width)/((float)current_window_height);
+    float aspect = ((float)framebuffer_width)/((float)framebuffer_height);
 
     box_view_width_in_meters = 30.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
@@ -227,6 +248,8 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
+    demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
+
     LOGD("MapEditor::systemCallback_mouseButton()\n");
     current_mouse_x_pos = window_x;
     current_mouse_y_pos = window_y;
@@ -251,18 +274,21 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
 
 void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc)
 {
-    *x_ndc = (current_mouse_x_pos/current_window_width)*2.0f - 1.0f;
-    *y_ndc = -(current_mouse_y_pos/current_window_height)*2.0f + 1.0f;
+    *x_ndc = (current_mouse_x_pos/framebuffer_width)*2.0f - 1.0f;
+    *y_ndc = -(current_mouse_y_pos/framebuffer_height)*2.0f + 1.0f;
 }
 
-void MapEditor::systemCallback_mousePosition(double x, double y)
+void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
-    current_mouse_x_pos = x;
-    current_mouse_y_pos = y;
+    demo_onPointerMoveCallback(pointerId, coords);
+    return;
+
+    current_mouse_x_pos = coords->x;
+    current_mouse_y_pos = coords->y;
 
 
     glm::vec3 world_position;
-    windowCoordinatesToBoxCoordinates(x,y,world_position);
+    windowCoordinatesToBoxCoordinates(current_mouse_x_pos, current_mouse_y_pos,world_position);
 
     redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(world_position.x, world_position.y, 0.0f));
 }
@@ -287,6 +313,16 @@ void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, un
     }
 
     updateCameraViewMatrix();
+}
+
+void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
+{
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, (int)coords->x, (int)coords->y);
+}
+
+void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
+{
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, (int)coords->x, (int)coords->y);
 }
 
 void MapEditor::updateCameraViewMatrix()

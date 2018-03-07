@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_STANDARD_IO
 #define NK_INCLUDE_DEFAULT_ALLOCATOR
@@ -28,6 +30,8 @@ struct device {
     GLuint font_tex;
     void *vertices;
     void *elements;
+    GLsizei vs;
+    size_t vp, vt, vc;
 };
 
 struct nk_glfw_vertex {

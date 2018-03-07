@@ -638,15 +638,15 @@ void demo_render(int fb_width, int fb_height)
     nk_input_end(&ctx);
 
     /* GUI */
-    //basic_demo(&ctx, &media);
+    basic_demo(&ctx, &media);
     toolbox_demo(&ctx, &media);
-    //button_demo(&ctx, &media);
-    //grid_demo(&ctx, &media);
+    button_demo(&ctx, &media);
+    grid_demo(&ctx, &media);
 
     /* Draw */
-    glViewport(0, 0, fb_width, fb_height);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+//    glViewport(0, 0, fb_width, fb_height);
+//    glClear(GL_COLOR_BUFFER_BIT);
+//    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
     nk_input_begin(&ctx);

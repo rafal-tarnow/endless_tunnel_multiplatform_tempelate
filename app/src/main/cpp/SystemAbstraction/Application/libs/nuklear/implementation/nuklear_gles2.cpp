@@ -1,8 +1,7 @@
 #define NK_IMPLEMENTATION
 #include "nuklear_gles2.hpp"
-#include <cstddef>
 
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
 #include "../../stb/stb_image.h"
 
 struct nk_image icon_load(const char *filename)
@@ -104,10 +103,10 @@ void device_init(struct device *dev)
 
     {
         /* buffer setup */
-        GLsizei vs = sizeof(struct nk_glfw_vertex);
-        size_t vp = offsetof(struct nk_glfw_vertex, position);
-        size_t vt = offsetof(struct nk_glfw_vertex, uv);
-        size_t vc = offsetof(struct nk_glfw_vertex, col);
+        dev->vs = sizeof(struct nk_glfw_vertex);
+        dev->vp = offsetof(struct nk_glfw_vertex, position);
+        dev->vt = offsetof(struct nk_glfw_vertex, uv);
+        dev->vc = offsetof(struct nk_glfw_vertex, col);
 
         glGenBuffers(1, &dev->vbo);
         glGenBuffers(1, &dev->ebo);
@@ -119,13 +118,17 @@ void device_init(struct device *dev)
         glBufferData(GL_ARRAY_BUFFER, MAX_VERTEX_MEMORY, NULL, GL_STREAM_DRAW);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, MAX_ELEMENT_MEMORY, NULL, GL_STREAM_DRAW);
 
-        glEnableVertexAttribArray((GLuint)dev->attrib_pos);
-        glEnableVertexAttribArray((GLuint)dev->attrib_uv);
-        glEnableVertexAttribArray((GLuint)dev->attrib_col);
+        //setup buffers
+        {
+            glEnableVertexAttribArray((GLuint)dev->attrib_pos);
+            glEnableVertexAttribArray((GLuint)dev->attrib_uv);
+            glEnableVertexAttribArray((GLuint)dev->attrib_col);
 
-        glVertexAttribPointer((GLuint)dev->attrib_pos, 2, GL_FLOAT, GL_FALSE, vs, (void*)vp);
-        glVertexAttribPointer((GLuint)dev->attrib_uv, 2, GL_FLOAT, GL_FALSE, vs, (void*)vt);
-        glVertexAttribPointer((GLuint)dev->attrib_col, 4, GL_UNSIGNED_BYTE, GL_TRUE, vs, (void*)vc);
+            //            glVertexAttribPointer((GLuint)dev->attrib_pos, 2, GL_FLOAT, GL_FALSE, dev->vs, (void*)dev->vp);
+            //            glVertexAttribPointer((GLuint)dev->attrib_uv, 2, GL_FLOAT, GL_FALSE, dev->vs, (void*)dev->vt);
+            //            glVertexAttribPointer((GLuint)dev->attrib_col, 4, GL_UNSIGNED_BYTE, GL_TRUE, dev->vs, (void*)dev->vc);
+        }
+
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -179,6 +182,17 @@ void device_draw(struct device *dev, struct nk_context *ctx, int width, int heig
         /* enable vertex and element buffer */
         glBindBuffer(GL_ARRAY_BUFFER, dev->vbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, dev->ebo);
+
+        //setup buffers
+        {
+            //            glEnableVertexAttribArray((GLuint)dev->attrib_pos);
+            //            glEnableVertexAttribArray((GLuint)dev->attrib_uv);
+            //            glEnableVertexAttribArray((GLuint)dev->attrib_col);
+
+            glVertexAttribPointer((GLuint)dev->attrib_pos, 2, GL_FLOAT, GL_FALSE, dev->vs, (void*)dev->vp);
+            glVertexAttribPointer((GLuint)dev->attrib_uv, 2, GL_FLOAT, GL_FALSE, dev->vs, (void*)dev->vt);
+            glVertexAttribPointer((GLuint)dev->attrib_col, 4, GL_UNSIGNED_BYTE, GL_TRUE, dev->vs, (void*)dev->vc);
+        }
 
         {
             /* fill convert configuration */

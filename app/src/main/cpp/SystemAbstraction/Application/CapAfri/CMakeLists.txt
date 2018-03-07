@@ -14,4 +14,5 @@ add_library (CapAfri STATIC
     game.cpp
     map_editor.cpp
     level.cpp
+    demo.cpp
 )
