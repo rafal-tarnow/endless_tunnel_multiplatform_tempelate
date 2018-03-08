@@ -29,8 +29,8 @@ void Scene::OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbst
 void Scene::OnScroll(double yoffset) {}
 void Scene::OnPointerMove(int pointerId, const struct PointerCoords* coords) {}
 bool Scene::OnBackKeyPressed() { return false; }
-void Scene::OnKeyDown(int ourKeycode) {}
-void Scene::OnKeyUp(int ourKeycode) {}
+void Scene::OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y){}
+void Scene::OnChar(unsigned int codepoint){}
 void Scene::OnJoy(float x, float y) {}
 void Scene::OnScreenResized(int width, int height) {}
 void Scene::OnPause() {}

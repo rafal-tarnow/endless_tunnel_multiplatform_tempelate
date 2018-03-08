@@ -28,7 +28,8 @@ public:
     virtual bool OnBackKeyPressed();
     virtual void OnScreenResized(int width, int height);
     virtual void OnJoy(float joyX, float joyY);
-    virtual void OnKeyDown(int keyCode);
+    virtual void OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
+    virtual void OnChar(unsigned int codepoint);
     virtual void OnPause();
 
 protected:

@@ -75,11 +75,10 @@ class SceneManager {
         // Reports that the back key was pressed
         bool OnBackKeyPressed();
 
-        // Reports that the given key went down
-        void OnKeyDown(int ourKeycode);
-        
-        // Reports that the given key went up
-        void OnKeyUp(int ourKeycode);
+        // Reports that the given key
+        void OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
+
+       void OnChar(unsigned int codepoint);
 
         // Reports a joystick update
         void UpdateJoy(float joyX, float joyY);

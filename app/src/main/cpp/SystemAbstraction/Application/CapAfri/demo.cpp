@@ -182,7 +182,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
 
     nk_begin(ctx, "Toolbox", nk_rect(10,10,255,270),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
-        static const float ratio[] = {0.15f, 0.85f};
+        static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &media->font_30->handle);
         nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
         nk_spacing(ctx, 1);
@@ -638,10 +638,10 @@ void demo_render(int fb_width, int fb_height)
     nk_input_end(&ctx);
 
     /* GUI */
-    basic_demo(&ctx, &media);
+    //basic_demo(&ctx, &media);
     toolbox_demo(&ctx, &media);
-    button_demo(&ctx, &media);
-    grid_demo(&ctx, &media);
+    //button_demo(&ctx, &media);
+    //grid_demo(&ctx, &media);
 
     /* Draw */
 //    glViewport(0, 0, fb_width, fb_height);

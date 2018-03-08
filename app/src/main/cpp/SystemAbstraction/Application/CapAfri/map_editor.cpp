@@ -55,7 +55,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
 
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
 
-    demo_init(framebuffer_width, framebuffer_height);
+    //demo_init(framebuffer_width, framebuffer_height);
 }
 
 MapEditor::~MapEditor()
@@ -65,7 +65,7 @@ MapEditor::~MapEditor()
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
     glDeleteTextures(1,&redDotTextureId);
-    demo_uninit();
+    //demo_uninit();
 }
 
 void MapEditor::systemCallback_Render()
@@ -76,12 +76,6 @@ void MapEditor::systemCallback_Render()
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-
-
-
-
-
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
     if(mapFileOpenErrno != 0)
@@ -175,7 +169,7 @@ void MapEditor::systemCallback_Render()
     }
     glEnable(GL_DEPTH_TEST);
 
-      demo_render(framebuffer_width,framebuffer_height);
+    //demo_render(framebuffer_width,framebuffer_height);
 
     glFlush();
 }
@@ -196,7 +190,7 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 }
 
 void MapEditor::systemCallback_Scroll(double yoffset){
-    demo_onScrollCallback(yoffset);
+    //demo_onScrollCallback(yoffset);
     return;
 
     if(yoffset > 0)
@@ -248,7 +242,7 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
-    demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
+    //demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
 
     LOGD("MapEditor::systemCallback_mouseButton()\n");
     current_mouse_x_pos = window_x;
@@ -280,7 +274,7 @@ void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mou
 
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
-    demo_onPointerMoveCallback(pointerId, coords);
+    //demo_onPointerMoveCallback(pointerId, coords);
     return;
 
     current_mouse_x_pos = coords->x;
@@ -293,8 +287,15 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
     redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(world_position.x, world_position.y, 0.0f));
 }
 
-void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
+void MapEditor::systemCallback_OnChar(unsigned int codepoint)
 {
+    //demo_onCharCallback(codepoint);
+}
+
+void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y)
+{
+    //demo_onKeyCallback(event, key, mods,  x, y);
+
 
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){
         camera_position_x += 1.0f;
@@ -317,12 +318,12 @@ void MapEditor::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, un
 
 void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, (int)coords->x, (int)coords->y);
+    //demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, (int)coords->x, (int)coords->y);
 }
 
 void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, (int)coords->x, (int)coords->y);
+    //demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, (int)coords->x, (int)coords->y);
 }
 
 void MapEditor::updateCameraViewMatrix()

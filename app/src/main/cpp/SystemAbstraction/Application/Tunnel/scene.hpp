@@ -60,10 +60,9 @@ class Scene {
         virtual bool OnBackKeyPressed();
 
         // Called when a key goes down
-        virtual void OnKeyDown(int ourKeyCode);
+        virtual void OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
 
-        // Called when a key goes up
-        virtual void OnKeyUp(int ourKeyCode);
+        virtual void OnChar(unsigned int codepoint);
 
         // Called when there is joystick input. joyX and joyY are in the range [-1.0,1.0].
         virtual void OnJoy(float joyX, float joyY);

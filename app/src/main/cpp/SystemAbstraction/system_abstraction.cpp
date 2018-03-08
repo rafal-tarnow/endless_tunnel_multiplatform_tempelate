@@ -98,16 +98,12 @@ void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event
 
 void SystemAbstraction::onKey(ButtonEvent event, Key key, Mods mods, int x, int y)
 {
-    if(event == EVENT_DOWN) {
-         //mgr->OnKeyDown(key);
-    }else if(event == EVENT_UP){
-        // mgr->OnKeyUp(key);
-    }
+         mgr->OnKey(event, key, mods, x, y);
 }
 
 void SystemAbstraction::onChar(unsigned int codepoint)
 {
-
+    mgr->OnChar(codepoint);
 }
 
 bool SystemAbstraction::onBackKeyPressed()

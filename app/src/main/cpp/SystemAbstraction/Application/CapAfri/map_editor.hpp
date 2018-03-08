@@ -19,7 +19,8 @@ public:
     void systemCallback_Render();
     void systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
     void systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords);
-    void systemCallback_keyboard(SystemAbstraction::ButtonEvent, unsigned int key, int x, int y );
+    void systemCallback_OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
+    void systemCallback_OnChar(unsigned int codepoint);
     void systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords) ;
     void systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords);
 

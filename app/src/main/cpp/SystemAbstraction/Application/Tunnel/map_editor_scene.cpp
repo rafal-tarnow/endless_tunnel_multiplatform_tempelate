@@ -185,19 +185,27 @@ void MapEditorScene::OnJoy(float joyX, float joyY) {
 
 }
 
-void MapEditorScene::OnKeyDown(int keyCode)
+void MapEditorScene::OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y)
 {
     if (mMenu) {
-        if (keyCode == OURKEY_UP) {
+        if (key == SystemAbstraction::KEY_UP) {
             mMenuSel = mMenuSel > 0 ? mMenuSel - 1 : mMenuSel;
         }
-        else if (keyCode == OURKEY_DOWN) {
+        else if (key == SystemAbstraction::KEY_DOWN) {
             mMenuSel = mMenuSel + 1 < mMenuItemCount ? mMenuSel + 1 : mMenuSel;
         }
-        else if (keyCode == OURKEY_ENTER) {
+        else if (key == SystemAbstraction::KEY_ENTER) {
             HandleMenu(mMenuItems[mMenuSel]);
         }
+    }else
+    {
+        mapEditor->systemCallback_OnKey(event, key, mods, x, y);
     }
+}
+
+void MapEditorScene::OnChar(unsigned int codepoint)
+{
+    mapEditor->systemCallback_OnChar(codepoint);
 }
 
 void MapEditorScene::ShowMenu(int menu) {
