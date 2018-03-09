@@ -50,10 +50,18 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     }
 
     //GROUND LINE
-    //    float verticles[6] = {1.0f, 1.0f, 0.0f, 3.0f, 2.0f, 0.0f};
-    //    LS_initLineStrip(&lineStripGround, verticles, 6);
+//        float verticles[9] = {1.0f, 1.0f, 0.0f, 3.0f, 2.0f, 0.0f, 6.0f, 3.0f, 0.0f};
+//        LS_init(&lineStripGround, verticles, 9);
 
-    LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
+    dots.clear();
+
+        glm::vec3 position_1(1.0f, 1.0f, 0.0f);
+        dots.push_back(position_1);
+        glm::vec3 position_2(3.0f, 2.0f, 0.0f);
+        dots.push_back(position_2);
+        glm::vec3 position_3(6.0f, 3.0f, 0.0f);
+        dots.push_back(position_3);
+        LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
 
     //demo_init(framebuffer_width, framebuffer_height);
 }
@@ -164,7 +172,7 @@ void MapEditor::systemCallback_Render()
         lineStripGround.projection = cameraProjectionMatrix;
         lineStripGround.view = cameraViewMatrix;
         lineStripGround.model = glm::mat4(1);
-        LS_draw(&lineStripGround, 3);
+        LS_draw(&lineStripGround, 4);
 
     }
     glEnable(GL_DEPTH_TEST);
