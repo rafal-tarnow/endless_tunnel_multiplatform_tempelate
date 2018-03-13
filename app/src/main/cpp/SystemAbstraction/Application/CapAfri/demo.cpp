@@ -8,6 +8,13 @@
  *                          CUSTOM WIDGET
  *
  * ===============================================================*/
+struct device device;
+struct nk_font_atlas atlas;
+struct media media;
+struct nk_context ctx;
+
+static GuiEventListener * eventListener = nullptr;
+
 static int ui_piemenu(struct nk_context *ctx, struct nk_vec2 pos, float radius,
                       struct nk_image *icons, int item_count)
 {
@@ -188,7 +195,10 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         nk_spacing(ctx, 1);
 
         if (nk_button_label(ctx, "Save map"))
-            fprintf(stdout, "saved!\n");
+        {
+            printf("Save map clicked!\n");
+            eventListener->gui_onSaveMapButtonClicked();
+        }
     }
     nk_end(ctx);
 
@@ -413,13 +423,10 @@ void basic_demo(struct nk_context *ctx, struct media *media)
     nk_end(ctx);
 }
 
-struct device device;
-struct nk_font_atlas atlas;
-struct media media;
-struct nk_context ctx;
-
-void demo_init(int width, int height)
+void demo_init(int width, int height, GuiEventListener * guiEventListener)
 {
+    eventListener = guiEventListener;
+
     glViewport(0, 0, width, height);
 
 
@@ -644,9 +651,9 @@ void demo_render(int fb_width, int fb_height)
     //grid_demo(&ctx, &media);
 
     /* Draw */
-//    glViewport(0, 0, fb_width, fb_height);
-//    glClear(GL_COLOR_BUFFER_BIT);
-//    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    //    glViewport(0, 0, fb_width, fb_height);
+    //    glClear(GL_COLOR_BUFFER_BIT);
+    //    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
     nk_input_begin(&ctx);

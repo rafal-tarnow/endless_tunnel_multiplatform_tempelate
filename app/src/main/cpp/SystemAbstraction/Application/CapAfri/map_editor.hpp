@@ -7,8 +7,9 @@
 #include "level.hpp"
 #include <library_opengles_2/RectangleRenderer/LineStrip_Renderer.hpp>
 #include <system_abstraction.hpp>
+#include "demo.hpp"
 
-class MapEditor{
+class MapEditor : public GuiEventListener{
 public:
 
     MapEditor(int win_width, int win_height);
@@ -23,6 +24,8 @@ public:
     void systemCallback_OnChar(unsigned int codepoint);
     void systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords) ;
     void systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords);
+
+    void gui_onSaveMapButtonClicked();
 
 private:
     void updateCameraViewMatrix();

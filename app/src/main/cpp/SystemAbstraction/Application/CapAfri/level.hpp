@@ -6,6 +6,7 @@
 using namespace std;
 
 #include "./Bodies/coin_circle_body.hpp"
+#include <lib_config.hpp>
 
 class Level{
 
@@ -15,8 +16,10 @@ public:
 
     /* if error while procceding file function return file open() errno value */
     int loadLevelFromFile(string levelFilePath);
-    void saveLevelToFile(string levelFileName);
+    int saveLevelToFile(string levelFileName);
     vector<CircleCoin *> coinsVector;
 
     vector<glm::vec3> ground_verticles;
+private:
+    Config config;
 };

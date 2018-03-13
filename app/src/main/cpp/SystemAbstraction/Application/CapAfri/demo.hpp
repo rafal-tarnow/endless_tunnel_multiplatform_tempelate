@@ -33,7 +33,13 @@ struct media {
     struct nk_image menu[6];
 };
 
-void demo_init(int width, int height);
+
+class GuiEventListener{
+public:
+    virtual void gui_onSaveMapButtonClicked() = 0;
+};
+
+void demo_init(int width, int height, GuiEventListener * eventListener);
 
 void demo_onCharCallback(unsigned int codepoint);
 void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords);

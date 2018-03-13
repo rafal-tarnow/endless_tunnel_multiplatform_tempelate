@@ -5,6 +5,9 @@ project(system_abstraction)
 
 include_directories(.)
 
+include_directories(Application/libs/lib_config)
+add_subdirectory(Application/libs/lib_config)
+
 #GLM
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 set(GLM_STATIC_LIBRARY_ENABLE TRUE)
@@ -23,7 +26,6 @@ add_subdirectory(Application/libs/SOIL)
 
 include_directories(Application)
 add_subdirectory(Application/CapAfri)
-
 
 add_subdirectory(Application/libs/library_opengles_2)
 
@@ -72,4 +74,5 @@ target_link_libraries(system_abstraction
     libfreetype
     glm_static
     nuklear_gles2
+    lib_config
     )
