@@ -14,6 +14,7 @@ struct media media;
 struct nk_context ctx;
 
 static GuiEventListener * eventListener = nullptr;
+static int isToolboxWindowHovered = 0;
 
 static int ui_piemenu(struct nk_context *ctx, struct nk_vec2 pos, float radius,
                       struct nk_image *icons, int item_count)
@@ -191,6 +192,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
     {
         static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &media->font_30->handle);
+
         nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
         nk_spacing(ctx, 1);
 
@@ -199,6 +201,17 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
             printf("Save map clicked!\n");
             eventListener->gui_onSaveMapButtonClicked();
         }
+
+        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_spacing(ctx, 1);
+
+        if (nk_button_label(ctx, "Clear map"))
+        {
+            printf("Clear map clicked!\n");
+            eventListener->gui_onClearMapButtonClicked();
+        }
+
+        isToolboxWindowHovered = nk_window_is_hovered(ctx);
     }
     nk_end(ctx);
 
@@ -657,6 +670,11 @@ void demo_render(int fb_width, int fb_height)
     device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
     nk_input_begin(&ctx);
+}
+
+int demo_isPointerOnWindow()
+{
+    return isToolboxWindowHovered;
 }
 
 void demo_uninit()

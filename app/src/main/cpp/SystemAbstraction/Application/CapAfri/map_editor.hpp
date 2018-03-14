@@ -26,6 +26,7 @@ public:
     void systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords);
 
     void gui_onSaveMapButtonClicked();
+    void gui_onClearMapButtonClicked();
 
 private:
     void updateCameraViewMatrix();

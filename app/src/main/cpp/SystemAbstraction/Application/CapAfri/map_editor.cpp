@@ -49,16 +49,6 @@ MapEditor::MapEditor(int fb_width, int fb_height)
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
 
-    //GROUND LINE
-    //    float verticles[6] = {1.0f, 1.0f, 0.0f, 3.0f, 2.0f, 0.0f};
-    //    LS_initLineStrip(&lineStripGround, verticles, 6);
-
-    glm::vec3 point_1(1.0f, 1.0f, 0.0f);
-    level.ground_verticles.push_back(point_1);
-    glm::vec3 point_2(5.0f, 2.0f, 0.0f);
-    level.ground_verticles.push_back(point_2);
-    glm::vec3 point_3(15.0f, 0.0f, 0.0f);
-    level.ground_verticles.push_back(point_3);
 
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
 
@@ -104,11 +94,6 @@ void MapEditor::systemCallback_Render()
 
         DE_drawRectangle(&redDotPointerRectangle);
 
-        if(dots.empty())
-        {
-            glm::vec3 point = glm::vec3(0.5f, 0.5f ,0.0f);
-            dots.push_back(point);
-        }
 
         for(unsigned int i = 0; i < dots.size(); i++)
         {
@@ -166,7 +151,7 @@ void MapEditor::systemCallback_Render()
         lineStripGround.projection = cameraProjectionMatrix;
         lineStripGround.view = cameraViewMatrix;
         lineStripGround.model = glm::mat4(1);
-        LS_draw(&lineStripGround, 4);
+        LS_draw(&lineStripGround, 2);
 
     }
     glEnable(GL_DEPTH_TEST);
@@ -244,11 +229,15 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
-    demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
-
     LOGD("MapEditor::systemCallback_mouseButton()\n");
     current_mouse_x_pos = window_x;
     current_mouse_y_pos = window_y;
+
+    if(demo_isPointerOnWindow())
+    {
+        demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
+        return;
+    }
 
 
     if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
@@ -299,6 +288,13 @@ void MapEditor::gui_onSaveMapButtonClicked()
     {
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
+}
+
+void MapEditor::gui_onClearMapButtonClicked()
+{
+    level.clear();
+    dots.clear();
+    LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)

@@ -17,15 +17,19 @@ Level::~Level()
 
 int Level::loadLevelFromFile(string levelFilePath)
 {
-    FILE * mapFile = fopen(levelFilePath.c_str(), "ab+");
-    if(mapFile == NULL)
+    Config config;
+    config.loadDataFromFileToMemory(levelFilePath);
+
+    int32_t map_size = config.get_int32_t("ground_verticles.size()");
+
+    for(unsigned int i = 0; i < map_size; i++)
     {
-        int tmpErrno = errno;
-        return tmpErrno;
+        stringstream stream;
+        stream << "ground_verticles.at(" << i << ")";
+
+        ground_verticles.push_back(config.get_glm_vec3(stream.str()));
     }
 
-
-    fclose(mapFile);
     return 0;
 }
 
@@ -39,15 +43,18 @@ int Level::saveLevelToFile(string levelFilePath)
     {
         stringstream stream;
         stream << "ground_verticles.at(" << i << ")";
-        string variable_name = stream.str() + ".x";
-        config.set_float(variable_name, ground_verticles.at(i).x);
-        config.set_float(stream.str() + ".y", ground_verticles.at(i).y);
-        config.set_float(stream.str() + ".z", ground_verticles.at(i).z);
+
+        config.set_glm_vec3(stream.str(), ground_verticles.at(i));
     }
 
     config.saveDataFromMemoryToFile(levelFilePath);
 
     return 0;
+}
+
+void Level::clear()
+{
+    ground_verticles.clear();
 }
 
 

@@ -5,8 +5,6 @@ project(system_abstraction)
 
 include_directories(.)
 
-include_directories(Application/libs/lib_config)
-add_subdirectory(Application/libs/lib_config)
 
 #GLM
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
@@ -14,6 +12,9 @@ set(GLM_STATIC_LIBRARY_ENABLE TRUE)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Application/libs)
 add_subdirectory(Application/libs/glm)
 
+#LIB_CONFIG
+include_directories(Application/libs/lib_config)
+add_subdirectory(Application/libs/lib_config)
 
 add_subdirectory(Application/libs/Box2D)
 
