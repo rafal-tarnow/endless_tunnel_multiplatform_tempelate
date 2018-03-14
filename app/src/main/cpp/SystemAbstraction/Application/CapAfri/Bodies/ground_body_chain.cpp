@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <system_paths.hpp>
 
 using namespace std;
 
@@ -23,16 +24,28 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     shape.SetAsBox(width/2,height/2);
 
 
-    b2Vec2 vs[6];
-    vs[0].Set(-300.0f, 0.0f);
-    vs[1].Set(10.0f, 2.0f);
-    vs[2].Set(20.0f, 10.0f);
-    vs[3].Set(45.f, 13.0f);
-    vs[4].Set(58.0f, 0.0f);
-    vs[5].Set(100.0f, 0.0f);
+    //LEVEL LOAD
+    mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
+    mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
+    if(mapFileOpenErrno)
+    {
+        mapFileOpenErrorString = strerror(mapFileOpenErrno);
+    }
+
+    LS_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size());
+
+
+    b2Vec2 * vs;
+    vs = (b2Vec2 *)malloc(level.ground_verticles.size()*sizeof(b2Vec2));
+    for(unsigned int i =0; i < level.ground_verticles.size(); i++)
+    {
+        glm::vec3 punkt = level.ground_verticles.at(i);
+        vs[i].Set(punkt.x, punkt.y);
+    }
 
     b2ChainShape chain;
-    chain.CreateChain(vs, 6);
+    chain.CreateChain(vs, level.ground_verticles.size());
+    free(vs);
 
     b2FixtureDef fixturedef;
     fixturedef.shape=&chain;
@@ -43,14 +56,6 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     GLfloat x_bottom_right = x_top_left + width;
     GLfloat y_bottom_right = y_top_left - height;
 
-
-    float data[6*3] = {-300.0f,0.0f, 0.0f,
-    10.0f, 2.0f, 0.0f,
-    20.0f, 10.0f, 0.0f,
-    45.f, 13.0f, 0.0f,
-    58.0f, 0.0f, 0.0f,
-    100.0f, 0.0f, 0.0f};
-    LS_init(&lineStripRenderer, data,6*3);
 }
 
 GroundChain::~GroundChain(){
