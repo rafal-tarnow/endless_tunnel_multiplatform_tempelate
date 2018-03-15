@@ -185,7 +185,7 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
 
 void toolbox_demo(struct nk_context *ctx, struct media *media)
 {
-    static const char *items[] = {"Move","Ground","Coin"};
+    static const char *items[] = {"Ground","Coin"};
     static int selected_icon = 0;
     int i = 0;
 
@@ -223,7 +223,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         ui_widget(ctx, media, 40);
         if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
             nk_layout_row_dynamic(ctx, 35, 1);
-            for (i = 0; i < 3; ++i)
+            for (i = 0; i < 2; ++i)
                 if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
                     if(eventListener != nullptr){

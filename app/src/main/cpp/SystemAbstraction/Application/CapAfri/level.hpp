@@ -22,7 +22,7 @@ public:
     vector<CircleCoin *> coinsVector;
 
     vector<glm::vec3> ground_verticles;
-    vector<CircleCoin *> coins;
+    vector<CircleCoinRender *> coins_vector;
 private:
     Config config;
 };

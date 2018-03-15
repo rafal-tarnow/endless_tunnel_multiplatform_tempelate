@@ -9,6 +9,7 @@
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 #include "../../system_log.hpp"
+#include <system_paths.hpp>
 
 
 using namespace std;
@@ -82,22 +83,30 @@ void Game::loadLevel()
     LOGD("1.9.2");
     car = new Car(1.0f, 5.0f, world);
 
+
+    //LEVEL LOAD
+    Level level;
+    string mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
+#warning "dorobic obsluge bledu otwarcia pliku"
+    int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
+
     //TODO dorobic delete circle coin
-    coin = new CircleCoin(9.0, 3.0,0.25, world);
-    coin = new CircleCoin(15.0, 8.0,0.25, world);
-    coin = new CircleCoin(18.0, 10.0,0.25, world);
-    coin = new CircleCoin(21.0, 11.0,0.25, world);
-    coin = new CircleCoin(23.0, 12.0,0.25, world);
-    coin = new CircleCoin(26.0, 12.0,0.25, world);
-    coin = new CircleCoin(34.0, 13.0,0.25, world);
-    coin = new CircleCoin(36.0, 13.0,0.25, world);
-    coin = new CircleCoin(41.0, 13.0,0.25, world);
-    coin = new CircleCoin(43.0, 13.0,0.25, world);
-    coin = new CircleCoin(45.0, 13.0,0.25, world);
+    for (auto & coin : level.coins_vector)
+    {
+        b2Vec2 pos;
+        pos.x = coin->getPosition().x;
+        pos.y = coin->getPosition().y;
+        coins.push_back(new CircleCoin(pos.x, pos.y,0.25, world));
+    }
 }
 
 Game::~Game()
 {
+    for(unsigned int i = 0; i < coins.size(); i++ )
+    {
+        delete coins.at(i);
+    }
+
     TextureManager::deleteAllTextures();
     delete background;
     delete groundChain;

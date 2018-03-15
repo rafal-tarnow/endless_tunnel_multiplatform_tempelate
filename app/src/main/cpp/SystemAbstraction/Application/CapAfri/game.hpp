@@ -51,8 +51,7 @@ private:
     BackGround * background = nullptr;
 
     Car * car = nullptr;
-    CircleCoin * coin = nullptr;
-
+    vector<CircleCoin *> coins;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     glm::mat4 projectionMatrix = glm::mat4(1);

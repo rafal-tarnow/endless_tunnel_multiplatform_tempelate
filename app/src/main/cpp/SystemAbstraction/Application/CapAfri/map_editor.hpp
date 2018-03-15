@@ -21,7 +21,7 @@ public:
 
     typedef enum
     {
-        FANT_GROUND,
+        FANT_GROUND = 0,
         FANT_COIN
     }FantMode;
 
@@ -44,6 +44,7 @@ public:
 
 private:
     void addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
+    void addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
     void windowCoordinatesToBoxCoordinates(double x_window, double y_window, glm::vec3 & world_position);
@@ -91,4 +92,6 @@ private:
 
     CursorMode cursorMode = CURSOR_ADD_FANT;
     glm::vec3 touch_start_position_in_world;
+
+
 };

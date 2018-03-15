@@ -52,12 +52,12 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
 
 
-
     demo_init(framebuffer_width, framebuffer_height, this);
 }
 
 MapEditor::~MapEditor()
 {
+
    delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
     LS_delete(&x_lineStrip);
@@ -105,6 +105,9 @@ void MapEditor::systemCallback_Render()
             DE_drawRectangle(&redDotPointerRectangle);
         }
 
+    for (auto & coin : level.coins_vector){
+        coin->render(cameraProjectionMatrix,cameraViewMatrix);
+    }
 
 
         //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -243,6 +246,15 @@ void MapEditor::addGroundPointInFramebufferCoordinates(int framebuffer_x, int fr
     LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
+void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+{
+    glm::vec3 world_position;
+    windowCoordinatesToBoxCoordinates(framebuffer_x, framebuffer_y, world_position);
+
+    level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, 0.25));
+
+}
+
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
     LOGD("MapEditor::systemCallback_mouseButton()\n");
@@ -264,7 +276,7 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
                 addGroundPointInFramebufferCoordinates(window_x, window_y);
             }else if(fantMode == FANT_COIN)
             {
-
+                addCoinInFramebufferCoordinates(window_x, window_y);
             }
         }
         //if pointer in Move mode change to add fant
@@ -295,7 +307,7 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
             addGroundPointInFramebufferCoordinates(coords->x, coords->y);
         }else if(fantMode == FANT_COIN)
         {
-
+            addCoinInFramebufferCoordinates(coords->x, coords->y);
         }
     }
     //if pointer in Move mode change to add fant
@@ -363,7 +375,7 @@ void MapEditor::gui_onClearMapButtonClicked()
 void MapEditor::gui_onCursorModeChanged(int mode)
 {
     LOGD("MapEditor::gui_onCursorModeChanged(%d)", mode);
-    //cursorMode = (CursorMode)mode;
+    fantMode = (FantMode)mode;
 }
 
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)
