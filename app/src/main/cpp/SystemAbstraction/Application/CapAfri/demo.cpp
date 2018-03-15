@@ -14,7 +14,6 @@ struct media media;
 struct nk_context ctx;
 
 static GuiEventListener * eventListener = nullptr;
-static int isToolboxWindowHovered = 0;
 
 static int ui_piemenu(struct nk_context *ctx, struct nk_vec2 pos, float radius,
                       struct nk_image *icons, int item_count)
@@ -186,9 +185,13 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
 
 void toolbox_demo(struct nk_context *ctx, struct media *media)
 {
+    static const char *items[] = {"Move","Ground","Coin"};
+    static int selected_icon = 0;
+    int i = 0;
+
     nk_style_set_font(ctx, &media->font_30->handle);
 
-    nk_begin(ctx, "Toolbox", nk_rect(10,10,255,270),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    nk_begin(ctx, "Toolbox", nk_rect(10,10,255,350),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
         static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &media->font_30->handle);
@@ -199,7 +202,9 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         if (nk_button_label(ctx, "Save map"))
         {
             printf("Save map clicked!\n");
-            eventListener->gui_onSaveMapButtonClicked();
+            if(eventListener != nullptr) {
+                eventListener->gui_onSaveMapButtonClicked();
+            }
         }
 
         nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
@@ -208,10 +213,27 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         if (nk_button_label(ctx, "Clear map"))
         {
             printf("Clear map clicked!\n");
-            eventListener->gui_onClearMapButtonClicked();
+            if(eventListener != nullptr) {
+                eventListener->gui_onClearMapButtonClicked();
+            }
         }
 
-        isToolboxWindowHovered = nk_window_is_hovered(ctx);
+        ui_header(ctx, media, "Cursor Mode");
+
+        ui_widget(ctx, media, 40);
+        if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
+            nk_layout_row_dynamic(ctx, 35, 1);
+            for (i = 0; i < 3; ++i)
+                if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
+                    selected_icon = i;
+                    if(eventListener != nullptr){
+                        eventListener->gui_onCursorModeChanged(selected_icon);
+                    }
+                }
+            nk_combo_end(ctx);
+        }
+
+        //LOGD("isToolboxWindowHovered = %d", isToolboxWindowHovered);
     }
     nk_end(ctx);
 
@@ -345,50 +367,50 @@ void basic_demo(struct nk_context *ctx, struct media *media)
     nk_begin(ctx, "Basic Demo", nk_rect(320, 50, 275, 610),
              NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_TITLE);
 
-    /*------------------------------------------------
-     *                  POPUP BUTTON
-     *------------------------------------------------*/
-    ui_header(ctx, media, "Popup & Scrollbar & Images");
-    ui_widget(ctx, media, 35);
-    if (nk_button_image_label(ctx, media->dir, "Images", NK_TEXT_CENTERED))
-        image_active = !image_active;
+        /*------------------------------------------------
+         *                  POPUP BUTTON
+         *------------------------------------------------*/
+        ui_header(ctx, media, "Popup & Scrollbar & Images");
+        ui_widget(ctx, media, 35);
+        if (nk_button_image_label(ctx, media->dir, "Images", NK_TEXT_CENTERED))
+            image_active = !image_active;
 
-    /*------------------------------------------------
-     *                  SELECTED IMAGE
-     *------------------------------------------------*/
-    ui_header(ctx, media, "Selected Image");
-    ui_widget_centered(ctx, media, 100);
-    nk_image(ctx, media->images[selected_image]);
+        /*------------------------------------------------
+         *                  SELECTED IMAGE
+         *------------------------------------------------*/
+        ui_header(ctx, media, "Selected Image");
+        ui_widget_centered(ctx, media, 100);
+        nk_image(ctx, media->images[selected_image]);
 
-    /*------------------------------------------------
-     *                  IMAGE POPUP
-     *------------------------------------------------*/
-    if (image_active) {
-        struct nk_panel popup;
-        if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Image Popup", 0, nk_rect(265, 0, 320, 220))) {
-            nk_layout_row_static(ctx, 82, 82, 3);
-            for (i = 0; i < 9; ++i) {
-                if (nk_button_image(ctx, media->images[i])) {
-                    selected_image = i;
-                    image_active = 0;
-                    nk_popup_close(ctx);
+        /*------------------------------------------------
+         *                  IMAGE POPUP
+         *------------------------------------------------*/
+        if (image_active) {
+            struct nk_panel popup;
+            if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Image Popup", 0, nk_rect(265, 0, 320, 220))) {
+                nk_layout_row_static(ctx, 82, 82, 3);
+                for (i = 0; i < 9; ++i) {
+                    if (nk_button_image(ctx, media->images[i])) {
+                        selected_image = i;
+                        image_active = 0;
+                        nk_popup_close(ctx);
+                    }
                 }
+                nk_popup_end(ctx);
             }
-            nk_popup_end(ctx);
         }
-    }
     /*------------------------------------------------
      *                  COMBOBOX
      *------------------------------------------------*/
     ui_header(ctx, media, "Combo box");
-    ui_widget(ctx, media, 40);
-    if (nk_combo_begin_label(ctx, items[selected_item], nk_vec2(nk_widget_width(ctx), 200))) {
-        nk_layout_row_dynamic(ctx, 35, 1);
-        for (i = 0; i < 3; ++i)
-            if (nk_combo_item_label(ctx, items[i], NK_TEXT_LEFT))
-                selected_item = i;
-        nk_combo_end(ctx);
-    }
+        ui_widget(ctx, media, 40);
+        if (nk_combo_begin_label(ctx, items[selected_item], nk_vec2(nk_widget_width(ctx), 200))) {
+            nk_layout_row_dynamic(ctx, 35, 1);
+            for (i = 0; i < 3; ++i)
+                if (nk_combo_item_label(ctx, items[i], NK_TEXT_LEFT))
+                    selected_item = i;
+            nk_combo_end(ctx);
+        }
 
     ui_widget(ctx, media, 40);
     if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
@@ -399,21 +421,21 @@ void basic_demo(struct nk_context *ctx, struct media *media)
         nk_combo_end(ctx);
     }
 
-    /*------------------------------------------------
-     *                  CHECKBOX
-     *------------------------------------------------*/
-    ui_header(ctx, media, "Checkbox");
-    ui_widget(ctx, media, 30);
-    nk_checkbox_label(ctx, "Flag 1", &check0);
-    ui_widget(ctx, media, 30);
-    nk_checkbox_label(ctx, "Flag 2", &check1);
+        /*------------------------------------------------
+         *                  CHECKBOX
+         *------------------------------------------------*/
+        ui_header(ctx, media, "Checkbox");
+        ui_widget(ctx, media, 30);
+        nk_checkbox_label(ctx, "Flag 1", &check0);
+        ui_widget(ctx, media, 30);
+        nk_checkbox_label(ctx, "Flag 2", &check1);
 
-    /*------------------------------------------------
-     *                  PROGRESSBAR
-     *------------------------------------------------*/
-    ui_header(ctx, media, "Progressbar");
-    ui_widget(ctx, media, 35);
-    nk_progress(ctx, &prog, 100, nk_true);
+        /*------------------------------------------------
+         *                  PROGRESSBAR
+         *------------------------------------------------*/
+        ui_header(ctx, media, "Progressbar");
+        ui_widget(ctx, media, 35);
+        nk_progress(ctx, &prog, 100, nk_true);
 
     /*------------------------------------------------
      *                  PIEMENU
@@ -670,11 +692,6 @@ void demo_render(int fb_width, int fb_height)
     device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
     nk_input_begin(&ctx);
-}
-
-int demo_isPointerOnWindow()
-{
-    return isToolboxWindowHovered;
 }
 
 void demo_uninit()

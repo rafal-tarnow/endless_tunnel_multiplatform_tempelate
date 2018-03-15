@@ -9,8 +9,21 @@
 #include <system_abstraction.hpp>
 #include "demo.hpp"
 
+
 class MapEditor : public GuiEventListener{
 public:
+
+    typedef enum
+    {
+        CURSOR_MOVE = 0,
+        CURSOR_ADD_FANT,
+    }CursorMode;
+
+    typedef enum
+    {
+        FANT_GROUND,
+        FANT_COIN
+    }FantMode;
 
     MapEditor(int win_width, int win_height);
     ~MapEditor();
@@ -27,8 +40,10 @@ public:
 
     void gui_onSaveMapButtonClicked();
     void gui_onClearMapButtonClicked();
+    void gui_onCursorModeChanged(int mode);
 
 private:
+    void addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
     void windowCoordinatesToBoxCoordinates(double x_window, double y_window, glm::vec3 & world_position);
@@ -71,4 +86,9 @@ private:
     //DOTS
     vector<glm::vec3> dots;
     LS_LineStrip lineStripGround;
+
+    FantMode fantMode = FANT_GROUND;
+
+    CursorMode cursorMode = CURSOR_ADD_FANT;
+    glm::vec3 touch_start_position_in_world;
 };

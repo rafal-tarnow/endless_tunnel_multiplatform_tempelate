@@ -6,8 +6,10 @@
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
+class CircleCoinRender : public RenderableObject{
 
-class CircleCoin: public RenderableObject{
+};
+class CircleCoin: public CircleCoinRender{
 public:
     CircleCoin(float32 x,float32 y,float32 radius, b2World* world);
     ~CircleCoin();

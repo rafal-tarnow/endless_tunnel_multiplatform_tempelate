@@ -36,8 +36,10 @@ struct media {
 
 class GuiEventListener{
 public:
+
     virtual void gui_onSaveMapButtonClicked() = 0;
     virtual void gui_onClearMapButtonClicked() = 0;
+    virtual void gui_onCursorModeChanged(int mode) = 0;
 };
 
 void demo_init(int width, int height, GuiEventListener * eventListener);
@@ -50,6 +52,5 @@ void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction:
 
 void demo_render(int fb_width, int fb_height);
 
-int demo_isPointerOnWindow();
 
 void demo_uninit();

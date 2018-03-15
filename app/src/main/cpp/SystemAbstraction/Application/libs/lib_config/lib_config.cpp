@@ -15,6 +15,10 @@ bool Config::loadDataFromFileToMemory(string fileName)
 
     //OPEN FILE
     std::ifstream infile(fileName.c_str());
+    if(infile.fail())
+    {
+        return false;
+    }
 
     string type;
     string name;

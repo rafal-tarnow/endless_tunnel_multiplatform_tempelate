@@ -7,6 +7,7 @@ using namespace std;
 
 #include "./Bodies/coin_circle_body.hpp"
 #include <lib_config.hpp>
+#include "./Bodies/coin_circle_body.hpp"
 
 class Level{
 
@@ -21,6 +22,7 @@ public:
     vector<CircleCoin *> coinsVector;
 
     vector<glm::vec3> ground_verticles;
+    vector<CircleCoin *> coins;
 private:
     Config config;
 };
