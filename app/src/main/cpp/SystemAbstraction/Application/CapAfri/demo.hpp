@@ -50,6 +50,8 @@ void demo_onScrollCallback(double yoffset);
 void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
 void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction::Key key, SystemAbstraction::Mods mods, int x, int y);
 
+int demo_isAnyWindowHovered();
+
 void demo_render(int fb_width, int fb_height);
 
 

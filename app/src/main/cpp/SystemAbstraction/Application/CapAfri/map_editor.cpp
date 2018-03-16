@@ -58,7 +58,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
 MapEditor::~MapEditor()
 {
 
-   delete gridLines;
+    delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
@@ -82,85 +82,86 @@ void MapEditor::systemCallback_Render()
         return;
     }
 
-    glDisable(GL_DEPTH_TEST);
-    {
-
-        glLineWidth(1.0);
-
-        glm::mat4 PVM = cameraProjectionMatrix*cameraViewMatrix*glm::mat4(1);
-
-        gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
-
-        redDotPointerRectangle.projection = cameraProjectionMatrix;
-        redDotPointerRectangle.view = cameraViewMatrix;
-        redDotPointerRectangle.model = redDotCursorModel;
-
-        DE_drawRectangle(&redDotPointerRectangle);
-
-
-        for(unsigned int i = 0; i < dots.size(); i++)
+        glDisable(GL_DEPTH_TEST);
         {
-            glm::mat4 model = glm::translate(glm::mat4(1),dots[i]);
-            redDotPointerRectangle.model = model;
+
+            glLineWidth(1.0);
+
+            glm::mat4 PVM = cameraProjectionMatrix*cameraViewMatrix*glm::mat4(1);
+
+            gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
+
+            redDotPointerRectangle.projection = cameraProjectionMatrix;
+            redDotPointerRectangle.view = cameraViewMatrix;
+            redDotPointerRectangle.model = redDotCursorModel;
+
             DE_drawRectangle(&redDotPointerRectangle);
+
+
+            for(unsigned int i = 0; i < dots.size(); i++)
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1),dots[i]);
+                redDotPointerRectangle.model = model;
+                DE_drawRectangle(&redDotPointerRectangle);
+            }
+
+        for (auto & coin : level.coins_vector){
+            coin->render(cameraProjectionMatrix,cameraViewMatrix);
         }
 
-    for (auto & coin : level.coins_vector){
-        coin->render(cameraProjectionMatrix,cameraViewMatrix);
-    }
+
+            //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
-        //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            //    if(car != nullptr)
+            //    {
+            //        float x, y;
+            //        car->getPosition(&x,&y);
+            //        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            //    }
 
-
-        //    if(car != nullptr)
-        //    {
-        //        float x, y;
-        //        car->getPosition(&x,&y);
-        //        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        //    }
-
-        //    b2Body* tmp=world->GetBodyList();
-        //    while(tmp)
-        //    {
-        //        if(tmp->GetUserData() != nullptr){
-        //            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
-        //        }
-        //        tmp=tmp->GetNext();
-        //    }
+            //    b2Body* tmp=world->GetBodyList();
+            //    while(tmp)
+            //    {
+            //        if(tmp->GetUserData() != nullptr){
+            //            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
+            //        }
+            //        tmp=tmp->GetNext();
+            //    }
 
 
 
-        //    static int cash = 0;
-        //    stringstream text;
-        //    if(car){
-        //        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
-        //    }else{
-        //        text << "$ 0";
-        //    }
+            //    static int cash = 0;
+            //    stringstream text;
+            //    if(car){
+            //        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
+            //    }else{
+            //        text << "$ 0";
+            //    }
 
-        //    textRenderer_v2->RenderText(text.str(), framebuffer_width - 200.0f, framebuffer_height - 50.0f);
+            //    textRenderer_v2->RenderText(text.str(), framebuffer_width - 200.0f, framebuffer_height - 50.0f);
 
 
-        //DRAW COORDINATES LINES
-        x_lineStrip.projection = cameraProjectionMatrix;
-        x_lineStrip.view = cameraViewMatrix;
-        x_lineStrip.model = glm::mat4(1);
-        LS_draw(&x_lineStrip, 2);
+            //DRAW COORDINATES LINES
+            x_lineStrip.projection = cameraProjectionMatrix;
+            x_lineStrip.view = cameraViewMatrix;
+            x_lineStrip.model = glm::mat4(1);
+            LS_draw(&x_lineStrip, 2);
 
-        y_lineStrip.projection = cameraProjectionMatrix;
-        y_lineStrip.view = cameraViewMatrix;
-        y_lineStrip.model = glm::mat4(1);
-        LS_draw(&y_lineStrip, 2);
+            y_lineStrip.projection = cameraProjectionMatrix;
+            y_lineStrip.view = cameraViewMatrix;
+            y_lineStrip.model = glm::mat4(1);
+            LS_draw(&y_lineStrip, 2);
 
-        //DRAW GROUND LINE
-        lineStripGround.projection = cameraProjectionMatrix;
-        lineStripGround.view = cameraViewMatrix;
-        lineStripGround.model = glm::mat4(1);
-        LS_draw(&lineStripGround, 2);
+            //DRAW GROUND LINE
+            lineStripGround.projection = cameraProjectionMatrix;
+            lineStripGround.view = cameraViewMatrix;
+            lineStripGround.model = glm::mat4(1);
+            LS_draw(&lineStripGround, 2);
 
-    }
-    glEnable(GL_DEPTH_TEST);
+        }
+        glEnable(GL_DEPTH_TEST);
+
 
     demo_render(framebuffer_width, framebuffer_height);
 
@@ -185,8 +186,9 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 }
 
 void MapEditor::systemCallback_Scroll(double yoffset){
-        demo_onScrollCallback(yoffset);
-
+    demo_onScrollCallback(yoffset);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
     if(yoffset > 0)
     {
@@ -261,12 +263,13 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
     current_mouse_x_pos = window_x;
     current_mouse_y_pos = window_y;
 
-        demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
-
+    demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
     if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
-       windowCoordinatesToBoxCoordinates(window_x, window_y, touch_start_position_in_world);
+        windowCoordinatesToBoxCoordinates(window_x, window_y, touch_start_position_in_world);
     }
     else if((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_UP))
     {
@@ -287,19 +290,22 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
 
 void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-        demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                                   SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
+                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
 
 
-
-        windowCoordinatesToBoxCoordinates(coords->x, coords->y, touch_start_position_in_world);
+    windowCoordinatesToBoxCoordinates(coords->x, coords->y, touch_start_position_in_world);
 }
 
 void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
-        demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                                   SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
+                               SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
     if(cursorMode == CURSOR_ADD_FANT)
     {
@@ -322,8 +328,9 @@ void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mou
 
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
-        demo_onPointerMoveCallback(pointerId, coords);
-
+    demo_onPointerMoveCallback(pointerId, coords);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
     current_mouse_x_pos = coords->x;
     current_mouse_y_pos = coords->y;
@@ -380,13 +387,16 @@ void MapEditor::gui_onCursorModeChanged(int mode)
 
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)
 {
-        demo_onCharCallback(codepoint);
+    demo_onCharCallback(codepoint);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 }
 
 void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y)
 {
-        demo_onKeyCallback(event, key, mods, x, y);
-
+    demo_onKeyCallback(event, key, mods, x, y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
 
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){
         camera_position_x += 1.0f;

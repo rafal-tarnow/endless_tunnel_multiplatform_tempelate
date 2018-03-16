@@ -232,8 +232,6 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
                 }
             nk_combo_end(ctx);
         }
-
-        //LOGD("isToolboxWindowHovered = %d", isToolboxWindowHovered);
     }
     nk_end(ctx);
 
@@ -673,6 +671,11 @@ void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction:
         nk_input_key(&ctx, NK_KEY_CUT, 0);
         nk_input_key(&ctx, NK_KEY_SHIFT, 0);
     }
+}
+
+int demo_isAnyWindowHovered()
+{
+    return nk_window_is_any_hovered(&ctx);
 }
 
 void demo_render(int fb_width, int fb_height)
