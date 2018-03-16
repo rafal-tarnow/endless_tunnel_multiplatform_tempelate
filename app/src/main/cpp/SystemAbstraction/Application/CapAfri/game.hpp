@@ -6,7 +6,6 @@
 #include "./Bodies/car_body.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
-#include <library_opengles_2/RectangleRenderer/TriangleStrip_Renderer.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -59,7 +58,4 @@ private:
     glm::mat4 viewMatrix = glm::mat4(1);
 
     GLfloat zoom = 1.0f;
-
-    TS_TriangleStrip triangleStrip;
-
 };

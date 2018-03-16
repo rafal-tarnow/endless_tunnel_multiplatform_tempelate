@@ -32,8 +32,21 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
 
-    LS_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size());
 
+    glm::vec4 line_color(0.0f, 1.0f, 0.0f, 1.0f);
+    LS_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size(), line_color);
+
+
+    vector<glm::vec3> triangle_strip_verticles;
+    for(auto verticle : level.ground_verticles)
+    {
+        triangle_strip_verticles.push_back(verticle);
+        verticle.y = verticle.y - 18.0f;
+        triangle_strip_verticles.push_back(verticle);
+    }
+
+    glm::vec4 color(0.59f, 0.29f, 0.0f, 1.0f);
+    TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), color);
 
     b2Vec2 * vs;
     vs = (b2Vec2 *)malloc(level.ground_verticles.size()*sizeof(b2Vec2));
@@ -60,14 +73,24 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
 
 GroundChain::~GroundChain(){
     LS_delete(&lineStripRenderer);
+        TS_deleteTriangleStrip(&triangleStrip);
 }
 
 void GroundChain::render(glm::mat4 projection, glm::mat4 view){
     //cout << "Ground::render()" << endl;
+
+    triangleStrip.projection = projection;
+    triangleStrip.view = view;
+    triangleStrip.model = glm::mat4(1);
+
+    TS_drawTriangleStrip(&triangleStrip);
+
     lineStripRenderer.projection = projection;
     lineStripRenderer.view = view;
     lineStripRenderer.model = glm::mat4(1);
 
     LS_draw(&lineStripRenderer, 10.0f);
+
+
 }
 

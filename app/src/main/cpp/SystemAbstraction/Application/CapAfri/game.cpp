@@ -51,7 +51,7 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(win_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(current_window_width,current_window_height);
-   // textRenderer_v2->Load("./data/font/design_graffiti_agentorange_www_myfontfree_com.ttf", fontSize);
+    // textRenderer_v2->Load("./data/font/design_graffiti_agentorange_www_myfontfree_com.ttf", fontSize);
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fontSize);
 
     //glEnable(GL_MULTISAMPLE);
@@ -74,9 +74,11 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     loadLevel();
 
 
-    float verticles[9] = {0,0,0,2,0,0,2,2,0};
-    glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
-    TS_initTriangleStrip(&triangleStrip,verticles,9, color);
+
+
+
+
+
 }
 
 
@@ -116,7 +118,7 @@ Game::~Game()
     delete groundChain;
     delete world;
 
-    TS_deleteTriangleStrip(&triangleStrip);
+
 }
 
 
@@ -228,14 +230,6 @@ void Game::systemCallback_Render()
         }
         tmp=tmp->GetNext();
     }
-
-
-    triangleStrip.projection = projectionMatrix;
-    triangleStrip.view = viewMatrix;
-    triangleStrip.model = glm::mat4(1);
-
-    TS_drawTriangleStrip(&triangleStrip);
-
 
     static int cash = 0;
     stringstream text;

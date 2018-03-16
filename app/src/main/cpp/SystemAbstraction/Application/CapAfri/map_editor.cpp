@@ -35,11 +35,12 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fb_height*0.06);
 
     //COORDINATES LINES
+    glm::vec4 green_color(0.0f, 1.0f, 0.0f, 1.0f);
     float xlineVerticles[6] = {-1000.0f, 0.0f, 0.0f, 1000.0f, 0.0f, 0.0f};
-    LS_init(&x_lineStrip,xlineVerticles,6);
+    LS_init(&x_lineStrip,xlineVerticles,6, green_color);
 
     float ylineVerticles[6] = {0.0f, 1000.0f, 0.0f, 0.0f, -1000.0f, 0.0f};
-    LS_init(&y_lineStrip,ylineVerticles,6);
+    LS_init(&y_lineStrip,ylineVerticles,6, green_color);
 
     //LEVEL LOAD
     mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
@@ -48,7 +49,8 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     {
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
-    LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size());
+        glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
+    LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
 
 
     demo_init(framebuffer_width, framebuffer_height, this);

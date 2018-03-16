@@ -6,6 +6,7 @@
 #include <library_opengles_2/RectangleRenderer/LineStrip_Renderer.hpp>
 #include "../renderable_object.hpp"
 #include "../level.hpp"
+#include <library_opengles_2/RectangleRenderer/TriangleStrip_Renderer.hpp>
 
 class GroundChain: public RenderableObject{
 public:
@@ -22,4 +23,6 @@ private:
     string mapFilePath;
     int mapFileOpenErrno = 0;
     Level level;
+
+    TS_TriangleStrip triangleStrip;
 };
