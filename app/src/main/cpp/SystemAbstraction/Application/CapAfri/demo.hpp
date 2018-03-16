@@ -45,9 +45,10 @@ public:
 void demo_init(int width, int height, GuiEventListener * eventListener);
 
 void demo_onCharCallback(unsigned int codepoint);
-void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords);
 void demo_onScrollCallback(double yoffset);
 void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
+void demo_onMouseMoveCallcack(int x, int y);
+void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords);
 void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction::Key key, SystemAbstraction::Mods mods, int x, int y);
 
 int demo_isAnyWindowHovered();

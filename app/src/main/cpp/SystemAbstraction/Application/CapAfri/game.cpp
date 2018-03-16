@@ -73,6 +73,10 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
     loadLevel();
 
+
+    float verticles[9] = {0,0,0,2,0,0,2,2,0};
+    glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
+    TS_initTriangleStrip(&triangleStrip,verticles,9, color);
 }
 
 
@@ -111,6 +115,8 @@ Game::~Game()
     delete background;
     delete groundChain;
     delete world;
+
+    TS_deleteTriangleStrip(&triangleStrip);
 }
 
 
@@ -203,6 +209,7 @@ void Game::systemCallback_Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     //viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
@@ -222,6 +229,12 @@ void Game::systemCallback_Render()
         tmp=tmp->GetNext();
     }
 
+
+    triangleStrip.projection = projectionMatrix;
+    triangleStrip.view = viewMatrix;
+    triangleStrip.model = glm::mat4(1);
+
+    TS_drawTriangleStrip(&triangleStrip);
 
 
     static int cash = 0;

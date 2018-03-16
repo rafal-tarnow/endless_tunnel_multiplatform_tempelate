@@ -139,6 +139,13 @@ void SceneManager::OnMouseButton(SystemAbstraction::MouseButton mouseButton, Sys
     }
 }
 
+void SceneManager::OnMouseMove(int x, int y)
+{
+    if (mHasGraphics && mCurScene) {
+        mCurScene->OnMouseMove(x, y);
+    }
+}
+
 void SceneManager::OnScroll(double yoffset)
 {
     if (mHasGraphics && mCurScene) {

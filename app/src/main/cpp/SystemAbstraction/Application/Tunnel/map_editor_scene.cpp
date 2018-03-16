@@ -124,6 +124,11 @@ void MapEditorScene::OnMouseButton(SystemAbstraction::MouseButton mouseButton, S
     mapEditor->systemCallback_mouseButton(mouseButton, event, x, y);
 }
 
+void MapEditorScene::OnMouseMove(int x, int y)
+{
+    mapEditor->systemCallback_mouseMove(x, y);
+}
+
 void MapEditorScene::OnScroll(double yoffset)
 {
     mapEditor->systemCallback_Scroll(yoffset);

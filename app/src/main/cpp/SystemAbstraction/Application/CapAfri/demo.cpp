@@ -191,7 +191,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
 
     nk_style_set_font(ctx, &media->font_30->handle);
 
-    nk_begin(ctx, "Toolbox", nk_rect(10,10,255,350),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    nk_begin(ctx, "Toolbox", nk_rect(0,0,255,350),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
         static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &media->font_30->handle);
@@ -613,11 +613,6 @@ void demo_onCharCallback(unsigned int codepoint)
     nk_input_unicode(&ctx, codepoint);
 }
 
-void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords)
-{
-    nk_input_motion(&ctx, (int)coords->x, (int)coords->y);
-}
-
 void demo_onScrollCallback(double yoffset)
 {
     nk_input_scroll(&ctx, nk_vec2(0, (float)yoffset));
@@ -641,6 +636,16 @@ void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, Syst
     nk_input_button(&ctx, NK_BUTTON_LEFT, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
     nk_input_button(&ctx, NK_BUTTON_MIDDLE, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_MIDDLE_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
     nk_input_button(&ctx, NK_BUTTON_RIGHT, (int)x, (int)y, ((mouseButton == SystemAbstraction::MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN)) ? 1 : 0 );
+}
+
+void demo_onMouseMoveCallcack(int x, int y)
+{
+       nk_input_motion(&ctx, x, y);
+}
+
+void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords)
+{
+    nk_input_motion(&ctx, (int)coords->x, (int)coords->y);
 }
 
 void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction::Key key, SystemAbstraction::Mods mods, int x, int y)

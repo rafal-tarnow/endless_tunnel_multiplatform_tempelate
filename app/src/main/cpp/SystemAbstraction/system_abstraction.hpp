@@ -178,6 +178,7 @@ public:
     static void onRenderFrame();
     static void onScroll(double yoffset);
     static void onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y);
+    static void onMouseMove(int x, int y);
     static void onKey(ButtonEvent, Key key, Mods mods, int x, int y );
     static void onChar(unsigned int codepoint);
     static bool onBackKeyPressed();

@@ -96,9 +96,14 @@ void SystemAbstraction::onMouseButton(MouseButton mouseButton, ButtonEvent event
     mgr->OnMouseButton(mouseButton, event, x, y);
 }
 
+void SystemAbstraction::onMouseMove(int x, int y)
+{
+    mgr->OnMouseMove(x, y);
+}
+
 void SystemAbstraction::onKey(ButtonEvent event, Key key, Mods mods, int x, int y)
 {
-         mgr->OnKey(event, key, mods, x, y);
+    mgr->OnKey(event, key, mods, x, y);
 }
 
 void SystemAbstraction::onChar(unsigned int codepoint)

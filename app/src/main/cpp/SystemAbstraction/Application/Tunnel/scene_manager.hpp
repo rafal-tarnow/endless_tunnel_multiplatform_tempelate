@@ -70,6 +70,8 @@ class SceneManager {
 
         void OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
 
+        void OnMouseMove(int x, int y);
+
         void OnScroll(double yoffset);
 
         // Reports that the back key was pressed

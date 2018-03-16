@@ -51,6 +51,8 @@ class Scene {
 
         virtual void OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
 
+        virtual void OnMouseMove(int x, int y);
+
         virtual void OnScroll(double yoffset);
 
         // Called when a pointer moves (e.g. touch, touchpad, etc)

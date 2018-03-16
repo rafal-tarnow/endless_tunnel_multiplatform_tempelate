@@ -123,22 +123,7 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 
 void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
-
-//    if(GLFW_RELEASE == glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
-//    {
-//        return;
-//    }
-
-    PointerCoords coords;
-    memset(&coords, 0, sizeof(coords));
-    coords.x = xpos*scale_x;
-    coords.y = ypos*scale_y;
-    coords.minX = 0;
-    coords.maxX = 0;
-    coords.minY = 0;
-    coords.maxY = 0;
-    coords.isScreen = true;
-    SystemAbstraction::onPointerMove(0, &coords);
+    SystemAbstraction::onMouseMove(xpos*scale_x, ypos*scale_y);
 }
 
 void charCallback(GLFWwindow *win, unsigned int codepoint)
