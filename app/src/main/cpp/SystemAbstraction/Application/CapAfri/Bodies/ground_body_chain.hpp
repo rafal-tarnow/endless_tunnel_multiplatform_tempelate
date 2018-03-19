@@ -25,4 +25,6 @@ private:
     Level level;
 
     TS_TriangleStrip triangleStrip;
+
+     GLuint coinTextureId;
 };

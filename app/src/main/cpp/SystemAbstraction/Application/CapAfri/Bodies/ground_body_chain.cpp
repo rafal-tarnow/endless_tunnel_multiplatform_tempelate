@@ -3,6 +3,7 @@
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include <system_paths.hpp>
+#include <SOIL.h>
 
 using namespace std;
 
@@ -46,7 +47,9 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     }
 
     glm::vec4 color(0.59f, 0.29f, 0.0f, 1.0f);
-    TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), color);
+#include "../data/coin_2.png.hpp"
+coinTextureId = SOIL_load_OGL_texture_from_memory(coin_2_png, size_of_coin_2_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), coinTextureId);
 
     b2Vec2 * vs;
     vs = (b2Vec2 *)malloc(level.ground_verticles.size()*sizeof(b2Vec2));
@@ -69,11 +72,14 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     GLfloat x_bottom_right = x_top_left + width;
     GLfloat y_bottom_right = y_top_left - height;
 
+
+
 }
 
 GroundChain::~GroundChain(){
     LS_delete(&lineStripRenderer);
-        TS_deleteTriangleStrip(&triangleStrip);
+    TS_deleteTriangleStrip(&triangleStrip);
+    glDeleteTextures(1, &coinTextureId);
 }
 
 void GroundChain::render(glm::mat4 projection, glm::mat4 view){

@@ -27,7 +27,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float radius)
 
     if(instancesCount == 1)
     {
-        coinTextureId = SOIL_load_OGL_texture_from_memory(coin_2_png, size_of_coin_2_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+        coinTextureId = SOIL_load_OGL_texture_from_memory(coin_2_png, size_of_coin_2_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
         DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, 0.0f);
     }
 }
