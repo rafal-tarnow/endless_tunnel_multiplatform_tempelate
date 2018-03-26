@@ -8,7 +8,7 @@
 
 class Car: public RenderableObject{
 public:
-    Car(float32 x, float32 y, b2World * world);
+    Car(float32 x, float32 y, float z, b2World * world);
     ~Car();
 
 
@@ -38,8 +38,10 @@ private:
     DE_Rectangle carBodyRectangle;
 
     float current_car_speed = 0.0f;
-        float required_car_speed = 0.0f;
+    float required_car_speed = 0.0f;
 
-            GLuint koloTextureId = 0;
-            GLuint bodyTextureId = 0;
+    GLuint koloTextureId = 0;
+    GLuint bodyTextureId = 0;
+
+    float z_layer = 0.0f;
 };

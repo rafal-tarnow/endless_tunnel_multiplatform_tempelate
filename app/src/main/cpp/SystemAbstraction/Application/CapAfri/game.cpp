@@ -59,6 +59,7 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClearColor(0.98,1.0,0.55,1.0);
+    //glClearColor(0.0,0.0,0.0,1.0);
 
 
     //glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
@@ -73,12 +74,6 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
     loadLevel();
 
-
-
-
-
-
-
 }
 
 
@@ -87,7 +82,7 @@ void Game::loadLevel()
     LOGD("1.9.1");
     groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
     LOGD("1.9.2");
-    car = new Car(1.0f, 5.0f, world);
+    car = new Car(1.0f, 5.0f, -1.0f, world);
 
 
     //LEVEL LOAD
@@ -234,7 +229,7 @@ void Game::systemCallback_Render()
     static int cash = 0;
     stringstream text;
     if(car){
-        text << std::fixed << std::setprecision(0) << "X "<<car->getXPosition() << " Y " << car->getYPosition();
+        text << std::fixed << std::setprecision(0) << "DIST "<<car->getXPosition();// << " Y " << car->getYPosition();
     }else{
         text << "$ 0";
     }

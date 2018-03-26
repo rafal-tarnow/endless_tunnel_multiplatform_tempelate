@@ -21,8 +21,9 @@ void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
     DE_drawRectangle(&carBodyRectangle);
 }
 
-Car::Car(float32 x, float32 y, b2World * world)
+Car::Car(float32 x, float32 y, float z,  b2World * world)
 {
+    z_layer = z;
     //car body
     b2BodyDef car_bodydef;
 
@@ -88,10 +89,10 @@ Car::Car(float32 x, float32 y, b2World * world)
 
 
     bodyTextureId = SOIL_load_OGL_texture_from_memory(car_png, size_of_car_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-    DE_initRectangle(&carBodyRectangle,&bodyTextureId,car_body_width_const, car_body_height_const,0.0f);
+    DE_initRectangle(&carBodyRectangle,&bodyTextureId,car_body_width_const, car_body_height_const, z_layer);
 
     koloTextureId = SOIL_load_OGL_texture_from_memory(kolo_png, size_of_kolo_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-    DE_initRectangle(&carWhellRectangle, &koloTextureId, whell_radius_const*2.0f,whell_radius_const*2.0f);
+    DE_initRectangle(&carWhellRectangle, &koloTextureId, whell_radius_const*2.0f,whell_radius_const*2.0f, z_layer);
 
 }
 
