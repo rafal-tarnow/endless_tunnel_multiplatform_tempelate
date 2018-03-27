@@ -15,4 +15,5 @@ add_library (CapAfri STATIC
     map_editor.cpp
     level.cpp
     demo.cpp
+    debug_draw.cpp
 )

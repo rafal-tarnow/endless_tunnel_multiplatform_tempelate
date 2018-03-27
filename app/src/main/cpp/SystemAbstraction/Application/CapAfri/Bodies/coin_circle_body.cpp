@@ -15,11 +15,11 @@ uint32_t CircleCoinRender::instancesCount = 0;
 GLuint CircleCoinRender::coinTextureId = 0;
 DE_Rectangle CircleCoinRender::rectangle;
 
-CircleCoinRender::CircleCoinRender(float x, float y, float radius)
+CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 {
     pos.x = x;
     pos.y = y;
-    pos.z = 0.0f;
+    pos.z = z;
     m_radius = radius;
 
     instancesCount++;
@@ -28,7 +28,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float radius)
     if(instancesCount == 1)
     {
         coinTextureId = SOIL_load_OGL_texture_from_memory(coin_2_png, size_of_coin_2_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, 0.0f);
+        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
     }
 }
 CircleCoinRender::~CircleCoinRender()
@@ -78,7 +78,7 @@ void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
 
 
 
-CircleCoin::CircleCoin(float32 x,float32 y,float32 radius, b2World* world) : CircleCoinRender(x,y, radius){
+CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world) : CircleCoinRender(x, y, z, radius){
     b2BodyDef bodydef;
     bodydef.position.Set(x,y);
     bodydef.type=b2_dynamicBody;
@@ -104,5 +104,9 @@ void CircleCoin::render(glm::mat4 projection, glm::mat4 view){
     rectangle.projection = projection;
     rectangle.view = view;
 
+    glDisable(GL_DEPTH_TEST);
+    
     drawCircleSquare(body->GetPosition(),((b2CircleShape*)body->GetFixtureList()->GetShape())->m_radius,body->GetAngle());
+    
+    glEnable(GL_DEPTH_TEST);
 }

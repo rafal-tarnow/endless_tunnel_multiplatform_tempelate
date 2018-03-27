@@ -9,7 +9,7 @@
 
 class CircleCoinRender : public RenderableObject{
 public:
-    CircleCoinRender(float x, float y, float radius);
+    CircleCoinRender(float x, float y, float z, float radius);
     ~CircleCoinRender();
     void render(glm::mat4 projection, glm::mat4 view);
     void drawCircleSquare(b2Vec2 position,float radius,float angle);
@@ -29,7 +29,7 @@ private:
 
 class CircleCoin: public CircleCoinRender{
 public:
-    CircleCoin(float32 x,float32 y,float32 radius, b2World* world);
+    CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world);
     ~CircleCoin();
     void render(glm::mat4 projection, glm::mat4 view);
 private:

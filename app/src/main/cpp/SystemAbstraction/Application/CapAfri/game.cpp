@@ -97,7 +97,7 @@ void Game::loadLevel()
         b2Vec2 pos;
         pos.x = coin->getPosition().x;
         pos.y = coin->getPosition().y;
-        coins.push_back(new CircleCoin(pos.x, pos.y,0.25, world));
+        coins.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
     }
 }
 

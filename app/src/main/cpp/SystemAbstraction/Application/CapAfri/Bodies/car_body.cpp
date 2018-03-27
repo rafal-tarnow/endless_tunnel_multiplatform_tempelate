@@ -180,8 +180,11 @@ void Car::render(glm::mat4 projection, glm::mat4 view)
         points[i]=((b2PolygonShape*)carBody_body->GetFixtureList()->GetShape())->m_vertices[i];
     }
 
+    glDisable(GL_DEPTH_TEST);
 
     drawCarBodyRectangle(points,carBody_body->GetPosition(),carBody_body->GetAngle());
     drawCarWhell(frontWhell_body->GetPosition(),((b2CircleShape*)frontWhell_body->GetFixtureList()->GetShape())->m_radius,frontWhell_body->GetAngle());
     drawCarWhell(rearWhell_body->GetPosition(),((b2CircleShape*)rearWhell_body->GetFixtureList()->GetShape())->m_radius,rearWhell_body->GetAngle());
+
+    glEnable(GL_DEPTH_TEST);
 }

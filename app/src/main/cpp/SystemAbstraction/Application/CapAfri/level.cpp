@@ -40,7 +40,7 @@ int Level::loadLevelFromFile(string levelFilePath)
         stream << "coins_vector.at(" << i << ")";
         glm::vec3 coin_position = config.get_glm_vec3(stream.str());
 
-        coins_vector.push_back(new CircleCoinRender(coin_position.x, coin_position.y, 0.25f));
+        coins_vector.push_back(new CircleCoinRender(coin_position.x, coin_position.y, -2.0f, 0.25f));
     }
 
     return 0;

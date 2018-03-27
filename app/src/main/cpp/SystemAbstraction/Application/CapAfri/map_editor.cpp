@@ -229,7 +229,7 @@ void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuff
     glm::vec3 world_position;
     windowCoordinatesToBoxCoordinates(framebuffer_x, framebuffer_y, world_position);
 
-    level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, 0.25));
+    level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, -2.0f, 0.25));
 
 }
 

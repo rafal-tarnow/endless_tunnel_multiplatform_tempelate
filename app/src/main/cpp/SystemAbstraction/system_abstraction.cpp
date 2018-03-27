@@ -74,16 +74,6 @@ void SystemAbstraction::onRenderFirstFrame()
 void SystemAbstraction::onRenderFrame()
 {
     mgr->DoFrame();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    //rectangle.model = glm::mat4(1);
-    //rectangle.projection = glm::mat4(1);
-    //rectangle.view = glm::mat4(1);
-
-    // DE_drawRectangle(&rectangle);
-
 }
 
 void SystemAbstraction::onScroll(double yoffset)
