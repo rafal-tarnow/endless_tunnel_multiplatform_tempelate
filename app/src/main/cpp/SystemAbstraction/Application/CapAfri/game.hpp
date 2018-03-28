@@ -11,11 +11,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../system_abstraction.hpp"
 #include "./Bodies/coin_circle_body.hpp"
+#include <list>
 
 
 using namespace std;
 
-class Game{
+class Game : public b2ContactListener{
 public:
 
     Game(unsigned int win_width,unsigned int win_height);
@@ -28,6 +29,11 @@ public:
     void systemCallback_keyboard(SystemAbstraction::ButtonEvent, unsigned int key, int x, int y );
     void systemCallback_TimerTick();
 
+    //BOX2D collisions callback
+    void BeginContact(b2Contact* contact);
+    void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
+    void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
+    void EndContact(b2Contact* contact);
 
 private:
     void loadLevel();
@@ -52,6 +58,7 @@ private:
 
     Car * car = nullptr;
     vector<CircleCoin *> coins;
+    vector<CircleCoin *> coinsToDelete;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     glm::mat4 projectionMatrix = glm::mat4(1);

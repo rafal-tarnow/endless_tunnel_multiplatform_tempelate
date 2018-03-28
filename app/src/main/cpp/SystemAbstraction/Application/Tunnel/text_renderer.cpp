@@ -35,11 +35,11 @@ TextRenderer::TextRenderer(TrivialShader *t) {
     mMatrix = glm::mat4(1.0f);
     mColor[0] = mColor[1] = mColor[2] = 1.0f;
 
-    LOGD("Loading alphabet glyphs.");
+    //LOGD("Loading alphabet glyphs.\n");
     int i;
     for (i = 0; i < CHAR_CODES; ++i) {
         if (ALPHABET_ART[i]) {
-            LOGD("Creating glyph for chr %d.", i);
+            //LOGD("Creating glyph for chr %d.\n", i);
             mCharGeom[i] = AsciiArtToGeom(ALPHABET_ART[i], ALPHABET_SCALE);
         }
     }

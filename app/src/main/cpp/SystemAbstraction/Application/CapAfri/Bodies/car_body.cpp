@@ -23,6 +23,8 @@ void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
 
 Car::Car(float32 x, float32 y, float z,  b2World * world)
 {
+    GameObject::setObjectType(OBJECT_CAR);
+
     z_layer = z;
     //car body
     b2BodyDef car_bodydef;
@@ -31,7 +33,7 @@ Car::Car(float32 x, float32 y, float z,  b2World * world)
     car_bodydef.type=b2_dynamicBody;
 
     carBody_body = world->CreateBody(&car_bodydef);
-    carBody_body->SetUserData((RenderableObject *)this);
+    carBody_body->SetUserData((GameObject *)this);
 
     b2PolygonShape carBodyShape;
     carBodyShape.SetAsBox(car_body_width_const/2.0f,car_body_height_const/2.0);
@@ -138,8 +140,8 @@ float Car::getYPosition()
 
 void Car::render(glm::mat4 projection, glm::mat4 view)
 {
-   // frontWhellJoint->SetMotorSpeed(required_car_speed);
-   //          rearWhellJoint->SetMotorSpeed(required_car_speed);
+    // frontWhellJoint->SetMotorSpeed(required_car_speed);
+    //          rearWhellJoint->SetMotorSpeed(required_car_speed);
 
     //cout << "Car::render()" << endl;
     if(required_car_speed == 0.0f)

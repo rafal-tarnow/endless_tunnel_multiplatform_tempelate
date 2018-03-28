@@ -6,7 +6,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class BackGround: public RenderableObject{
+class BackGround: public GameObject{
 public:
     BackGround(float x_top_left, float y_top_left, float width, float height, b2World *  world);
     ~BackGround();

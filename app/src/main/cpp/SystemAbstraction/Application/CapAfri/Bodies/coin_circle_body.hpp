@@ -7,7 +7,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class CircleCoinRender : public RenderableObject{
+class CircleCoinRender : public GameObject{
 public:
     CircleCoinRender(float x, float y, float z, float radius);
     ~CircleCoinRender();

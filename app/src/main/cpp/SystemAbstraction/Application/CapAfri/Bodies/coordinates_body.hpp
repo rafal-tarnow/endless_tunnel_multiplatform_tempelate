@@ -8,7 +8,7 @@
 #include "../renderable_object.hpp"
 
 
-class BoxCoordinates: public RenderableObject{
+class BoxCoordinates: public GameObject{
 public:
     BoxCoordinates(b2World * world);
     ~BoxCoordinates();

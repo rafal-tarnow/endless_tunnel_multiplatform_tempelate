@@ -17,13 +17,15 @@ DE_Rectangle CircleCoinRender::rectangle;
 
 CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 {
+    GameObject::setObjectType(OBJECT_COIN);
+
     pos.x = x;
     pos.y = y;
     pos.z = z;
     m_radius = radius;
 
     instancesCount++;
-    LOGD("CircleCoinRender::instancesCount = %d", instancesCount);
+    //LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
 
     if(instancesCount == 1)
     {
@@ -34,7 +36,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 CircleCoinRender::~CircleCoinRender()
 {
     instancesCount--;
-    LOGD("CircleCoinRender::instancesCount = %d", instancesCount);
+    //LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
 
     if(instancesCount == 0)
     {
@@ -84,7 +86,7 @@ CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* wo
     bodydef.type=b2_dynamicBody;
     bodydef.gravityScale = 0.0f;
     body=world->CreateBody(&bodydef);
-    body->SetUserData((RenderableObject *)this);
+    body->SetUserData((GameObject *)this);
     b2CircleShape shape;
     shape.m_radius = radius; //radius
     shape.m_p.Set(0,0); //position, relative to body position
@@ -97,7 +99,7 @@ CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* wo
 }
 
 CircleCoin::~CircleCoin(){
-
+    body->GetWorld()->DestroyBody(body);
 }
 
 void CircleCoin::render(glm::mat4 projection, glm::mat4 view){

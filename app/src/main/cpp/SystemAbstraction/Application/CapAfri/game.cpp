@@ -17,30 +17,47 @@ using namespace std;
 static float angle = 0.0f;
 /* render the scene */
 
-class A: public b2ContactListener{
-    void BeginContact(b2Contact* contact)
-    {
-        cout << "A:BeginContact(...)" << endl;
-        //contact->
-    }
+void Game::BeginContact(b2Contact* contact)
+{
+    cout << "A:BeginContact(...)" << endl;
+    void * userData;
+    void * userData_2;
 
-    void EndContact(b2Contact* contact)
-    {
-        cout << "A:EndContact(...)" << endl;
-    }
+    userData = contact->GetFixtureA()->GetBody()->GetUserData();
+    userData_2 = contact->GetFixtureB()->GetBody()->GetUserData();
 
-    void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+    if(userData && userData_2)
     {
-        //cout << "A:PreSolve(...)" << endl;
+        //CHECK IS COIN COLLIDE WITH CAR
+        if((((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            coinsToDelete.push_back((CircleCoin*)userData);
+        }
+        //CHECK IS COIN COLLIDE WITH CAR
+        if((((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            coinsToDelete.push_back((CircleCoin*)userData_2);
+        }
     }
+}
 
-    void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-    {
-        //cout  << "A:PostSolve" << endl;
-    }
-};
+void Game::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+{
+    //cout << "A:PreSolve(...)" << endl;
+}
 
-A a;
+void Game::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+{
+    //cout  << "A:PostSolve" << endl;
+}
+
+void Game::EndContact(b2Contact* contact)
+{
+    cout << "A:EndContact(...)" << endl;
+}
+
+
+
 
 
 Game::Game(unsigned int win_width,unsigned int win_height)
@@ -58,8 +75,8 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glClearColor(0.98,1.0,0.55,1.0);
-    //glClearColor(0.0,0.0,0.0,1.0);
+    //glClearColor(0.98,1.0,0.55,1.0);
+    glClearColor(0.0,0.0,0.0,1.0);
 
 
     //glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
@@ -69,7 +86,7 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
 
     world = new b2World(b2Vec2(0.0,-1.81));
-    world->SetContactListener(&a);
+    world->SetContactListener(this);
 
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
     loadLevel();
@@ -79,9 +96,8 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
 void Game::loadLevel()
 {
-    LOGD("1.9.1");
     groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
-    LOGD("1.9.2");
+
     car = new Car(1.0f, 5.0f, -1.0f, world);
 
 
@@ -103,6 +119,7 @@ void Game::loadLevel()
 
 Game::~Game()
 {
+
     for(unsigned int i = 0; i < coins.size(); i++ )
     {
         delete coins.at(i);
@@ -112,8 +129,6 @@ Game::~Game()
     delete background;
     delete groundChain;
     delete world;
-
-
 }
 
 
@@ -192,6 +207,17 @@ void Game::updateGameLogics()
             car->setSpeed(0);
         }
     }
+
+
+    
+    if(coinsToDelete.size())
+    {
+        for(unsigned int i = 0; i < coinsToDelete.size(); i++)
+        {
+            delete coinsToDelete.at(i);
+        }
+        coinsToDelete.clear();
+    }
 }
 
 void Game::systemCallback_TimerTick()
@@ -221,7 +247,7 @@ void Game::systemCallback_Render()
     while(tmp)
     {
         if(tmp->GetUserData() != nullptr){
-            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
+            ((GameObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
         }
         tmp=tmp->GetNext();
     }
