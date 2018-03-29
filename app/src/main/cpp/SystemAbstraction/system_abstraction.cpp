@@ -113,16 +113,16 @@ void SystemAbstraction::onJoyUpdate(float joyX, float joyY)
 
 void SystemAbstraction::onPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-    LOGD("--> SystemAbstraction::onPointerDown()\n");
+    //LOGD("--> SystemAbstraction::onPointerDown()\n");
     mgr->OnPointerDown(pointerId, coords);
-    LOGD("<-- SystemAbstraction::onPointerDown()\n");
+    //LOGD("<-- SystemAbstraction::onPointerDown()\n");
 }
 
 void SystemAbstraction::onPointerUp(int pointerId, const struct PointerCoords *coords)
 {
-    LOGD("--> SystemAbstraction::onPointerUp()\n");
+    //LOGD("--> SystemAbstraction::onPointerUp()\n");
     mgr->OnPointerUp(pointerId, coords);
-    LOGD("<-- SystemAbstraction::onPointerUp()\n");
+    //LOGD("<-- SystemAbstraction::onPointerUp()\n");
 }
 
 void SystemAbstraction::onPointerMove(int pointerId, const struct PointerCoords *coords)

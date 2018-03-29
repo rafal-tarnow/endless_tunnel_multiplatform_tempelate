@@ -18,7 +18,7 @@ Ground::Ground(float x_top_left, float y_top_left, float width, float height, fl
     bodydef.position.Set(box2d_xpos,box2d_ypos);
     body=world->CreateBody(&bodydef);
 
-    body->SetUserData((RenderableGameObject *)this);
+    body->SetUserData(static_cast<GameObject *>(this));
 
     b2PolygonShape shape;
     shape.SetAsBox(width/2,height/2);

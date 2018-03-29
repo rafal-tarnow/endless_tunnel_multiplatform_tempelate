@@ -49,7 +49,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     {
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
-        glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
 
 
@@ -245,10 +245,13 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
 
     if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
+        leftMouseButtonIsPressed = true;
         windowCoordinatesToBoxCoordinates(window_x, window_y, touch_start_position_in_world);
     }
     else if((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_UP))
     {
+        leftMouseButtonIsPressed = false;
+
         if(cursorMode == CURSOR_ADD_FANT)
         {
             if(fantMode == FANT_GROUND) {
@@ -262,26 +265,6 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
         cursorMode = CURSOR_ADD_FANT;
     }
 
-}
-
-void MapEditor::systemCallback_mouseMove(int x, int y)
-{
-    LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
-    demo_onMouseMoveCallcack(x, y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-}
-
-void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
-{
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-
-
-
-    windowCoordinatesToBoxCoordinates(coords->x, coords->y, touch_start_position_in_world);
 }
 
 void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
@@ -304,10 +287,50 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
     cursorMode = CURSOR_ADD_FANT;
 }
 
-void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc)
+void MapEditor::systemCallback_mouseMove(int x, int y)
 {
-    *x_ndc = (current_mouse_x_pos/framebuffer_width)*2.0f - 1.0f;
-    *y_ndc = -(current_mouse_y_pos/framebuffer_height)*2.0f + 1.0f;
+    LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
+    demo_onMouseMoveCallcack(x, y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
+
+    if(leftMouseButtonIsPressed == false)
+        return;
+
+    current_mouse_x_pos = x;
+    current_mouse_y_pos = y;
+
+
+    glm::vec3 touch_current_position_in_world;
+    windowCoordinatesToBoxCoordinates(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
+
+
+    float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
+    float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
+
+    if(delta_cam_x > 1.0f || delta_cam_y > 1.0f || delta_cam_x < -1.0f || delta_cam_y < -1.0f)
+    {
+        cursorMode = CURSOR_MOVE;
+    }
+
+    if(cursorMode == CURSOR_MOVE) {
+        camera.changeXPosition(-delta_cam_x);
+        camera.changeYPosition(-delta_cam_y);
+    }
+
+    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
+}
+
+void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
+{
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
+                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
+    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+        return;
+
+
+
+    windowCoordinatesToBoxCoordinates(coords->x, coords->y, touch_start_position_in_world);
 }
 
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
@@ -339,6 +362,12 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
 
     redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
 
+}
+
+void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc)
+{
+    *x_ndc = (current_mouse_x_pos/framebuffer_width)*2.0f - 1.0f;
+    *y_ndc = -(current_mouse_y_pos/framebuffer_height)*2.0f + 1.0f;
 }
 
 void MapEditor::gui_onSaveMapButtonClicked()

@@ -16,8 +16,8 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-#define WINDOW_WIDTH 240
-#define WINDOW_HEIGHT 160
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
 GLFWwindow *win;
 int window_width = 0;
@@ -73,36 +73,36 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
     int fb_cursor_x = win_cursor_x*scale_x;
     int fb_cursor_y = win_cursor_y*scale_y;
 
-    if(action == GLFW_PRESS)
-    {
-        if(button == GLFW_MOUSE_BUTTON_LEFT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
-        }
-    }
-    else if(action == GLFW_RELEASE)
-    {
-        if(button == GLFW_MOUSE_BUTTON_LEFT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
-        {
-            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
-        }
-    }
+//    if(action == GLFW_PRESS)
+//    {
+//        if(button == GLFW_MOUSE_BUTTON_LEFT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_DOWN, fb_cursor_x, fb_cursor_y);
+//        }
+//    }
+//    else if(action == GLFW_RELEASE)
+//    {
+//        if(button == GLFW_MOUSE_BUTTON_LEFT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_LEFT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_MIDDLE)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_MIDDLE_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//        else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+//        {
+//            SystemAbstraction::onMouseButton(SystemAbstraction::MOUSE_RIGHT_BUTTON, SystemAbstraction::EVENT_UP, fb_cursor_x, fb_cursor_y);
+//        }
+//    }
 
     PointerCoords coords;
     memset(&coords, 0, sizeof(coords));
@@ -123,7 +123,24 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 
 void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
-    SystemAbstraction::onMouseMove(xpos*scale_x, ypos*scale_y);
+    int state = glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT);
+    if (state == GLFW_RELEASE)
+        return;
+
+    int fb_cursor_x = xpos*scale_x;
+    int fb_cursor_y = ypos*scale_y;
+
+    PointerCoords coords;
+    memset(&coords, 0, sizeof(coords));
+    coords.x = fb_cursor_x;
+    coords.y = fb_cursor_y;
+    coords.minX = 0;
+    coords.maxX = 0;
+    coords.minY = 0;
+    coords.maxY = 0;
+    coords.isScreen = true;
+
+    SystemAbstraction::onPointerMove(0, &coords);
 }
 
 void charCallback(GLFWwindow *win, unsigned int codepoint)

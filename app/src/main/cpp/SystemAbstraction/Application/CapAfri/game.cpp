@@ -19,36 +19,37 @@ static float angle = 0.0f;
 
 void Game::BeginContact(b2Contact* contact)
 {
-    LOGD("--> Game::BeginContact(...)");
+    //LOGD("--> Game::BeginContact(...)");
     void * userData;
     void * userData_2;
 
     userData = contact->GetFixtureA()->GetBody()->GetUserData();
     userData_2 = contact->GetFixtureB()->GetBody()->GetUserData();
 
-//    if(userData)
-//        static_cast<GameObject*>(userData)->printObjectType();
-
-//    if(userData_2)
-//        static_cast<GameObject*>(userData_2)->printObjectType();
-
-
     if(userData && userData_2)
     {
-        //CHECK IS COIN COLLIDE WITH CAR
-        if((((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_CAR))
-        {
-            coinsToDelete.push_back(static_cast<CircleCoin*>(static_cast<GameObject*>(userData)));
-            money++;
+        GameObject * object = static_cast<GameObject *>(userData);
+        GameObject * object_1 = static_cast<GameObject *>(userData_2);
+
+        //object->printObjectType();
+        //object_1->printObjectType();
+
+
+            //CHECK IS COIN COLLIDE WITH CAR
+            if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
+            {
+                coinsToDelete.insert(static_cast<CircleCoin *>(object));
+                money++;
+            }
+            //CHECK IS COIN COLLIDE WITH CAR
+            if ((object_1->getObjectType() == GameObject::OBJECT_COIN) && (object->getObjectType() == GameObject::OBJECT_CAR))
+            {
+                coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
+                money++;
+            }
         }
-        //CHECK IS COIN COLLIDE WITH CAR
-        if((((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_CAR))
-        {
-            coinsToDelete.push_back(static_cast<CircleCoin*>(static_cast<GameObject*>(userData_2)));
-            money++;
-        }
-    }
-    LOGD("<-- Game::BeginContact(...)");
+
+    //LOGD("<-- Game::BeginContact(...)");
 
 }
 
@@ -200,13 +201,18 @@ void Game::updateGameLogics()
     }
 
 
+
+
     
     if(coinsToDelete.size())
     {
-        for(unsigned int i = 0; i < coinsToDelete.size(); i++)
+        set<CircleCoin *>::iterator it;
+
+        // wyświetlenie zawartości
+        for( it=coinsToDelete.begin(); it != coinsToDelete.end(); it++)
         {
-            coinsList.remove(coinsToDelete.at(i));
-            delete coinsToDelete.at(i);
+                coinsList.remove(*it);
+                delete *it;
         }
         coinsToDelete.clear();
     }
@@ -220,7 +226,7 @@ void Game::systemCallback_TimerTick()
 void Game::systemCallback_Render()
 {
 
-    LOGD("--> Game::systemCallback_Render()\n");
+    //LOGD("--> Game::systemCallback_Render()\n");
     updateGameLogics();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -236,7 +242,7 @@ void Game::systemCallback_Render()
     renderHUD();
 
     glFlush();
-    LOGD("<-- Game::systemCallback_Render()\n");
+    //LOGD("<-- Game::systemCallback_Render()\n");
 }
 
 void Game::renderWorldBodies()

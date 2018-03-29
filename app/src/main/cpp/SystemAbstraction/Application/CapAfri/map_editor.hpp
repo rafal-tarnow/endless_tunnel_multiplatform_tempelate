@@ -186,5 +186,7 @@ private:
     CursorMode cursorMode = CURSOR_ADD_FANT;
     glm::vec3 touch_start_position_in_world;
 
+    bool leftMouseButtonIsPressed = false;
+
 
 };

@@ -19,7 +19,7 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     bodydef.type = b2_staticBody;
     body=world->CreateBody(&bodydef);
 
-    body->SetUserData((RenderableGameObject *)this);
+    body->SetUserData(static_cast<GameObject *>(this));
 
     b2PolygonShape shape;
     shape.SetAsBox(width/2,height/2);
