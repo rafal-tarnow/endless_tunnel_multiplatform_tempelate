@@ -23,7 +23,8 @@ void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
 
 Car::Car(float32 x, float32 y, float z,  b2World * world)
 {
-    GameObject::setObjectType(OBJECT_CAR);
+    carObject.setObjectType(OBJECT_CAR);
+    RenderableGameObject::setObjectType(OBJECT_CAR);
 
     z_layer = z;
     //car body
@@ -33,7 +34,7 @@ Car::Car(float32 x, float32 y, float z,  b2World * world)
     car_bodydef.type=b2_dynamicBody;
 
     carBody_body = world->CreateBody(&car_bodydef);
-    carBody_body->SetUserData((GameObject *)this);
+    carBody_body->SetUserData(&carObject);
 
     b2PolygonShape carBodyShape;
     carBodyShape.SetAsBox(car_body_width_const/2.0f,car_body_height_const/2.0);
@@ -50,9 +51,11 @@ Car::Car(float32 x, float32 y, float z,  b2World * world)
     whell_bodydef.type = b2_dynamicBody;
 
     frontWhell_body = world->CreateBody(&whell_bodydef);
+    frontWhell_body->SetUserData(&carObject);
 
     whell_bodydef.position.Set(x-1,y-1);
     rearWhell_body = world->CreateBody(&whell_bodydef);
+    rearWhell_body->SetUserData(&carObject);
 
     b2CircleShape whellShape;
     whellShape.m_radius = whell_radius_const;

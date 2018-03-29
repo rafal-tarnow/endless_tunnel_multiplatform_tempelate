@@ -6,7 +6,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class Car: public GameObject{
+class Car: public RenderableGameObject{
 public:
     Car(float32 x, float32 y, float z, b2World * world);
     ~Car();
@@ -44,4 +44,6 @@ private:
     GLuint bodyTextureId = 0;
 
     float z_layer = 0.0f;
+
+    GameObject carObject;
 };

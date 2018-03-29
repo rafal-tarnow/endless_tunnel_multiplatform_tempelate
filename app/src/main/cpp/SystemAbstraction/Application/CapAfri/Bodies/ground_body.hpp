@@ -6,7 +6,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class Ground: public GameObject{
+class Ground: public RenderableGameObject{
 public:
     Ground(float x_top_left, float y_top_left, float width, float height, GLfloat z, b2World *  world);
     ~Ground();

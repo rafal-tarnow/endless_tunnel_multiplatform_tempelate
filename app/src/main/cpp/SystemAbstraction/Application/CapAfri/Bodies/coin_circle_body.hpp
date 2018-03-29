@@ -7,7 +7,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class CircleCoinRender : public GameObject{
+class CircleCoinRender : public RenderableGameObject{
 public:
     CircleCoinRender(float x, float y, float z, float radius);
     ~CircleCoinRender();
@@ -18,8 +18,8 @@ public:
     glm::vec3 & getPosition();
 protected:
     static DE_Rectangle rectangle;
-private:
     static uint32_t instancesCount;
+private:
     static GLuint coinTextureId;
 
     float m_radius;

@@ -6,6 +6,7 @@
 
 #include <system_log.hpp>
 
+
 class GameObject{
 public:
     typedef enum{
@@ -13,8 +14,6 @@ public:
         OBJECT_CAR,
         OBJECT_UNINIT
     }ObjectType;
-
-    virtual void render(glm::mat4 projection, glm::mat4 view) = 0;
 
     void setObjectType(ObjectType type)
     {
@@ -43,3 +42,9 @@ public:
 private:
     ObjectType mtype = OBJECT_UNINIT;
 };
+
+class RenderableGameObject : public GameObject{
+public:
+    virtual void render(glm::mat4 projection, glm::mat4 view) = 0;
+};
+

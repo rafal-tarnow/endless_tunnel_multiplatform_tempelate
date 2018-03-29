@@ -19,26 +19,37 @@ static float angle = 0.0f;
 
 void Game::BeginContact(b2Contact* contact)
 {
-    cout << "A:BeginContact(...)" << endl;
+    LOGD("--> Game::BeginContact(...)");
     void * userData;
     void * userData_2;
 
     userData = contact->GetFixtureA()->GetBody()->GetUserData();
     userData_2 = contact->GetFixtureB()->GetBody()->GetUserData();
 
+//    if(userData)
+//        static_cast<GameObject*>(userData)->printObjectType();
+
+//    if(userData_2)
+//        static_cast<GameObject*>(userData_2)->printObjectType();
+
+
     if(userData && userData_2)
     {
         //CHECK IS COIN COLLIDE WITH CAR
         if((((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_CAR))
         {
-            coinsToDelete.push_back((CircleCoin*)userData);
+            coinsToDelete.push_back(static_cast<CircleCoin*>(static_cast<GameObject*>(userData)));
+            money++;
         }
         //CHECK IS COIN COLLIDE WITH CAR
         if((((GameObject*)(userData_2))->getObjectType() == GameObject::OBJECT_COIN) && (((GameObject*)(userData))->getObjectType() == GameObject::OBJECT_CAR))
         {
-            coinsToDelete.push_back((CircleCoin*)userData_2);
+            coinsToDelete.push_back(static_cast<CircleCoin*>(static_cast<GameObject*>(userData_2)));
+            money++;
         }
     }
+    LOGD("<-- Game::BeginContact(...)");
+
 }
 
 void Game::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
@@ -53,7 +64,7 @@ void Game::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 
 void Game::EndContact(b2Contact* contact)
 {
-    cout << "A:EndContact(...)" << endl;
+    //cout << "A:EndContact(...)" << endl;
 }
 
 
@@ -113,41 +124,21 @@ void Game::loadLevel()
         b2Vec2 pos;
         pos.x = coin->getPosition().x;
         pos.y = coin->getPosition().y;
-        coins.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
+        coinsList.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
     }
 }
 
 Game::~Game()
 {
-
-    for(unsigned int i = 0; i < coins.size(); i++ )
+    for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
     {
-        delete coins.at(i);
+        delete (*it);
     }
 
     TextureManager::deleteAllTextures();
     delete background;
     delete groundChain;
     delete world;
-}
-
-
-b2Body* Game::addRect(int x,int y,int w,int h,bool dyn)
-{
-    b2BodyDef bodydef;
-
-    bodydef.position.Set(x,y);
-    if(dyn)
-        bodydef.type=b2_dynamicBody;
-    b2Body* body=world->CreateBody(&bodydef);
-
-    b2PolygonShape shape;
-    shape.SetAsBox(w/2,h/2);
-
-    b2FixtureDef fixturedef;
-    fixturedef.shape=&shape;
-    fixturedef.density=1.0;
-    body->CreateFixture(&fixturedef);
 }
 
 void Game::windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out)
@@ -214,6 +205,7 @@ void Game::updateGameLogics()
     {
         for(unsigned int i = 0; i < coinsToDelete.size(); i++)
         {
+            coinsList.remove(coinsToDelete.at(i));
             delete coinsToDelete.at(i);
         }
         coinsToDelete.clear();
@@ -228,13 +220,10 @@ void Game::systemCallback_TimerTick()
 void Game::systemCallback_Render()
 {
 
+    LOGD("--> Game::systemCallback_Render()\n");
     updateGameLogics();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-    //viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
 
     if(car != nullptr)
     {
@@ -243,26 +232,50 @@ void Game::systemCallback_Render()
         viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
-    b2Body* tmp=world->GetBodyList();
-    while(tmp)
+    renderWorldBodies();
+    renderHUD();
+
+    glFlush();
+    LOGD("<-- Game::systemCallback_Render()\n");
+}
+
+void Game::renderWorldBodies()
+{
+    //    b2Body* tmp=world->GetBodyList();
+    //    while(tmp)
+    //    {
+    //        if(tmp->GetUserData() != nullptr){
+    //            ((RenderableGameObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
+    //        }
+    //        tmp=tmp->GetNext();
+    //    }
+
+    if(car)
+        car->render(projectionMatrix, viewMatrix);
+
+    for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
     {
-        if(tmp->GetUserData() != nullptr){
-            ((GameObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
-        }
-        tmp=tmp->GetNext();
+        (*it)->render(projectionMatrix, viewMatrix);
     }
 
-    static int cash = 0;
+    groundChain->render(projectionMatrix, viewMatrix);
+}
+
+void Game::renderHUD()
+{
     stringstream text;
     if(car){
-        text << std::fixed << std::setprecision(0) << "DIST "<<car->getXPosition();// << " Y " << car->getYPosition();
+        text << std::fixed << std::setprecision(0) << "DIST "<<car->getXPosition();
     }else{
         text << "$ 0";
     }
 
     textRenderer_v2->RenderText(text.str(), current_window_width*0.03, current_window_height*0.9);
 
-    glFlush();
+    text.str("");
+    text << "$ " << money;
+
+    textRenderer_v2->RenderText(text.str(), current_window_width*0.03, current_window_height*0.8);
 }
 
 b2World * Game::getWorld()
@@ -288,13 +301,10 @@ void Game::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton
 void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
 {
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){
-        cout << "start acceleration" << endl;
         if(car) car->setSpeed(-15);
     }
 
     if((key == 'a' || key == 'A') && (event == SystemAbstraction::EVENT_DOWN)){
-        cout << "start acceleration" << endl;
-
         if(car)
         {
             car->setSpeed(15);
@@ -302,12 +312,10 @@ void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigne
     }
 
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_UP)){
-        cout << "stop acceleration" << endl;
         if(car) car->setSpeed(0);
     }
 
     if((key == 'a' || key == 'A') && (event == SystemAbstraction::EVENT_UP)){
-        cout << "stop acceleration" << endl;
         if(car) car->setSpeed(0);
     }
 }
