@@ -6,6 +6,11 @@ project(system_abstraction)
 include_directories(.)
 
 
+# Build the Oboe library
+#set (OBOE_DIR Application/libs/oboe)
+#add_subdirectory (${OBOE_DIR} ./oboe)
+#include_directories (${OBOE_DIR}/include)
+
 #GLM
 add_definitions("-DGLM_FORCE_SIZE_T_LENGTH -DGLM_FORCE_RADIANS")
 set(GLM_STATIC_LIBRARY_ENABLE TRUE)
@@ -34,7 +39,9 @@ add_subdirectory(Application/libs/library_opengles_2)
 add_subdirectory(Application/libs/nuklear/implementation)
 
 add_library (system_abstraction STATIC
+#    oboe
     system_audio.cpp
+    OpenSLWrap.cpp
     system_abstraction.cpp
     system_paths.cpp
 

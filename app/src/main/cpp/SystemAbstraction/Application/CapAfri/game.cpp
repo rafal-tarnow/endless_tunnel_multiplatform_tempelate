@@ -12,6 +12,7 @@
 #include <system_paths.hpp>
 
 
+
 using namespace std;
 
 static float angle = 0.0f;
@@ -103,6 +104,8 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
     loadLevel();
 
+
+    loadAudio();
 }
 
 
@@ -127,6 +130,20 @@ void Game::loadLevel()
         pos.y = coin->getPosition().y;
         coinsList.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
     }
+}
+
+#include <system_audio.hpp>
+#include <OpenSLWrap.hpp>
+
+void Game::loadAudio()
+{
+    SfxMan * man = SfxMan::GetInstance();
+    man->PlayTone("tone");
+
+    AudioManager& audioManager = AudioManager::GetSingleton();
+    std::string jumpEffectName("sounds/jump.ogg");
+    AudioManager::AudioHandle m_jumpHandle = audioManager.CreateSFX(jumpEffectName);
+
 }
 
 Game::~Game()

@@ -37,6 +37,7 @@ public:
     void EndContact(b2Contact* contact);
 
 private:
+    void loadAudio();
     void loadLevel();
     void updateGameLogics();
     b2World * getWorld();
@@ -68,4 +69,5 @@ private:
     GLfloat zoom = 1.0f;
 
     uint32_t money = 0;
+
 };

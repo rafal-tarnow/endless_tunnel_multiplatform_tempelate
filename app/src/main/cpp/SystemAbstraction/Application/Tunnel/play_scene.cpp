@@ -136,6 +136,8 @@ PlayScene::PlayScene() : Scene() {
         // or start over from scratch
         ShowMenu(MENU_LEVEL);
     }
+
+    AudioManager::GetSingleton().empty();
 }
 
 void PlayScene::LoadProgress() {

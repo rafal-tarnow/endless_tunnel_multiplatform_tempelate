@@ -41,11 +41,14 @@ void drawGlyphToConsole(FT_Face &face){
 int SystemAbstraction::framebuffer_width = 0;
 int SystemAbstraction::framebuffer_height = 0;
 
+
+
 void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 {
     framebuffer_width = fb_width;
     framebuffer_height = fb_height;
     mgr->StartGraphics(framebuffer_width, framebuffer_height);
+
 }
 
 void SystemAbstraction::onPause()
