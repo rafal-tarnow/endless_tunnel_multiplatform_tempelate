@@ -67,7 +67,7 @@ private:
 #endif
 
 public:
-    explicit AudioManager(/*AAssetManager* pAssetManager*/);
+    explicit AudioManager(AAssetManager* pAssetManager);
     virtual ~AudioManager();
 
     bool	Initialize();

@@ -28,6 +28,7 @@
 #include "./data/cube_geom.inl"
 #include "./data/strings.inl"
 #include "./data/tunnel_geom.inl"
+#include <OpenSLWrap.hpp>
 
 #define WALL_TEXTURE_SIZE 64
 
@@ -137,7 +138,7 @@ PlayScene::PlayScene() : Scene() {
         ShowMenu(MENU_LEVEL);
     }
 
-    AudioManager::GetSingleton().empty();
+    AudioManager::GetSingleton().Initialize();
 }
 
 void PlayScene::LoadProgress() {

@@ -13,6 +13,7 @@
 #include "./Bodies/coin_circle_body.hpp"
 #include <set>
 #include <list>
+#include <OpenSLWrap.hpp>
 
 
 using namespace std;
@@ -69,5 +70,7 @@ private:
     GLfloat zoom = 1.0f;
 
     uint32_t money = 0;
+
+    AudioManager::AudioHandle m_jumpHandle;
 
 };

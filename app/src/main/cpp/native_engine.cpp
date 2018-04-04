@@ -22,6 +22,7 @@
 #include "./SystemAbstraction/system_abstraction.hpp"
 #include "./SystemAbstraction/system_log.hpp"
 #include "./SystemAbstraction/system_paths.hpp"
+#include "./SystemAbstraction/OpenSLWrap.hpp"
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 0
@@ -65,6 +66,7 @@ NativeEngine::NativeEngine(struct android_app *app) {
     LOGD("NativeEngine: API version %d.", mApiVersion);
 
     systemInput_initConfigPath(app->activity->internalDataPath);
+    new AudioManager(app->activity->assetManager);
 }
 
 NativeEngine* NativeEngine::GetInstance() {

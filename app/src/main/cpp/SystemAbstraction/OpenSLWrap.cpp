@@ -14,7 +14,7 @@ inline unsigned int Hash(const std::string& key)
     return result;
 }
 
-AudioManager::AudioManager(/*AAssetManager* pAssetManager*/)
+AudioManager::AudioManager(AAssetManager* pAssetManager)
 #ifdef __ANDROID__
     :	m_engineObject(NULL)
     ,	m_engine(NULL)

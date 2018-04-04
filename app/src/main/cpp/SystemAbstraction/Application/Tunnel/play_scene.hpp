@@ -21,7 +21,6 @@
 #include "obstacle_generator.hpp"
 #include "obstacle.hpp"
 #include "../../system_audio.hpp"
-#include "../../OpenSLWrap.hpp"
 #include "shape_renderer.hpp"
 #include "text_renderer.hpp"
 #include "util.hpp"

@@ -11,12 +11,7 @@
 #include "../../system_log.hpp"
 #include <system_paths.hpp>
 
-
-
 using namespace std;
-
-static float angle = 0.0f;
-/* render the scene */
 
 void Game::BeginContact(b2Contact* contact)
 {
@@ -39,12 +34,22 @@ void Game::BeginContact(b2Contact* contact)
             //CHECK IS COIN COLLIDE WITH CAR
             if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
             {
+                AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+                if (pAudioManager)
+                {
+                    pAudioManager->PlaySFX(m_jumpHandle);
+                }
                 coinsToDelete.insert(static_cast<CircleCoin *>(object));
                 money++;
             }
             //CHECK IS COIN COLLIDE WITH CAR
             if ((object_1->getObjectType() == GameObject::OBJECT_COIN) && (object->getObjectType() == GameObject::OBJECT_CAR))
             {
+                AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+                if (pAudioManager)
+                {
+                    pAudioManager->PlaySFX(m_jumpHandle);
+                }
                 coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
                 money++;
             }
@@ -132,17 +137,12 @@ void Game::loadLevel()
     }
 }
 
-#include <system_audio.hpp>
-#include <OpenSLWrap.hpp>
-
 void Game::loadAudio()
 {
-    SfxMan * man = SfxMan::GetInstance();
-    man->PlayTone("tone");
-
     AudioManager& audioManager = AudioManager::GetSingleton();
-    std::string jumpEffectName("sounds/jump.ogg");
-    AudioManager::AudioHandle m_jumpHandle = audioManager.CreateSFX(jumpEffectName);
+    audioManager.Initialize();
+    std::string jumpEffectName("sounds/coin.wav");
+    m_jumpHandle = audioManager.CreateSFX(jumpEffectName);
 
 }
 
