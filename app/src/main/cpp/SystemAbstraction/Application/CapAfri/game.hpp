@@ -71,6 +71,7 @@ private:
 
     uint32_t money = 0;
 
-    AudioManager::AudioHandle m_jumpHandle;
+    AudioManager::AudioHandle m_musicHandle;
+    AudioManager::AudioHandle m_coinHandle;
 
 };

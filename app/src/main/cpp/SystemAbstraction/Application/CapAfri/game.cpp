@@ -37,7 +37,7 @@ void Game::BeginContact(b2Contact* contact)
                 AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
                 if (pAudioManager)
                 {
-                    pAudioManager->PlaySFX(m_jumpHandle);
+                    pAudioManager->PlaySFX(m_coinHandle);
                 }
                 coinsToDelete.insert(static_cast<CircleCoin *>(object));
                 money++;
@@ -48,7 +48,7 @@ void Game::BeginContact(b2Contact* contact)
                 AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
                 if (pAudioManager)
                 {
-                    pAudioManager->PlaySFX(m_jumpHandle);
+                    pAudioManager->PlaySFX(m_coinHandle);
                 }
                 coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
                 money++;
@@ -111,6 +111,12 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
 
     loadAudio();
+
+    AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+    if (pAudioManager)
+    {
+        pAudioManager->PlaySFX(m_musicHandle);
+    }
 }
 
 
@@ -140,9 +146,11 @@ void Game::loadLevel()
 void Game::loadAudio()
 {
     AudioManager& audioManager = AudioManager::GetSingleton();
-    audioManager.Initialize();
-    std::string jumpEffectName("sounds/coin.wav");
-    m_jumpHandle = audioManager.CreateSFX(jumpEffectName);
+    std::string musicName("sounds/music_game.ogg");
+    m_musicHandle = audioManager.CreateSFX(musicName, true);
+
+    std::string coinEffectName("sounds/coin.wav");
+    m_coinHandle = audioManager.CreateSFX(coinEffectName, false);
 
 }
 

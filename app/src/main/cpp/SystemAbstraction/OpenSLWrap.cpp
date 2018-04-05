@@ -95,7 +95,7 @@ void SLAPIENTRY play_callback( SLPlayItf player, void *context, SLuint32 event )
 #endif
 
 
-AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename)
+AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool loopPlaying)
 {
 #ifdef __ANDROID__
     AudioHandle handle = INVALID_HANDLE;
@@ -133,9 +133,9 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename)
             SLDataSink audioSnk = {&loc_outmix, NULL};
 
             // create audio player
-            const unsigned int NUM_INTERFACES = 1;
-            const SLInterfaceID ids[NUM_INTERFACES] = {SL_IID_PLAY};
-            const SLboolean req[NUM_INTERFACES]		= {SL_BOOLEAN_TRUE};
+            const unsigned int NUM_INTERFACES = 2;
+            const SLInterfaceID ids[NUM_INTERFACES] = {SL_IID_SEEK, SL_IID_PLAY};
+            const SLboolean req[NUM_INTERFACES]		= {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
             SLresult result = (*m_engine)->CreateAudioPlayer(m_engine, &pNewInstance->m_playerObject, &audioSrc, &audioSnk, NUM_INTERFACES, ids, req);
             assert(SL_RESULT_SUCCESS == result);
 
@@ -148,6 +148,16 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename)
             assert(SL_RESULT_SUCCESS == result);
             (*pNewInstance->m_playerPlay)->RegisterCallback( pNewInstance->m_playerPlay, play_callback, NULL );
             (*pNewInstance->m_playerPlay)->SetCallbackEventsMask( pNewInstance->m_playerPlay, SL_PLAYEVENT_HEADATEND );
+
+            //get the seek interface
+            if(loopPlaying == true) {
+                result = (*pNewInstance->m_playerObject)->GetInterface(pNewInstance->m_playerObject,
+                                                                       SL_IID_SEEK,
+                                                                       &pNewInstance->m_playerSeek);
+                assert(SL_RESULT_SUCCESS == result);
+                (*pNewInstance->m_playerSeek)->SetLoop(pNewInstance->m_playerSeek, SL_BOOLEAN_TRUE,
+                                                       0, SL_TIME_UNKNOWN);
+            }
         }
     }
 
@@ -191,7 +201,3 @@ void AudioManager::DestroySFX(AudioHandle handle)
 #endif
 }
 
-    void AudioManager::empty()
-    {
-
-    }
