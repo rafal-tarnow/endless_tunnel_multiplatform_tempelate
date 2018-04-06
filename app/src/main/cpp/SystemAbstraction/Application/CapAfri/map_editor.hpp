@@ -108,7 +108,7 @@ private:
     float camera_position_y = 0;
 };
 
-class MapEditor : public GuiEventListener{
+class MapEditor : public MapEditorGuiEventListener{
 public:
 
     typedef enum

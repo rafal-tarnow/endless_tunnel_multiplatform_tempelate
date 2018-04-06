@@ -22,6 +22,8 @@
 #include "ui_scene.hpp"
 #include "util.hpp"
 
+#include <OpenSLWrap.hpp>
+
 /* The "welcome scene" (main menu) */
 class WelcomeScene : public UiScene {
     protected:
@@ -47,6 +49,9 @@ class WelcomeScene : public UiScene {
         virtual void OnKillGraphics();
 
         virtual void DoFrame();
+
+private:
+    AudioManager::AudioHandle menuMusicHandle;
 };
 
 #endif

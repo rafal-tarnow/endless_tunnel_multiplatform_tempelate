@@ -60,6 +60,8 @@ private:
         SLObjectItf 		m_playerObject;
         SLPlayItf			m_playerPlay;
         SLSeekItf           m_playerSeek;
+        SLDynamicInterfaceManagementItf m_playerDynamicInterfacemanagement;
+        SLPlaybackRateItf   m_playerPlaybackRate;
     };
     typedef std::unordered_map<AudioHandle, PlayInstance*>		PlayInstanceMap;
     typedef PlayInstanceMap::iterator								PlayInstanceMapIterator;
@@ -77,5 +79,6 @@ public:
 
     AudioHandle	CreateSFX(std::string& filename, bool loopPlay);
     void		PlaySFX(AudioHandle handle);
+    void        StopSFX(AudioHandle handle);
     void		DestroySFX(AudioHandle handle);
 };

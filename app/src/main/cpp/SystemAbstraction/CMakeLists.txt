@@ -66,6 +66,7 @@ add_library (system_abstraction STATIC
     Application/Tunnel/util.cpp
     Application/Tunnel/vertexbuf.cpp
     Application/Tunnel/welcome_scene.cpp
+    Application/Tunnel/scene_tuning_vehicle.cpp
     )
 
 target_include_directories(system_abstraction PRIVATE

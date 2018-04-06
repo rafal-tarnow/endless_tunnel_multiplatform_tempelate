@@ -22,7 +22,7 @@
 #include "indexbuf.hpp"
 #ifdef __ANDROID__
 #include "joystick-support.hpp"
-#include "native_engine.hpp"
+//#include "native_engine.hpp"
 #endif
 #include "our_key_codes.hpp"
 #include "scene.hpp"

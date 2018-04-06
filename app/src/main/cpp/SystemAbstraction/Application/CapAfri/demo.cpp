@@ -13,7 +13,8 @@ struct nk_font_atlas atlas;
 struct media media;
 struct nk_context ctx;
 
-static GuiEventListener * eventListener = nullptr;
+static MapEditorGuiEventListener * toolboxEventListener = nullptr;
+static VehicleTuningGuiEventListener * vehicleTuningEventListener = nullptr;
 
 static int ui_piemenu(struct nk_context *ctx, struct nk_vec2 pos, float radius,
                       struct nk_image *icons, int item_count)
@@ -183,6 +184,59 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
     nk_spacing(ctx, 1);
 }
 
+void car_tuning_demo(struct nk_context *ctx, struct media *media)
+{
+    static const char *items[] = {"Ground","Coin"};
+    static int selected_icon = 0;
+    int i = 0;
+
+    nk_style_set_font(ctx, &media->font_30->handle);
+
+    nk_begin(ctx, "Car tuning", nk_rect(0,0,1920,1080),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| NK_WINDOW_MOVABLE |*/ NK_WINDOW_TITLE);
+    {
+        static const float ratio[] = {0.0f, 1.0f};
+        nk_style_set_font(ctx, &media->font_30->handle);
+
+        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_spacing(ctx, 1);
+
+        if (nk_button_label(ctx, "Play"))
+        {
+            //LOGD("Save map clicked!\n");
+            if(vehicleTuningEventListener != nullptr) {
+                vehicleTuningEventListener->gui_onPlayButtonClicked();
+            }
+        }
+
+        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_spacing(ctx, 1);
+
+        if (nk_button_label(ctx, "Clear map"))
+        {
+            printf("Clear map clicked!\n");
+            if(toolboxEventListener != nullptr) {
+                toolboxEventListener->gui_onClearMapButtonClicked();
+            }
+        }
+
+        ui_header(ctx, media, "Cursor Mode");
+
+        ui_widget(ctx, media, 40);
+        if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
+            nk_layout_row_dynamic(ctx, 35, 1);
+            for (i = 0; i < 2; ++i)
+                if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
+                    selected_icon = i;
+                    if(toolboxEventListener != nullptr){
+                        toolboxEventListener->gui_onCursorModeChanged(selected_icon);
+                    }
+                }
+            nk_combo_end(ctx);
+        }
+    }
+    nk_end(ctx);
+}
+
 void toolbox_demo(struct nk_context *ctx, struct media *media)
 {
     static const char *items[] = {"Ground","Coin"};
@@ -202,8 +256,8 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         if (nk_button_label(ctx, "Save map"))
         {
             printf("Save map clicked!\n");
-            if(eventListener != nullptr) {
-                eventListener->gui_onSaveMapButtonClicked();
+            if(toolboxEventListener != nullptr) {
+                toolboxEventListener->gui_onSaveMapButtonClicked();
             }
         }
 
@@ -213,8 +267,8 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         if (nk_button_label(ctx, "Clear map"))
         {
             printf("Clear map clicked!\n");
-            if(eventListener != nullptr) {
-                eventListener->gui_onClearMapButtonClicked();
+            if(toolboxEventListener != nullptr) {
+                toolboxEventListener->gui_onClearMapButtonClicked();
             }
         }
 
@@ -226,15 +280,14 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
             for (i = 0; i < 2; ++i)
                 if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
-                    if(eventListener != nullptr){
-                        eventListener->gui_onCursorModeChanged(selected_icon);
+                    if(toolboxEventListener != nullptr){
+                        toolboxEventListener->gui_onCursorModeChanged(selected_icon);
                     }
                 }
             nk_combo_end(ctx);
         }
     }
     nk_end(ctx);
-
 }
 
 void button_demo(struct nk_context *ctx, struct media *media)
@@ -456,10 +509,8 @@ void basic_demo(struct nk_context *ctx, struct media *media)
     nk_end(ctx);
 }
 
-void demo_init(int width, int height, GuiEventListener * guiEventListener)
+void demo_init(int width, int height)
 {
-    eventListener = guiEventListener;
-
     glViewport(0, 0, width, height);
 
 
@@ -678,25 +729,51 @@ void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction:
     }
 }
 
-int demo_isAnyWindowHovered()
+void mapEditorGui_setEventListener(MapEditorGuiEventListener *eventListener)
+{
+    toolboxEventListener = eventListener;
+}
+
+void vehicleTuningGui_setEventListener(VehicleTuningGuiEventListener *eventListener)
+{
+    vehicleTuningEventListener = eventListener;
+}
+
+int mapEditorGui_isAnyWindowHovered()
 {
     return nk_window_is_any_hovered(&ctx);
 }
 
-void demo_render(int fb_width, int fb_height)
+int vehicleTuningGui_isAnyWindowHovered()
+{
+    return nk_window_is_any_hovered(&ctx);
+}
+
+void mapEditorGui_render(int fb_width, int fb_height)
 {
     nk_input_end(&ctx);
 
-    /* GUI */
     //basic_demo(&ctx, &media);
+    //car_tuning_demo(&ctx, &media);
     toolbox_demo(&ctx, &media);
     //button_demo(&ctx, &media);
     //grid_demo(&ctx, &media);
 
-    /* Draw */
-    //    glViewport(0, 0, fb_width, fb_height);
-    //    glClear(GL_COLOR_BUFFER_BIT);
-    //    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
+
+    nk_input_begin(&ctx);
+}
+
+void vehicleTuningGui_render(int fb_width, int fb_height)
+{
+    nk_input_end(&ctx);
+
+    //basic_demo(&ctx, &media);
+    car_tuning_demo(&ctx, &media);
+    //toolbox_demo(&ctx, &media);
+    //button_demo(&ctx, &media);
+    //grid_demo(&ctx, &media);
+
     device_draw(&device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
     nk_input_begin(&ctx);

@@ -52,25 +52,21 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
 
-
-    demo_init(framebuffer_width, framebuffer_height, this);
+    mapEditorGui_setEventListener(this);
 }
 
 MapEditor::~MapEditor()
 {
-
+    mapEditorGui_setEventListener(nullptr);
     delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
     glDeleteTextures(1,&redDotTextureId);
-
-    demo_uninit();
 }
 
 void MapEditor::systemCallback_Render()
 {
-    glViewport(0,0,framebuffer_width, framebuffer_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
@@ -164,7 +160,7 @@ void MapEditor::systemCallback_Render()
     glEnable(GL_DEPTH_TEST);
 
 
-    demo_render(framebuffer_width, framebuffer_height);
+    mapEditorGui_render(framebuffer_width, framebuffer_height);
 
     glFlush();
 }
@@ -183,7 +179,7 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
 
 void MapEditor::systemCallback_Scroll(double yoffset){
     demo_onScrollCallback(yoffset);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     camera.onScroll(yoffset);
@@ -240,7 +236,7 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
     current_mouse_y_pos = window_y;
 
     demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
@@ -271,7 +267,7 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
 {
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     if(cursorMode == CURSOR_ADD_FANT)
@@ -291,7 +287,7 @@ void MapEditor::systemCallback_mouseMove(int x, int y)
 {
     LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
     demo_onMouseMoveCallcack(x, y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     if(leftMouseButtonIsPressed == false)
@@ -325,7 +321,7 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
 {
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
 
@@ -336,7 +332,7 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
     demo_onPointerMoveCallback(pointerId, coords);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     current_mouse_x_pos = coords->x;
@@ -399,14 +395,14 @@ void MapEditor::gui_onCursorModeChanged(int mode)
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)
 {
     demo_onCharCallback(codepoint);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 }
 
 void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y)
 {
     demo_onKeyCallback(event, key, mods, x, y);
-    if(demo_isAnyWindowHovered()) //if input is on window, end process events
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){

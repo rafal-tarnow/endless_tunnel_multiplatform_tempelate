@@ -11,6 +11,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
     //CLEAR DATAS
     map_float.clear();
     map_int32_t.clear();
+    map_uint32_t.clear();
     map_glm_vec3.clear();
 
     //OPEN FILE
@@ -60,6 +61,20 @@ bool Config::loadDataFromFileToMemory(string fileName)
 
             map_int32_t[name] = stoi(value_1);
         }
+        else if(type == "uint32_t")
+        {
+            infile >> name >> equal >> value_1;
+
+            cout << "----------------------" << endl;
+            cout << "type = " << type << endl;
+            cout << "name = " << name << endl;
+            cout << "equal = " << equal << endl;
+            cout << "value_1 = " << value_1 << endl;
+            cout << "value_2 = " << value_2 << endl;
+            cout << "value_3 = " << value_3 << endl;
+
+            map_uint32_t[name] = uint32_t(stoul(value_1));
+        }
         else if(type == "glm::vec3")
         {
             infile >> name >> equal >> value_1 >> value_2 >> value_3;
@@ -76,6 +91,9 @@ bool Config::loadDataFromFileToMemory(string fileName)
             map_glm_vec3[name] = value;
         }
     }
+
+    //close stream
+    infile.close();
 }
 
 bool Config::saveDataFromMemoryToFile(string fileName)
@@ -104,6 +122,16 @@ bool Config::saveDataFromMemoryToFile(string fileName)
         it_int32_t++;
     }
 
+    //SAVE UINT32_T
+    std::map<std::string, uint32_t>::iterator it_uint32_t = map_uint32_t.begin();
+    while (it_uint32_t != map_uint32_t.end())
+    {
+        std::string name = it_uint32_t->first;
+        uint32_t value = it_uint32_t->second;
+        onfile << "uint32_t " << name << " = " << value << endl;
+        it_uint32_t++;
+    }
+
     //SAVE GLM_VEC3
     std::map<std::string, glm::vec3>::iterator it_glm_vec3 = map_glm_vec3.begin();
     while (it_glm_vec3 != map_glm_vec3.end())
@@ -127,6 +155,10 @@ void Config::set_int32_t(string name, int32_t value)
 {
     map_int32_t[name] = value;
 }
+void Config::set_uint32_t(string name, uint32_t value)
+{
+    map_uint32_t[name] = value;
+}
 
 void Config::set_glm_vec3(string name, glm::vec3 & value)
 {
@@ -146,5 +178,10 @@ glm::vec3 & Config::get_glm_vec3(string name)
 int32_t Config::get_int32_t(string name)
 {
     return map_int32_t[name];
+}
+
+uint32_t Config::get_uint32_t(string name)
+{
+    return map_uint32_t[name];
 }
 

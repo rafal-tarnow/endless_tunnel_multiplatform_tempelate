@@ -4,6 +4,8 @@ project(CapAfri)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
+
+
 add_library (CapAfri STATIC
     Bodies/background_body.cpp
     Bodies/car_body.cpp
@@ -17,3 +19,5 @@ add_library (CapAfri STATIC
     demo.cpp
     debug_draw.cpp
 )
+target_include_directories(CapAfri PRIVATE
+    ${ANDROID_NDK}/sources/android/native_app_glue)

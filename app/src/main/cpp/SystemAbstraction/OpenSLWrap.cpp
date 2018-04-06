@@ -1,4 +1,5 @@
 #include "OpenSLWrap.hpp"
+#include "system_log.hpp"
 
 
 inline unsigned int Hash(const std::string& key)
@@ -133,9 +134,9 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
             SLDataSink audioSnk = {&loc_outmix, NULL};
 
             // create audio player
-            const unsigned int NUM_INTERFACES = 2;
-            const SLInterfaceID ids[NUM_INTERFACES] = {SL_IID_SEEK, SL_IID_PLAY};
-            const SLboolean req[NUM_INTERFACES]		= {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
+            const unsigned int NUM_INTERFACES = 3;
+            const SLInterfaceID ids[NUM_INTERFACES] = {SL_IID_DYNAMICINTERFACEMANAGEMENT, SL_IID_SEEK, SL_IID_PLAY};
+            const SLboolean req[NUM_INTERFACES]		= {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
             SLresult result = (*m_engine)->CreateAudioPlayer(m_engine, &pNewInstance->m_playerObject, &audioSrc, &audioSnk, NUM_INTERFACES, ids, req);
             assert(SL_RESULT_SUCCESS == result);
 
@@ -158,6 +159,41 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
                 (*pNewInstance->m_playerSeek)->SetLoop(pNewInstance->m_playerSeek, SL_BOOLEAN_TRUE,
                                                        0, SL_TIME_UNKNOWN);
             }
+
+            // get dynamic interface
+            result = (*pNewInstance->m_playerObject)->GetInterface(pNewInstance->m_playerObject, SL_IID_DYNAMICINTERFACEMANAGEMENT, &pNewInstance->m_playerDynamicInterfacemanagement);
+            assert(SL_RESULT_SUCCESS == result);
+
+            // add playback rate iterface to player
+            result = (*pNewInstance->m_playerDynamicInterfacemanagement)->AddInterface(pNewInstance->m_playerDynamicInterfacemanagement, SL_IID_PLAYBACKRATE, SL_BOOLEAN_FALSE);
+            assert(SL_RESULT_SUCCESS == result);
+
+           ///get the playback rate interface
+            result = (*pNewInstance->m_playerObject)->GetInterface(pNewInstance->m_playerObject,
+                                                                   SL_IID_PLAYBACKRATE,
+                                                                   &pNewInstance->m_playerPlaybackRate);
+            assert(SL_RESULT_SUCCESS == result);
+
+            SLpermille MinRate;
+            SLpermille MaxRate;
+            SLpermille StepSize;
+            SLuint32 Capabilities;
+            result = (*pNewInstance->m_playerPlaybackRate)->GetRateRange(pNewInstance->m_playerPlaybackRate, 0,
+                                                     &MinRate, &MaxRate, &StepSize, &Capabilities);
+            assert(SL_RESULT_SUCCESS == result);
+
+            (*pNewInstance->m_playerPlaybackRate)->SetRate(pNewInstance->m_playerPlaybackRate,MinRate);
+            assert(SL_RESULT_SUCCESS == result);
+
+            SLpermille curRate;
+            (*pNewInstance->m_playerPlaybackRate)->GetRate(pNewInstance->m_playerPlaybackRate,&curRate);
+            assert(SL_RESULT_SUCCESS == result);
+
+//            LOGD("MinRate = %d", (int)MinRate);
+//            LOGD("MaxRate = %d", (int)MaxRate);
+//            LOGD("StepSize = %d", (int)StepSize);
+//            LOGD("curRate = %d", (int)curRate);
+//            assert(SL_RESULT_SUCCESS != result);
         }
     }
 
@@ -177,6 +213,22 @@ void AudioManager::PlaySFX(AudioHandle handle)
             // set the player's state
             (*pPlayInstance)->SetPlayState(pPlayInstance, SL_PLAYSTATE_STOPPED);
             (*pPlayInstance)->SetPlayState(pPlayInstance, SL_PLAYSTATE_PLAYING);
+        }
+    }
+#endif
+}
+
+void AudioManager::StopSFX(AudioHandle handle)
+{
+#ifdef __ANDROID__
+    PlayInstanceMapIterator iter = m_playInstances.find(handle);
+    if (iter != m_playInstances.end())
+    {
+        SLPlayItf pPlayInstance = iter->second->m_playerPlay;
+        if (pPlayInstance != NULL)
+        {
+            // set the player's state
+            (*pPlayInstance)->SetPlayState(pPlayInstance, SL_PLAYSTATE_STOPPED);
         }
     }
 #endif

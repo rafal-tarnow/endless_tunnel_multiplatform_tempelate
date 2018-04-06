@@ -112,6 +112,8 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
     loadAudio();
 
+    loadCoins();
+
     AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
     if (pAudioManager)
     {
@@ -119,6 +121,20 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     }
 }
 
+
+void Game::loadCoins()
+{
+    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    config.loadDataFromFileToMemory(configFilePath);
+    money = config.get_uint32_t("coins");
+}
+
+void Game::saveCoins()
+{
+    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    config.set_uint32_t("coins",money);
+    config.saveDataFromMemoryToFile(configFilePath);
+}
 
 void Game::loadLevel()
 {
@@ -161,10 +177,13 @@ Game::~Game()
         delete (*it);
     }
 
+    AudioManager::GetSingleton().StopSFX(m_musicHandle);
+
     TextureManager::deleteAllTextures();
     delete background;
     delete groundChain;
     delete world;
+    saveCoins();
 }
 
 void Game::windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out)
@@ -328,6 +347,8 @@ void Game::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton
 
     }
 }
+
+#include <system_audio.hpp>
 
 void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
 {

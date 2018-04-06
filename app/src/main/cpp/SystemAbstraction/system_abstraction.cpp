@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <CapAfri/game.hpp>
+#include <CapAfri/demo.hpp>
 
 using namespace  std;
 
@@ -49,6 +50,7 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
     framebuffer_height = fb_height;
     mgr->StartGraphics(framebuffer_width, framebuffer_height);
 
+    demo_init(framebuffer_width, framebuffer_height);
 }
 
 void SystemAbstraction::onPause()
@@ -141,6 +143,7 @@ void SystemAbstraction::onTimerTick()
 void SystemAbstraction::onUninit()
 {
     mgr->KillGraphics();
+    demo_uninit();
 }
 
 
@@ -183,7 +186,7 @@ void SystemAbstraction::onUninit()
 //{
 //    glClear(GL_COLOR_BUFFER_BIT);
 //    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-//    demo_render(framebuffer_width,framebuffer_height);
+//    mapEditorGui_render(framebuffer_width,framebuffer_height);
 //}
 //
 //void SystemAbstraction::onScroll(double yoffset)

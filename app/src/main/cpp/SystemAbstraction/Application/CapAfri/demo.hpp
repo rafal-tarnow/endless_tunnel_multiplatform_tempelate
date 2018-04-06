@@ -34,7 +34,7 @@ struct media {
 };
 
 
-class GuiEventListener{
+class MapEditorGuiEventListener{
 public:
 
     virtual void gui_onSaveMapButtonClicked() = 0;
@@ -42,7 +42,12 @@ public:
     virtual void gui_onCursorModeChanged(int mode) = 0;
 };
 
-void demo_init(int width, int height, GuiEventListener * eventListener);
+class VehicleTuningGuiEventListener{
+public:
+    virtual void gui_onPlayButtonClicked() = 0;
+};
+
+void demo_init(int width, int height);
 
 void demo_onCharCallback(unsigned int codepoint);
 void demo_onScrollCallback(double yoffset);
@@ -51,9 +56,12 @@ void demo_onMouseMoveCallcack(int x, int y);
 void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords);
 void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction::Key key, SystemAbstraction::Mods mods, int x, int y);
 
-int demo_isAnyWindowHovered();
+int mapEditorGui_isAnyWindowHovered();
+void mapEditorGui_setEventListener(MapEditorGuiEventListener *eventListener);
+void mapEditorGui_render(int fb_width, int fb_height);
 
-void demo_render(int fb_width, int fb_height);
-
+int vehicleTuningGui_isAnyWindowHovered();
+void vehicleTuningGui_setEventListener(VehicleTuningGuiEventListener *eventListener);
+void vehicleTuningGui_render(int fb_width, int fb_height);
 
 void demo_uninit();

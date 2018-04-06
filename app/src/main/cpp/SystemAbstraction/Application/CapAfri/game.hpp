@@ -38,8 +38,10 @@ public:
     void EndContact(b2Contact* contact);
 
 private:
+    void loadCoins();
     void loadAudio();
     void loadLevel();
+    void saveCoins();
     void updateGameLogics();
     b2World * getWorld();
     void renderWorldBodies();
@@ -73,5 +75,7 @@ private:
 
     AudioManager::AudioHandle m_musicHandle;
     AudioManager::AudioHandle m_coinHandle;
+
+    Config config;
 
 };

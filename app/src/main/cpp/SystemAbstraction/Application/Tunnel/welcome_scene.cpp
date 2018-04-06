@@ -16,12 +16,13 @@
 #include "anim.hpp"
 #include "dialog_scene.hpp"
 #include "play_scene.hpp"
-#include "play_capafri_scene.hpp"
+#include "scene_tuning_vehicle.hpp"
 #include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
 
 #include "./data/blurb.inl"
 #include "./data/strings.inl"
+
 
 #define TITLE_POS center, 0.85f
 #define TITLE_FONT_SCALE 1.0f
@@ -58,9 +59,14 @@
 
 
 WelcomeScene::WelcomeScene() {
+    AudioManager& audioManager = AudioManager::GetSingleton();
+    std::string musicName("sounds/music_menu.wav");
+    menuMusicHandle = audioManager.CreateSFX(musicName, true);
+    audioManager.PlaySFX(menuMusicHandle);
 }
 
 WelcomeScene::~WelcomeScene() {
+    AudioManager::GetSingleton().StopSFX(menuMusicHandle);
 }
 
 void WelcomeScene::RenderBackground() {
@@ -72,7 +78,7 @@ void WelcomeScene::OnButtonClicked(int id) {
 
     if (id == mPlayCapAfriButtonId)
     {
-        mgr->RequestNewScene(new PlayCapAfriScene());
+        mgr->RequestNewScene(new TuningVehicleScene());
     }
     else if(id == mmPlayTunnelButtonId)
     {
