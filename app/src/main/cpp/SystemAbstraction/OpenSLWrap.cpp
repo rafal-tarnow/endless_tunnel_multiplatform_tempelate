@@ -14,14 +14,15 @@ inline unsigned int Hash(const std::string& key)
 
     return result;
 }
-
-AudioManager::AudioManager(AAssetManager* pAssetManager)
 #ifdef __ANDROID__
+AudioManager::AudioManager(AAssetManager* pAssetManager)
     :	m_engineObject(NULL)
     ,	m_engine(NULL)
     ,	m_outputMixObject(NULL)
     ,	m_pAssetManager(pAssetManager)
-    #endif
+    #else
+AudioManager::AudioManager()
+#endif
 {
     Initialize();
 }
@@ -168,7 +169,7 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
             result = (*pNewInstance->m_playerDynamicInterfacemanagement)->AddInterface(pNewInstance->m_playerDynamicInterfacemanagement, SL_IID_PLAYBACKRATE, SL_BOOLEAN_FALSE);
             assert(SL_RESULT_SUCCESS == result);
 
-           ///get the playback rate interface
+            ///get the playback rate interface
             result = (*pNewInstance->m_playerObject)->GetInterface(pNewInstance->m_playerObject,
                                                                    SL_IID_PLAYBACKRATE,
                                                                    &pNewInstance->m_playerPlaybackRate);
@@ -179,7 +180,7 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
             SLpermille StepSize;
             SLuint32 Capabilities;
             result = (*pNewInstance->m_playerPlaybackRate)->GetRateRange(pNewInstance->m_playerPlaybackRate, 0,
-                                                     &MinRate, &MaxRate, &StepSize, &Capabilities);
+                                                                         &MinRate, &MaxRate, &StepSize, &Capabilities);
             assert(SL_RESULT_SUCCESS == result);
 
             (*pNewInstance->m_playerPlaybackRate)->SetRate(pNewInstance->m_playerPlaybackRate,MinRate);
@@ -189,11 +190,11 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
             (*pNewInstance->m_playerPlaybackRate)->GetRate(pNewInstance->m_playerPlaybackRate,&curRate);
             assert(SL_RESULT_SUCCESS == result);
 
-//            LOGD("MinRate = %d", (int)MinRate);
-//            LOGD("MaxRate = %d", (int)MaxRate);
-//            LOGD("StepSize = %d", (int)StepSize);
-//            LOGD("curRate = %d", (int)curRate);
-//            assert(SL_RESULT_SUCCESS != result);
+            //            LOGD("MinRate = %d", (int)MinRate);
+            //            LOGD("MaxRate = %d", (int)MaxRate);
+            //            LOGD("StepSize = %d", (int)StepSize);
+            //            LOGD("curRate = %d", (int)curRate);
+            //            assert(SL_RESULT_SUCCESS != result);
         }
     }
 

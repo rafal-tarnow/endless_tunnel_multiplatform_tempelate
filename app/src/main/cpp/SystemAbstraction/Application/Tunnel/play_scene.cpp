@@ -862,7 +862,7 @@ void PlayScene::OnPause() {
     }
 }
 
-void PlayScene::OnScreenResized(int width, int height) {
+void PlayScene::OnFramebufferResized(int width, int height) {
     UpdateProjectionMatrix();
 }
 

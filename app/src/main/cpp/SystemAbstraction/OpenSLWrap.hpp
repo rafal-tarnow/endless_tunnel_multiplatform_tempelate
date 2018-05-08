@@ -13,30 +13,30 @@
 //********** SINGLETON ********************
 #include <cassert>
 
-    template <typename T>
-    class Singleton
+template <typename T>
+class Singleton
+{
+private:
+    static T*	ms_singleton;
+
+public:
+    Singleton()
     {
-    private:
-        static T*	ms_singleton;
+        assert(!ms_singleton);
+        ms_singleton = static_cast<T*>(this);
+    }
 
-    public:
-        Singleton()
-        {
-            assert(!ms_singleton);
-            ms_singleton = static_cast<T*>(this);
-        }
+    ~Singleton()
+    {
+        assert(ms_singleton);
+        ms_singleton = 0;
+    }
 
-        ~Singleton()
-        {
-            assert(ms_singleton);
-            ms_singleton = 0;
-        }
+    static T& GetSingleton()		{ return *ms_singleton; }
+    static T* GetSingletonPtr()	{ return ms_singleton; }
+};
 
-        static T& GetSingleton()		{ return *ms_singleton; }
-        static T* GetSingletonPtr()	{ return ms_singleton; }
-    };
-
-    template <typename T> T* Singleton<T>::ms_singleton = 0;
+template <typename T> T* Singleton<T>::ms_singleton = 0;
 
 //*******************************************
 
@@ -48,7 +48,7 @@ public:
     static const AudioHandle	INVALID_HANDLE	= 0xFFFFFFFF;
 
 private:
-    #ifdef __ANDROID__
+#ifdef __ANDROID__
     SLObjectItf					m_engineObject;
     SLEngineItf					m_engine;
     SLObjectItf 				m_outputMixObject;
@@ -70,7 +70,11 @@ private:
 #endif
 
 public:
+#ifdef __ANDROID__
     explicit AudioManager(AAssetManager* pAssetManager);
+#else
+    explicit AudioManager();
+#endif
     virtual ~AudioManager();
 
     bool	Initialize();

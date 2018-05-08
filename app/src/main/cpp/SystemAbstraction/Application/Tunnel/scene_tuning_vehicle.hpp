@@ -15,7 +15,7 @@ public:
     virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
     virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
     virtual bool OnBackKeyPressed();
-    virtual void OnScreenResized(int width, int height);
+    virtual void OnFramebufferResized(int width, int height);
     virtual void OnJoy(float joyX, float joyY);
     virtual void OnKeyDown(int keyCode);
     virtual void OnPause();

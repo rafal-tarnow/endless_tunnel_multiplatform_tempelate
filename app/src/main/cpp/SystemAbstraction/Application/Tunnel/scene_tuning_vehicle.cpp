@@ -70,9 +70,10 @@ bool TuningVehicleScene::OnBackKeyPressed()
 
 }
 
-void TuningVehicleScene::OnScreenResized(int width, int height)
+void TuningVehicleScene::OnFramebufferResized(int width, int height)
 {
-
+    framebuffer_width = width;
+    framebuffet_height = height;
 }
 
 void TuningVehicleScene::OnJoy(float joyX, float joyY)

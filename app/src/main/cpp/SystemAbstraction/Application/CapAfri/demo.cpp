@@ -184,7 +184,7 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
     nk_spacing(ctx, 1);
 }
 
-void car_tuning_demo(struct nk_context *ctx, struct media *media)
+void car_tuning_demo(struct nk_context *ctx, struct media *media, int fb_width, int fb_height)
 {
     static const char *items[] = {"Ground","Coin"};
     static int selected_icon = 0;
@@ -192,7 +192,7 @@ void car_tuning_demo(struct nk_context *ctx, struct media *media)
 
     nk_style_set_font(ctx, &media->font_30->handle);
 
-    nk_begin(ctx, "Car tuning", nk_rect(0,0,1920,1080),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| NK_WINDOW_MOVABLE |*/ NK_WINDOW_TITLE);
+    nk_begin(ctx, "Car tuning", nk_rect(0,0,fb_width,fb_height),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| NK_WINDOW_MOVABLE |*/ NK_WINDOW_TITLE);
     {
         static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &media->font_30->handle);
@@ -769,7 +769,7 @@ void vehicleTuningGui_render(int fb_width, int fb_height)
     nk_input_end(&ctx);
 
     //basic_demo(&ctx, &media);
-    car_tuning_demo(&ctx, &media);
+    car_tuning_demo(&ctx, &media, fb_width, fb_height);
     //toolbox_demo(&ctx, &media);
     //button_demo(&ctx, &media);
     //grid_demo(&ctx, &media);

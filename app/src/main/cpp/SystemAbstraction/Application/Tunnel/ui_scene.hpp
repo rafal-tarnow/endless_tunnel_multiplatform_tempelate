@@ -98,7 +98,7 @@ class UiScene : public Scene {
         virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
         virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
         virtual void OnKeyDown(int ourKeyCode);
-        virtual void OnScreenResized(int width, int height);
+        virtual void OnFramebufferResized(int width, int height);
 
         UiWidget* GetWidgetById(int id);
 

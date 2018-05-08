@@ -27,7 +27,7 @@ public:
     virtual void OnScroll(double yoffset);
     virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
     virtual bool OnBackKeyPressed();
-    virtual void OnScreenResized(int width, int height);
+    virtual void OnFramebufferResized(int width, int height);
     virtual void OnJoy(float joyX, float joyY);
     virtual void OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
     virtual void OnChar(unsigned int codepoint);

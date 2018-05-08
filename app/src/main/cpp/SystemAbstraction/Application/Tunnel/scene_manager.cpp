@@ -111,7 +111,7 @@ void SceneManager::SetScreenSize(int width, int height) {
         mScreenHeight = height;
 
         if (mCurScene && mHasGraphics) {
-            mCurScene->OnScreenResized(width, height);
+            mCurScene->OnFramebufferResized(width, height);
         }
     }
 }

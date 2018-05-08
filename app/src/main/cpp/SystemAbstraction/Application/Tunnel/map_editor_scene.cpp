@@ -264,7 +264,7 @@ void MapEditorScene::OnPause() {
     }
 }
 
-void MapEditorScene::OnScreenResized(int width, int height) {
+void MapEditorScene::OnFramebufferResized(int width, int height) {
     current_width = width;
     current_height = height;
     mapEditor->systemCallback_WindowResize(current_width, current_height);

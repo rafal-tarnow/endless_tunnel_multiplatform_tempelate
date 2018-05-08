@@ -70,7 +70,7 @@ class Scene {
         virtual void OnJoy(float joyX, float joyY);
 
         // Called when screen gets resized
-        virtual void OnScreenResized(int width, int height);
+        virtual void OnFramebufferResized(int width, int height);
 
         // Called when game is paused (e.g. onPause())
         virtual void OnPause();

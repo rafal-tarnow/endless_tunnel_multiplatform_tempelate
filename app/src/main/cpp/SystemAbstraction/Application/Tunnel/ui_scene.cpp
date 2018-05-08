@@ -95,7 +95,7 @@ void UiScene::OnKillGraphics() {
     DeleteWidgets();
 }
 
-void UiScene::OnScreenResized(int width, int height) {
+void UiScene::OnFramebufferResized(int width, int height) {
     // screen got resized; if we have widgets and graphics, we have to recreate them
     SceneManager *mgr = SceneManager::GetInstance();
     if (mgr->HasGraphics() && mWidgetCount > 0) {

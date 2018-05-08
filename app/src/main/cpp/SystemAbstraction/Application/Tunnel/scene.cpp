@@ -33,7 +33,7 @@ bool Scene::OnBackKeyPressed() { return false; }
 void Scene::OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y){}
 void Scene::OnChar(unsigned int codepoint){}
 void Scene::OnJoy(float x, float y) {}
-void Scene::OnScreenResized(int width, int height) {}
+void Scene::OnFramebufferResized(int width, int height) {}
 void Scene::OnPause() {}
 void Scene::OnResume() {}
      Scene::~Scene() {}

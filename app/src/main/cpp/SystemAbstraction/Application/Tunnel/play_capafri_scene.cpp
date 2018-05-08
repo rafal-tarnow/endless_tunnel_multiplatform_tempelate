@@ -254,7 +254,7 @@ void PlayCapAfriScene::OnPause() {
     }
 }
 
-void PlayCapAfriScene::OnScreenResized(int width, int height) {
+void PlayCapAfriScene::OnFramebufferResized(int width, int height) {
     current_width = width;
     current_height = height;
     game->systemCallback_WindowResize(width, height);
