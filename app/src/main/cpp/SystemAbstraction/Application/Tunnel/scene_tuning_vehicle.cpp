@@ -6,6 +6,7 @@
 TuningVehicleScene::TuningVehicleScene()
 {
     vehicleTuningGui_setEventListener(this);
+    set_style(demo_getContext(),THEME_BLACK);
 }
 
 TuningVehicleScene::~TuningVehicleScene()
@@ -28,7 +29,7 @@ void TuningVehicleScene::OnKillGraphics()
 void TuningVehicleScene::gui_onPlayButtonClicked()
 {
     SceneManager *mgr = SceneManager::GetInstance();
-        mgr->RequestNewScene(new PlayCapAfriScene());
+    mgr->RequestNewScene(new PlayCapAfriScene());
 }
 
 void TuningVehicleScene::DoFrame()
@@ -36,6 +37,8 @@ void TuningVehicleScene::DoFrame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+
+
 
     vehicleTuningGui_render(framebuffer_width, framebuffet_height);
 
