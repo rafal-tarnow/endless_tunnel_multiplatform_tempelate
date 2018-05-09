@@ -29,7 +29,6 @@
 #include "scene_manager.hpp"
 #include "shader.hpp"
 #include "simplegeom.hpp"
-#include "texture.hpp"
 #include "vertexbuf.hpp"
 
 #endif

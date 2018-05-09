@@ -49,19 +49,13 @@ add_library (system_abstraction STATIC
     Application/Tunnel/ascii_to_geom.cpp
     Application/Tunnel/dialog_scene.cpp
     Application/Tunnel/indexbuf.cpp
-    Application/Tunnel/obstacle.cpp
-    Application/Tunnel/obstacle_generator.cpp
-    Application/Tunnel/our_shader.cpp
-    Application/Tunnel/play_scene.cpp
     Application/Tunnel/play_capafri_scene.cpp
     Application/Tunnel/map_editor_scene.cpp
     Application/Tunnel/scene.cpp
     Application/Tunnel/scene_manager.cpp
     Application/Tunnel/shader.cpp
     Application/Tunnel/shape_renderer.cpp
-    Application/Tunnel/tex_quad.cpp
     Application/Tunnel/text_renderer.cpp
-    Application/Tunnel/texture.cpp
     Application/Tunnel/ui_scene.cpp
     Application/Tunnel/util.cpp
     Application/Tunnel/vertexbuf.cpp

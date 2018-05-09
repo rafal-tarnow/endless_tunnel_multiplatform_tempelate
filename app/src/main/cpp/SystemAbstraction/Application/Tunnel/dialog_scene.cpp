@@ -15,7 +15,6 @@
  */
 #include "anim.hpp"
 #include "dialog_scene.hpp"
-#include "play_scene.hpp"
 
 #define BUTTON_FONT_SCALE 0.6f
 #define TEXT_FONT_SCALE 0.6f
@@ -140,7 +139,7 @@ void DialogScene::OnButtonClicked(int id) {
             mgr->RequestNewScene(new WelcomeScene());
             break;
         case ACTION_PLAY_WITHOUT_SIGNIN:
-            mgr->RequestNewScene(new PlayScene());
+
             break;
         case ACTION_SIGN_OUT:
             mgr->RequestNewScene(new WelcomeScene());

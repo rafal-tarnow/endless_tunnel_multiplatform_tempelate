@@ -18,7 +18,6 @@
 
 #include "anim.hpp"
 #include "ascii_to_geom.hpp"
-#include "our_shader.hpp"
 #include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
 #include "./data/cube_geom.inl"

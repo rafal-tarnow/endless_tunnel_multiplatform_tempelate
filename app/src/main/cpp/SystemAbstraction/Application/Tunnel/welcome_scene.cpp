@@ -15,7 +15,6 @@
  */
 #include "anim.hpp"
 #include "dialog_scene.hpp"
-#include "play_scene.hpp"
 #include "scene_tuning_vehicle.hpp"
 #include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
@@ -82,7 +81,7 @@ void WelcomeScene::OnButtonClicked(int id) {
     }
     else if(id == mmPlayTunnelButtonId)
     {
-        mgr->RequestNewScene(new PlayScene());
+
     }
     else if(id == mMapEditorButtonId)
     {

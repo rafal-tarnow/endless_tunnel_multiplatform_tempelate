@@ -30,8 +30,7 @@ template<typename T> void CleanUp(T** pptr) {
 int Random(int uboundExclusive);
 int Random(int lbound, int uboundExclusive);
 
-template<typename T> T Max(T a, T b) { return a > b ? a : b; }
-template<typename T> T Min(T a, T b) { return a < b ? a : b; }
+
 template<typename T> T Clamp(T v, T min, T max) {
     return (v < min) ? min : (v > max) ? max : v;
 }
