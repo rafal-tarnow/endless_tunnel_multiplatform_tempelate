@@ -2,6 +2,7 @@
 
 #include "scene.hpp"
 #include "../CapAfri/demo.hpp"
+#include "../CapAfri/button.hpp"
 
 class TuningVehicleScene : public Scene, VehicleTuningGuiEventListener {
 public:
@@ -24,6 +25,11 @@ public:
 
 private:
     int framebuffer_width;
-    int framebuffet_height;
+    int framebuffer_height;
+
+    Button damperButton;
+
+    DE_Rectangle safe_area;
+    glm::vec2 safe_area_dim;
 
 };

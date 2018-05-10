@@ -7,18 +7,28 @@ TuningVehicleScene::TuningVehicleScene()
 {
     vehicleTuningGui_setEventListener(this);
     set_style(demo_getContext(),THEME_BLACK);
+
+    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
+
+    safe_area_dim = glm::vec2(16.0f/9.0f,1.0f);
+    DE_initRectangle(&safe_area, glm::vec4(1.0f,0.0f,0.0f,1.0f),glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 }
 
 TuningVehicleScene::~TuningVehicleScene()
 {
     vehicleTuningGui_setEventListener(nullptr);
+
+    DE_deleteRectangle(&safe_area);
 }
 
 
 void TuningVehicleScene::OnStartGraphics(int width, int height)
 {
     framebuffer_width = width;
-    framebuffet_height = height;
+    framebuffer_height = height;
 }
 
 void TuningVehicleScene::OnKillGraphics()
@@ -35,12 +45,54 @@ void TuningVehicleScene::gui_onPlayButtonClicked()
 void TuningVehicleScene::DoFrame()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 
 
 
-    vehicleTuningGui_render(framebuffer_width, framebuffet_height);
+
+
+    //  vehicleTuningGui_render(framebuffer_width, framebuffet_height);
+
+
+    auto framebuffer_aspect = float(framebuffer_width)/float(framebuffer_height);
+    auto safe_area_aspect = safe_area_dim.x/safe_area_dim.y;
+
+    glm::mat4 P_GUI;
+
+    if(safe_area_aspect > framebuffer_aspect)
+    {
+        auto half_width = safe_area_dim.x/2.0f;
+        auto half_height = half_width/framebuffer_aspect;
+        P_GUI = glm::ortho(-half_width, half_width, -half_height, half_height, -1000.0f, 1000.0f);
+    }
+    else
+    {
+        auto half_height = safe_area_dim.y/2.0f;
+        auto half_width = half_height*framebuffer_aspect;
+        P_GUI = glm::ortho(-half_width, half_width, -half_height, half_height, -1000.0f, 1000.0f);
+    }
+    //    glm::mat4 V_GUI = glm::lookAt(glm::vec3(float(framebuffer_width)/2.0f, float(framebuffet_height)/2.0f, 1.0f),glm::vec3(float(framebuffer_width)/2.0f, float(framebuffet_height)/2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //    glm::mat4 M_GUI = glm::translate(glm::mat4(1),glm::vec3(1920/2, 0,0));
+
+    //glm::mat4 P_GUI = glm::mat4(1);
+    glm::mat4 V_GUI = glm::mat4(1);
+    glm::mat4 M_GUI = glm::mat4(1);
+
+
+    safe_area.projection = P_GUI;
+    safe_area.view = V_GUI;
+    safe_area.model = M_GUI;
+
+    DE_drawRectangle(&safe_area);
+
+    //        M_GUI = glm::translate(glm::scale(glm::mat4(1),glm::vec3(0.5f, 0.5f, 0.5f)),glm::vec3(-1.0,0.9,0.0f));
+
+    //    damperButton.Render(P_GUI, V_GUI, M_GUI);
+
+    //          M_GUI = glm::translate(glm::scale(glm::mat4(1),glm::vec3(0.5f, 0.5f, 0.5f)),glm::vec3(1.0,0.9,0.0f));
+
+    //           damperButton.Render(P_GUI, V_GUI, M_GUI);
+
+
 
     glFlush();
 }
@@ -76,7 +128,7 @@ bool TuningVehicleScene::OnBackKeyPressed()
 void TuningVehicleScene::OnFramebufferResized(int width, int height)
 {
     framebuffer_width = width;
-    framebuffet_height = height;
+    framebuffer_height = height;
 }
 
 void TuningVehicleScene::OnJoy(float joyX, float joyY)

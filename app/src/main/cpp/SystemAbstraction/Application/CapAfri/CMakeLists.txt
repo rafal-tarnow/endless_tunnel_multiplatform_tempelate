@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(CapAfri)
 
+
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 
@@ -18,6 +20,7 @@ add_library (CapAfri STATIC
     level.cpp
     demo.cpp
     debug_draw.cpp
+    button.cpp
 )
 target_include_directories(CapAfri PRIVATE
     ${ANDROID_NDK}/sources/android/native_app_glue)
