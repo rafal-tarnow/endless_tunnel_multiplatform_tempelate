@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="garage.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-678.52009"
+     inkscape:cy="603.90483"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1151"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#00ffff;fill-opacity:1"
+       id="rect4138"
+       width="1920"
+       height="1080"
+       x="-1577.1428"
+       y="-73.352081"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4150">
+      <path
+         style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+         d="M -769.73633 -52.744141 L -1101.0664 -18.400391 L -1511.1875 -48.703125 L -1561.6953 -44.664062 L -1555.6348 96.757812 L -1565.7363 232.11914 L -1557.6543 401.82422 L -1559.6758 599.81445 L -1553.6152 822.04688 L -1561.6953 991.75391 L -882.87305 975.58984 L -494.97461 999.83398 L 22.222656 985.69141 L 309.10742 995.79297 L 299.00586 818.00586 L 323.24805 601.83398 L 296.98438 274.54492 L 329.31055 -52.744141 L -64.650391 -18.400391 L -769.73633 -52.744141 z M -1519.2695 108.87891 L -1440.4766 121.00195 L -1177.8379 116.96094 L -824.28516 151.30664 L -341.43164 145.24609 L 264.66016 167.46875 L 270.7207 387.68164 L 292.94336 607.89453 L 270.7207 797.80469 L 268.70117 971.55078 L -52.527344 955.38672 L -278.80273 961.44922 L -490.93359 977.61133 L -781.85742 955.38672 L -983.88867 949.32617 L -1248.5488 967.50977 L -1517.25 967.50977 L -1537.4531 951.34766 L -1529.3711 751.33594 L -1535.4316 561.42773 L -1523.3105 458.39258 L -1531.3906 276.56445 L -1519.2695 108.87891 z "
+         id="path4142" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4146"
+         y="91.687813"
+         x="-999.83807"
+         style="font-style:normal;font-weight:normal;font-size:112.7020874px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="91.687813"
+           x="-999.83807"
+           id="tspan4148"
+           sodipodi:role="line">TUNING CAR</tspan></text>
+    </g>
+  </g>
+</svg>

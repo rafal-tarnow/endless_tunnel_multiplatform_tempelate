@@ -23,6 +23,7 @@
 #include "./SystemAbstraction/system_log.hpp"
 #include "./SystemAbstraction/system_paths.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
+#include "./SystemAbstraction/system_resources.hpp"
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 0
@@ -67,6 +68,7 @@ NativeEngine::NativeEngine(struct android_app *app) {
 
     systemInput_initConfigPath(app->activity->internalDataPath);
     new AudioManager(app->activity->assetManager);
+    Resource::initAndroid(app->activity->assetManager);
 }
 
 NativeEngine* NativeEngine::GetInstance() {

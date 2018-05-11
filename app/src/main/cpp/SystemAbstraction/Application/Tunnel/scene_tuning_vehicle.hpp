@@ -32,4 +32,6 @@ private:
     DE_Rectangle safe_area;
     glm::vec2 safe_area_dim;
 
+    GLuint garageTextureId;
+
 };

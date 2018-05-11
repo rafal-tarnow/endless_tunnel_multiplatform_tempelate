@@ -2,6 +2,8 @@
 #include <system_opengl_include.hpp>
 #include "scene_manager.hpp"
 #include "play_capafri_scene.hpp"
+#include <SOIL.h>
+#include <system_resources.hpp>
 
 TuningVehicleScene::TuningVehicleScene()
 {
@@ -14,7 +16,13 @@ TuningVehicleScene::TuningVehicleScene()
 
 
     safe_area_dim = glm::vec2(16.0f/9.0f,1.0f);
-    DE_initRectangle(&safe_area, glm::vec4(1.0f,0.0f,0.0f,1.0f),glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
+    string textureName("./textures/garage.png");
+
+
+    Resource garage("textures/garage.png");
+    garageTextureId = SOIL_load_OGL_texture_from_memory(garage.getData(), garage.getSize(), 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+
+    DE_initRectangle(&safe_area, garageTextureId,glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 }
 
 TuningVehicleScene::~TuningVehicleScene()
@@ -22,6 +30,7 @@ TuningVehicleScene::~TuningVehicleScene()
     vehicleTuningGui_setEventListener(nullptr);
 
     DE_deleteRectangle(&safe_area);
+    glDeleteTextures(1, &garageTextureId);
 }
 
 
@@ -45,9 +54,6 @@ void TuningVehicleScene::gui_onPlayButtonClicked()
 void TuningVehicleScene::DoFrame()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-
 
 
     //  vehicleTuningGui_render(framebuffer_width, framebuffet_height);
