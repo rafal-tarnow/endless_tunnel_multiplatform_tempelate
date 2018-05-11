@@ -6,7 +6,8 @@ project (linux_endless_tunnel)
 if(ANDROID)
 
 else()
-  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../GRAPHICS/ DESTINATION ${PROJECT_BINARY_DIR}/GRAPHICS)
+    add_custom_target(copy-runtime-files ALL
+        COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/../RESOURCES/assets ${CMAKE_BINARY_DIR}/assets)
 endif()
 
 

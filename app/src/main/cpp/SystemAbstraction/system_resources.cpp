@@ -17,6 +17,21 @@ Resource::Resource(string path)
     data = (unsigned char *)malloc(size);
     AAsset_read(asset, data, size);
     AAsset_close(asset);
+#else
+    path = "./assets/" + path;
+
+    FILE * file  = fopen(path.c_str(), "r");
+    fseek(file, 0, SEEK_END); // seek to end of file
+    size = ftell(file); // get current file pointer
+    fseek(file, 0, SEEK_SET);
+
+    data = (unsigned char *)malloc(size);
+
+    size_t result;
+    fread (data,1,size,file);
+    if (result != size) {/*fputs ("Reading error",stderr); exit (3);*/}
+
+    fclose(file);
 #endif
 }
 
