@@ -2,8 +2,6 @@
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include <SOIL.h>
-#include "../data/kolo.png.hpp"
-#include "../data/car.png.hpp"
 
 using namespace std;
 
@@ -92,22 +90,14 @@ Car::Car(float32 x, float32 y, float z,  b2World * world)
     //     //b2WheelJoint dzojt;
 
 
-
-    bodyTextureId = SOIL_load_OGL_texture_from_memory(car_png, size_of_car_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-    DE_initRectangle(&carBodyRectangle,&bodyTextureId,car_body_width_const, car_body_height_const, z_layer);
-
-    koloTextureId = SOIL_load_OGL_texture_from_memory(kolo_png, size_of_kolo_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-    DE_initRectangle(&carWhellRectangle, &koloTextureId, whell_radius_const*2.0f,whell_radius_const*2.0f, z_layer);
-
+    DE_initRectangle(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, z_layer);
+    DE_initRectangle(&carWhellRectangle, "textures/kolo.png", whell_radius_const*2.0f,whell_radius_const*2.0f, z_layer);
 }
 
 Car::~Car()
 {
     DE_deleteRectangle(&carWhellRectangle);
     DE_deleteRectangle(&carBodyRectangle);
-
-    glDeleteTextures(1, &koloTextureId);
-    glDeleteTextures(1, &bodyTextureId);
 }
 
 float Car::getSpeed()

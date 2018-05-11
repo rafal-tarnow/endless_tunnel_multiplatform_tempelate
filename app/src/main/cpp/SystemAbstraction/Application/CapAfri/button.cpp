@@ -1,13 +1,14 @@
 #include "button.hpp"
-
+#include <library_opengles_2/Resources/Resources.hpp>
 
 Button::Button()
 {
     glm::vec3 position(0,0,0.0f);
-    glm::vec2 dimm(1,1);
-    string textureName("./GRAPHICS/shock_absorber.png");
+    glm::vec2 dimm(0.2,0.2);
+
+    string textureName("textures/shock_absorber.png");
+
     DE_initRectangle(&rectangle,textureName.c_str(),position,dimm);
-    //DE_initRectangle(&rectangle,textureName.c_str(), 300, 400, 0);
 }
 
 Button::~Button()

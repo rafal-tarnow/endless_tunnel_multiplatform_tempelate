@@ -18,6 +18,7 @@
 #include "scene_tuning_vehicle.hpp"
 #include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
+#include "play_capafri_scene.hpp"
 
 #include "./data/blurb.inl"
 #include "./data/strings.inl"
@@ -77,7 +78,7 @@ void WelcomeScene::OnButtonClicked(int id) {
 
     if (id == mPlayCapAfriButtonId)
     {
-        mgr->RequestNewScene(new TuningVehicleScene());
+        mgr->RequestNewScene(new PlayCapAfriScene());
     }
     else if(id == mmPlayTunnelButtonId)
     {
@@ -89,7 +90,8 @@ void WelcomeScene::OnButtonClicked(int id) {
     }
     else if (id == mStoryButtonId)
     {
-        mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
+        //mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
+         mgr->RequestNewScene(new TuningVehicleScene());
     }
     else if (id == mAboutButtonId)
     {

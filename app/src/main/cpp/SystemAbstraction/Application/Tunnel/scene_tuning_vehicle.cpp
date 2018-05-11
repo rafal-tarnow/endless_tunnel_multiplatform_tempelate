@@ -3,7 +3,8 @@
 #include "scene_manager.hpp"
 #include "play_capafri_scene.hpp"
 #include <SOIL.h>
-#include <system_resources.hpp>
+#include <library_opengles_2/Resources/Resources.hpp>
+#include "welcome_scene.hpp"
 
 TuningVehicleScene::TuningVehicleScene()
 {
@@ -13,16 +14,12 @@ TuningVehicleScene::TuningVehicleScene()
     glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
 
 
     safe_area_dim = glm::vec2(16.0f/9.0f,1.0f);
-    string textureName("./textures/garage.png");
+    DE_initRectangle(&safe_area, "textures/garage.png", glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 
-
-    Resource garage("textures/garage.png");
-    garageTextureId = SOIL_load_OGL_texture_from_memory(garage.getData(), garage.getSize(), 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
-
-    DE_initRectangle(&safe_area, garageTextureId,glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 }
 
 TuningVehicleScene::~TuningVehicleScene()
@@ -90,15 +87,7 @@ void TuningVehicleScene::DoFrame()
 
     DE_drawRectangle(&safe_area);
 
-    //        M_GUI = glm::translate(glm::scale(glm::mat4(1),glm::vec3(0.5f, 0.5f, 0.5f)),glm::vec3(-1.0,0.9,0.0f));
-
-    //    damperButton.Render(P_GUI, V_GUI, M_GUI);
-
-    //          M_GUI = glm::translate(glm::scale(glm::mat4(1),glm::vec3(0.5f, 0.5f, 0.5f)),glm::vec3(1.0,0.9,0.0f));
-
-    //           damperButton.Render(P_GUI, V_GUI, M_GUI);
-
-
+    damperButton.Render(P_GUI, V_GUI, M_GUI);
 
     glFlush();
 }
@@ -128,7 +117,7 @@ void TuningVehicleScene::OnPointerMove(int pointerId, const struct PointerCoords
 
 bool TuningVehicleScene::OnBackKeyPressed()
 {
-
+    SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
 }
 
 void TuningVehicleScene::OnFramebufferResized(int width, int height)

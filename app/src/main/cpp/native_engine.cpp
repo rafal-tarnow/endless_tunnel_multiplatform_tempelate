@@ -23,7 +23,7 @@
 #include "./SystemAbstraction/system_log.hpp"
 #include "./SystemAbstraction/system_paths.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
-#include "./SystemAbstraction/system_resources.hpp"
+#include "./SystemAbstraction/Application/libs/library_opengles_2/Resources/Resources.hpp"
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 0

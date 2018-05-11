@@ -40,9 +40,6 @@ private:
     float current_car_speed = 0.0f;
     float required_car_speed = 0.0f;
 
-    GLuint koloTextureId = 0;
-    GLuint bodyTextureId = 0;
-
     float z_layer = 0.0f;
 
     GameObject carObject;
