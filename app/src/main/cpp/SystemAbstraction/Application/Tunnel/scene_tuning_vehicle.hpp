@@ -2,7 +2,8 @@
 
 #include "scene.hpp"
 #include "../CapAfri/demo.hpp"
-#include "../CapAfri/button.hpp"
+#include "../CapAfri/gui/radio_button.hpp"
+#include "../CapAfri/gui/radio_button_manager.hpp"
 
 class TuningVehicleScene : public Scene, VehicleTuningGuiEventListener {
 public:
@@ -25,9 +26,11 @@ public:
 
 private:
     void initButtons();
-    Button button_shockAbsorber;
-    Button button_spring;
-    Button button_tires;
+    RadioButtonManager radioButtonManager;
+
+    RadioButton button_shockAbsorber;
+    RadioButton button_spring;
+    RadioButton button_tires;
 
     DE_Rectangle backgroundRect;
     DE_Rectangle safe_area;

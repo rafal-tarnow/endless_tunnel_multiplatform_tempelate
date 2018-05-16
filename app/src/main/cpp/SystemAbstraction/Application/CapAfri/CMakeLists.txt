@@ -20,7 +20,9 @@ add_library (CapAfri STATIC
     level.cpp
     demo.cpp
     debug_draw.cpp
-    button.cpp
+    gui/button.cpp
+    gui/radio_button.cpp
+    gui/radio_button_manager.cpp
     transformation.cpp
 )
 target_include_directories(CapAfri PRIVATE

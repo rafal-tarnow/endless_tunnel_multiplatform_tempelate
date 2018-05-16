@@ -55,6 +55,10 @@ void TuningVehicleScene::initButtons()
     button_tires.setMatrices(&mViewport, &mProjection, &mView);
     button_tires.setNormalBackgroundTexture(TextureManager::getTextureId("textures/tires.png"));
     button_tires.setPressedBackgroundTexture(TextureManager::getTextureId("textures/tires_pressed.png"));
+
+    radioButtonManager.addRadioButton(&button_shockAbsorber);
+    radioButtonManager.addRadioButton(&button_spring);
+    radioButtonManager.addRadioButton(&button_tires);
 }
 
 TuningVehicleScene::~TuningVehicleScene()

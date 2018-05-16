@@ -1,6 +1,5 @@
 #include "button.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
-#include "transformation.hpp"
 #include <iostream>
 
 using namespace std;
@@ -28,6 +27,11 @@ void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *
     mViewport = Viewport;
     mProjection = Projection;
     mView = View;
+}
+
+void Button::setEventListener(ButtonEventListener * listener)
+{
+    mListener = listener;
 }
 
 void Button::setNormalBackgroundTexture(GLuint textureId)
@@ -67,8 +71,16 @@ void Button::onPointerDown(float x_ndc, float y_ndc)
 
 
 }
+
 void Button::onPointerUp()
 {
-    isTouched = false;
-    rectangle.texture_id = normalTexture;
+    if(isTouched == true)
+    {
+        isTouched = false;
+        rectangle.texture_id = normalTexture;
+        if(mListener)
+        {
+            mListener->Button_onClicked(this);
+        }
+    }
 }
