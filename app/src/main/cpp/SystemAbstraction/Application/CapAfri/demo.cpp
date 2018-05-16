@@ -676,7 +676,7 @@ void demo_onScrollCallback(double yoffset)
 
 void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y)
 {
-    LOGD("demo_onMouseButtonCallback x = %d y = %d", x, y);
+    //LOGD("demo_onMouseButtonCallback x = %d y = %d", x, y);
 
     //TouchEvent Support
     struct nk_input *in;

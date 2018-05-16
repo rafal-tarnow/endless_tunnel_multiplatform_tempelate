@@ -7,8 +7,9 @@
 #include <system_paths.hpp>
 #include <system_log.hpp>
 #include "demo.hpp"
-#include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 #include "../system_abstraction.hpp"
+#include "transformation.hpp"
+#include <library_opengles_2/Resources/Resources.hpp>
 
 using namespace std;
 
@@ -32,7 +33,9 @@ MapEditor::MapEditor(int fb_width, int fb_height)
 
 
     textRenderer_v2 = new TextRenderer_v2(fb_width, fb_height);
-    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fb_height*0.06);
+    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+
+    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fb_height*0.06);
 
     //COORDINATES LINES
     glm::vec4 green_color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -187,7 +190,13 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 
 
     float x_ndc, y_ndc;
-    get_ndc_coordinates(current_mouse_x_pos, current_mouse_y_pos, &x_ndc, &y_ndc);
+
+
+    Transformation::Framebuffer framebuffer;
+    framebuffer.framebuffer_width = framebuffer_width;
+    framebuffer.framebuffer_height = framebuffer_height;
+
+    Transformation::get_ndc_coordinates(framebuffer, current_mouse_x_pos, current_mouse_y_pos, &x_ndc, &y_ndc);
 
     if(x_ndc > 0)
     {
@@ -213,7 +222,9 @@ void MapEditor::systemCallback_Scroll(double yoffset){
 void MapEditor::addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
 {
     glm::vec3 world_position;
-    windowCoordinatesToBoxCoordinates(framebuffer_x, framebuffer_y, world_position);
+    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
+
+
     dots.push_back(world_position);
 
     level.ground_verticles.push_back(world_position);
@@ -223,10 +234,9 @@ void MapEditor::addGroundPointInFramebufferCoordinates(int framebuffer_x, int fr
 void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
 {
     glm::vec3 world_position;
-    windowCoordinatesToBoxCoordinates(framebuffer_x, framebuffer_y, world_position);
+    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
 
     level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, -2.0f, 0.25));
-
 }
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
@@ -242,7 +252,7 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
     if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
     {
         leftMouseButtonIsPressed = true;
-        windowCoordinatesToBoxCoordinates(window_x, window_y, touch_start_position_in_world);
+        fbCoordToWorldCoord(window_x, window_y, touch_start_position_in_world);
     }
     else if((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_UP))
     {
@@ -298,7 +308,7 @@ void MapEditor::systemCallback_mouseMove(int x, int y)
 
 
     glm::vec3 touch_current_position_in_world;
-    windowCoordinatesToBoxCoordinates(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
+    fbCoordToWorldCoord(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
 
 
     float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
@@ -326,7 +336,7 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
 
 
 
-    windowCoordinatesToBoxCoordinates(coords->x, coords->y, touch_start_position_in_world);
+    fbCoordToWorldCoord(coords->x, coords->y, touch_start_position_in_world);
 }
 
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
@@ -340,7 +350,7 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
 
 
     glm::vec3 touch_current_position_in_world;
-    windowCoordinatesToBoxCoordinates(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
+    fbCoordToWorldCoord(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
 
 
     float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
@@ -360,11 +370,7 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
 
 }
 
-void MapEditor::get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc)
-{
-    *x_ndc = (current_mouse_x_pos/framebuffer_width)*2.0f - 1.0f;
-    *y_ndc = -(current_mouse_y_pos/framebuffer_height)*2.0f + 1.0f;
-}
+
 
 void MapEditor::gui_onSaveMapButtonClicked()
 {
@@ -420,18 +426,22 @@ void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,System
     if((key == 's' || key == 'S') && (event == SystemAbstraction::EVENT_DOWN)){
         camera.changeYPosition(-1.0f);
     }
-
-
 }
 
-void MapEditor::windowCoordinatesToBoxCoordinates(double x_window, double y_window, glm::vec3 & world_position)
+void MapEditor::fbCoordToWorldCoord(double window_x_pos, double window_y_pos, glm::vec3 & position_in_world)
 {
-    float x_ndc = 0.0f;
-    float y_ndc = 0.0f;
+//    Transformation::Config config;
+//    config.framebuffer.framebuffer_height = framebuffer_height;
+//    config.framebuffer.framebuffer_width = framebuffer_width;
+//    config.projection = camera.getProjectionMatrix();
+//    config.view = camera.getViewMatrix();
 
-    get_ndc_coordinates(x_window, y_window, &x_ndc, &y_ndc);
+//    Transformation::framebufferCoordinatesToWorldCoordinates(config, window_x_pos, window_y_pos, position_in_world);
 
-    glm::mat4 PV_I = glm::inverse(camera.getProjectionMatrix()*camera.getViewMatrix());
-    world_position = PV_I*glm::vec4(x_ndc, y_ndc, 0.0f, 1.0f);
-    world_position.z = 0.0f;
+    glm::vec3 window_position(window_x_pos, framebuffer_height - window_y_pos, 0.0f);
+    glm::vec4 viewport(0,0,framebuffer_width, framebuffer_height);
+
+    position_in_world = glm::unProject(window_position,camera.getViewMatrix(), camera.getProjectionMatrix(),viewport);
 }
+
+

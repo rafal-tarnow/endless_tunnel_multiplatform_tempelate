@@ -24,14 +24,16 @@ public:
     void gui_onPlayButtonClicked();
 
 private:
-    int framebuffer_width;
-    int framebuffer_height;
+    void initButtons();
+    Button button_shockAbsorber;
+    Button button_spring;
+    Button button_tires;
 
-    Button damperButton;
-
+    DE_Rectangle backgroundRect;
     DE_Rectangle safe_area;
     glm::vec2 safe_area_dim;
 
-    GLuint garageTextureId;
-
+    glm::vec4 mViewport;
+    glm::mat4 mProjection;
+    glm::mat4 mView;
 };

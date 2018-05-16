@@ -7,9 +7,9 @@
 #include "./Bodies/car_body.hpp"
 #include <iomanip>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
-#include "design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 #include "../../system_log.hpp"
 #include <system_paths.hpp>
+#include <library_opengles_2/Resources/Resources.hpp>
 
 using namespace std;
 
@@ -87,7 +87,9 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     GLuint fontSize = GLuint(float(win_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(current_window_width,current_window_height);
     // textRenderer_v2->Load("./data/font/design_graffiti_agentorange_www_myfontfree_com.ttf", fontSize);
-    textRenderer_v2->LoadFromMemory(design_graffiti_agentorange_www_myfontfree_com_ttf, size_of_design_graffiti_agentorange_www_myfontfree_com_ttf, fontSize);
+
+    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 
     //glEnable(GL_MULTISAMPLE);
     glEnable (GL_BLEND);

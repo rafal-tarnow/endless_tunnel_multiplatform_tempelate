@@ -21,6 +21,7 @@ add_library (CapAfri STATIC
     demo.cpp
     debug_draw.cpp
     button.cpp
+    transformation.cpp
 )
 target_include_directories(CapAfri PRIVATE
     ${ANDROID_NDK}/sources/android/native_app_glue)

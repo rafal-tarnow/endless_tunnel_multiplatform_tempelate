@@ -146,7 +146,7 @@ private:
     void addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
-    void windowCoordinatesToBoxCoordinates(double x_window, double y_window, glm::vec3 & world_position);
+    void fbCoordToWorldCoord(double x_window, double y_window, glm::vec3 & world_position);
     double current_mouse_x_pos = 0;
     double current_mouse_y_pos = 0;
 

@@ -16,8 +16,8 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-#define WINDOW_WIDTH 240
-#define WINDOW_HEIGHT 160
+#define WINDOW_WIDTH 160
+#define WINDOW_HEIGHT 120
 
 GLFWwindow *win;
 int window_width = 0;
@@ -123,6 +123,7 @@ void mouseButtonCallback(GLFWwindow* win, int button, int action, int mods)
 
 void cursorPosCallback(GLFWwindow* win,double xpos, double ypos)
 {
+
     int state = glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT);
     if (state == GLFW_RELEASE)
         return;
