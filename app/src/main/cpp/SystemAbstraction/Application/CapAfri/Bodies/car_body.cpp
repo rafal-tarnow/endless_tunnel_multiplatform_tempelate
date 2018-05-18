@@ -19,7 +19,7 @@ void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
     DE_drawRectangle(&carBodyRectangle);
 }
 
-Car::Car(float32 x, float32 y, float z,  b2World * world)
+Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio)
 {
     carObject.setObjectType(OBJECT_CAR);
     RenderableGameObject::setObjectType(OBJECT_CAR);
@@ -76,7 +76,7 @@ Car::Car(float32 x, float32 y, float z,  b2World * world)
     whellJointDef.collideConnected = false;
     whellJointDef.enableMotor = true;
     whellJointDef.motorSpeed = 0.0;
-    whellJointDef.dampingRatio = 0.7f;
+    whellJointDef.dampingRatio = dampingRatio;
     whellJointDef.frequencyHz = 1.0f;
     whellJointDef.maxMotorTorque = 100.0f;
 

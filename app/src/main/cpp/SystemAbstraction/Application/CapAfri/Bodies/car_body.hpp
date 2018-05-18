@@ -8,7 +8,7 @@
 
 class Car: public RenderableGameObject{
 public:
-    Car(float32 x, float32 y, float z, b2World * world);
+    Car(float32 x, float32 y, float z, b2World * world, float dampingRatio = 0.7f);
     ~Car();
 
 

@@ -6,6 +6,10 @@
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include "welcome_scene.hpp"
+#include <iostream>
+#include <sstream>
+
+using namespace std;
 
 TuningVehicleScene::TuningVehicleScene()
 {
@@ -25,14 +29,32 @@ TuningVehicleScene::TuningVehicleScene()
 
     DE_initRectangle(&backgroundRect, "textures/bg.png", glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 
+    initNormalButtons();
+    initRadioButtons();
 
 
-    initButtons();
-
-
+    config.loadDataFromFileToMemory(configFilePath);
+    dampingRatio = config.get_float("dampingRatio");
 }
 
-void TuningVehicleScene::initButtons()
+void TuningVehicleScene::initNormalButtons()
+{
+    glm::vec3 position = glm::vec3(1920.0f*(3.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    buttonPlus.setPosition(position);
+    buttonPlus.setMatrices(&mViewport, &mProjection, &mView);
+    buttonPlus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
+    buttonPlus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlus.setEventListener(this);
+
+    position = glm::vec3(1920.0f*(4.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    buttonMinus.setPosition(position);
+    buttonMinus.setMatrices(&mViewport, &mProjection, &mView);
+    buttonMinus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
+    buttonMinus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonMinus.setEventListener(this);
+}
+
+void TuningVehicleScene::initRadioButtons()
 {
 
     glm::vec3 position = glm::vec3(1920.0f*(1.0f/4.0f),1080.0f*(2.0f/3.0f),0.0f);
@@ -59,6 +81,7 @@ void TuningVehicleScene::initButtons()
     radioButtonManager.addRadioButton(&button_shockAbsorber);
     radioButtonManager.addRadioButton(&button_spring);
     radioButtonManager.addRadioButton(&button_tires);
+    radioButtonManager.setEventListener(this);
 }
 
 TuningVehicleScene::~TuningVehicleScene()
@@ -67,12 +90,22 @@ TuningVehicleScene::~TuningVehicleScene()
 
     DE_deleteRectangle(&safe_area);
     DE_deleteRectangle(&backgroundRect);
+
+    config.set_float("dampingRatio",dampingRatio);
+    config.saveDataFromMemoryToFile(configFilePath);
+
+    delete textRenderer_v2;
 }
 
 
 void TuningVehicleScene::OnStartGraphics(int width, int height)
 {
     mViewport = glm::vec4(0,0,width,height);
+
+    GLuint fontSize = GLuint(float(width)*0.076f);
+    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(0,0,0,1));
+    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 }
 
 void TuningVehicleScene::OnKillGraphics()
@@ -122,7 +155,7 @@ void TuningVehicleScene::DoFrame()
     backgroundRect.projection = mProjection;
     backgroundRect.view = mView;
     backgroundRect.model = M_GUI;
-    DE_drawRectangle(&backgroundRect);
+    //DE_drawRectangle(&backgroundRect);
 
 
     safe_area.projection = mProjection;
@@ -135,15 +168,55 @@ void TuningVehicleScene::DoFrame()
     button_shockAbsorber.Render();
     button_spring.Render();
     button_tires.Render();
+    buttonPlus.Render();
+    buttonMinus.Render();
+
+
+    stringstream stream;
+    stream << "Damping " << dampingRatio;
+
+    textRenderer_v2->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
+
+
 
     glFlush();
 }
+
+void TuningVehicleScene::buttonPlusClicked()
+{
+    dampingRatio += 0.1f;
+}
+
+void TuningVehicleScene::buttonMinusClicked()
+{
+    dampingRatio -= 0.1f;
+}
+
+void TuningVehicleScene::Button_onClicked(Button * button)
+{
+    if(button == &buttonPlus)
+    {
+        buttonPlusClicked();
+    }
+    else if(button == &buttonMinus)
+    {
+        buttonMinusClicked();
+    }
+}
+
+void TuningVehicleScene::RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton)
+{
+    currentRadioButton = radioButton;
+}
+
 
 void TuningVehicleScene::OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
     button_shockAbsorber.onPointerDown(coords->x, coords->y);
     button_spring.onPointerDown(coords->x, coords->y);
     button_tires.onPointerDown(coords->x, coords->y);
+    buttonPlus.onPointerDown(coords->x, coords->y);
+    buttonMinus.onPointerDown(coords->x, coords->y);
 
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
@@ -156,6 +229,8 @@ void TuningVehicleScene::OnPointerUp(int pointerId, const struct PointerCoords *
     button_shockAbsorber.onPointerUp();
     button_spring.onPointerUp();
     button_tires.onPointerUp();
+    buttonPlus.onPointerUp();
+    buttonMinus.onPointerUp();
 
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
@@ -178,6 +253,8 @@ bool TuningVehicleScene::OnBackKeyPressed()
 void TuningVehicleScene::OnFramebufferResized(int width, int height)
 {
     mViewport = glm::vec4(0,0,width,height);
+
+    textRenderer_v2->onVievportResize(mViewport.z, mViewport.w);
 }
 
 void TuningVehicleScene::OnJoy(float joyX, float joyY)

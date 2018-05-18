@@ -83,37 +83,27 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     current_window_width = win_width;
     current_window_height = win_height;
 
+    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    config.loadDataFromFileToMemory(configFilePath);
+
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(win_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(current_window_width,current_window_height);
-    // textRenderer_v2->Load("./data/font/design_graffiti_agentorange_www_myfontfree_com.ttf", fontSize);
-
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 
-    //glEnable(GL_MULTISAMPLE);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //glClearColor(0.98,1.0,0.55,1.0);
     glClearColor(0.0,0.0,0.0,1.0);
-
-
-    //glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
-    //glDepthFunc(GL_LEQUAL);			// The Type Of Depth Test To Do
-    //glEnable(GL_DEPTH_TEST);			// Enables Depth Testing
-    //glShadeModel(GL_SMOOTH);
-
 
     world = new b2World(b2Vec2(0.0,-1.81));
     world->SetContactListener(this);
 
     background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
+
     loadLevel();
-
-
     loadAudio();
-
     loadCoins();
 
     AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
@@ -126,8 +116,6 @@ Game::Game(unsigned int win_width,unsigned int win_height)
 
 void Game::loadCoins()
 {
-    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
-    config.loadDataFromFileToMemory(configFilePath);
     money = config.get_uint32_t("coins");
 }
 
@@ -142,7 +130,8 @@ void Game::loadLevel()
 {
     groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 
-    car = new Car(1.0f, 5.0f, -1.0f, world);
+    float dampingRatio = config.get_float("dampingRatio");
+    car = new Car(1.0f, 5.0f, -1.0f, world, dampingRatio);
 
 
     //LEVEL LOAD
@@ -184,7 +173,9 @@ Game::~Game()
     TextureManager::deleteAllTextures();
     delete background;
     delete groundChain;
+    delete car;
     delete world;
+    delete textRenderer_v2;
     saveCoins();
 }
 

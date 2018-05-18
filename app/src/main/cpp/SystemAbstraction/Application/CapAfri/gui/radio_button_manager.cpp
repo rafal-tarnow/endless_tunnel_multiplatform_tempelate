@@ -19,6 +19,11 @@ void RadioButtonManager::addRadioButton(RadioButton * button)
     radioButtons.push_back(button);
 }
 
+void RadioButtonManager::setEventListener(RadioButtonManagerEventLister *listener)
+{
+    mLister = listener;
+}
+
 void RadioButtonManager::Button_onClicked(Button * button)
 {
     RadioButton * radioButton = dynamic_cast<RadioButton*>(button);
@@ -32,6 +37,8 @@ void RadioButtonManager::Button_onClicked(Button * button)
         if(tmpRadioButton == radioButton)
         {
             tmpRadioButton->setRadioState(true);
+            if(mLister)
+                mLister->RadioButtonManager_onRadioButtonChanged(tmpRadioButton);
         }
         else
         {

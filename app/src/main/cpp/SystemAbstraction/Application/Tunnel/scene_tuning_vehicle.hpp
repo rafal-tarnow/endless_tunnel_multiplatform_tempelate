@@ -4,8 +4,11 @@
 #include "../CapAfri/demo.hpp"
 #include "../CapAfri/gui/radio_button.hpp"
 #include "../CapAfri/gui/radio_button_manager.hpp"
+#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
+#include <lib_config.hpp>
+#include <system_paths.hpp>
 
-class TuningVehicleScene : public Scene, VehicleTuningGuiEventListener {
+class TuningVehicleScene : public Scene, VehicleTuningGuiEventListener, RadioButtonManagerEventLister, ButtonEventListener{
 public:
     TuningVehicleScene();
     ~TuningVehicleScene();
@@ -22,10 +25,23 @@ public:
     virtual void OnKeyDown(int keyCode);
     virtual void OnPause();
 
+
+    void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton);
+    void Button_onClicked(Button * button);
+
     void gui_onPlayButtonClicked();
 
 private:
-    void initButtons();
+    void buttonPlusClicked();
+    void buttonMinusClicked();
+    void initNormalButtons();
+    void initRadioButtons();
+
+    Button buttonPlus;
+    Button buttonMinus;
+
+    RadioButton * currentRadioButton = nullptr;
+
     RadioButtonManager radioButtonManager;
 
     RadioButton button_shockAbsorber;
@@ -39,4 +55,12 @@ private:
     glm::vec4 mViewport;
     glm::mat4 mProjection;
     glm::mat4 mView;
+
+    TextRenderer_v2 * textRenderer_v2 = nullptr;
+
+    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+
+    Config config;
+    float dampingRatio;
+
 };
