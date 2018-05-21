@@ -61,6 +61,9 @@ private:
     string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
 
     Config config;
-    float dampingRatio;
+    float dampingRatio = 0.0f;
+    float frequencyHz = 0.0f;
+    float maxMotorTorque = 0.0f;
+    float friction = 0.0f;
 
 };

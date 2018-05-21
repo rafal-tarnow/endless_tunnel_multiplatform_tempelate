@@ -19,7 +19,7 @@ void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
     DE_drawRectangle(&carBodyRectangle);
 }
 
-Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio)
+Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, float frequencyHz, float maxMotorTorque, float friction)
 {
     carObject.setObjectType(OBJECT_CAR);
     RenderableGameObject::setObjectType(OBJECT_CAR);
@@ -62,7 +62,7 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio)
     b2FixtureDef whellFixture;
     whellFixture.shape = &whellShape;
     whellFixture.density = 1.0;
-    whellFixture.friction = 10.0;
+    whellFixture.friction = friction;
 
     frontWhell_body->CreateFixture(&whellFixture);
     rearWhell_body->CreateFixture(&whellFixture);
@@ -77,8 +77,8 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio)
     whellJointDef.enableMotor = true;
     whellJointDef.motorSpeed = 0.0;
     whellJointDef.dampingRatio = dampingRatio;
-    whellJointDef.frequencyHz = 1.0f;
-    whellJointDef.maxMotorTorque = 100.0f;
+    whellJointDef.frequencyHz = frequencyHz;
+    whellJointDef.maxMotorTorque = maxMotorTorque;
 
     frontWhellJoint = (b2WheelJoint*)world->CreateJoint( &whellJointDef );
 
@@ -161,6 +161,7 @@ void Car::render(glm::mat4 projection, glm::mat4 view)
         frontWhellJoint->SetMotorSpeed(current_car_speed);
         rearWhellJoint->SetMotorSpeed(current_car_speed);
     }
+
 
     carBodyRectangle.projection = projection;
     carBodyRectangle.view = view;

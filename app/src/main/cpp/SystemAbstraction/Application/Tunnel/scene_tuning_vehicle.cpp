@@ -35,6 +35,9 @@ TuningVehicleScene::TuningVehicleScene()
 
     config.loadDataFromFileToMemory(configFilePath);
     dampingRatio = config.get_float("dampingRatio");
+    frequencyHz = config.get_float("frequencyHz");
+    maxMotorTorque = config.get_float("maxMotorTorque");
+    friction = config.get_float("friction");
 }
 
 void TuningVehicleScene::initNormalButtons()
@@ -91,7 +94,10 @@ TuningVehicleScene::~TuningVehicleScene()
     DE_deleteRectangle(&safe_area);
     DE_deleteRectangle(&backgroundRect);
 
-    config.set_float("dampingRatio",dampingRatio);
+    config.set_float("dampingRatio", dampingRatio);
+    config.set_float("frequencyHz", frequencyHz);
+    config.set_float("maxMotorTorque", maxMotorTorque);
+    config.set_float("friction", friction);
     config.saveDataFromMemoryToFile(configFilePath);
 
     delete textRenderer_v2;
@@ -173,7 +179,23 @@ void TuningVehicleScene::DoFrame()
 
 
     stringstream stream;
-    stream << "Damping " << dampingRatio;
+
+    if(currentRadioButton == &button_shockAbsorber)
+    {
+        stream << "Damping " << dampingRatio;
+    }
+    else if(currentRadioButton == &button_spring)
+    {
+        stream << "Frequency " << frequencyHz;
+    }
+    //    else if(currentRadioButton == &button_tires)
+    //    {
+    //        stream << "MotorTorque " << maxMotorTorque;
+    //    }
+    else if(currentRadioButton == &button_tires)
+    {
+        stream << "Friction " << friction;
+    }
 
     textRenderer_v2->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
 
@@ -184,12 +206,42 @@ void TuningVehicleScene::DoFrame()
 
 void TuningVehicleScene::buttonPlusClicked()
 {
-    dampingRatio += 0.1f;
+    if(currentRadioButton == &button_shockAbsorber)
+    {
+        dampingRatio += 0.1f;
+    }
+    else if(currentRadioButton == &button_spring)
+    {
+        frequencyHz += 0.1f;
+    }
+    //    else if(currentRadioButton == &button_tires)
+    //    {
+    //        maxMotorTorque += 5.0f;
+    //    }
+    else if(currentRadioButton == &button_tires)
+    {
+        friction += 0.1f;
+    }
 }
 
 void TuningVehicleScene::buttonMinusClicked()
 {
-    dampingRatio -= 0.1f;
+    if(currentRadioButton == &button_shockAbsorber)
+    {
+        dampingRatio -= 0.1f;
+    }
+    else if(currentRadioButton == &button_spring)
+    {
+        frequencyHz -= 0.1f;
+    }
+    //    else if(currentRadioButton == &button_tires)
+    //    {
+    //        maxMotorTorque -= 5.0f;
+    //    }
+    else if(currentRadioButton == &button_tires)
+    {
+        friction -= 0.1f;
+    }
 }
 
 void TuningVehicleScene::Button_onClicked(Button * button)

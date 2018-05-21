@@ -131,7 +131,10 @@ void Game::loadLevel()
     groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 
     float dampingRatio = config.get_float("dampingRatio");
-    car = new Car(1.0f, 5.0f, -1.0f, world, dampingRatio);
+    float frequencyHz = config.get_float("frequencyHz");
+    float maxMotorTorque = 100.0f; //config.get_float("maxMotorTorque");
+    float friction = config.get_float("friction");
+    car = new Car(1.0f, 5.0f, -1.0f, world, dampingRatio, frequencyHz, maxMotorTorque, friction);
 
 
     //LEVEL LOAD
