@@ -120,6 +120,7 @@ TuningVehicleScene::~TuningVehicleScene()
     config.saveDataFromMemoryToFile(configFilePath);
 
     delete textRenderer_v2;
+    delete textRenderer_v2_second;
 }
 
 
@@ -128,9 +129,13 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
     mViewport = glm::vec4(0,0,width,height);
 
     GLuint fontSize = GLuint(float(height)*0.076f);
-    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+
+    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+
+    textRenderer_v2_second = new TextRenderer_v2(width,height, glm::vec4(0,1,0,1));
+    textRenderer_v2_second->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize*(2.0f/3.0f));
 }
 
 void TuningVehicleScene::OnKillGraphics()
@@ -220,6 +225,8 @@ void TuningVehicleScene::DoFrame()
     }
 
     textRenderer_v2->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
+    textRenderer_v2_second->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
+
 
     glFlush();
 }
@@ -309,7 +316,7 @@ void TuningVehicleScene::OnPointerUp(int pointerId, const struct PointerCoords *
     button_shockAbsorber.onPointerUp();
     button_spring.onPointerUp();
     button_tires.onPointerUp();
-     button_motorTorque.onPointerUp();
+    button_motorTorque.onPointerUp();
 
     buttonPlus.onPointerUp();
     buttonMinus.onPointerUp();
@@ -339,6 +346,7 @@ void TuningVehicleScene::OnFramebufferResized(int width, int height)
     mViewport = glm::vec4(0,0,width,height);
 
     textRenderer_v2->onVievportResize(mViewport.z, mViewport.w);
+    textRenderer_v2_second->onVievportResize(mViewport.z, mViewport.w);
 }
 
 void TuningVehicleScene::OnJoy(float joyX, float joyY)
