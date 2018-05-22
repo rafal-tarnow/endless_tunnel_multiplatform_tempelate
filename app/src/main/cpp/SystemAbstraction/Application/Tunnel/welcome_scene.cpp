@@ -78,7 +78,7 @@ void WelcomeScene::OnButtonClicked(int id) {
 
     if (id == mPlayCapAfriButtonId)
     {
-        mgr->RequestNewScene(new PlayCapAfriScene());
+        mgr->RequestNewScene(new TuningVehicleScene());
     }
     else if(id == mmPlayTunnelButtonId)
     {
@@ -90,8 +90,7 @@ void WelcomeScene::OnButtonClicked(int id) {
     }
     else if (id == mStoryButtonId)
     {
-        //mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
-         mgr->RequestNewScene(new TuningVehicleScene());
+         mgr->RequestNewScene((new DialogScene())->SetText(BLURB_STORY)->SetSingleButton(S_OK, DialogScene::ACTION_RETURN));
     }
     else if (id == mAboutButtonId)
     {

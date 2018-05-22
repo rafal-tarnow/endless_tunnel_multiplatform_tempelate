@@ -39,6 +39,7 @@ private:
 
     Button buttonPlus;
     Button buttonMinus;
+    Button buttonPlay;
 
     RadioButton * currentRadioButton = nullptr;
 
@@ -47,6 +48,7 @@ private:
     RadioButton button_shockAbsorber;
     RadioButton button_spring;
     RadioButton button_tires;
+    RadioButton button_motorTorque;
 
     DE_Rectangle backgroundRect;
     DE_Rectangle safe_area;

@@ -76,8 +76,6 @@ void Game::EndContact(b2Contact* contact)
 
 
 
-
-
 Game::Game(unsigned int win_width,unsigned int win_height)
 {
     current_window_width = win_width;
@@ -132,7 +130,7 @@ void Game::loadLevel()
 
     float dampingRatio = config.get_float("dampingRatio");
     float frequencyHz = config.get_float("frequencyHz");
-    float maxMotorTorque = 100.0f; //config.get_float("maxMotorTorque");
+    float maxMotorTorque = config.get_float("maxMotorTorque");
     float friction = config.get_float("friction");
     car = new Car(1.0f, 5.0f, -1.0f, world, dampingRatio, frequencyHz, maxMotorTorque, friction);
 
@@ -161,7 +159,6 @@ void Game::loadAudio()
 
     std::string coinEffectName("sounds/coin.wav");
     m_coinHandle = audioManager.CreateSFX(coinEffectName, false);
-
 }
 
 Game::~Game()
@@ -239,9 +236,6 @@ void Game::updateGameLogics()
             car->setSpeed(0);
         }
     }
-
-
-
 
     
     if(coinsToDelete.size())

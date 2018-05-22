@@ -24,7 +24,7 @@ class Button{
 
     virtual void Render();
 
-    void onPointerDown(float x_ndc, float y_ndc);
+    bool onPointerDown(float x_ndc, float y_ndc);
     void onPointerUp();
 
     void setNormalBackgroundTexture(GLuint textureId);

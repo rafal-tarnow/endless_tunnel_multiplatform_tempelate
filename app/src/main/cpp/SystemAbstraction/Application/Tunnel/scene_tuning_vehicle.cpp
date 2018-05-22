@@ -42,19 +42,26 @@ TuningVehicleScene::TuningVehicleScene()
 
 void TuningVehicleScene::initNormalButtons()
 {
-    glm::vec3 position = glm::vec3(1920.0f*(3.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    glm::vec3 position = glm::vec3(1920.0f*(4.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonPlus.setPosition(position);
     buttonPlus.setMatrices(&mViewport, &mProjection, &mView);
     buttonPlus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
     buttonPlus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
     buttonPlus.setEventListener(this);
 
-    position = glm::vec3(1920.0f*(4.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    position = glm::vec3(1920.0f*(3.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonMinus.setPosition(position);
     buttonMinus.setMatrices(&mViewport, &mProjection, &mView);
     buttonMinus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
     buttonMinus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
     buttonMinus.setEventListener(this);
+
+    position = glm::vec3(1920.0f*(6.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    buttonPlay.setPosition(position);
+    buttonPlay.setMatrices(&mViewport, &mProjection, &mView);
+    buttonPlay.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
+    buttonPlay.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlay.setEventListener(this);
 }
 
 void TuningVehicleScene::initRadioButtons()
@@ -81,10 +88,22 @@ void TuningVehicleScene::initRadioButtons()
     button_tires.setNormalBackgroundTexture(TextureManager::getTextureId("textures/tires.png"));
     button_tires.setPressedBackgroundTexture(TextureManager::getTextureId("textures/tires_pressed.png"));
 
+    position = glm::vec3(1920.0f*(3.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
+
+    button_motorTorque.setPosition(position);
+    button_motorTorque.setMatrices(&mViewport, &mProjection, &mView);
+    button_motorTorque.setNormalBackgroundTexture(TextureManager::getTextureId("textures/engine.png"));
+    button_motorTorque.setPressedBackgroundTexture(TextureManager::getTextureId("textures/engine_pressed.png"));
+
+
     radioButtonManager.addRadioButton(&button_shockAbsorber);
     radioButtonManager.addRadioButton(&button_spring);
     radioButtonManager.addRadioButton(&button_tires);
+    radioButtonManager.addRadioButton(&button_motorTorque);
+
     radioButtonManager.setEventListener(this);
+
+    currentRadioButton = &button_shockAbsorber;
 }
 
 TuningVehicleScene::~TuningVehicleScene()
@@ -121,8 +140,7 @@ void TuningVehicleScene::OnKillGraphics()
 
 void TuningVehicleScene::gui_onPlayButtonClicked()
 {
-    SceneManager *mgr = SceneManager::GetInstance();
-    mgr->RequestNewScene(new PlayCapAfriScene());
+
 }
 
 void TuningVehicleScene::DoFrame()
@@ -174,8 +192,12 @@ void TuningVehicleScene::DoFrame()
     button_shockAbsorber.Render();
     button_spring.Render();
     button_tires.Render();
+    button_motorTorque.Render();
+
     buttonPlus.Render();
     buttonMinus.Render();
+    buttonPlay.Render();
+
 
 
     stringstream stream;
@@ -188,18 +210,16 @@ void TuningVehicleScene::DoFrame()
     {
         stream << "Frequency " << frequencyHz;
     }
-    //    else if(currentRadioButton == &button_tires)
-    //    {
-    //        stream << "MotorTorque " << maxMotorTorque;
-    //    }
+    else if(currentRadioButton == &button_motorTorque)
+    {
+        stream << "MotorTorque " << maxMotorTorque;
+    }
     else if(currentRadioButton == &button_tires)
     {
         stream << "Friction " << friction;
     }
 
     textRenderer_v2->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
-
-
 
     glFlush();
 }
@@ -214,10 +234,10 @@ void TuningVehicleScene::buttonPlusClicked()
     {
         frequencyHz += 0.1f;
     }
-    //    else if(currentRadioButton == &button_tires)
-    //    {
-    //        maxMotorTorque += 5.0f;
-    //    }
+    else if(currentRadioButton == &button_motorTorque)
+    {
+        maxMotorTorque += 0.1f;
+    }
     else if(currentRadioButton == &button_tires)
     {
         friction += 0.1f;
@@ -234,10 +254,10 @@ void TuningVehicleScene::buttonMinusClicked()
     {
         frequencyHz -= 0.1f;
     }
-    //    else if(currentRadioButton == &button_tires)
-    //    {
-    //        maxMotorTorque -= 5.0f;
-    //    }
+    else if(currentRadioButton == &button_motorTorque)
+    {
+        maxMotorTorque -= 0.1f;
+    }
     else if(currentRadioButton == &button_tires)
     {
         friction -= 0.1f;
@@ -254,6 +274,11 @@ void TuningVehicleScene::Button_onClicked(Button * button)
     {
         buttonMinusClicked();
     }
+    else if(button == &buttonPlay)
+    {
+        SceneManager *mgr = SceneManager::GetInstance();
+        mgr->RequestNewScene(new PlayCapAfriScene());
+    }
 }
 
 void TuningVehicleScene::RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton)
@@ -267,8 +292,11 @@ void TuningVehicleScene::OnPointerDown(int pointerId, const struct PointerCoords
     button_shockAbsorber.onPointerDown(coords->x, coords->y);
     button_spring.onPointerDown(coords->x, coords->y);
     button_tires.onPointerDown(coords->x, coords->y);
+    button_motorTorque.onPointerDown(coords->x, coords->y);
+
     buttonPlus.onPointerDown(coords->x, coords->y);
     buttonMinus.onPointerDown(coords->x, coords->y);
+    buttonPlay.onPointerDown(coords->x, coords->y);
 
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
@@ -281,8 +309,12 @@ void TuningVehicleScene::OnPointerUp(int pointerId, const struct PointerCoords *
     button_shockAbsorber.onPointerUp();
     button_spring.onPointerUp();
     button_tires.onPointerUp();
+     button_motorTorque.onPointerUp();
+
     buttonPlus.onPointerUp();
     buttonMinus.onPointerUp();
+    buttonPlay.onPointerUp();
+
 
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);

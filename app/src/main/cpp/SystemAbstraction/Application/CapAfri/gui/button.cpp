@@ -53,23 +53,22 @@ void Button::Render()
     DE_drawRectangle(&rectangle);
 }
 
-void Button::onPointerDown(float x_ndc, float y_ndc)
+bool Button::onPointerDown(float x_ndc, float y_ndc)
 {
     cout << "Button::onPointerDown x = " << x_ndc << " y = " <<  y_ndc << endl;
 
     glm::vec3 window_position(x_ndc, mViewport->w - y_ndc, 0.0f);
     glm::vec3 world_position = glm::unProject(window_position,mModel*(*mView), *mProjection, *mViewport);
 
+    cout << "world_position.x = " << world_position.x << " world_position.y = " << world_position.y << endl;
 
     if((world_position.x >= (-mDimm.x/2.0f)) && (world_position.x <= (mDimm.x/2.0f)) && (world_position.y >= (-mDimm.y/2.0f)) && (world_position.y <= (mDimm.y/2.0f)))
     {
         isTouched = true;
         rectangle.texture_id = touchedTexture;
+        return true;
     }
-
-    cout << "world_position.x = " << world_position.x << " world_position.y = " << world_position.y << endl;
-
-
+    return false;
 }
 
 void Button::onPointerUp()

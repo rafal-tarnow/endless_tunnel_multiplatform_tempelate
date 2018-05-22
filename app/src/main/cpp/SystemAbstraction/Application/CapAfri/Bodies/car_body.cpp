@@ -80,12 +80,12 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, fl
     whellJointDef.frequencyHz = frequencyHz;
     whellJointDef.maxMotorTorque = maxMotorTorque;
 
-    frontWhellJoint = (b2WheelJoint*)world->CreateJoint( &whellJointDef );
+    frontWhellJoint = (b2WheelJoint*)world->CreateJoint(&whellJointDef );
 
     //tylny dzojt
     whellJointDef.Initialize(carBody_body,rearWhell_body,rearWhell_body->GetPosition(),axis);
 
-    rearWhellJoint = (b2WheelJoint*)world->CreateJoint( &whellJointDef );
+    rearWhellJoint = (b2WheelJoint*)world->CreateJoint(&whellJointDef );
 
     //     //b2WheelJoint dzojt;
 

@@ -19,7 +19,7 @@
 #include "anim.hpp"
 #include "ascii_to_geom.hpp"
 #include "play_capafri_scene.hpp"
-#include "welcome_scene.hpp"
+#include "scene_tuning_vehicle.hpp"
 #include "./data/cube_geom.inl"
 #include "./data/tunnel_geom.inl"
 #include "./data/strings.inl"
@@ -227,7 +227,7 @@ void PlayCapAfriScene::ShowMenu(int menu) {
 void PlayCapAfriScene::HandleMenu(int menuItem) {
     switch (menuItem) {
         case MENUITEM_QUIT:
-            SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
+            SceneManager::GetInstance()->RequestNewScene(new TuningVehicleScene());
             break;
         case MENUITEM_UNPAUSE:
             ShowMenu(MENU_NONE);
