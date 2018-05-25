@@ -8,6 +8,8 @@ using namespace std;
 #include "./Bodies/coin_circle_body.hpp"
 #include <lib_config.hpp>
 #include "./Bodies/coin_circle_body.hpp"
+#include "./Bodies/meta_body.hpp"
+
 
 class Level{
 
@@ -19,10 +21,10 @@ public:
     int loadLevelFromFile(string levelFilePath);
     int saveLevelToFile(string levelFileName);
     void clear();
-    vector<CircleCoin *> coinsVector;
 
     vector<glm::vec3> ground_verticles;
     vector<CircleCoinRender *> coins_vector;
+    MetaRenderer * meta = nullptr;
 private:
     Config config;
 };

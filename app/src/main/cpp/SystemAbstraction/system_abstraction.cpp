@@ -3,7 +3,6 @@
 #include "./Application/Tunnel/welcome_scene.hpp"
 #include "system_log.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
-#include <SOIL.h>
 #include <sstream>
 #include <iomanip>
 #include <CapAfri/game.hpp>

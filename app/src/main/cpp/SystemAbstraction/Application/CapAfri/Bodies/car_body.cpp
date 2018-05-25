@@ -1,7 +1,6 @@
 #include "car_body.hpp"
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
-#include <SOIL.h>
 
 using namespace std;
 
@@ -88,7 +87,6 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, fl
     rearWhellJoint = (b2WheelJoint*)world->CreateJoint(&whellJointDef );
 
     //     //b2WheelJoint dzojt;
-
 
     DE_initRectangle(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, z_layer);
     DE_initRectangle(&carWhellRectangle, "textures/kolo.png", whell_radius_const*2.0f,whell_radius_const*2.0f, z_layer);

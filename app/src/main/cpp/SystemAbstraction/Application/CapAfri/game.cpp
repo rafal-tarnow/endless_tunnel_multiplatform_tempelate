@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-#include <SOIL.h>
 #include <iostream>
 #include <sstream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>

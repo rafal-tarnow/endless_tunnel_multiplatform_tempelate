@@ -12,8 +12,8 @@ add_library (CapAfri STATIC
     Bodies/background_body.cpp
     Bodies/car_body.cpp
     Bodies/coin_circle_body.cpp
+    Bodies/meta_body.cpp
     Bodies/coordinates_body.cpp
-    Bodies/ground_body.cpp
     Bodies/ground_body_chain.cpp
     game.cpp
     map_editor.cpp

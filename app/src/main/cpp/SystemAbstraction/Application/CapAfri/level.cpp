@@ -16,6 +16,9 @@ Level::~Level()
         delete coin;
     }
     coins_vector.clear();
+
+    if(meta != nullptr)
+        delete meta;
 }
 
 int Level::loadLevelFromFile(string levelFilePath)

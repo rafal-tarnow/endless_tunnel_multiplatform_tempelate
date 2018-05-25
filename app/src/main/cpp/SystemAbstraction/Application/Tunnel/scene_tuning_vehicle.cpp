@@ -2,7 +2,6 @@
 #include <system_opengl_include.hpp>
 #include "scene_manager.hpp"
 #include "play_capafri_scene.hpp"
-#include <SOIL.h>
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include "welcome_scene.hpp"
@@ -102,6 +101,7 @@ void TuningVehicleScene::initRadioButtons()
     radioButtonManager.addRadioButton(&button_motorTorque);
 
     radioButtonManager.setEventListener(this);
+
 
     currentRadioButton = &button_shockAbsorber;
 }
@@ -224,8 +224,8 @@ void TuningVehicleScene::DoFrame()
         stream << "Friction " << friction;
     }
 
-    textRenderer_v2->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
-    textRenderer_v2_second->RenderText(stream.str(), mViewport.z*0.03, mViewport.w*0.9);
+    textRenderer_v2->RenderText(stream.str(), mViewport.z*0.3, mViewport.w*0.46);
+    //textRenderer_v2_second->RenderText(stream.str(), mViewport.z*0.3, mViewport.w*0.46);
 
 
     glFlush();

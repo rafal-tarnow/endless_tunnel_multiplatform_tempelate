@@ -37,11 +37,19 @@ void Button::setEventListener(ButtonEventListener * listener)
 void Button::setNormalBackgroundTexture(GLuint textureId)
 {
     normalTexture = textureId;
+    if(isTouched == false)
+    {
+        rectangle.texture_id = normalTexture;
+    }
 }
 
 void Button::setPressedBackgroundTexture(GLuint textureId)
 {
     touchedTexture = textureId;
+    if(isTouched == true)
+    {
+        rectangle.texture_id = touchedTexture;
+    }
 }
 
 void Button::Render()

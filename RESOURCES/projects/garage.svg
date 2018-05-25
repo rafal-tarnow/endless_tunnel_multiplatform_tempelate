@@ -23,11 +23,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.08"
-     inkscape:cx="-3521.4662"
-     inkscape:cy="-5548.462"
+     inkscape:zoom="0.16"
+     inkscape:cx="-1757.7549"
+     inkscape:cy="-3258.7737"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="svg2"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1151"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -114,7 +114,7 @@
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/shock_absorber_pressed.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(-945.68007,3798.3501)">
+       transform="translate(-1789.4301,3598.3501)">
       <path
          style="fill:#00ffff;fill-rule:evenodd;stroke:none;stroke-width:0.09254343px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m -1544.2751,-3548.5524 -24.3257,38.0751 -17.9799,38.075 12.6917,38.075 206.2396,-6.3458 -10.5764,-68.7466 -12.6916,-48.6514 z"
@@ -266,7 +266,7 @@
     </g>
     <g
        id="g4752"
-       transform="translate(-645.24227,3607.0931)"
+       transform="translate(498.50773,3813.3431)"
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/shock_absorber.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -424,7 +424,7 @@
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/spring_pressed.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(-436.8822,2549.9421)">
+       transform="translate(-1505.6322,1618.6921)">
       <path
          style="fill:#00ffff;fill-rule:evenodd;stroke:none;stroke-width:0.09254343px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m -1400.8335,-2332.3288 -24.3257,38.0751 -17.9799,38.075 12.6917,38.075 206.2396,-6.3458 -10.5764,-68.7466 -12.6916,-48.6514 z"
@@ -545,7 +545,7 @@
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/spring.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(46.678743,2340.4089)">
+       transform="translate(540.42874,2846.6589)">
       <path
          inkscape:connector-curvature="0"
          id="path4665"
@@ -663,7 +663,7 @@
     </g>
     <g
        id="g4599"
-       transform="translate(-261.85048,-39.774757)"
+       transform="translate(-2030.6005,-1771.0248)"
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/engine_pressed.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -741,7 +741,7 @@
        transform="matrix(0.25177977,0,0,0.25177977,-1432.6111,2059.4833)" />
     <g
        id="g4641"
-       transform="translate(1720.254,775.68137)"
+       transform="translate(1264.004,-1655.5686)"
        inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/engine.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -774,49 +774,11 @@
     </g>
   </g>
   <g
-     id="g21798"
-     transform="translate(-1920,37.142852)">
-    <rect
-       ry="6.4285712"
-       rx="6.4285712"
-       y="-1554.7806"
-       x="-837.85712"
-       height="70"
-       width="192.14285"
-       id="rect21788"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <rect
-       ry="6.4285698"
-       rx="6.4285698"
-       y="-1534.7806"
-       x="-775"
-       height="28.571428"
-       width="102.14285"
-       id="rect21790"
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text21792"
-       y="-1513.1387"
-       x="-762.09216"
-       style="font-style:normal;font-weight:normal;font-size:24.92819786px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       xml:space="preserve"><tspan
-         y="-1513.1387"
-         x="-762.09216"
-         id="tspan21794"
-         sodipodi:role="line">BACK</tspan></text>
-    <path
-       inkscape:connector-curvature="0"
-       id="path21796"
-       d="m -772.85714,-1546.2092 -31.42857,24.2857 44.28571,27.8571 -9.28571,-25 6.42857,-24.2857 z"
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-  </g>
-  <g
      id="g4838"
      inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/tires_pressed.png"
      inkscape:export-xdpi="90"
      inkscape:export-ydpi="90"
-     transform="translate(-746.875,1631.25)">
+     transform="translate(1321.875,1668.75)">
     <path
        inkscape:connector-curvature="0"
        id="path4737"
@@ -900,7 +862,7 @@
      inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/tires.png"
      inkscape:export-xdpi="90"
      inkscape:export-ydpi="90"
-     transform="translate(-1217.337,1427.2094)">
+     transform="translate(-2361.087,1064.7094)">
     <path
        style="fill:#e6e6e6;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.09254343px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -911.67034,-1397.7643 -24.3257,38.0751 -17.9799,38.0749 12.6917,38.075 206.2396,-6.3458 -10.5764,-68.7466 -12.6916,-48.6514 z"

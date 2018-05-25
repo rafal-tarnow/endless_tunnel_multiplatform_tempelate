@@ -120,7 +120,8 @@ public:
     typedef enum
     {
         FANT_GROUND = 0,
-        FANT_COIN
+        FANT_COIN,
+        FANT_META
     }FantMode;
 
     MapEditor(int win_width, int win_height);
@@ -143,6 +144,7 @@ public:
 
 private:
     void addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
+    void addMetaInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);

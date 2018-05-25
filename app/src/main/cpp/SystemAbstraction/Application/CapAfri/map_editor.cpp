@@ -2,14 +2,13 @@
 #include <system_opengl_include.hpp>
 #include <system_log.hpp>
 #include <iostream>
-#include <SOIL.h>
-#include "./data/red_dot.png.hpp"
 #include <system_paths.hpp>
 #include <system_log.hpp>
 #include "demo.hpp"
 #include "../system_abstraction.hpp"
 #include "transformation.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
+#include <library_opengles_2/TextureManager/texture_manager.hpp>
 
 using namespace std;
 
@@ -26,7 +25,8 @@ MapEditor::MapEditor(int fb_width, int fb_height)
 
     glClearColor(0.0,0.0,0.0,1.0);
 
-    redDotTextureId = SOIL_load_OGL_texture_from_memory(red_dot_png, size_of_red_dot_png, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+
+    redDotTextureId = TextureManager::getTextureId("textures/red_dot.png");
     DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
 
     gridLines = new CGridLines(0, 1000, 50, 0);
@@ -65,7 +65,6 @@ MapEditor::~MapEditor()
     DE_deleteRectangle(&redDotPointerRectangle);
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
-    glDeleteTextures(1,&redDotTextureId);
 }
 
 void MapEditor::systemCallback_Render()
@@ -109,6 +108,10 @@ void MapEditor::systemCallback_Render()
             coin->render(camera.getProjectionMatrix(),camera.getViewMatrix());
         }
 
+        if(level.meta != nullptr)
+        {
+            level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
+        }
 
         //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -231,6 +234,21 @@ void MapEditor::addGroundPointInFramebufferCoordinates(int framebuffer_x, int fr
     LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
+void MapEditor::addMetaInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+{
+    glm::vec3 world_position;
+    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
+
+    if(level.meta == nullptr)
+    {
+         level.meta = new MetaRenderer(world_position.x, world_position.y, -2.0f, 1.5);
+    }
+    else
+    {
+        level.meta->setPosAndDimm(world_position.x, world_position.y, -2.0f, 1.5);
+    }
+}
+
 void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
 {
     glm::vec3 world_position;
@@ -265,6 +283,8 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
             }else if(fantMode == FANT_COIN)
             {
                 addCoinInFramebufferCoordinates(window_x, window_y);
+            }else if(fantMode == FANT_META){
+                addMetaInFramebufferCoordinates(window_x, window_y);
             }
         }
         //if pointer in Move mode change to add fant
@@ -287,6 +307,9 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
         }else if(fantMode == FANT_COIN)
         {
             addCoinInFramebufferCoordinates(coords->x, coords->y);
+        }else if(fantMode == FANT_META)
+        {
+            addMetaInFramebufferCoordinates(coords->x, coords->y);
         }
     }
     //if pointer in Move mode change to add fant
@@ -430,13 +453,13 @@ void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,System
 
 void MapEditor::fbCoordToWorldCoord(double window_x_pos, double window_y_pos, glm::vec3 & position_in_world)
 {
-//    Transformation::Config config;
-//    config.framebuffer.framebuffer_height = framebuffer_height;
-//    config.framebuffer.framebuffer_width = framebuffer_width;
-//    config.projection = camera.getProjectionMatrix();
-//    config.view = camera.getViewMatrix();
+    //    Transformation::Config config;
+    //    config.framebuffer.framebuffer_height = framebuffer_height;
+    //    config.framebuffer.framebuffer_width = framebuffer_width;
+    //    config.projection = camera.getProjectionMatrix();
+    //    config.view = camera.getViewMatrix();
 
-//    Transformation::framebufferCoordinatesToWorldCoordinates(config, window_x_pos, window_y_pos, position_in_world);
+    //    Transformation::framebufferCoordinatesToWorldCoordinates(config, window_x_pos, window_y_pos, position_in_world);
 
     glm::vec3 window_position(window_x_pos, framebuffer_height - window_y_pos, 0.0f);
     glm::vec4 viewport(0,0,framebuffer_width, framebuffer_height);

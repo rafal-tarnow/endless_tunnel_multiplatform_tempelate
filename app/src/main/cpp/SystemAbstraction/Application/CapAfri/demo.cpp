@@ -2,6 +2,10 @@
 #include <math.h>
 #include <stdio.h>
 #include "system_log.hpp"
+#include <string>
+#include <library_opengles_2/TextureManager/texture_manager.hpp>
+
+using namespace std;
 
 /* ===============================================================
  *
@@ -186,7 +190,7 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
 
 void car_tuning_demo(struct nk_context *ctx, struct media *media, int fb_width, int fb_height)
 {
-    static const char *items[] = {"Ground","Coin"};
+    static const char *items[] = {"Ground","Coin","Meta"};
     static int selected_icon = 0;
     int i = 0;
 
@@ -224,7 +228,7 @@ void car_tuning_demo(struct nk_context *ctx, struct media *media, int fb_width, 
         ui_widget(ctx, media, 40);
         if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
             nk_layout_row_dynamic(ctx, 35, 1);
-            for (i = 0; i < 2; ++i)
+            for (i = 0; i < 3; ++i)
                 if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
                     if(toolboxEventListener != nullptr){
@@ -239,7 +243,7 @@ void car_tuning_demo(struct nk_context *ctx, struct media *media, int fb_width, 
 
 void toolbox_demo(struct nk_context *ctx, struct media *media)
 {
-    static const char *items[] = {"Ground","Coin"};
+    static const char *items[] = {"Ground","Coin","Meta"};
     static int selected_icon = 0;
     int i = 0;
 
@@ -277,7 +281,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         ui_widget(ctx, media, 40);
         if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
             nk_layout_row_dynamic(ctx, 35, 1);
-            for (i = 0; i < 2; ++i)
+            for (i = 0; i < 3; ++i)
                 if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
                     if(toolboxEventListener != nullptr){
@@ -509,6 +513,31 @@ void basic_demo(struct nk_context *ctx, struct media *media)
     nk_end(ctx);
 }
 
+struct nk_image icon_load_from_TextureManager(string fileName)
+{
+//        int x,y,n;
+//        GLuint tex;
+//        unsigned char *data = stbi_load_from_memory(fileData, fileSize, &x, &y, &n, 0);
+//        if (!data)
+//        {
+//            printf("[SDL]: failed to load image");
+//            exit(EXIT_FAILURE);
+//        }
+
+//        glGenTextures(1, &tex);
+//        glBindTexture(GL_TEXTURE_2D, tex);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+//        glGenerateMipmap(GL_TEXTURE_2D);
+//        stbi_image_free(data);
+
+    GLuint tex = TextureManager::getTextureId(fileName);
+    return nk_image_id((int)tex);
+}
+
 void demo_init(int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -549,28 +578,6 @@ void demo_init(int width, int height)
     glEnable(GL_TEXTURE_2D);
 
 
-    //    media.unchecked = icon_load("./data/icon/unchecked.png");
-    //    media.checked = icon_load("./data/icon/checked.png");
-    //    media.rocket = icon_load("./data/icon/rocket.png");
-    //    media.cloud = icon_load("./data/icon/cloud.png");
-    //    media.pen = icon_load("./data/icon/pen.png");
-    //    media.play = icon_load("./data/icon/play.png");
-    //    media.pause = icon_load("./data/icon/pause.png");
-    //    media.stop = icon_load("./data/icon/stop.png");
-    //    media.next =  icon_load("./data/icon/next.png");
-    //    media.prev =  icon_load("./data/icon/prev.png");
-    //    media.tools = icon_load("./data/icon/tools.png");
-    //    media.dir = icon_load("./data/icon/directory.png");
-    //    media.copy = icon_load("./data/icon/copy.png");
-    //    media.convert = icon_load("./data/icon/export.png");
-    //    media.del = icon_load("./data/icon/delete.png");
-    //    media.edit = icon_load("./data/icon/edit.png");
-    //    media.menu[0] = icon_load("./data/icon/home.png");
-    //    media.menu[1] = icon_load("./data/icon/phone.png");
-    //    media.menu[2] = icon_load("./data/icon/plane.png");
-    //    media.menu[3] = icon_load("./data/icon/wifi.png");
-    //    media.menu[4] = icon_load("./data/icon/settings.png");
-    //    media.menu[5] = icon_load("./data/icon/volume.png");
 
 #include "./data_headers/icon/unchecked.png.hpp"
 #include "./data_headers/icon/checked.png.hpp"
@@ -595,6 +602,16 @@ void demo_init(int width, int height)
 #include "./data_headers/icon/settings.png.hpp"
 #include "./data_headers/icon/volume.png.hpp"
 
+#include "./data_headers/images/image1.png.hpp"
+#include "./data_headers/images/image2.png.hpp"
+#include "./data_headers/images/image3.png.hpp"
+#include "./data_headers/images/image4.png.hpp"
+#include "./data_headers/images/image5.png.hpp"
+#include "./data_headers/images/image6.png.hpp"
+#include "./data_headers/images/image7.png.hpp"
+#include "./data_headers/images/image8.png.hpp"
+#include "./data_headers/images/image9.png.hpp"
+
     media.unchecked = icon_load_from_memory(unchecked,size_of_unchecked);
     media.checked = icon_load_from_memory(checked,size_of_checked);
     media.rocket = icon_load_from_memory(rocket,size_of_rocket);
@@ -618,46 +635,18 @@ void demo_init(int width, int height)
     media.menu[4] = icon_load_from_memory(settings,size_of_settings);
     media.menu[5] = icon_load_from_memory(volume,size_of_volume);
 
-
-    //    for (int i = 0; i < 9; ++i)
-    //    {
-    //        char buffer[256];
-    //        sprintf(buffer, "./data/images/image%d.png", (i+1));
-    //        media.images[i] = icon_load(buffer);
-    //    }
-
-
-    //    media.images[1] = icon_load("./data/images/image1.png");
-    //    media.images[2] = icon_load("./data/images/image2.png");
-    //    media.images[3] = icon_load("./data/images/image3.png");
-    //    media.images[4] = icon_load("./data/images/image4.png");
-    //    media.images[5] = icon_load("./data/images/image5.png");
-    //    media.images[6] = icon_load("./data/images/image6.png");
-    //    media.images[7] = icon_load("./data/images/image7.png");
-    //    media.images[8] = icon_load("./data/images/image8.png");
-    //    media.images[9] = icon_load("./data/images/image9.png");
-
-
-#include "./data_headers/images/image1.png.hpp"
-#include "./data_headers/images/image2.png.hpp"
-#include "./data_headers/images/image3.png.hpp"
-#include "./data_headers/images/image4.png.hpp"
-#include "./data_headers/images/image5.png.hpp"
-#include "./data_headers/images/image6.png.hpp"
-#include "./data_headers/images/image7.png.hpp"
-#include "./data_headers/images/image8.png.hpp"
-#include "./data_headers/images/image9.png.hpp"
-
-    media.images[0] = icon_load_from_memory(image1, size_of_image1);
-    media.images[1] = icon_load_from_memory(image2, size_of_image2);
-    media.images[2] = icon_load_from_memory(image3, size_of_image3);
-    media.images[3] = icon_load_from_memory(image4, size_of_image4);
-    media.images[4] = icon_load_from_memory(image5, size_of_image5);
-    media.images[5] = icon_load_from_memory(image6, size_of_image6);
-    media.images[6] = icon_load_from_memory(image7, size_of_image7);
-    media.images[7] = icon_load_from_memory(image8, size_of_image8);
-    media.images[8] = icon_load_from_memory(image9, size_of_image9);
+    media.images[0] = icon_load_from_TextureManager("textures/red_dot.png");
+    media.images[1] = icon_load_from_TextureManager("textures/coin_2.png");
+    media.images[2] = icon_load_from_TextureManager("textures/meta.jpg");
+//    media.images[3] = icon_load_from_TextureManager("textures/nuklear/image4.png");
+//    media.images[4] = icon_load_from_TextureManager("textures/nuklear/image5.png");
+//    media.images[5] = icon_load_from_TextureManager("textures/nuklear/image6.png");
+//    media.images[6] = icon_load_from_TextureManager("textures/nuklear/image7.png");
+//    media.images[7] = icon_load_from_TextureManager("textures/nuklear/image8.png");
+//    media.images[8] = icon_load_from_TextureManager("textures/nuklear/image9.png");
 }
+
+
 
 struct nk_context * demo_getContext()
 {

@@ -1,4 +1,4 @@
-#include "coin_circle_body.hpp"
+#include "meta_body.hpp"
 
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
@@ -9,11 +9,11 @@ using namespace std;
 
 //*********     CIRCLE_COIN_RENDERER ***************
 
-uint32_t CircleCoinRender::instancesCount = 0;
-GLuint CircleCoinRender::coinTextureId = 0;
-DE_Rectangle CircleCoinRender::rectangle;
+uint32_t MetaRenderer::instancesCount = 0;
+GLuint MetaRenderer::coinTextureId = 0;
+DE_Rectangle MetaRenderer::rectangle;
 
-CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
+MetaRenderer::MetaRenderer(float x, float y, float z, float radius)
 {
     pos.x = x;
     pos.y = y;
@@ -25,11 +25,20 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 
     if(instancesCount == 1)
     {
-        coinTextureId = TextureManager::getTextureId("textures/coin_2.png");
+        coinTextureId = TextureManager::getTextureId("textures/meta.jpg");
         DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
     }
 }
-CircleCoinRender::~CircleCoinRender()
+
+void MetaRenderer::setPosAndDimm(float x, float y, float z, float radius)
+{
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    m_radius = radius;
+}
+
+MetaRenderer::~MetaRenderer()
 {
     instancesCount--;
     LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
@@ -40,14 +49,14 @@ CircleCoinRender::~CircleCoinRender()
     }
 }
 
-void CircleCoinRender::drawCircleSquare(b2Vec2 position,float radius,float angle)
+void MetaRenderer::drawCircleSquare(b2Vec2 position,float radius,float angle)
 {
     rectangle.model = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f));
     rectangle.model = glm::rotate(rectangle.model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
     DE_drawRectangle(&rectangle);
 }
 
-void CircleCoinRender::drawCircleSquare(glm::vec3 position,float radius,float angle)
+void MetaRenderer::drawCircleSquare(glm::vec3 position,float radius,float angle)
 {
     b2Vec2 b_pos;
     b_pos.x = position.x;
@@ -55,12 +64,12 @@ void CircleCoinRender::drawCircleSquare(glm::vec3 position,float radius,float an
     drawCircleSquare(b_pos, radius, angle);
 }
 
-glm::vec3 & CircleCoinRender::getPosition()
+glm::vec3 & MetaRenderer::getPosition()
 {
     return pos;
 }
 
-void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
+void MetaRenderer::render(glm::mat4 projection, glm::mat4 view)
 {
     rectangle.projection = projection;
     rectangle.view = view;
@@ -75,7 +84,7 @@ void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
 
 
 
-CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world) : CircleCoinRender(x, y, z, radius){
+Meta::Meta(float32 x,float32 y, float z, float32 radius, b2World* world) : MetaRenderer(x, y, z, radius){
     GameObject::setObjectType(OBJECT_COIN);
 
     b2BodyDef bodydef;
@@ -95,12 +104,12 @@ CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* wo
 
 }
 
-CircleCoin::~CircleCoin(){
+Meta::~Meta(){
     LOGD("delete CircleCoin nr: %d\n", instancesCount);
     body->GetWorld()->DestroyBody(body);
 }
 
-void CircleCoin::render(glm::mat4 projection, glm::mat4 view){
+void Meta::render(glm::mat4 projection, glm::mat4 view){
     rectangle.projection = projection;
     rectangle.view = view;
 

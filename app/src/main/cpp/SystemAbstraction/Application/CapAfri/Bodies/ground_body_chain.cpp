@@ -47,8 +47,9 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
     }
 
     glm::vec4 color(0.59f, 0.29f, 0.0f, 1.0f);
-#include "../data/ground_1.png.hpp"
-coinTextureId = SOIL_load_OGL_texture_from_memory(ground_1, size_of_ground_1, 4,0,SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+
+
+    coinTextureId = TextureManager::getTextureId("textures/ground_1.png", SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), coinTextureId);
 
     b2Vec2 * vs;
@@ -79,7 +80,6 @@ coinTextureId = SOIL_load_OGL_texture_from_memory(ground_1, size_of_ground_1, 4,
 GroundChain::~GroundChain(){
     LS_delete(&lineStripRenderer);
     TS_deleteTriangleStrip(&triangleStrip);
-    glDeleteTextures(1, &coinTextureId);
 }
 
 void GroundChain::render(glm::mat4 projection, glm::mat4 view){
