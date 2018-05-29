@@ -45,6 +45,7 @@ private:
 
 class RenderableGameObject : public GameObject{
 public:
+    virtual ~RenderableGameObject(){}
     virtual void render(glm::mat4 projection, glm::mat4 view) = 0;
 };
 

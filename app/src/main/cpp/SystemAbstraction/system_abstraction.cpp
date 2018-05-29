@@ -1,6 +1,7 @@
 #include "system_abstraction.hpp"
 #include "./Application/Tunnel/scene_manager.hpp"
 #include "./Application/Tunnel/welcome_scene.hpp"
+#include "./Application/Tunnel/scene_tuning_vehicle.hpp"
 #include "system_log.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <sstream>
@@ -73,6 +74,7 @@ void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int 
 void SystemAbstraction::onRenderFirstFrame()
 {
     mgr->RequestNewScene(new WelcomeScene());
+//    mgr->RequestNewScene(new TuningVehicleScene());
 }
 
 void SystemAbstraction::onRenderFrame()
