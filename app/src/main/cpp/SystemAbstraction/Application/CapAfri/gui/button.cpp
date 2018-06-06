@@ -22,6 +22,12 @@ void Button::setPosition(glm::vec3 &position)
     mModel = glm::translate(glm::mat4(1),position);
 }
 
+void Button::setDimm(glm::vec2 dim)
+{
+    mDimm = dim;
+    DE_setDimm(&rectangle, mDimm);
+}
+
 void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
 {
     mViewport = Viewport;

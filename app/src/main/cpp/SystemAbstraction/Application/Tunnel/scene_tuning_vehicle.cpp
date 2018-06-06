@@ -43,16 +43,18 @@ void TuningVehicleScene::initNormalButtons()
 {
     glm::vec3 position = glm::vec3(1920.0f*(4.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonPlus.setPosition(position);
+    buttonPlus.setDimm(glm::vec2(138,138));
     buttonPlus.setMatrices(&mViewport, &mProjection, &mView);
-    buttonPlus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
-    buttonPlus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/plus_green.png"));
+    buttonPlus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/plus_grey.png"));
     buttonPlus.setEventListener(this);
 
     position = glm::vec3(1920.0f*(3.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonMinus.setPosition(position);
+    buttonMinus.setDimm(glm::vec2(138,138));
     buttonMinus.setMatrices(&mViewport, &mProjection, &mView);
-    buttonMinus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
-    buttonMinus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonMinus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/minus_red.png"));
+    buttonMinus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/minus_grey.png"));
     buttonMinus.setEventListener(this);
 
     position = glm::vec3(1920.0f*(6.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);

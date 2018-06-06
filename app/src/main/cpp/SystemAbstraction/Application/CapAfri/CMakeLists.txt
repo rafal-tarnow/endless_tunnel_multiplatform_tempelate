@@ -24,6 +24,8 @@ add_library (CapAfri STATIC
     gui/radio_button.cpp
     gui/radio_button_manager.cpp
     transformation.cpp
+    PostProcessor.cpp
+    Shader.cpp
 )
 target_include_directories(CapAfri PRIVATE
     ${ANDROID_NDK}/sources/android/native_app_glue)

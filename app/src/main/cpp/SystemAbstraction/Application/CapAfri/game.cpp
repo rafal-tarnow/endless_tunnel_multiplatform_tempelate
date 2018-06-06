@@ -75,17 +75,17 @@ void Game::EndContact(b2Contact* contact)
 
 
 
-Game::Game(unsigned int win_width,unsigned int win_height)
+Game::Game(unsigned int fb_width,unsigned int fb_height)
 {
-    current_window_width = win_width;
-    current_window_height = win_height;
+    current_fb_width = fb_width;
+    current_fb_height = fb_height;
 
     string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
     config.loadDataFromFileToMemory(configFilePath);
 
     //GLuint fontSize = 82;
-    GLuint fontSize = GLuint(float(win_height)*0.076f);
-    textRenderer_v2 = new TextRenderer_v2(current_window_width,current_window_height);
+    GLuint fontSize = GLuint(float(fb_height)*0.076f);
+    textRenderer_v2 = new TextRenderer_v2(current_fb_width,current_fb_height);
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 
@@ -108,6 +108,8 @@ Game::Game(unsigned int win_width,unsigned int win_height)
     {
         pAudioManager->PlaySFX(m_musicHandle);
     }
+
+    mEffects = new PostProcessor (current_fb_width, current_fb_height);
 }
 
 
@@ -176,6 +178,12 @@ Game::~Game()
     delete world;
     delete textRenderer_v2;
     saveCoins();
+
+    if (mEffects)
+    {
+        delete mEffects;
+        mEffects = nullptr;
+    }
 }
 
 void Game::windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out)
@@ -183,11 +191,11 @@ void Game::windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &
     float x_in = (float)x;
     float y_in = (float)y;
 
-    float szerokosc_okna_do_szerokosci_swiata = current_window_width / box_view_width_in_meters;
-    float wysokosc_okna_do_wysokosci_swiata = current_window_height / box_view_height_in_meters;
+    float szerokosc_okna_do_szerokosci_swiata = current_fb_width / box_view_width_in_meters;
+    float wysokosc_okna_do_wysokosci_swiata = current_fb_height / box_view_height_in_meters;
 
     x_out = (x_in / szerokosc_okna_do_szerokosci_swiata) - camera_x_position_m;
-    y_out = ((current_window_height - y_in) / wysokosc_okna_do_wysokosci_swiata) - camera_y_position_m;
+    y_out = ((current_fb_height - y_in) / wysokosc_okna_do_wysokosci_swiata) - camera_y_position_m;
 }
 
 void Game::systemCallback_Scroll(double yoffset){
@@ -204,7 +212,7 @@ void Game::systemCallback_Scroll(double yoffset){
             zoom = 5.0;
     }
 
-    float aspect = ((float)current_window_width)/((float)current_window_height);
+    float aspect = ((float)current_fb_width)/((float)current_fb_height);
 
     box_view_width_in_meters = 30.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
@@ -213,13 +221,13 @@ void Game::systemCallback_Scroll(double yoffset){
 
 void Game::systemCallback_WindowResize(unsigned int win_width,unsigned int win_height)
 {
-    current_window_width = win_width;
-    current_window_height = win_height;
-    glViewport (0, 0, (GLsizei) current_window_width, (GLsizei) current_window_height);
+    current_fb_width = win_width;
+    current_fb_height = win_height;
+    glViewport (0, 0, (GLsizei) current_fb_width, (GLsizei) current_fb_height);
 
-    textRenderer_v2->onVievportResize(current_window_width, current_window_height);
+    textRenderer_v2->onVievportResize(current_fb_width, current_fb_height);
 
-    float aspect = ((float)current_window_width)/((float)current_window_height);
+    float aspect = ((float)current_fb_width)/((float)current_fb_height);
 
     box_view_width_in_meters = 18.0f*zoom;
     box_view_height_in_meters = box_view_width_in_meters/aspect;
@@ -259,10 +267,15 @@ void Game::systemCallback_TimerTick()
 void Game::systemCallback_Render()
 {
 
+    static double time = 0.0;
+
     //LOGD("--> Game::systemCallback_Render()\n");
     updateGameLogics();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mEffects->Chaos = GL_TRUE;
+     mEffects->BeginRender();
 
     if(car != nullptr)
     {
@@ -274,8 +287,14 @@ void Game::systemCallback_Render()
     renderWorldBodies();
     renderHUD();
 
+    mEffects->EndRender();
+
+    mEffects->Render (time);
+
     glFlush();
     //LOGD("<-- Game::systemCallback_Render()\n");
+
+    time += 0.030;
 }
 
 void Game::renderWorldBodies()
@@ -309,12 +328,12 @@ void Game::renderHUD()
         text << "$ 0";
     }
 
-    textRenderer_v2->RenderText(text.str(), current_window_width*0.03, current_window_height*0.9);
+    textRenderer_v2->RenderText(text.str(), current_fb_width*0.03, current_fb_height*0.9);
 
     text.str("");
     text << "$ " << money;
 
-    textRenderer_v2->RenderText(text.str(), current_window_width*0.03, current_window_height*0.8);
+    textRenderer_v2->RenderText(text.str(), current_fb_width*0.03, current_fb_height*0.8);
 }
 
 b2World * Game::getWorld()

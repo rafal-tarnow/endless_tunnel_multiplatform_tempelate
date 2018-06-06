@@ -18,6 +18,7 @@ class Button{
     ~Button();
 
     void setPosition(glm::vec3 &position);
+    void setDimm(glm::vec2 dim);
     void setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View);
 
     void setEventListener(ButtonEventListener * listener);

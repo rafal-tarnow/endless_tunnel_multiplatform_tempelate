@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.16"
-     inkscape:cx="-1757.7549"
-     inkscape:cy="-3258.7737"
+     inkscape:zoom="0.64"
+     inkscape:cx="-348.20878"
+     inkscape:cy="-903.71775"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
      showgrid="false"
@@ -941,4 +941,34 @@
          id="g4620" />
     </g>
   </g>
+  <path
+     style="opacity:1;fill:#ff0900;fill-opacity:1;stroke:none;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M -618.35742 1563.5527 A 69.132385 69.132385 0 0 0 -687.49023 1632.6836 A 69.132385 69.132385 0 0 0 -618.35742 1701.8164 A 69.132385 69.132385 0 0 0 -549.22461 1632.6836 A 69.132385 69.132385 0 0 0 -618.35742 1563.5527 z M -659.54688 1619.8047 L -577.16797 1619.8047 C -573.92641 1619.8047 -571.31641 1623.0364 -571.31641 1627.0508 L -571.31641 1638.3184 C -571.31641 1642.3328 -573.92641 1645.5645 -577.16797 1645.5645 L -659.54688 1645.5645 C -662.78843 1645.5645 -665.39844 1642.3328 -665.39844 1638.3184 L -665.39844 1627.0508 C -665.39844 1623.0364 -662.78843 1619.8047 -659.54688 1619.8047 z "
+     id="circle4564"
+     inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/minus_red.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
+  <path
+     style="opacity:1;fill:#09ff00;fill-opacity:1;stroke:none;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M -333.98242 1554.1777 A 69.132385 69.132385 0 0 0 -403.11523 1623.3086 A 69.132385 69.132385 0 0 0 -333.98242 1692.4414 A 69.132385 69.132385 0 0 0 -264.84961 1623.3086 A 69.132385 69.132385 0 0 0 -333.98242 1554.1777 z M -339.61719 1576.2676 L -328.34766 1576.2676 C -324.33324 1576.2676 -321.10156 1578.8776 -321.10156 1582.1191 L -321.10156 1610.4297 L -292.79297 1610.4297 C -289.55141 1610.4297 -286.94141 1613.6614 -286.94141 1617.6758 L -286.94141 1628.9434 C -286.94141 1632.9578 -289.55141 1636.1895 -292.79297 1636.1895 L -321.10156 1636.1895 L -321.10156 1664.498 C -321.10156 1667.7396 -324.33324 1670.3496 -328.34766 1670.3496 L -339.61719 1670.3496 C -343.63161 1670.3496 -346.86328 1667.7396 -346.86328 1664.498 L -346.86328 1636.1895 L -375.17188 1636.1895 C -378.41343 1636.1895 -381.02344 1632.9578 -381.02344 1628.9434 L -381.02344 1617.6758 C -381.02344 1613.6614 -378.41343 1610.4297 -375.17188 1610.4297 L -346.86328 1610.4297 L -346.86328 1582.1191 C -346.86328 1578.8776 -343.63161 1576.2676 -339.61719 1576.2676 z "
+     id="circle4572"
+     inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/plus_green.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
+  <path
+     id="path4587"
+     d="m -223.04492,1771.3652 a 69.132385,69.132385 0 0 0 -69.13281,69.1309 69.132385,69.132385 0 0 0 69.13281,69.1328 69.132385,69.132385 0 0 0 69.13281,-69.1328 69.132385,69.132385 0 0 0 -69.13281,-69.1309 z m -5.63477,22.0899 11.26953,0 c 4.01442,0 7.2461,2.61 7.2461,5.8515 l 0,28.3106 28.30859,0 c 3.24156,0 5.85156,3.2317 5.85156,7.2461 l 0,11.2676 c 0,4.0144 -2.61,7.2461 -5.85156,7.2461 l -28.30859,0 0,28.3085 c 0,3.2416 -3.23168,5.8516 -7.2461,5.8516 l -11.26953,0 c -4.01442,0 -7.24609,-2.61 -7.24609,-5.8516 l 0,-28.3085 -28.3086,0 c -3.24155,0 -5.85156,-3.2317 -5.85156,-7.2461 l 0,-11.2676 c 0,-4.0144 2.61001,-7.2461 5.85156,-7.2461 l 28.3086,0 0,-28.3106 c 0,-3.2415 3.23167,-5.8515 7.24609,-5.8515 z"
+     style="opacity:1;fill:#b0b0b0;fill-opacity:1;stroke:none;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:connector-curvature="0"
+     inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/plus_grey.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
+  <path
+     id="path4589"
+     d="m -666.79492,1822.9277 a 69.132385,69.132385 0 0 0 -69.13281,69.1309 69.132385,69.132385 0 0 0 69.13281,69.1328 69.132385,69.132385 0 0 0 69.13281,-69.1328 69.132385,69.132385 0 0 0 -69.13281,-69.1309 z m -41.18946,56.252 82.37891,0 c 3.24156,0 5.85156,3.2317 5.85156,7.2461 l 0,11.2676 c 0,4.0144 -2.61,7.2461 -5.85156,7.2461 l -82.37891,0 c -3.24155,0 -5.85156,-3.2317 -5.85156,-7.2461 l 0,-11.2676 c 0,-4.0144 2.61001,-7.2461 5.85156,-7.2461 z"
+     style="opacity:1;fill:#b0b0b0;fill-opacity:1;stroke:none;stroke-width:1.25625002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:connector-curvature="0"
+     inkscape:export-filename="/home/rafal/Pulpit/GIT_HUB/endless_tunnel_multiplatform_tempelate/RESOURCES/assets/textures/minus_grey.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
 </svg>

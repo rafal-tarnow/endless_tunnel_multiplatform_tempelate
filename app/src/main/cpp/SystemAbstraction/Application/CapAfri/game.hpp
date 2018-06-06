@@ -14,6 +14,7 @@
 #include <set>
 #include <list>
 #include <OpenSLWrap.hpp>
+#include "PostProcessor.hpp"
 
 
 using namespace std;
@@ -47,8 +48,8 @@ private:
     void renderWorldBodies();
     void renderHUD();
     void windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out);
-    float current_window_width;
-    float current_window_height;
+    float current_fb_width;
+    float current_fb_height;
 
     float camera_x_position_m = 1.0f;
     float camera_y_position_m = 1.5f;
@@ -60,6 +61,8 @@ private:
     b2World* world;
     GroundChain * groundChain = nullptr;
     BackGround * background = nullptr;
+
+    PostProcessor* mEffects;
 
     Car * car = nullptr;
     list<CircleCoin *> coinsList;
