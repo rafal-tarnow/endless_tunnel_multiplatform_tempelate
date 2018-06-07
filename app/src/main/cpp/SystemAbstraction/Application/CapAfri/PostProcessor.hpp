@@ -21,7 +21,7 @@ public:
     LShader PostProcessingShader;
     GLuint Width, Height;
     // Options
-    GLboolean Confuse, Chaos, Shake;
+    GLboolean Confuse, Chaos, Shake, Spin;
     // Constructor
     PostProcessor(GLuint width, GLuint height);
     // Prepares the postprocessor's framebuffer operations before rendering the game

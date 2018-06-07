@@ -4,9 +4,10 @@
 
 
 const GLchar* vShaderCode =
-        "#version 100               \n"
+        "#version 100                                           \n"
         "//#version 330 core        \n"
         "                           \n"
+           "        precision mediump float;                                               \n"
         "attribute vec4 vertex; // <vec2 position, vec2 texCoords>      \n"
         "                           \n"
         "varying vec2 TexCoords;    \n"
@@ -14,6 +15,7 @@ const GLchar* vShaderCode =
         "uniform bool  chaos;           \n"
         "uniform bool  confuse;         \n"
         "uniform bool  shake;           \n"
+        "uniform bool  spin;            \n"
         "uniform float time;            \n"
         "                               \n"
         "void main()                    \n"
@@ -31,6 +33,10 @@ const GLchar* vShaderCode =
         "    {                                                              \n"
         "        TexCoords = vec2(1.0 - texture.x, 1.0 - texture.y);        \n"
         "    }                                                              \n"
+        "    else if(spin)                                                  \n"
+        "    {                                                              \n"
+        "        TexCoords = texture;                                       \n"
+        "    }                                                              \n"
         "    else                                                           \n"
         "    {                                                              \n"
         "        TexCoords = texture;                                       \n"
@@ -46,61 +52,83 @@ const GLchar* vShaderCode =
 
 
 const GLchar * fShaderCode =
-"        #version 100                                                           \n"
-"        //#version 330 core                                                    \n"
-"                                                                               \n"
-"        precision mediump float;                                               \n"
-"                                                                               \n"
-"varying  vec2  TexCoords;                                                      \n"
-"vec4  color;                                                                   \n"
-"                                                                               \n"
-"uniform sampler2D scene;                                                       \n"
-"uniform vec2      offsets[9];                                                  \n"
-"uniform int       edge_kernel[9];                                              \n"
-"uniform float     blur_kernel[9];                                              \n"
-"                                                                               \n"
-"uniform bool chaos;                                                            \n"
-"uniform bool confuse;                                                          \n"
-"uniform bool shake;                                                            \n"
-"                                                                               \n"
-"void main()                                                                    \n"
-"{                                                                              \n"
-"    color = vec4(0.0);                                                        \n"
-"    vec3 sample[9];                                                            \n"
-"    // sample from texture offsets if using convolution matrix                 \n"
-"    if(chaos || shake)                                                         \n"
-"        for(int i = 0; i < 9; i++)                                             \n"
-"            sample[i] = vec3(texture2D(scene, TexCoords.st + offsets[i]));     \n"
-"                                                                               \n"
-"    // process effects                                                         \n"
-"    if(chaos)                                                                  \n"
-"    {                                                                          \n"
-"        for(int i = 0; i < 9; i++)                                             \n"
-"            color += vec4(sample[i] * float(edge_kernel[i]), 0.0);            \n"
-"        color.a = 1.0;                                                        \n"
-"    }                                                                          \n"
-"    else if(confuse)                                                           \n"
-"    {                                                                          \n"
-"        color = vec4(1.0 - texture2D(scene, TexCoords).rgb, 1.0);              \n"
-"    }                                                                          \n"
-"    else if(shake)                                                             \n"
-"    {                                                                          \n"
-"        for(int i = 0; i < 9; i++)                                             \n"
-"            color += vec4(sample[i] * blur_kernel[i], 0.0);                   \n"
-"        color.a = 1.0;                                                        \n"
-"    }                                                                          \n"
-"    else                                                                       \n"
-"    {                                                                          \n"
-"        color =  texture2D(scene, TexCoords);                                  \n"
-"    }                                                                          \n"
-"                                                                               \n"
-"    gl_FragColor = color;                                                      \n"
-"}                                                                              \n";
+        "        #version 100                                                           \n"
+        "        //#version 330 core                                                    \n"
+        "                                                                               \n"
+        "        precision mediump float;                                               \n"
+        "                                                                               \n"
+        "varying  vec2  TexCoords;                                                      \n"
+        "vec4  color;                                                                   \n"
+        "                                                                               \n"
+        "uniform sampler2D textureMap;                                                  \n"
+        "uniform vec2      offsets[9];                                                  \n"
+        "uniform int       edge_kernel[9];                                              \n"
+        "uniform float     blur_kernel[9];                                              \n"
+        "                                                                               \n"
+        "uniform bool chaos;                                                            \n"
+        "uniform bool confuse;                                                          \n"
+        "uniform bool spin;                                                             \n"
+        "uniform bool shake;                                                            \n"
+        "uniform float time;                                                            \n"
+        "                                                                               \n"
+        "void main()                                                                    \n"
+        "{                                                                              \n"
+        "    color = vec4(0.0);                                                         \n"
+        "    vec3 sample[9];                                                            \n"
+        "    // sample from texture offsets if using convolution matrix                 \n"
+        "    if(chaos || shake)                                                         \n"
+        "        for(int i = 0; i < 9; i++)                                             \n"
+        "            sample[i] = vec3(texture2D(textureMap, TexCoords.st + offsets[i]));\n"
+        "                                                                               \n"
+        "    // process effects                                                         \n"
+        "    if(chaos)                                                                  \n"
+        "    {                                                                          \n"
+        "        for(int i = 0; i < 9; i++)                                             \n"
+        "            color += vec4(sample[i] * float(edge_kernel[i]), 0.0);             \n"
+        "        color.a = 1.0;                                                         \n"
+        "    }                                                                          \n"
+        "    else if(confuse)                                                           \n"
+        "    {                                                                          \n"
+        "        color = vec4(1.0 - texture2D(textureMap, TexCoords).rgb, 1.0);              \n"
+        "    }                                                                          \n"
+        "    else if(shake)                                                             \n"
+        "    {                                                                          \n"
+        "        for(int i = 0; i < 9; i++)                                             \n"
+        "            color += vec4(sample[i] * blur_kernel[i], 0.0);                   \n"
+        "        color.a = 1.0;                                                        \n"
+        "    }                                                                          \n"
+        "    else if(spin)                                                             \n"
+        "    {                                                                          \n"
+        "       //przesuni�cie pocz�tku wsp��rz�dnych tekstury na �rodek obrazu                 \n"
+        "       vec2 uv = TexCoords-0.5;                                                        \n"
+        "                                                                                       \n"
+        "       //obliczanie k�ta na podstawie przesuni�tych wsp��rz�dnych kartezja�skich       \n"
+        "       float angle = atan(uv.y, uv.x);                                                 \n"
+        "                                                                                       \n"
+        "       //obliczanie promieniana podstawie przesuni�tych wsp��rz�dnych kartezja�skich   \n"
+        "       float radius = length(uv);                                                      \n"
+        "                                                                                       \n"
+        "       //zwi�kszanie k�ta o iloczym promienia i mocy filtra                            \n"
+        "       angle+= radius*2.0*cos(time/2.0);//*twirl_amount;                                                    \n"
+        "                                                                                       \n"
+        "       //powr�t do wsp��rz�dnych kartezja�skich                                        \n"
+        "       vec2 shifted = radius* vec2(cos(angle), sin(angle));                            \n"
+        "                                                                                       \n"
+        "       //przesuni�cie pocz�tku wsp��rz�dnych tekstury do po�o�enia pierwotnego         \n"
+        "       color = texture2D(textureMap, (shifted+0.5));                            \n"
+        "    }                                                                          \n"
+        "    else                                                                       \n"
+        "    {                                                                          \n"
+        "        color =  texture2D(textureMap, TexCoords);                                  \n"
+        "    }                                                                          \n"
+        "                                                                               \n"
+        "    gl_FragColor = color;                                                      \n"
+        "}                                                                              \n";
 
 
 
 PostProcessor::PostProcessor(GLuint width, GLuint height)
-    : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE), Shake(GL_FALSE),
+    : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE),Spin(GL_FALSE), Shake(GL_FALSE),
       TWidth (0), THeight (0), Internal_Format (GL_RGB), Image_Format (GL_RGB), Wrap_S (GL_REPEAT), Wrap_T (GL_REPEAT), Filter_Min (GL_LINEAR), Filter_Max (GL_LINEAR)
 {
 
@@ -136,7 +164,7 @@ PostProcessor::PostProcessor(GLuint width, GLuint height)
 
     // Initialize render data and uniforms
     this->initRenderData();
-    this->PostProcessingShader.SetInteger("scene", 0, GL_TRUE);
+    this->PostProcessingShader.SetInteger("textureMap", 0, GL_TRUE);
     GLfloat offset = 1.0f / 300.0f;
     GLfloat offsets[9][2] = {
         { -offset,  offset  },  // top-left
@@ -186,6 +214,7 @@ void PostProcessor::Render(GLfloat time)
     this->PostProcessingShader.SetFloat("time", time);
     this->PostProcessingShader.SetInteger("confuse", this->Confuse);
     this->PostProcessingShader.SetInteger("chaos", this->Chaos);
+    this->PostProcessingShader.SetInteger("spin", this->Spin);
     this->PostProcessingShader.SetInteger("shake", this->Shake);
     // Render textured quad
     glActiveTexture(GL_TEXTURE0);

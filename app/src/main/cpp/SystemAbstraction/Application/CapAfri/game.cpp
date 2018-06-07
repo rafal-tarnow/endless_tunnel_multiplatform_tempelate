@@ -274,7 +274,7 @@ void Game::systemCallback_Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mEffects->Chaos = GL_TRUE;
+    mEffects->Spin = GL_TRUE;
      mEffects->BeginRender();
 
     if(car != nullptr)
