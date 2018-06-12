@@ -190,7 +190,7 @@ static void ui_widget_centered(struct nk_context *ctx, struct media *media, floa
 
 void car_tuning_demo(struct nk_context *ctx, struct media *media, int fb_width, int fb_height)
 {
-    static const char *items[] = {"Ground","Coin","Meta"};
+    static const char *items[] = {"Ground","Coin","Mushroom","Meta"};
     static int selected_icon = 0;
     int i = 0;
 
@@ -281,7 +281,7 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
         ui_widget(ctx, media, 40);
         if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
             nk_layout_row_dynamic(ctx, 35, 1);
-            for (i = 0; i < 3; ++i)
+            for (i = 0; i < 4; ++i)
                 if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
                     if(toolboxEventListener != nullptr){
@@ -637,7 +637,8 @@ void demo_init(int width, int height)
 
     media.images[0] = icon_load_from_TextureManager("textures/red_dot.png");
     media.images[1] = icon_load_from_TextureManager("textures/coin_2.png");
-    media.images[2] = icon_load_from_TextureManager("textures/meta.jpg");
+    media.images[2] = icon_load_from_TextureManager("textures/Tango_Style_Mushroom_icon.svg.png");
+    media.images[3] = icon_load_from_TextureManager("textures/meta.jpg");
 //    media.images[3] = icon_load_from_TextureManager("textures/nuklear/image4.png");
 //    media.images[4] = icon_load_from_TextureManager("textures/nuklear/image5.png");
 //    media.images[5] = icon_load_from_TextureManager("textures/nuklear/image6.png");

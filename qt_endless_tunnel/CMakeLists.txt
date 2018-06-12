@@ -25,3 +25,5 @@ target_link_libraries(linux_endless_tunnel
     GLESv2
     glfw
     )
+
+target_link_libraries(linux_endless_tunnel m)

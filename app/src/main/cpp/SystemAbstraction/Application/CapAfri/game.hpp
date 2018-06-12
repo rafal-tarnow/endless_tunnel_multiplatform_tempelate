@@ -11,6 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../system_abstraction.hpp"
 #include "./Bodies/coin_circle_body.hpp"
+#include "./Bodies/mushroom.hpp"
 #include <set>
 #include <list>
 #include <OpenSLWrap.hpp>
@@ -67,6 +68,8 @@ private:
     Car * car = nullptr;
     list<CircleCoin *> coinsList;
     set<CircleCoin *> coinsToDelete;
+    list<Mushroom *> mushroomList;
+    set<Mushroom *> mushroomsToDelete;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     glm::mat4 projectionMatrix = glm::mat4(1);

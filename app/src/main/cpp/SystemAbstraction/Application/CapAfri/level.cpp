@@ -27,7 +27,7 @@ int Level::loadLevelFromFile(string levelFilePath)
     config.loadDataFromFileToMemory(levelFilePath);
 
     int32_t map_size = config.get_int32_t("ground_verticles.size()");
-    for(unsigned int i = 0; i < map_size; i++)
+    for(int i = 0; i < map_size; i++)
     {
         stringstream stream;
         stream << "ground_verticles.at(" << i << ")";
@@ -37,13 +37,23 @@ int Level::loadLevelFromFile(string levelFilePath)
 
     int32_t vector_size = config.get_int32_t("coins_vector.size()");
 
-    for(unsigned int i = 0; i < vector_size; i++)
+    for(int i = 0; i < vector_size; i++)
     {
         stringstream stream;
         stream << "coins_vector.at(" << i << ")";
         glm::vec3 coin_position = config.get_glm_vec3(stream.str());
 
         coins_vector.push_back(new CircleCoinRender(coin_position.x, coin_position.y, -2.0f, 0.25f));
+    }
+
+    int32_t mushroom_vector_size = config.get_int32_t("mushroom_vector.size()");
+    for(int i = 0; i < mushroom_vector_size; i++)
+    {
+        stringstream stream;
+        stream << "mushroom_vector.at(" << i << ")";
+        glm::vec3 mushroom_position = config.get_glm_vec3(stream.str());
+        glm::vec2 dimm(2.0, 2.0);
+        mushroom_vector.push_back(new MushroomRenderer(mushroom_position, dimm));
     }
 
     return 0;

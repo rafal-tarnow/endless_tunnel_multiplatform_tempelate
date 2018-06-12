@@ -30,29 +30,29 @@ void Game::BeginContact(b2Contact* contact)
         //object_1->printObjectType();
 
 
-            //CHECK IS COIN COLLIDE WITH CAR
-            if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
+        //CHECK IS COIN COLLIDE WITH CAR
+        if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
             {
-                AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
-                if (pAudioManager)
-                {
-                    pAudioManager->PlaySFX(m_coinHandle);
-                }
-                coinsToDelete.insert(static_cast<CircleCoin *>(object));
-                money++;
+                pAudioManager->PlaySFX(m_coinHandle);
             }
-            //CHECK IS COIN COLLIDE WITH CAR
-            if ((object_1->getObjectType() == GameObject::OBJECT_COIN) && (object->getObjectType() == GameObject::OBJECT_CAR))
-            {
-                AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
-                if (pAudioManager)
-                {
-                    pAudioManager->PlaySFX(m_coinHandle);
-                }
-                coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
-                money++;
-            }
+            coinsToDelete.insert(static_cast<CircleCoin *>(object));
+            money++;
         }
+        //CHECK IS COIN COLLIDE WITH CAR
+        if ((object_1->getObjectType() == GameObject::OBJECT_COIN) && (object->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
+            {
+                pAudioManager->PlaySFX(m_coinHandle);
+            }
+            coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
+            money++;
+        }
+    }
 
     //LOGD("<-- Game::BeginContact(...)");
 
@@ -150,6 +150,13 @@ void Game::loadLevel()
         pos.y = coin->getPosition().y;
         coinsList.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
     }
+
+    for(auto & mushroom : level.mushroom_vector)
+    {
+        glm::vec3 position(5,5,0);
+        glm::vec2 dimm(2,2);
+        mushroomList.push_back(new Mushroom(position, dimm, world));
+    }
 }
 
 void Game::loadAudio()
@@ -165,6 +172,11 @@ void Game::loadAudio()
 Game::~Game()
 {
     for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
+    {
+        delete (*it);
+    }
+
+    for(list<Mushroom*>::iterator it = mushroomList.begin(); it != mushroomList.end(); it++)
     {
         delete (*it);
     }
@@ -252,10 +264,22 @@ void Game::updateGameLogics()
         // wyświetlenie zawartości
         for( it=coinsToDelete.begin(); it != coinsToDelete.end(); it++)
         {
-                coinsList.remove(*it);
-                delete *it;
+            coinsList.remove(*it);
+            delete *it;
         }
         coinsToDelete.clear();
+    }
+
+    if(mushroomsToDelete.size())
+    {
+        set<Mushroom*>::iterator it;
+
+        for(it=mushroomsToDelete.begin(); it != mushroomsToDelete.end(); it++)
+        {
+            mushroomList.remove(*it);
+            delete *it;
+        }
+        mushroomsToDelete.clear();
     }
 }
 
@@ -275,21 +299,23 @@ void Game::systemCallback_Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mEffects->Spin = GL_TRUE;
-     mEffects->BeginRender();
-
-    if(car != nullptr)
+    mEffects->BeginRender();
     {
-        float x, y;
-        car->getPosition(&x,&y);
-        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        if(car != nullptr)
+        {
+            float x, y;
+            car->getPosition(&x,&y);
+            viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+
+        renderWorldBodies();
+        renderHUD();
     }
-
-    renderWorldBodies();
-    renderHUD();
-
     mEffects->EndRender();
 
     mEffects->Render (time);
+
+
 
     glFlush();
     //LOGD("<-- Game::systemCallback_Render()\n");
@@ -299,15 +325,6 @@ void Game::systemCallback_Render()
 
 void Game::renderWorldBodies()
 {
-    //    b2Body* tmp=world->GetBodyList();
-    //    while(tmp)
-    //    {
-    //        if(tmp->GetUserData() != nullptr){
-    //            ((RenderableGameObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
-    //        }
-    //        tmp=tmp->GetNext();
-    //    }
-
     if(car)
         car->render(projectionMatrix, viewMatrix);
 
@@ -316,6 +333,10 @@ void Game::renderWorldBodies()
         (*it)->render(projectionMatrix, viewMatrix);
     }
 
+    for(list<Mushroom*>::iterator it = mushroomList.begin(); it != mushroomList.end(); it++)
+    {
+        (*it)->render(projectionMatrix, viewMatrix);
+    }
     groundChain->render(projectionMatrix, viewMatrix);
 }
 

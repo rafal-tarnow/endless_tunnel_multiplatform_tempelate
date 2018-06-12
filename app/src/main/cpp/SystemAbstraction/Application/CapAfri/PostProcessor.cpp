@@ -115,7 +115,7 @@ const GLchar * fShaderCode =
         "       vec2 shifted = radius* vec2(cos(angle), sin(angle));                            \n"
         "                                                                                       \n"
         "       //przesuni�cie pocz�tku wsp��rz�dnych tekstury do po�o�enia pierwotnego         \n"
-        "       color = texture2D(textureMap, (shifted+0.5));                            \n"
+        "       color = vec4(1.0 - texture2D(textureMap, (shifted+0.5)).rgb, 1.0);                            \n"
         "    }                                                                          \n"
         "    else                                                                       \n"
         "    {                                                                          \n"
@@ -129,7 +129,7 @@ const GLchar * fShaderCode =
 
 PostProcessor::PostProcessor(GLuint width, GLuint height)
     : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE),Spin(GL_FALSE), Shake(GL_FALSE),
-      TWidth (0), THeight (0), Internal_Format (GL_RGB), Image_Format (GL_RGB), Wrap_S (GL_REPEAT), Wrap_T (GL_REPEAT), Filter_Min (GL_LINEAR), Filter_Max (GL_LINEAR)
+      TWidth (0), THeight (0), Internal_Format (GL_RGB), Image_Format (GL_RGB), Wrap_S (GL_CLAMP_TO_EDGE), Wrap_T (GL_CLAMP_TO_EDGE), Filter_Min (GL_LINEAR), Filter_Max (GL_LINEAR)
 {
 
     PostProcessingShader.Compile(vShaderCode, fShaderCode);
@@ -144,8 +144,8 @@ PostProcessor::PostProcessor(GLuint width, GLuint height)
     glBindTexture (GL_TEXTURE_2D, this->ID);
     glTexImage2D (GL_TEXTURE_2D, 0, this->Internal_Format, width, height, 0, this->Image_Format, GL_UNSIGNED_BYTE, NULL);
     // Set Texture wrap and filter modes
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->Wrap_S);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->Wrap_T);
+    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->Wrap_S);
+    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->Wrap_T);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->Filter_Min);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->Filter_Max);
     // Unbind texture

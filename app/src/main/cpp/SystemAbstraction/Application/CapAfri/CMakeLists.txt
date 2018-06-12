@@ -15,6 +15,7 @@ add_library (CapAfri STATIC
     Bodies/meta_body.cpp
     Bodies/coordinates_body.cpp
     Bodies/ground_body_chain.cpp
+    Bodies/mushroom.cpp
     game.cpp
     map_editor.cpp
     level.cpp
@@ -29,3 +30,4 @@ add_library (CapAfri STATIC
 )
 target_include_directories(CapAfri PRIVATE
     ${ANDROID_NDK}/sources/android/native_app_glue)
+

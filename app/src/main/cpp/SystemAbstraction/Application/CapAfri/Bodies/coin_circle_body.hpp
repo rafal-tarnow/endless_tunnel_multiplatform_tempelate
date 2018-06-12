@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLES2/gl2.h>
+#include <system_opengl_include.hpp>
 
 
 #include <Box2D/Box2D.h>
@@ -23,7 +23,7 @@ private:
     static GLuint coinTextureId;
 
     float m_radius;
-    glm::vec3 pos;
+    glm::vec3 mPos;
 };
 
 
@@ -33,5 +33,5 @@ public:
     ~CircleCoin();
     void render(glm::mat4 projection, glm::mat4 view);
 private:
-    b2Body* body = nullptr;
+    b2Body* mBody = nullptr;
 };

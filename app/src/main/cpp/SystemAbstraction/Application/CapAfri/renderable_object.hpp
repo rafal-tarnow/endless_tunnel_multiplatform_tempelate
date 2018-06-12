@@ -12,7 +12,8 @@ public:
     typedef enum{
         OBJECT_COIN,
         OBJECT_CAR,
-        OBJECT_UNINIT
+        OBJECT_MUSHROOM,
+        OBJECT_UNINIT,
     }ObjectType;
 
     void setObjectType(ObjectType type)
@@ -33,6 +34,10 @@ public:
         else if(mtype == OBJECT_COIN)
         {
             LOGD("Object type: OBJECT_COIN\n");
+        }
+        else if(mtype == OBJECT_MUSHROOM)
+        {
+            LOGD("Object type: OBJECT_MUSHROOM\n");
         }
         else if(mtype == OBJECT_UNINIT)
         {

@@ -15,9 +15,9 @@ DE_Rectangle CircleCoinRender::rectangle;
 
 CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 {
-    pos.x = x;
-    pos.y = y;
-    pos.z = z;
+    mPos.x = x;
+    mPos.y = y;
+    mPos.z = z;
     m_radius = radius;
 
     instancesCount++;
@@ -26,7 +26,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
     if(instancesCount == 1)
     {
         coinTextureId = TextureManager::getTextureId("textures/coin_2.png");
-        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
+        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, mPos.z);
     }
 }
 CircleCoinRender::~CircleCoinRender()
@@ -57,7 +57,7 @@ void CircleCoinRender::drawCircleSquare(glm::vec3 position,float radius,float an
 
 glm::vec3 & CircleCoinRender::getPosition()
 {
-    return pos;
+    return mPos;
 }
 
 void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
@@ -66,9 +66,9 @@ void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
     rectangle.view = view;
 
     b2Vec2 b_pos;
-    b_pos.x = pos.x;
-    b_pos.y = pos.y;
-    drawCircleSquare(pos,m_radius,0);
+    b_pos.x = mPos.x;
+    b_pos.y = mPos.y;
+    drawCircleSquare(mPos,m_radius,0);
 }
 
 //************* CIRCLE COIN ***********************
@@ -78,26 +78,29 @@ void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
 CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world) : CircleCoinRender(x, y, z, radius){
     GameObject::setObjectType(OBJECT_COIN);
 
+    //BODY
     b2BodyDef bodydef;
     bodydef.position.Set(x,y);
     bodydef.type=b2_dynamicBody;
     bodydef.gravityScale = 0.0f;
-    body=world->CreateBody(&bodydef);
-    body->SetUserData(static_cast<GameObject*>(this));
+    mBody=world->CreateBody(&bodydef);
+    mBody->SetUserData(static_cast<GameObject*>(this));
+
+    //SHAPE
     b2CircleShape shape;
     shape.m_radius = radius; //radius
     shape.m_p.Set(0,0); //position, relative to body position
 
+    //FIXTURE
     b2FixtureDef fixturedef;
     fixturedef.shape=&shape;
     fixturedef.density=1.0;
-    body->CreateFixture(&fixturedef);
-
+    mBody->CreateFixture(&fixturedef);
 }
 
 CircleCoin::~CircleCoin(){
-    LOGD("delete CircleCoin nr: %d\n", instancesCount);
-    body->GetWorld()->DestroyBody(body);
+//    LOGD("delete CircleCoin nr: %d\n", instancesCount);
+    mBody->GetWorld()->DestroyBody(mBody);
 }
 
 void CircleCoin::render(glm::mat4 projection, glm::mat4 view){
@@ -106,7 +109,7 @@ void CircleCoin::render(glm::mat4 projection, glm::mat4 view){
 
     glDisable(GL_DEPTH_TEST);
     
-    drawCircleSquare(body->GetPosition(),((b2CircleShape*)body->GetFixtureList()->GetShape())->m_radius,body->GetAngle());
+    drawCircleSquare(mBody->GetPosition(),((b2CircleShape*)mBody->GetFixtureList()->GetShape())->m_radius,mBody->GetAngle());
     
     glEnable(GL_DEPTH_TEST);
 }

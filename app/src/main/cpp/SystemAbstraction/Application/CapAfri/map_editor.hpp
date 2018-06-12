@@ -121,6 +121,7 @@ public:
     {
         FANT_GROUND = 0,
         FANT_COIN,
+        FANT_MUSHROOM,
         FANT_META
     }FantMode;
 

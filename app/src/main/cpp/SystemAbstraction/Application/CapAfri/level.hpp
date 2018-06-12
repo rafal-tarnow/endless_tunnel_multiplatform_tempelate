@@ -8,6 +8,7 @@ using namespace std;
 #include "./Bodies/coin_circle_body.hpp"
 #include <lib_config.hpp>
 #include "./Bodies/coin_circle_body.hpp"
+#include "./Bodies/mushroom.hpp"
 #include "./Bodies/meta_body.hpp"
 
 
@@ -24,6 +25,7 @@ public:
 
     vector<glm::vec3> ground_verticles;
     vector<CircleCoinRender *> coins_vector;
+    vector<MushroomRenderer *> mushroom_vector;
     MetaRenderer * meta = nullptr;
 private:
     Config config;
