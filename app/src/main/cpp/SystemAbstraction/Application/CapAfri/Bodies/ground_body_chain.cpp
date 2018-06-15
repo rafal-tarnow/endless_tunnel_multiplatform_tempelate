@@ -8,7 +8,7 @@
 using namespace std;
 
 
-GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float height, float z, b2World * world){
+GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, float width, float height, float z, b2World * world){
 
     float box2d_xpos = x_top_left + width/2.0f;
     float box2d_ypos = y_top_left - height/2.0f;
@@ -23,15 +23,6 @@ GroundChain::GroundChain(float x_top_left, float y_top_left, float width, float 
 
     b2PolygonShape shape;
     shape.SetAsBox(width/2,height/2);
-
-
-    //LEVEL LOAD
-    mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
-    mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
-    if(mapFileOpenErrno)
-    {
-        mapFileOpenErrorString = strerror(mapFileOpenErrno);
-    }
 
 
     glm::vec4 line_color(0.0f, 1.0f, 0.0f, 1.0f);

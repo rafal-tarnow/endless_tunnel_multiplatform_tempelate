@@ -13,6 +13,7 @@ public:
     virtual void gui_onSaveMapButtonClicked() = 0;
     virtual void gui_onClearMapButtonClicked() = 0;
     virtual void gui_onCursorModeChanged(int mode) = 0;
+    virtual void gui_onCurrentMapChanged(unsigned int currentMap) = 0;
 };
 
 enum theme {THEME_BLACK, THEME_WHITE, THEME_RED, THEME_BLUE, THEME_DARK};

@@ -7,6 +7,7 @@
 #include "level.hpp"
 #include <library_opengles_2/RectangleRenderer/LineStrip_Renderer.hpp>
 #include <system_abstraction.hpp>
+#include <sstream>
 #include "demo.hpp"
 
 
@@ -142,8 +143,11 @@ public:
     void gui_onSaveMapButtonClicked();
     void gui_onClearMapButtonClicked();
     void gui_onCursorModeChanged(int mode);
+    void gui_onCurrentMapChanged(unsigned int currentMap);
 
 private:
+    void loadMap(string mapFilePath);
+
     void addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void addMetaInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
     void addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
@@ -171,7 +175,8 @@ private:
 
     //LEVEL FILE
     string mapFileOpenErrorString;
-    string mapFilePath;
+    stringstream mapFilePath;
+    unsigned int currentMapIndex = 0;
     int mapFileOpenErrno = 0;
     Level level;
 

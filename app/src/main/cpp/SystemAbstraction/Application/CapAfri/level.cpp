@@ -12,18 +12,13 @@ Level::Level()
 
 Level::~Level()
 {
-    for (auto &coin : coins_vector) // access by reference to avoid copying
-    {
-        delete coin;
-    }
-    coins_vector.clear();
-
-    if(meta != nullptr)
-        delete meta;
+   clear();
 }
 
 int Level::loadLevelFromFile(string levelFilePath)
 {
+    this->clear();
+
     Config config;
     config.loadDataFromFileToMemory(levelFilePath);
 
@@ -112,6 +107,9 @@ void Level::clear()
         delete mushroom;
     }
     mushroom_vector.clear();
+
+    if(meta != nullptr)
+        delete meta;
 }
 
 

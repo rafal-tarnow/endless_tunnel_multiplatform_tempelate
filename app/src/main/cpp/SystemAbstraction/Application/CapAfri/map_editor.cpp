@@ -46,7 +46,18 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     LS_init(&y_lineStrip,ylineVerticles,6, green_color);
 
     //LEVEL LOAD
-    mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
+    mapFilePath.str("");
+    mapFilePath.clear();
+    mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
+
+    loadMap(mapFilePath.str());
+
+    mapEditorGui_setEventListener(this);
+}
+
+
+void MapEditor::loadMap(string mapFilePath)
+{
     mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
     if(mapFileOpenErrno)
     {
@@ -54,12 +65,16 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     }
     glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
     LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
-
-    mapEditorGui_setEventListener(this);
 }
 
 MapEditor::~MapEditor()
 {
+    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    Config config;
+    config.loadDataFromFileToMemory(configFilePath);
+    config.set_uint32_t("currentMapIndex",currentMapIndex);
+    config.saveDataFromMemoryToFile(configFilePath);
+
     mapEditorGui_setEventListener(nullptr);
     delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
@@ -76,7 +91,7 @@ void MapEditor::systemCallback_Render()
     if(mapFileOpenErrno != 0)
     {
         textRenderer_v2->RenderText("ERROR WHILE OPEN FILE:",framebuffer_width*0.1,framebuffer_height*0.6);
-        textRenderer_v2->RenderText(mapFilePath,framebuffer_width*0.1,framebuffer_height*0.5);
+        textRenderer_v2->RenderText(mapFilePath.str(),framebuffer_width*0.1,framebuffer_height*0.5);
         textRenderer_v2->RenderText(mapFileOpenErrorString,framebuffer_width*0.1,framebuffer_height*0.4);
         return;
     }
@@ -424,15 +439,15 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
 
 }
 
-
-
 void MapEditor::gui_onSaveMapButtonClicked()
 {
     printf("MapEditor::gui_onSaveMapButtonClicked()\n");
 
     //LEVEL LOAD
-    mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
-    mapFileOpenErrno = level.saveLevelToFile(mapFilePath);
+    mapFilePath.str("");
+    mapFilePath.clear();
+    mapFilePath << getAppConfigFilePath() << "/CapitanAfrica_" << currentMapIndex <<  ".map";
+    mapFileOpenErrno = level.saveLevelToFile(mapFilePath.str());
     if(mapFileOpenErrno)
     {
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
@@ -450,6 +465,17 @@ void MapEditor::gui_onCursorModeChanged(int mode)
 {
     LOGD("MapEditor::gui_onCursorModeChanged(%d)", mode);
     fantMode = (FantMode)mode;
+}
+
+void MapEditor::gui_onCurrentMapChanged(unsigned int currentMap)
+{
+    currentMapIndex = currentMap;
+
+    mapFilePath.str("");
+    mapFilePath.clear();
+    mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
+
+    loadMap(mapFilePath.str());
 }
 
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)

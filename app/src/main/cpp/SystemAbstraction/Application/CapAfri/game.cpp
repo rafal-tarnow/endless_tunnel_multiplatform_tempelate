@@ -158,7 +158,7 @@ void Game::saveCoins()
 
 void Game::loadLevel()
 {
-    groundChain = new GroundChain(-200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
+
 
     float dampingRatio = config.get_float("dampingRatio");
     float frequencyHz = config.get_float("frequencyHz");
@@ -169,9 +169,14 @@ void Game::loadLevel()
 
     //LEVEL LOAD
     Level level;
-    string mapFilePath = getAppConfigFilePath() + "/CapitanAfrica.map";
+    uint32_t currentMapIntex = config.get_uint32_t("currentMapIndex");
+    stringstream mapFilePath;
+    mapFilePath << getAppConfigFilePath() << "/CapitanAfrica_" << currentMapIntex << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
-    int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath);
+    int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath.str());
+
+       groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
+
 
     //TODO dorobic delete circle coin
     for (auto & coin : level.coins_vector)
