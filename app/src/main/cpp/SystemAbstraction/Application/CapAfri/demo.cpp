@@ -12,19 +12,20 @@ using namespace std;
  *                          CUSTOM WIDGET
  *
  * ===============================================================*/
-struct media {
-    struct nk_font *font_14;
-    struct nk_font *font_18;
-    struct nk_font *font_20;
-    struct nk_font *font_22;
-    struct nk_font *font_30;
-    struct nk_image images[4];
-};
+
+struct nk_font *font_14;
+struct nk_font *font_18;
+struct nk_font *font_20;
+struct nk_font *font_22;
+struct nk_font *font_30;
+struct nk_image images[4];
+struct nk_image next_png;
+struct nk_image prev_png;
+
 
 
 struct backend_device backend_device;
 struct nk_font_atlas atlas;
-struct media media;
 struct nk_context ctx;
 
 static MapEditorGuiEventListener * toolboxEventListener = nullptr;
@@ -35,41 +36,78 @@ static MapEditorGuiEventListener * toolboxEventListener = nullptr;
  *                          BUTTON DEMO
  *
  * ===============================================================*/
-static void ui_header(struct nk_context *ctx, struct media *media, const char *title)
+static void ui_header(struct nk_context *ctx, const char *title)
 {
-    nk_style_set_font(ctx, &media->font_18->handle);
+    nk_style_set_font(ctx, &font_22->handle);
     nk_layout_row_dynamic(ctx, 20, 1);
-    nk_label(ctx, title, NK_TEXT_LEFT);
+    nk_label(ctx, title, NK_TEXT_CENTERED);
 }
 
-static void ui_widget(struct nk_context *ctx, struct media *media, float height)
+static void ui_widget(struct nk_context *ctx, float height)
 {
     static const float ratio[] = {0.15f, 0.85f};
-    nk_style_set_font(ctx, &media->font_22->handle);
+    nk_style_set_font(ctx, &font_22->handle);
     nk_layout_row(ctx, NK_DYNAMIC, height, 2, ratio);
     nk_spacing(ctx, 1);
 }
 
-static void ui_widget_centered(struct nk_context *ctx, struct media *media, float height)
+static void ui_widget_centered(struct nk_context *ctx, float height)
 {
     static const float ratio[] = {0.15f, 0.50f, 0.35f};
-    nk_style_set_font(ctx, &media->font_22->handle);
+    nk_style_set_font(ctx, &font_22->handle);
     nk_layout_row(ctx, NK_DYNAMIC, height, 3, ratio);
     nk_spacing(ctx, 1);
 }
 
-void toolbox_demo(struct nk_context *ctx, struct media *media)
+void select_map_window(struct nk_context * ctx)
+{
+    static size_t prog_value = 20;
+    nk_begin(ctx, "Select map", nk_rect(100,100,400,400),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    {
+        ui_header(ctx, "Select map to edit:");
+
+        nk_layout_row_template_begin(ctx, 80);
+        {
+            nk_layout_row_template_push_static(ctx, 80);
+            nk_layout_row_template_push_variable(ctx, 80);
+            nk_layout_row_template_push_static(ctx, 80);
+        }
+        nk_layout_row_template_end(ctx);
+
+        if(nk_button_image(ctx, prev_png))
+        {
+            if(prog_value > 0)
+                prog_value--;
+        }
+        nk_labelf(ctx, NK_TEXT_CENTERED, "Map to edit: %zu" , prog_value + 1);
+        if(nk_button_image(ctx, next_png))
+        {
+            if(prog_value < 39)
+                prog_value++;
+        }
+        nk_layout_row_dynamic(ctx, 80, 1);
+        nk_button_label(ctx, "Edit");
+
+     ui_header(ctx, "or create new map:");
+
+        nk_layout_row_dynamic(ctx, 80, 1);
+        nk_button_label(ctx, "New map");
+    }
+    nk_end(ctx);
+}
+
+void toolbox_demo(struct nk_context *ctx)
 {
     static const char *items[] = {"Ground","Coin","Mushroom","Meta"};
     static int selected_icon = 0;
     int i = 0;
 
-    nk_style_set_font(ctx, &media->font_30->handle);
+    nk_style_set_font(ctx, &font_30->handle);
 
-    nk_begin(ctx, "Toolbox", nk_rect(0,0,255,350),/*NK_WINDOW_BORDER| NK_WINDOW_SCALABLE| */NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    nk_begin(ctx, "Toolbox", nk_rect(0,0,255,350),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
         static const float ratio[] = {0.0f, 1.0f};
-        nk_style_set_font(ctx, &media->font_30->handle);
+        nk_style_set_font(ctx, &font_30->handle);
 
         nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
         nk_spacing(ctx, 1);
@@ -93,13 +131,13 @@ void toolbox_demo(struct nk_context *ctx, struct media *media)
             }
         }
 
-        ui_header(ctx, media, "Cursor Mode");
+        ui_header(ctx, "Cursor Mode");
 
-        ui_widget(ctx, media, 40);
-        if (nk_combo_begin_image_label(ctx, items[selected_icon], media->images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
+        ui_widget(ctx, 40);
+        if (nk_combo_begin_image_label(ctx, items[selected_icon], images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
             nk_layout_row_dynamic(ctx, 35, 1);
             for (i = 0; i < 4; ++i)
-                if (nk_combo_item_image_label(ctx, media->images[i], items[i], NK_TEXT_RIGHT)) {
+                if (nk_combo_item_image_label(ctx, images[i], items[i], NK_TEXT_RIGHT)) {
                     selected_icon = i;
                     if(toolboxEventListener != nullptr){
                         toolboxEventListener->gui_onCursorModeChanged(selected_icon);
@@ -135,27 +173,29 @@ void demo_init(int width, int height)
             nk_font_atlas_begin(&atlas);
 
 #           include "./data_headers/extra_font/Roboto-Regular.ttf.hpp"
-            media.font_14 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 14.0f, &cfg);
-            media.font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f, &cfg);
-            media.font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f, &cfg);
-            media.font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f, &cfg);
-            media.font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f, &cfg);
+            font_14 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 14.0f, &cfg);
+            font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f, &cfg);
+            font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f, &cfg);
+            font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f, &cfg);
+            font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f, &cfg);
 
             image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
             backend_upload_atlas(&backend_device, image, w, h);
             nk_font_atlas_end(&atlas, nk_handle_id((int)backend_device.font_tex), &backend_device.null);
         }
-        nk_init_default(&ctx, &media.font_14->handle);
+        nk_init_default(&ctx, &font_14->handle);
     }
 
     /* icons */
     glEnable(GL_TEXTURE_2D);
 
 
-    media.images[0] = icon_load_from_TextureManager("textures/red_dot.png");
-    media.images[1] = icon_load_from_TextureManager("textures/coin_2.png");
-    media.images[2] = icon_load_from_TextureManager("textures/Tango_Style_Mushroom_icon.svg.png");
-    media.images[3] = icon_load_from_TextureManager("textures/meta.jpg");
+    images[0] = icon_load_from_TextureManager("textures/red_dot.png");
+    images[1] = icon_load_from_TextureManager("textures/coin_2.png");
+    images[2] = icon_load_from_TextureManager("textures/Tango_Style_Mushroom_icon.svg.png");
+    images[3] = icon_load_from_TextureManager("textures/meta.jpg");
+    prev_png = icon_load_from_TextureManager("textures/prev.png");
+    next_png = icon_load_from_TextureManager("textures/next.png");
 }
 
 
@@ -197,7 +237,7 @@ void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, Syst
 
 void demo_onMouseMoveCallcack(int x, int y)
 {
-       nk_input_motion(&ctx, x, y);
+    nk_input_motion(&ctx, x, y);
 }
 
 void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords)
@@ -250,7 +290,9 @@ void mapEditorGui_render(int fb_width, int fb_height)
 {
     nk_input_end(&ctx);
 
-    toolbox_demo(&ctx, &media);
+    toolbox_demo(&ctx);
+
+    select_map_window(&ctx);
 
     backend_device_draw(&backend_device, &ctx, fb_width, fb_height, NK_ANTI_ALIASING_ON);
 
