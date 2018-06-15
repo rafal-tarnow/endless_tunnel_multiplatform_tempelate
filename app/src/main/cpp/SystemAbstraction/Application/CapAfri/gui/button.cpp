@@ -8,7 +8,7 @@ Button::Button()
 { 
     mDimm = glm::vec2(246,133);
 
-    DE_initRectangle(&rectangle,normalTexture,mPosition,mDimm);
+    DE_initRectangle(&rectangle,normalTexture,mDimm);
 }
 
 Button::~Button()

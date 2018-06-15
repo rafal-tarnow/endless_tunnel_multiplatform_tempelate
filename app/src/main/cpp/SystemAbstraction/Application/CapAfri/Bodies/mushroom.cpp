@@ -8,17 +8,17 @@ DE_Rectangle MushroomRenderer::rectangle;
 
 //*********     MUSHROOM_RENDERER ***************
 
-MushroomRenderer::MushroomRenderer(glm::vec3 position, glm::vec2 dimm)
+MushroomRenderer::MushroomRenderer(glm::vec3 position)
 {
     mPos = position;
-    mDimm = dimm;
+    mDimm = glm::vec2(1.0, 1.0);
 
     instanceCount++;
 
     if(instanceCount == 1)
     {
         mushroomTextureId = TextureManager::getTextureId("textures/Tango_Style_Mushroom_icon.svg.png");
-        DE_initRectangle(&rectangle, mushroomTextureId, mPos, mDimm);
+        DE_initRectangle(&rectangle, mushroomTextureId, mDimm);
     }
 }
 
@@ -32,11 +32,16 @@ MushroomRenderer::~MushroomRenderer()
     }
 }
 
+glm::vec3 & MushroomRenderer::getPosition()
+{
+    return mPos;
+}
+
 void MushroomRenderer::render(glm::mat4 projection, glm::mat4 view)
 {
     rectangle.projection = projection;
     rectangle.view = view;
-    rectangle.model = glm::translate(glm::mat4(1.0f),mPos);
+    rectangle.model = glm::translate(glm::mat4(1), mPos);
 
     DE_drawRectangle(&rectangle);
 }
@@ -44,7 +49,7 @@ void MushroomRenderer::render(glm::mat4 projection, glm::mat4 view)
 
 //************* MUSHROOM COIN ***********************
 
-Mushroom::Mushroom(glm::vec3 position, glm::vec2 dimm, b2World* world) : MushroomRenderer(position, dimm){
+Mushroom::Mushroom(glm::vec3 position, b2World* world) : MushroomRenderer(position){
     GameObject::setObjectType(OBJECT_MUSHROOM);
 
     //BODY
@@ -56,7 +61,7 @@ Mushroom::Mushroom(glm::vec3 position, glm::vec2 dimm, b2World* world) : Mushroo
 
     //SHPE
     b2PolygonShape shape;
-    shape.SetAsBox(dimm.x, dimm.y, b2Vec2(position.x, position.y), 0.0f);
+    shape.SetAsBox(mDimm.x/2.0, mDimm.y/2.0, b2Vec2(0, 0), 0.0f);
 
     //FIXTURE
     b2FixtureDef fixturedef;

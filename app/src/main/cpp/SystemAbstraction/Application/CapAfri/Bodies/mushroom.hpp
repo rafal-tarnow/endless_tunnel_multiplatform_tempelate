@@ -8,8 +8,9 @@
 
 class MushroomRenderer : public RenderableGameObject{
 public:
-    MushroomRenderer(glm::vec3 position, glm::vec2 dimm);
+    MushroomRenderer(glm::vec3 position);
     ~MushroomRenderer();
+    glm::vec3 & getPosition();
     void render(glm::mat4 projection, glm::mat4 view);
 
 protected:
@@ -23,9 +24,9 @@ private:
 };
 
 
-class Mushroom: MushroomRenderer{
+class Mushroom: public MushroomRenderer{
 public:
-    Mushroom(glm::vec3 position, glm::vec2 dimm, b2World* world);
+    Mushroom(glm::vec3 position, b2World* world);
     ~Mushroom();
     void render(glm::mat4 projection, glm::mat4 view);
 private:

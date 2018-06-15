@@ -108,6 +108,15 @@ void MapEditor::systemCallback_Render()
             coin->render(camera.getProjectionMatrix(),camera.getViewMatrix());
         }
 
+
+        if(level.mushroom_vector.size() > 0)
+        {
+            for( auto & mushroom : level.mushroom_vector)
+            {
+                mushroom->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+            }
+        }
+
         if(level.meta != nullptr)
         {
             level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
@@ -241,7 +250,7 @@ void MapEditor::addMetaInFramebufferCoordinates(int framebuffer_x, int framebuff
 
     if(level.meta == nullptr)
     {
-         level.meta = new MetaRenderer(world_position.x, world_position.y, -2.0f, 1.5);
+        level.meta = new MetaRenderer(world_position.x, world_position.y, -2.0f, 1.5);
     }
     else
     {
@@ -255,6 +264,16 @@ void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuff
     fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
 
     level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, -2.0f, 0.25));
+}
+
+void MapEditor::addMushroomInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+{
+    glm::vec3 world_position;
+    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
+
+    glm::vec2 dimm(2.0, 2.0);
+
+    level.mushroom_vector.push_back(new MushroomRenderer(world_position));
 }
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
@@ -283,7 +302,13 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
             }else if(fantMode == FANT_COIN)
             {
                 addCoinInFramebufferCoordinates(window_x, window_y);
-            }else if(fantMode == FANT_META){
+            }
+            else if(fantMode == FANT_MUSHROOM)
+            {
+                addMushroomInFramebufferCoordinates(window_x, window_y);
+            }
+            else if(fantMode == FANT_META)
+            {
                 addMetaInFramebufferCoordinates(window_x, window_y);
             }
         }
@@ -304,10 +329,16 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
     {
         if(fantMode == FANT_GROUND) {
             addGroundPointInFramebufferCoordinates(coords->x, coords->y);
-        }else if(fantMode == FANT_COIN)
+        }
+        else if(fantMode == FANT_COIN)
         {
             addCoinInFramebufferCoordinates(coords->x, coords->y);
-        }else if(fantMode == FANT_META)
+        }
+        else if(fantMode == FANT_MUSHROOM)
+        {
+            addMushroomInFramebufferCoordinates(coords->x, coords->y);
+        }
+        else if(fantMode == FANT_META)
         {
             addMetaInFramebufferCoordinates(coords->x, coords->y);
         }
@@ -465,6 +496,7 @@ void MapEditor::fbCoordToWorldCoord(double window_x_pos, double window_y_pos, gl
     glm::vec4 viewport(0,0,framebuffer_width, framebuffer_height);
 
     position_in_world = glm::unProject(window_position,camera.getViewMatrix(), camera.getProjectionMatrix(),viewport);
+    position_in_world.z = 0.0f;
 }
 
 

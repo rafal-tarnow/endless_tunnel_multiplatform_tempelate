@@ -12,11 +12,6 @@ using namespace std;
 
 TuningVehicleScene::TuningVehicleScene()
 {
-    vehicleTuningGui_setEventListener(this);
-
-
-    set_style(demo_getContext(),THEME_BLACK);
-
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -110,8 +105,6 @@ void TuningVehicleScene::initRadioButtons()
 
 TuningVehicleScene::~TuningVehicleScene()
 {
-    vehicleTuningGui_setEventListener(nullptr);
-
     DE_deleteRectangle(&safe_area);
     DE_deleteRectangle(&backgroundRect);
 
@@ -141,11 +134,6 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
 }
 
 void TuningVehicleScene::OnKillGraphics()
-{
-
-}
-
-void TuningVehicleScene::gui_onPlayButtonClicked()
 {
 
 }
@@ -306,11 +294,6 @@ void TuningVehicleScene::OnPointerDown(int pointerId, const struct PointerCoords
     buttonPlus.onPointerDown(coords->x, coords->y);
     buttonMinus.onPointerDown(coords->x, coords->y);
     buttonPlay.onPointerDown(coords->x, coords->y);
-
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
-    if(vehicleTuningGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
 }
 
 void TuningVehicleScene::OnPointerUp(int pointerId, const struct PointerCoords *coords)
@@ -323,19 +306,11 @@ void TuningVehicleScene::OnPointerUp(int pointerId, const struct PointerCoords *
     buttonPlus.onPointerUp();
     buttonMinus.onPointerUp();
     buttonPlay.onPointerUp();
-
-
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                               SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
-    if(vehicleTuningGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
 }
 
 void TuningVehicleScene::OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
-    demo_onPointerMoveCallback(pointerId, coords);
-    if(vehicleTuningGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
+
 }
 
 bool TuningVehicleScene::OnBackKeyPressed()

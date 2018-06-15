@@ -59,6 +59,10 @@ private:
     float box_view_height_in_meters = 0;
     float box_zero_offset_meters = 0.0f;
 
+    float mushroomEffectStartTime = 0.0f;
+    float current_time = 0.0;
+
+
     b2World* world;
     GroundChain * groundChain = nullptr;
     BackGround * background = nullptr;
@@ -81,6 +85,7 @@ private:
 
     AudioManager::AudioHandle m_musicHandle;
     AudioManager::AudioHandle m_coinHandle;
+    AudioManager::AudioHandle m_mushroomHandle;
 
     Config config;
 

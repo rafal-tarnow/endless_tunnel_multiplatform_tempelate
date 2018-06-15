@@ -196,7 +196,7 @@ int main(int , char** )
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, __FILE__, NULL, NULL);
-    glfwSetWindowPos(win, 1920/2 - WINDOW_WIDTH/2, 1080/2 - WINDOW_HEIGHT/2);
+    glfwSetWindowPos(win, 1920*(0.5) - WINDOW_WIDTH/2, 1080*(0.96) - WINDOW_HEIGHT/2);
     glfwMakeContextCurrent(win);
 
     //GLFW CALLBACK

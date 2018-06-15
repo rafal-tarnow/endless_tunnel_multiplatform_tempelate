@@ -30,6 +30,18 @@ void Game::BeginContact(b2Contact* contact)
         //object_1->printObjectType();
 
 
+        //CHECK IS CAR COLLIDE WITH COIN
+        if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_COIN))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
+            {
+                pAudioManager->PlaySFX(m_coinHandle);
+            }
+            coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
+            money++;
+            return;
+        }
         //CHECK IS COIN COLLIDE WITH CAR
         if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
         {
@@ -40,18 +52,37 @@ void Game::BeginContact(b2Contact* contact)
             }
             coinsToDelete.insert(static_cast<CircleCoin *>(object));
             money++;
+            return;
         }
-        //CHECK IS COIN COLLIDE WITH CAR
-        if ((object_1->getObjectType() == GameObject::OBJECT_COIN) && (object->getObjectType() == GameObject::OBJECT_CAR))
+
+        //CHECK IS CAR COLLIDE WITH MUSHROOM
+        if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_MUSHROOM))
         {
             AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
-                pAudioManager->PlaySFX(m_coinHandle);
+                pAudioManager->PlaySFX(m_mushroomHandle);
             }
-            coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
-            money++;
+            mushroomsToDelete.insert(static_cast<Mushroom *>(object_1));
+            mEffects->Spin = GL_TRUE;
+            mushroomEffectStartTime = current_time;
+            return;
         }
+
+        //CHECK IS MUSHROOM COLLIDE WITH CAR
+        if ((object->getObjectType() == GameObject::OBJECT_MUSHROOM) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
+            {
+                pAudioManager->PlaySFX(m_mushroomHandle);
+            }
+            mushroomsToDelete.insert(static_cast<Mushroom *>(object));
+            mEffects->Spin = GL_TRUE;
+            mushroomEffectStartTime = current_time;
+            return;
+        }
+
     }
 
     //LOGD("<-- Game::BeginContact(...)");
@@ -153,9 +184,7 @@ void Game::loadLevel()
 
     for(auto & mushroom : level.mushroom_vector)
     {
-        glm::vec3 position(5,5,0);
-        glm::vec2 dimm(2,2);
-        mushroomList.push_back(new Mushroom(position, dimm, world));
+        mushroomList.push_back(new Mushroom(mushroom->getPosition(), world));
     }
 }
 
@@ -167,6 +196,9 @@ void Game::loadAudio()
 
     std::string coinEffectName("sounds/coin.wav");
     m_coinHandle = audioManager.CreateSFX(coinEffectName, false);
+
+    std::string mushroomEffectName("sounds/mushroom.wav");
+    m_mushroomHandle = audioManager.CreateSFX(mushroomEffectName, false);
 }
 
 Game::~Game()
@@ -281,6 +313,14 @@ void Game::updateGameLogics()
         }
         mushroomsToDelete.clear();
     }
+
+    if(mEffects->Spin == GL_TRUE)
+    {
+        if((current_time - mushroomEffectStartTime) > 12.0)
+        {
+            mEffects->Spin = GL_FALSE;
+        }
+    }
 }
 
 void Game::systemCallback_TimerTick()
@@ -291,15 +331,13 @@ void Game::systemCallback_TimerTick()
 void Game::systemCallback_Render()
 {
 
-    static double time = 0.0;
-
     //LOGD("--> Game::systemCallback_Render()\n");
     updateGameLogics();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mEffects->Spin = GL_TRUE;
-    mEffects->BeginRender();
+    if(mEffects->Spin == GL_TRUE)
+        mEffects->BeginRender();
     {
         if(car != nullptr)
         {
@@ -311,16 +349,18 @@ void Game::systemCallback_Render()
         renderWorldBodies();
         renderHUD();
     }
-    mEffects->EndRender();
-
-    mEffects->Render (time);
+    if(mEffects->Spin == GL_TRUE)
+    {
+        mEffects->EndRender();
+        mEffects->Render (current_time);
+    }
 
 
 
     glFlush();
     //LOGD("<-- Game::systemCallback_Render()\n");
 
-    time += 0.030;
+    current_time += 0.030;
 }
 
 void Game::renderWorldBodies()

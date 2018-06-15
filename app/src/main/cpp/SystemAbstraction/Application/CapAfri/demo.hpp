@@ -6,33 +6,6 @@
 #define UNUSED(a) (void)a
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
-struct media {
-    struct nk_font *font_14;
-    struct nk_font *font_18;
-    struct nk_font *font_20;
-    struct nk_font *font_22;
-    struct nk_font *font_30;
-
-    struct nk_image unchecked;
-    struct nk_image checked;
-    struct nk_image rocket;
-    struct nk_image cloud;
-    struct nk_image pen;
-    struct nk_image play;
-    struct nk_image pause;
-    struct nk_image stop;
-    struct nk_image prev;
-    struct nk_image next;
-    struct nk_image tools;
-    struct nk_image dir;
-    struct nk_image copy;
-    struct nk_image convert;
-    struct nk_image del;
-    struct nk_image edit;
-    struct nk_image images[9];
-    struct nk_image menu[6];
-};
-
 
 class MapEditorGuiEventListener{
 public:
@@ -42,15 +15,8 @@ public:
     virtual void gui_onCursorModeChanged(int mode) = 0;
 };
 
-class VehicleTuningGuiEventListener{
-public:
-    virtual void gui_onPlayButtonClicked() = 0;
-};
-
-
 enum theme {THEME_BLACK, THEME_WHITE, THEME_RED, THEME_BLUE, THEME_DARK};
 void set_style(struct nk_context *ctx, enum theme theme);
-
 
 void demo_init(int width, int height);
 struct nk_context * demo_getContext();
@@ -65,9 +31,5 @@ void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction:
 int mapEditorGui_isAnyWindowHovered();
 void mapEditorGui_setEventListener(MapEditorGuiEventListener *eventListener);
 void mapEditorGui_render(int fb_width, int fb_height);
-
-int vehicleTuningGui_isAnyWindowHovered();
-void vehicleTuningGui_setEventListener(VehicleTuningGuiEventListener *eventListener);
-void vehicleTuningGui_render(int fb_width, int fb_height);
 
 void demo_uninit();

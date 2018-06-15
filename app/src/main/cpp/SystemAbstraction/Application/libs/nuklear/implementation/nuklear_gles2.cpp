@@ -51,7 +51,7 @@ struct nk_image icon_load_from_memory(unsigned char *fileData, int fileSize)
 }
 
 
-void device_init(struct device *dev)
+void backend_init(struct backend_device *dev)
 {
     GLint status;
     static const GLchar *vertex_shader =
@@ -140,7 +140,7 @@ void device_init(struct device *dev)
     dev->elements = malloc((size_t)MAX_ELEMENT_MEMORY);
 }
 
-void device_upload_atlas(struct device *dev, const void *image, int width, int height)
+void backend_upload_atlas(struct backend_device *dev, const void *image, int width, int height)
 {
     glGenTextures(1, &dev->font_tex);
     glBindTexture(GL_TEXTURE_2D, dev->font_tex);
@@ -150,7 +150,7 @@ void device_upload_atlas(struct device *dev, const void *image, int width, int h
                  GL_RGBA, GL_UNSIGNED_BYTE, image);
 }
 
-void device_draw(struct device *dev, struct nk_context *ctx, int width, int height, enum nk_anti_aliasing AA)
+void backend_device_draw(struct backend_device *dev, struct nk_context *ctx, int width, int height, enum nk_anti_aliasing AA)
 {
     GLfloat ortho[4][4] = {
         {2.0f, 0.0f, 0.0f, 0.0f},
@@ -248,7 +248,7 @@ void device_draw(struct device *dev, struct nk_context *ctx, int width, int heig
     glDisable(GL_SCISSOR_TEST);
 }
 
-void device_shutdown(struct device *dev)
+void backdend_shutdown(struct backend_device *dev)
 {
     glDetachShader(dev->prog, dev->vert_shdr);
     glDetachShader(dev->prog, dev->frag_shdr);

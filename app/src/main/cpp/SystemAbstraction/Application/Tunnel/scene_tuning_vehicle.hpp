@@ -1,14 +1,13 @@
 #pragma once
 
 #include "scene.hpp"
-#include "../CapAfri/demo.hpp"
 #include "../CapAfri/gui/radio_button.hpp"
 #include "../CapAfri/gui/radio_button_manager.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <lib_config.hpp>
 #include <system_paths.hpp>
 
-class TuningVehicleScene : public Scene, VehicleTuningGuiEventListener, RadioButtonManagerEventLister, ButtonEventListener{
+class TuningVehicleScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener{
 public:
     TuningVehicleScene();
     ~TuningVehicleScene();
@@ -28,8 +27,6 @@ public:
 
     void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton);
     void Button_onClicked(Button * button);
-
-    void gui_onPlayButtonClicked();
 
 private:
     void buttonPlusClicked();

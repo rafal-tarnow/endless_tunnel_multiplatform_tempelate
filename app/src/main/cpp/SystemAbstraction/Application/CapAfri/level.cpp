@@ -7,6 +7,7 @@
 
 Level::Level()
 {
+
 }
 
 Level::~Level()
@@ -53,7 +54,7 @@ int Level::loadLevelFromFile(string levelFilePath)
         stream << "mushroom_vector.at(" << i << ")";
         glm::vec3 mushroom_position = config.get_glm_vec3(stream.str());
         glm::vec2 dimm(2.0, 2.0);
-        mushroom_vector.push_back(new MushroomRenderer(mushroom_position, dimm));
+        mushroom_vector.push_back(new MushroomRenderer(mushroom_position));
     }
 
     return 0;
@@ -81,6 +82,15 @@ int Level::saveLevelToFile(string levelFilePath)
         config.set_glm_vec3(stream.str(), coins_vector.at(i)->getPosition());
     }
 
+    config.set_int32_t("mushroom_vector.size()", (int32_t)mushroom_vector.size());
+    for(unsigned int i = 0; i < mushroom_vector.size(); i++)
+    {
+        stringstream stream;
+        stream << "mushroom_vector.at(" << i << ")";
+
+        config.set_glm_vec3(stream.str(), mushroom_vector.at(i)->getPosition());
+    }
+
 
     config.saveDataFromMemoryToFile(levelFilePath);
 
@@ -96,6 +106,12 @@ void Level::clear()
         delete coin;
     }
     coins_vector.clear();
+
+    for(auto & mushroom : mushroom_vector)
+    {
+        delete mushroom;
+    }
+    mushroom_vector.clear();
 }
 
 

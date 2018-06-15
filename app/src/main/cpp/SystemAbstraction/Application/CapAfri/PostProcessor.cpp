@@ -7,7 +7,7 @@ const GLchar* vShaderCode =
         "#version 100                                           \n"
         "//#version 330 core        \n"
         "                           \n"
-           "        precision mediump float;                                               \n"
+        "        precision mediump float;                                               \n"
         "attribute vec4 vertex; // <vec2 position, vec2 texCoords>      \n"
         "                           \n"
         "varying vec2 TexCoords;    \n"
@@ -70,6 +70,7 @@ const GLchar * fShaderCode =
         "uniform bool spin;                                                             \n"
         "uniform bool shake;                                                            \n"
         "uniform float time;                                                            \n"
+        "uniform float spin_inversion_param;"
         "                                                                               \n"
         "void main()                                                                    \n"
         "{                                                                              \n"
@@ -112,10 +113,19 @@ const GLchar * fShaderCode =
         "       angle+= radius*2.0*cos(time/2.0);//*twirl_amount;                                                    \n"
         "                                                                                       \n"
         "       //powr�t do wsp��rz�dnych kartezja�skich                                        \n"
-        "       vec2 shifted = radius* vec2(cos(angle), sin(angle));                            \n"
+        "       vec2 shifted = radius* vec2(cos(angle), sin(angle)) + 0.5;                      \n"
         "                                                                                       \n"
         "       //przesuni�cie pocz�tku wsp��rz�dnych tekstury do po�o�enia pierwotnego         \n"
-        "       color = vec4(1.0 - texture2D(textureMap, (shifted+0.5)).rgb, 1.0);                            \n"
+        "       if((shifted.x <= 1.0) && (shifted.x >= 0.0) && (shifted.y <= 1.0) && (shifted.y >= 0.0))    \n"
+        "       {                                                                                                                                   \n"
+        "                                                                                                                                           \n"
+        "           //color = vec4((texture2D(textureMap, TexCoords).rgb)*(1.0 - 2.0*spin_inversion_param) + spin_inversion_param, 1.0);              \n"
+        "           color = vec4(1.0 - texture2D(textureMap, shifted).rgb, 1.0);                            \n"
+        "       }                                                                                           \n"
+        "       else                                                                                        \n"
+        "       {                                                                                           \n"
+        "           color = vec4(0.0, 0.0, 0.0, 1.0);                                                       \n"
+        "       }                                                                                           \n"
         "    }                                                                          \n"
         "    else                                                                       \n"
         "    {                                                                          \n"
@@ -190,6 +200,8 @@ PostProcessor::PostProcessor(GLuint width, GLuint height)
         1.0 / 16, 2.0 / 16, 1.0 / 16
     };
     glUniform1fv(glGetUniformLocation(this->PostProcessingShader.ID, "blur_kernel"), 9, blur_kernel);
+
+     this->PostProcessingShader.SetFloat("spin_inversion_param", 0.0);
 }
 
 void PostProcessor::BeginRender()
