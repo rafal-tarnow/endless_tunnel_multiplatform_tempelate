@@ -73,8 +73,8 @@ void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int 
 
 void SystemAbstraction::onRenderFirstFrame()
 {
-    mgr->RequestNewScene(new WelcomeScene());
-//    mgr->RequestNewScene(new TuningVehicleScene());
+//    mgr->RequestNewScene(new WelcomeScene());
+    mgr->RequestNewScene(new TuningVehicleScene());
 }
 
 void SystemAbstraction::onRenderFrame()
