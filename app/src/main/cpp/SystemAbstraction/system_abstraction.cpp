@@ -16,28 +16,9 @@ static SceneManager *mgr = SceneManager::GetInstance();
 
 #include "./Application/libs/library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp"
 #include "./Application/Tunnel/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 #include <bitset>
 
-void drawGlyphToConsole(FT_Face &face){
-    for(unsigned int i = 0; i < face->glyph->bitmap.rows; i++){
-        for(unsigned int j = 0; j < face->glyph->bitmap.width; j++){
-
-            int alpha_value =   (int)(face->glyph->bitmap.buffer[i*face->glyph->bitmap.width + j]) / 26;
-
-            if(alpha_value > 0){
-                LOGD("%d", alpha_value);
-            }else{
-                LOGD(" ");
-            }
-
-
-        }
-        LOGD("\n");
-    }
-}
 
 int SystemAbstraction::framebuffer_width = 0;
 int SystemAbstraction::framebuffer_height = 0;
