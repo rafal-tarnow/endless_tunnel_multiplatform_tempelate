@@ -123,9 +123,9 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
 {
     mViewport = glm::vec4(0,0,width,height);
 
-    GLuint fontSize = GLuint(float(height)*0.076f*2.5f);
-    //Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
-    Resource font_design_graffiti_agentorange("fonts/arial.ttf");
+    GLuint fontSize = GLuint(float(height)*0.076f);
+    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
     textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
@@ -181,18 +181,18 @@ void TuningVehicleScene::DoFrame()
     safe_area.projection = mProjection;
     safe_area.view = mView;
     safe_area.model = M_GUI;
-    //    DE_drawRectangle(&safe_area);
+    DE_drawRectangle(&safe_area);
 
 
 
-    //    button_shockAbsorber.Render();
-    //    button_spring.Render();
-    //    button_tires.Render();
-    //    button_motorTorque.Render();
+        button_shockAbsorber.Render();
+        button_spring.Render();
+        button_tires.Render();
+        button_motorTorque.Render();
 
-    //    buttonPlus.Render();
-    //    buttonMinus.Render();
-    //    buttonPlay.Render();
+        buttonPlus.Render();
+        buttonMinus.Render();
+        buttonPlay.Render();
 
 
 
@@ -200,8 +200,7 @@ void TuningVehicleScene::DoFrame()
 
     if(currentRadioButton == &button_shockAbsorber)
     {
-        //stream << "Test " << dampingRatio;
-        stream << "TjigK = 0.1" << dampingRatio;
+        stream << "Damping " << dampingRatio;
     }
     else if(currentRadioButton == &button_spring)
     {
