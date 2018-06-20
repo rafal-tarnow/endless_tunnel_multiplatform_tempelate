@@ -115,7 +115,6 @@ TuningVehicleScene::~TuningVehicleScene()
     config.saveDataFromMemoryToFile(configFilePath);
 
     delete textRenderer_v2;
-    delete textRenderer_v2_second;
 }
 
 
@@ -129,9 +128,6 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
 
     textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
-
-    textRenderer_v2_second = new TextRenderer_v2(width,height, glm::vec4(0,1,0,1));
-    textRenderer_v2_second->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize*(2.0f/3.0f));
 }
 
 void TuningVehicleScene::OnKillGraphics()
@@ -143,8 +139,6 @@ void TuningVehicleScene::DoFrame()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    //  vehicleTuningGui_render(framebuffer_width, framebuffet_height);
 
 
     auto framebuffer_aspect = float(mViewport.z)/float(mViewport.w);
@@ -324,7 +318,6 @@ void TuningVehicleScene::OnFramebufferResized(int width, int height)
     mViewport = glm::vec4(0,0,width,height);
 
     textRenderer_v2->onVievportResize(mViewport.z, mViewport.w);
-    textRenderer_v2_second->onVievportResize(mViewport.z, mViewport.w);
 }
 
 void TuningVehicleScene::OnJoy(float joyX, float joyY)

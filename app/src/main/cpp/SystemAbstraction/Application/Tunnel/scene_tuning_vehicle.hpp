@@ -56,7 +56,6 @@ private:
     glm::mat4 mView;
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
-    TextRenderer_v2 * textRenderer_v2_second = nullptr;
 
     string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
 
