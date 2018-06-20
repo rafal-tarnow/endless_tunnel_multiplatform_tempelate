@@ -18,20 +18,11 @@ public:
         cameraViewMatrix = glm::lookAt(glm::vec3(0,0, 10.0f),glm::vec3(0, 0, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
-    void onScroll(double yoffset)
+    void zoomOut()
     {
-        if(yoffset > 0)
-        {
-            zoom = zoom / 1.2;
-            if(zoom < 0.01)
-                zoom = 0.01;
-        }
-        else
-        {
-            zoom = zoom * 1.2;
-            if(zoom > 50.0)
-                zoom = 50.0;
-        }
+        zoom = zoom * 1.2;
+        if(zoom > 50.0)
+            zoom = 50.0;
 
         float aspect = ((float)framebuffer_width)/((float)framebuffer_height);
 
@@ -40,7 +31,26 @@ public:
 
 
         cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+    }
 
+    void zoomIn()
+    {
+        zoom = zoom / 1.2;
+        if(zoom < 0.01)
+            zoom = 0.01;
+
+        float aspect = ((float)framebuffer_width)/((float)framebuffer_height);
+
+        box_view_width_in_meters = 30.0f*zoom;
+        box_view_height_in_meters = box_view_width_in_meters/aspect;
+
+
+        cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+    }
+
+    GLfloat getZoom()
+    {
+        return zoom;
     }
 
     void onFrameBufferResize(int width, int height)
@@ -130,7 +140,7 @@ public:
     ~MapEditor();
 
     void systemCallback_WindowResize(int win_width, int win_height);
-    void systemCallback_Scroll(double yoffset);
+    void systemCallback_MouseScroll(double yoffset);
     void systemCallback_Render();
     void systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
     void systemCallback_mouseMove(int x, int y);
@@ -144,6 +154,8 @@ public:
     void gui_onClearMapButtonClicked();
     void gui_onCursorModeChanged(int mode);
     void gui_onCurrentMapChanged(unsigned int currentMap);
+    void gui_onZoomOut();
+    void gui_onZoomIn();
 
 private:
     void loadMap(string mapFilePath);

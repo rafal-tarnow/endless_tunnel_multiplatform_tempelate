@@ -162,7 +162,7 @@ void keyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 void scrollCallback(GLFWwindow*,double xoffset,double yoff)
 {
     yoff = yoff*scale_y;
-    SystemAbstraction::onScroll(yoff);
+    SystemAbstraction::onMouseScroll(yoff);
 }
 
 void framebufferSizeCallback(GLFWwindow * , int width, int height)

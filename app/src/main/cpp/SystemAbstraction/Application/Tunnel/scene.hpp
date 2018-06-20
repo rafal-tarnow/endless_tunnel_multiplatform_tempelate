@@ -53,7 +53,7 @@ class Scene {
 
         virtual void OnMouseMove(int x, int y);
 
-        virtual void OnScroll(double yoffset);
+        virtual void OnMouseScroll(double yoffset);
 
         // Called when a pointer moves (e.g. touch, touchpad, etc)
         virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);

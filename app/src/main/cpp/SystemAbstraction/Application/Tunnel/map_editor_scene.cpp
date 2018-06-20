@@ -128,9 +128,9 @@ void MapEditorScene::OnMouseMove(int x, int y)
     mapEditor->systemCallback_mouseMove(x, y);
 }
 
-void MapEditorScene::OnScroll(double yoffset)
+void MapEditorScene::OnMouseScroll(double yoffset)
 {
-    mapEditor->systemCallback_Scroll(yoffset);
+    mapEditor->systemCallback_MouseScroll(yoffset);
 }
 
 void MapEditorScene::OnPointerMove(int pointerId, const struct PointerCoords *coords) {

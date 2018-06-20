@@ -27,7 +27,7 @@ void Scene::OnPointerDown(int pointerId, const struct PointerCoords* coords) {}
 void Scene::OnPointerUp(int pointerId, const struct PointerCoords* coords) {}
 void Scene::OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y) {}
 void Scene::OnMouseMove(int x, int y){}
-void Scene::OnScroll(double yoffset) {}
+void Scene::OnMouseScroll(double yoffset) {}
 void Scene::OnPointerMove(int pointerId, const struct PointerCoords* coords) {}
 bool Scene::OnBackKeyPressed() { return false; }
 void Scene::OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y){}

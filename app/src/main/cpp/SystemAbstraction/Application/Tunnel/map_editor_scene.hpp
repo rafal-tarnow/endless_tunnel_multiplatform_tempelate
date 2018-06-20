@@ -22,7 +22,7 @@ public:
     virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
     virtual void OnMouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
     virtual void OnMouseMove(int x, int y);
-    virtual void OnScroll(double yoffset);
+    virtual void OnMouseScroll(double yoffset);
     virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
     virtual bool OnBackKeyPressed();
     virtual void OnFramebufferResized(int width, int height);

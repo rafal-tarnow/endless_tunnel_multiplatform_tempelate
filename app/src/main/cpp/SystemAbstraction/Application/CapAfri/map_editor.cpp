@@ -207,42 +207,21 @@ void MapEditor::systemCallback_WindowResize(int win_width, int win_height)
     camera.onFrameBufferResize(framebuffer_width, framebuffer_height);
 }
 
-void MapEditor::systemCallback_Scroll(double yoffset){
+void MapEditor::systemCallback_MouseScroll(double yoffset){
     demo_onScrollCallback(yoffset);
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
-    camera.onScroll(yoffset);
+    cout << "yoffset = " << yoffset << endl;
 
-
-
-    float x_ndc, y_ndc;
-
-
-    Transformation::Framebuffer framebuffer;
-    framebuffer.framebuffer_width = framebuffer_width;
-    framebuffer.framebuffer_height = framebuffer_height;
-
-    Transformation::get_ndc_coordinates(framebuffer, current_mouse_x_pos, current_mouse_y_pos, &x_ndc, &y_ndc);
-
-    if(x_ndc > 0)
+    if(yoffset > 0)
     {
-        camera.changeXPosition(1.0f);
+        camera.zoomIn();
     }
     else
     {
-        camera.changeXPosition(-1.0f);
+        camera.zoomOut();
     }
-
-    if(y_ndc > 0)
-    {
-        camera.changeYPosition(1.0f);
-    }
-    else
-    {
-        camera.changeYPosition(-1.0f);
-    }
-
 
 }
 
@@ -403,8 +382,6 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
         return;
 
-
-
     fbCoordToWorldCoord(coords->x, coords->y, touch_start_position_in_world);
 }
 
@@ -425,7 +402,7 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
     float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
     float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
 
-    if(delta_cam_x > 1.0f || delta_cam_y > 1.0f || delta_cam_x < -1.0f || delta_cam_y < -1.0f)
+    if(delta_cam_x > 1.0f*camera.getZoom() || delta_cam_y > 1.0f*camera.getZoom() || delta_cam_x < -1.0f*camera.getZoom() || delta_cam_y < -1.0f*camera.getZoom())
     {
         cursorMode = CURSOR_MOVE;
     }
@@ -476,6 +453,16 @@ void MapEditor::gui_onCurrentMapChanged(unsigned int currentMap)
     mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
+}
+
+void MapEditor::gui_onZoomOut()
+{
+    camera.zoomOut();
+}
+
+void MapEditor::gui_onZoomIn()
+{
+    camera.zoomIn();
 }
 
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)

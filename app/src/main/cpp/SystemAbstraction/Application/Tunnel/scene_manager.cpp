@@ -146,10 +146,10 @@ void SceneManager::OnMouseMove(int x, int y)
     }
 }
 
-void SceneManager::OnScroll(double yoffset)
+void SceneManager::OnMouseScroll(double yoffset)
 {
     if (mHasGraphics && mCurScene) {
-        mCurScene->OnScroll(yoffset);
+        mCurScene->OnMouseScroll(yoffset);
     }
 }
 

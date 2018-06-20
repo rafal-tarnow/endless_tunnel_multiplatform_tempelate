@@ -72,7 +72,7 @@ class SceneManager {
 
         void OnMouseMove(int x, int y);
 
-        void OnScroll(double yoffset);
+        void OnMouseScroll(double yoffset);
 
         // Reports that the back key was pressed
         bool OnBackKeyPressed();

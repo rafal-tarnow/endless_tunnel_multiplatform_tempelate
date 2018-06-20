@@ -176,7 +176,7 @@ public:
     static void onFramebufferResize(unsigned int framebuffer_width, unsigned int framebuffer_height);
     static void onRenderFirstFrame();
     static void onRenderFrame();
-    static void onScroll(double yoffset);
+    static void onMouseScroll(double yoffset);
     static void onMouseButton(MouseButton mouseButton, ButtonEvent event, int x, int y);
     static void onMouseMove(int x, int y);
     static void onKey(ButtonEvent, Key key, Mods mods, int x, int y );

@@ -120,7 +120,7 @@ const GLchar * fShaderCode =
         "       {                                                                                                                                   \n"
         "                                                                                                                                           \n"
         "           //color = vec4((texture2D(textureMap, TexCoords).rgb)*(1.0 - 2.0*spin_inversion_param) + spin_inversion_param, 1.0);              \n"
-        "           color = vec4(1.0 - texture2D(textureMap, shifted).rgb, 1.0);                            \n"
+        "           color = vec4(/*1.0 - */texture2D(textureMap, shifted).rgb, 1.0);                            \n"
         "       }                                                                                           \n"
         "       else                                                                                        \n"
         "       {                                                                                           \n"
