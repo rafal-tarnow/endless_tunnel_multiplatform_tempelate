@@ -1,20 +1,53 @@
 #pragma once
 
-#include <GLES2/gl2.h>
+#include <system_opengl_include.hpp>
 
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
 
-class Car: public RenderableGameObject{
+class CarRenderer: public RenderableGameObject{
 public:
-    Car(float32 x, float32 y, float z, b2World * world, float dampingRatio = 0.7f, float frequencyHz = 1.0f, float maxMotorTorque = 100.0f, float friction = 10.0f);
+    CarRenderer(glm::vec3 position);
+    ~CarRenderer();
+
+    void setPosition(glm::vec3 position);
+
+    void render(glm::mat4 projection, glm::mat4 view);
+
+protected:
+    //BODY
+   glm::vec3 mBodyPos = glm::vec3(0,0,0);
+   float mBodyAngle = 0.0f;
+   const float car_body_height_const = 1.0f;
+   const float car_body_width_const = 3.0f;
+   //FRONT WHELL
+   glm::vec3 mFrontWhellPos = glm::vec3(0,0,0);
+   float mFrontWhellRadius = 0.4f;
+   float mFrontWhellAngle;
+   //REAR WHELL
+   glm::vec3 mRearWhellPos = glm::vec3(0,0,0);
+   float mRearWhellRadius = 0.4f;
+   float mRearWhellAngle;
+
+
+private:
+    void drawCarWhell(glm::vec3 position,float radius,float angle);
+    void drawCarBodyRectangle(glm::vec3 position,float angle);
+
+
+
+    DE_Rectangle carWhellRectangle;
+    DE_Rectangle carBodyRectangle;
+};
+
+
+class Car: public CarRenderer{
+public:
+    Car(glm::vec3 position, b2World * world, float dampingRatio = 0.7f, float frequencyHz = 1.0f, float maxMotorTorque = 100.0f, float friction = 10.0f);
     ~Car();
-
-
     float getSpeed();
     void setSpeed(float speed);
-
     void getPosition(float *x, float *y);
     b2Vec2 getPosition();
     float getXPosition();
@@ -22,11 +55,6 @@ public:
 
     void render(glm::mat4 projection, glm::mat4 view);
 private:
-    void drawCarWhell(b2Vec2 position,float radius,float angle);
-    void drawCarBodyRectangle(b2Vec2* points,b2Vec2 center,float angle);
-    const float whell_radius_const = 0.4f;
-    const float car_body_height_const = 1.0f;
-    const float car_body_width_const = 3.0f;
     b2Body * carBody_body = nullptr;
     b2Body * frontWhell_body = nullptr;
     b2Body * rearWhell_body = nullptr;
@@ -34,13 +62,7 @@ private:
     b2WheelJoint* frontWhellJoint = nullptr;
     b2WheelJoint* rearWhellJoint = nullptr;
 
-    DE_Rectangle carWhellRectangle;
-    DE_Rectangle carBodyRectangle;
-
     float current_car_speed = 0.0f;
     float required_car_speed = 0.0f;
-
-    float z_layer = 0.0f;
-
-    GameObject carObject;
 };
+

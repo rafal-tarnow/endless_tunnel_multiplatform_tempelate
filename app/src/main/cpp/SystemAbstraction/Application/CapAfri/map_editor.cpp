@@ -19,12 +19,9 @@ MapEditor::MapEditor(int fb_width, int fb_height)
 
     systemCallback_WindowResize(framebuffer_width, framebuffer_height);
 
-    //glEnable(GL_MULTISAMPLE);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glClearColor(0.0,0.0,0.0,1.0);
-
 
     redDotTextureId = TextureManager::getTextureId("textures/red_dot.png");
     DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
@@ -51,6 +48,8 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
+
+    carRenderer = new CarRenderer(glm::vec3(0,0,0));
 
     mapEditorGui_setEventListener(this);
 }
@@ -80,13 +79,13 @@ MapEditor::~MapEditor()
     DE_deleteRectangle(&redDotPointerRectangle);
     LS_delete(&x_lineStrip);
     LS_delete(&y_lineStrip);
+
+    delete carRenderer;
 }
 
 void MapEditor::systemCallback_Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-
 
     if(mapFileOpenErrno != 0)
     {
@@ -98,11 +97,19 @@ void MapEditor::systemCallback_Render()
 
     glDisable(GL_DEPTH_TEST);
     {
+        glEnable (GL_BLEND);
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        //DRAW CAR
+        glm::vec3 camPosition = camera.getPosition();
+        camPosition.y += camera.getViewHeight()*0.5*0.7;
+        carRenderer->setPosition(camPosition);
+        carRenderer->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+
+        //DRAW GRID LINES
         glLineWidth(1.0);
 
         glm::mat4 PVM = camera.getProjectionMatrix()*camera.getViewMatrix()*glm::mat4(1);
-
         gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
 
         redDotPointerRectangle.projection = camera.getProjectionMatrix();
@@ -137,37 +144,6 @@ void MapEditor::systemCallback_Render()
             level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
         }
 
-        //    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-        //    if(car != nullptr)
-        //    {
-        //        float x, y;
-        //        car->getPosition(&x,&y);
-        //        viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        //    }
-
-        //    b2Body* tmp=world->GetBodyList();
-        //    while(tmp)
-        //    {
-        //        if(tmp->GetUserData() != nullptr){
-        //            ((RenderableObject *)tmp->GetUserData())->render(projectionMatrix, viewMatrix);
-        //        }
-        //        tmp=tmp->GetNext();
-        //    }
-
-
-
-        //    static int cash = 0;
-        //    stringstream text;
-        //    if(car){
-        //        text << std::fixed << std::setprecision(0) << "$ "<<car->getXPosition();
-        //    }else{
-        //        text << "$ 0";
-        //    }
-
-        //    textRenderer_v2->RenderText(text.str(), framebuffer_width - 200.0f, framebuffer_height - 50.0f);
-
 
         //DRAW COORDINATES LINES
         x_lineStrip.projection = camera.getProjectionMatrix();
@@ -185,6 +161,7 @@ void MapEditor::systemCallback_Render()
         lineStripGround.view = camera.getViewMatrix();
         lineStripGround.model = glm::mat4(1);
         LS_draw(&lineStripGround, 2);
+
 
     }
     glEnable(GL_DEPTH_TEST);
@@ -273,8 +250,8 @@ void MapEditor::addMushroomInFramebufferCoordinates(int framebuffer_x, int frame
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
     LOGD("MapEditor::systemCallback_mouseButton()\n");
-    current_mouse_x_pos = window_x;
-    current_mouse_y_pos = window_y;
+    pointer_0_coords.x = window_x;
+    pointer_0_coords.y = window_y;
 
     demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
@@ -312,8 +289,135 @@ void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseB
 
 }
 
+
+
+void MapEditor::systemCallback_mouseMove(int x, int y)
+{
+    LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
+    demo_onMouseMoveCallcack(x, y);
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
+        return;
+
+    if(leftMouseButtonIsPressed == false)
+        return;
+
+    pointer_0_coords.x = x;
+    pointer_0_coords.y = y;
+
+
+    glm::vec3 touch_current_position_in_world;
+    fbCoordToWorldCoord(pointer_0_coords.x,pointer_0_coords.y,touch_current_position_in_world);
+
+
+    float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
+    float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
+
+    if(delta_cam_x > 1.0f || delta_cam_y > 1.0f || delta_cam_x < -1.0f || delta_cam_y < -1.0f)
+    {
+        cursorMode = CURSOR_MOVE;
+    }
+
+    if(cursorMode == CURSOR_MOVE) {
+        camera.changeXPosition(-delta_cam_x);
+        camera.changeYPosition(-delta_cam_y);
+    }
+
+    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
+}
+
+void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
+{
+    if(pointerId == 0)
+    {
+        pointer_0_coords = *coords;
+    }
+    else if(pointerId == 1)
+    {
+        pointer_1_coords = *coords;
+    }
+    
+    if(pointerId == 1)
+    {
+        cursorMode = CURSOR_ZOOM;
+        return;
+    }
+
+    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
+                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
+        return;
+
+    fbCoordToWorldCoord(coords->x, coords->y, touch_start_position_in_world);
+}
+
+void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
+{
+    if(pointerId == 0)
+    {
+        pointer_0_coords = *coords;
+    }
+    else if(pointerId == 1)
+    {
+        pointer_1_coords = *coords;
+    }
+
+    
+
+    if(cursorMode == CURSOR_ZOOM)
+    {
+
+        return;
+    }
+
+
+    demo_onPointerMoveCallback(pointerId, coords);
+    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
+        return;
+
+    pointer_0_coords.x = coords->x;
+    pointer_0_coords.y = coords->y;
+
+
+    glm::vec3 touch_current_position_in_world;
+    fbCoordToWorldCoord(pointer_0_coords.x,pointer_0_coords.y,touch_current_position_in_world);
+
+
+    float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
+    float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
+
+    if(delta_cam_x > 1.0f*camera.getZoom() || delta_cam_y > 1.0f*camera.getZoom() || delta_cam_x < -1.0f*camera.getZoom() || delta_cam_y < -1.0f*camera.getZoom())
+    {
+        cursorMode = CURSOR_MOVE;
+    }
+
+    if(cursorMode == CURSOR_MOVE) {
+        camera.changeXPosition(-delta_cam_x);
+        camera.changeYPosition(-delta_cam_y);
+    }
+
+    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
+
+}
+
 void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
+    if(pointerId == 0)
+    {
+        pointer_0_coords = *coords;
+    }
+    else if(pointerId == 1)
+    {
+        pointer_1_coords = *coords;
+    }
+    
+    
+    
+    if(pointerId == 1)
+    {
+        cursorMode = CURSOR_ADD_FANT;
+        return;
+    }
+
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_UP, (int) coords->x, (int) coords->y);
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
@@ -339,81 +443,6 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
     }
     //if pointer in Move mode change to add fant
     cursorMode = CURSOR_ADD_FANT;
-}
-
-void MapEditor::systemCallback_mouseMove(int x, int y)
-{
-    LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
-    demo_onMouseMoveCallcack(x, y);
-    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-
-    if(leftMouseButtonIsPressed == false)
-        return;
-
-    current_mouse_x_pos = x;
-    current_mouse_y_pos = y;
-
-
-    glm::vec3 touch_current_position_in_world;
-    fbCoordToWorldCoord(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
-
-
-    float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
-    float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
-
-    if(delta_cam_x > 1.0f || delta_cam_y > 1.0f || delta_cam_x < -1.0f || delta_cam_y < -1.0f)
-    {
-        cursorMode = CURSOR_MOVE;
-    }
-
-    if(cursorMode == CURSOR_MOVE) {
-        camera.changeXPosition(-delta_cam_x);
-        camera.changeYPosition(-delta_cam_y);
-    }
-
-    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
-}
-
-void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
-{
-    demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
-                               SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
-    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-
-    fbCoordToWorldCoord(coords->x, coords->y, touch_start_position_in_world);
-}
-
-void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
-{
-    demo_onPointerMoveCallback(pointerId, coords);
-    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-
-    current_mouse_x_pos = coords->x;
-    current_mouse_y_pos = coords->y;
-
-
-    glm::vec3 touch_current_position_in_world;
-    fbCoordToWorldCoord(current_mouse_x_pos,current_mouse_y_pos,touch_current_position_in_world);
-
-
-    float delta_cam_x = touch_current_position_in_world.x - touch_start_position_in_world.x;
-    float delta_cam_y = touch_current_position_in_world.y - touch_start_position_in_world.y;
-
-    if(delta_cam_x > 1.0f*camera.getZoom() || delta_cam_y > 1.0f*camera.getZoom() || delta_cam_x < -1.0f*camera.getZoom() || delta_cam_y < -1.0f*camera.getZoom())
-    {
-        cursorMode = CURSOR_MOVE;
-    }
-
-    if(cursorMode == CURSOR_MOVE) {
-        camera.changeXPosition(-delta_cam_x);
-        camera.changeYPosition(-delta_cam_y);
-    }
-
-    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
-
 }
 
 void MapEditor::gui_onSaveMapButtonClicked()

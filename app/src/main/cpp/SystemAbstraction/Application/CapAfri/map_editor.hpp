@@ -9,6 +9,7 @@
 #include <system_abstraction.hpp>
 #include <sstream>
 #include "demo.hpp"
+#include "Bodies/car_body.hpp"
 
 
 class Camera{
@@ -98,6 +99,16 @@ public:
         return cameraProjectionMatrix;
     }
 
+    float getViewHeight()
+    {
+        return box_view_height_in_meters;
+    }
+
+    glm::vec3 getPosition()
+    {
+        return glm::vec3(camera_position_x, camera_position_y, 0.0);
+    }
+
 private:
     void updateCameraViewMatrix()
     {
@@ -126,6 +137,7 @@ public:
     {
         CURSOR_MOVE = 0,
         CURSOR_ADD_FANT,
+        CURSOR_ZOOM
     }CursorMode;
 
     typedef enum
@@ -168,14 +180,19 @@ private:
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
     void fbCoordToWorldCoord(double x_window, double y_window, glm::vec3 & world_position);
-    double current_mouse_x_pos = 0;
-    double current_mouse_y_pos = 0;
+
+    PointerCoords pointer_0_coords;
+    PointerCoords pointer_1_coords;
+
 
     float framebuffer_width;
     float framebuffer_height;
 
 
     CGridLines * gridLines;
+
+    //CAR
+    CarRenderer * carRenderer;
 
     //CAMERA
     Camera camera;

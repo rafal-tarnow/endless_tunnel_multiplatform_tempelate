@@ -10,6 +10,8 @@ DE_Rectangle MushroomRenderer::rectangle;
 
 MushroomRenderer::MushroomRenderer(glm::vec3 position)
 {
+    GameObject::setObjectType(OBJECT_MUSHROOM);
+
     mPos = position;
     mDimm = glm::vec2(1.0, 1.0);
 
@@ -49,8 +51,9 @@ void MushroomRenderer::render(glm::mat4 projection, glm::mat4 view)
 
 //************* MUSHROOM COIN ***********************
 
-Mushroom::Mushroom(glm::vec3 position, b2World* world) : MushroomRenderer(position){
-    GameObject::setObjectType(OBJECT_MUSHROOM);
+Mushroom::Mushroom(glm::vec3 position, b2World* world)
+    : MushroomRenderer(position)
+{
 
     //BODY
     b2BodyDef bodydef;

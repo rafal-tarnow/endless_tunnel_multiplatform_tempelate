@@ -164,7 +164,7 @@ void Game::loadLevel()
     float frequencyHz = config.get_float("frequencyHz");
     float maxMotorTorque = config.get_float("maxMotorTorque");
     float friction = config.get_float("friction");
-    car = new Car(1.0f, 5.0f, -1.0f, world, dampingRatio, frequencyHz, maxMotorTorque, friction);
+    car = new Car(glm::vec3(1.0f, 5.0f, -1.0f), world, dampingRatio, frequencyHz, maxMotorTorque, friction);
 
 
     //LEVEL LOAD

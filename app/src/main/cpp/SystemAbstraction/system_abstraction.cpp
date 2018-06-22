@@ -100,7 +100,7 @@ void SystemAbstraction::onJoyUpdate(float joyX, float joyY)
 
 void SystemAbstraction::onPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-    //LOGD("--> SystemAbstraction::onPointerDown()\n");
+    //LOGD("--> SystemAbstraction::onPointerDown()\n pointerId = %d", pointerId);
     mgr->OnPointerDown(pointerId, coords);
     //LOGD("<-- SystemAbstraction::onPointerDown()\n");
 }

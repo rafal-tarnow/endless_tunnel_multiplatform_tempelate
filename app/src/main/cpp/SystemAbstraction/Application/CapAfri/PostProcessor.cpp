@@ -116,7 +116,7 @@ const GLchar * fShaderCode =
         "       vec2 shifted = radius* vec2(cos(angle), sin(angle)) + 0.5;                      \n"
         "                                                                                       \n"
         "       //przesuni�cie pocz�tku wsp��rz�dnych tekstury do po�o�enia pierwotnego         \n"
-        "       if((shifted.x <= 1.0) && (shifted.x >= 0.0) && (shifted.y <= 1.0) && (shifted.y >= 0.0))    \n"
+        "       if((shifted.x < 1.0) && (shifted.x > 0.0) && (shifted.y < 1.0) && (shifted.y > 0.0))    \n"
         "       {                                                                                                                                   \n"
         "                                                                                                                                           \n"
         "           //color = vec4((texture2D(textureMap, TexCoords).rgb)*(1.0 - 2.0*spin_inversion_param) + spin_inversion_param, 1.0);              \n"

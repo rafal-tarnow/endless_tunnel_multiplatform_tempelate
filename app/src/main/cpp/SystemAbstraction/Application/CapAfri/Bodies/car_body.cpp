@@ -4,34 +4,78 @@
 
 using namespace std;
 
-void Car::drawCarWhell(b2Vec2 position,float radius,float angle)
+CarRenderer::CarRenderer(glm::vec3 position)
 {
-    carWhellRectangle.model = glm::translate(glm::mat4(1), glm::vec3(position.x, position.y, 0.0));
+    GameObject::setObjectType(OBJECT_CAR);
+
+    mBodyPos = position;
+    mFrontWhellPos = glm::vec3(1,-1,0);
+    mRearWhellPos = glm::vec3(-1,-1,0);
+
+    DE_initRectangle(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, mBodyPos.z);
+    DE_initRectangle(&carWhellRectangle, "textures/kolo.png", mFrontWhellRadius*2.0f,mFrontWhellRadius*2.0f, mBodyPos.z);
+}
+
+CarRenderer::~CarRenderer()
+{
+    DE_deleteRectangle(&carWhellRectangle);
+    DE_deleteRectangle(&carBodyRectangle);
+}
+
+void CarRenderer::drawCarWhell(glm::vec3 position,float radius,float angle)
+{
+    carWhellRectangle.model = glm::translate(glm::mat4(1), position);
     carWhellRectangle.model = glm::rotate(carWhellRectangle.model,angle,glm::vec3(0.0f,0.0f,1.0f));
     DE_drawRectangle(&carWhellRectangle);
 }
 
-void Car::drawCarBodyRectangle(b2Vec2* points,b2Vec2 position,float angle)
+void CarRenderer::drawCarBodyRectangle(glm::vec3 position,float angle)
 {
-    carBodyRectangle.model = glm::translate(glm::mat4(1), glm::vec3(position.x, position.y, 0.0));
+    carBodyRectangle.model = glm::translate(glm::mat4(1), position);
     carBodyRectangle.model = glm::rotate(carBodyRectangle.model,angle,glm::vec3(0.0f,0.0f,1.0f));
     DE_drawRectangle(&carBodyRectangle);
 }
 
-Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, float frequencyHz, float maxMotorTorque, float friction)
+void CarRenderer::setPosition(glm::vec3 position)
 {
-    carObject.setObjectType(OBJECT_CAR);
-    RenderableGameObject::setObjectType(OBJECT_CAR);
+    mBodyPos = position;
+    mFrontWhellPos = position  + glm::vec3(1,-1,0);
+    mRearWhellPos = position + glm::vec3(-1,-1,0);
+}
 
-    z_layer = z;
+void CarRenderer::render(glm::mat4 projection, glm::mat4 view)
+{
+
+    glDisable(GL_DEPTH_TEST);
+
+    carBodyRectangle.projection = projection;
+    carBodyRectangle.view = view;
+
+    carWhellRectangle.projection = projection;
+    carWhellRectangle.view = view;
+
+    drawCarBodyRectangle(mBodyPos, mBodyAngle);
+    drawCarWhell(mFrontWhellPos,mFrontWhellRadius,mFrontWhellAngle);
+    drawCarWhell(mRearWhellPos,mRearWhellRadius,mRearWhellAngle);
+
+    glEnable(GL_DEPTH_TEST);
+}
+
+
+//********************* CAR **********************************
+
+
+Car::Car(glm::vec3 position, b2World * world, float dampingRatio, float frequencyHz, float maxMotorTorque, float friction)
+    :CarRenderer(position)
+{
     //car body
     b2BodyDef car_bodydef;
 
-    car_bodydef.position.Set(x,y);
+    car_bodydef.position.Set(position.x,position.y);
     car_bodydef.type=b2_dynamicBody;
 
     carBody_body = world->CreateBody(&car_bodydef);
-    carBody_body->SetUserData(&carObject);
+    carBody_body->SetUserData(static_cast<GameObject*>(this));
 
     b2PolygonShape carBodyShape;
     carBodyShape.SetAsBox(car_body_width_const/2.0f,car_body_height_const/2.0);
@@ -44,18 +88,18 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, fl
     //front whell body
 
     b2BodyDef whell_bodydef;
-    whell_bodydef.position.Set(x+1,y-1);
+    whell_bodydef.position.Set(position.x+1,position.y-1);
     whell_bodydef.type = b2_dynamicBody;
 
     frontWhell_body = world->CreateBody(&whell_bodydef);
-    frontWhell_body->SetUserData(&carObject);
+    frontWhell_body->SetUserData(static_cast<GameObject*>(this));
 
-    whell_bodydef.position.Set(x-1,y-1);
+    whell_bodydef.position.Set(position.x-1,position.y-1);
     rearWhell_body = world->CreateBody(&whell_bodydef);
-    rearWhell_body->SetUserData(&carObject);
+    rearWhell_body->SetUserData(static_cast<GameObject*>(this));
 
     b2CircleShape whellShape;
-    whellShape.m_radius = whell_radius_const;
+    whellShape.m_radius = mFrontWhellRadius;
     whellShape.m_p.Set(0,0);
 
     b2FixtureDef whellFixture;
@@ -83,19 +127,63 @@ Car::Car(float32 x, float32 y, float z,  b2World * world, float dampingRatio, fl
 
     //tylny dzojt
     whellJointDef.Initialize(carBody_body,rearWhell_body,rearWhell_body->GetPosition(),axis);
-
     rearWhellJoint = (b2WheelJoint*)world->CreateJoint(&whellJointDef );
 
-    //     //b2WheelJoint dzojt;
-
-    DE_initRectangle(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, z_layer);
-    DE_initRectangle(&carWhellRectangle, "textures/kolo.png", whell_radius_const*2.0f,whell_radius_const*2.0f, z_layer);
 }
 
 Car::~Car()
 {
-    DE_deleteRectangle(&carWhellRectangle);
-    DE_deleteRectangle(&carBodyRectangle);
+    carBody_body->GetWorld()->DestroyBody(carBody_body);
+    frontWhell_body->GetWorld()->DestroyBody(frontWhell_body);
+    rearWhell_body->GetWorld()->DestroyBody(rearWhell_body);
+}
+void Car::render(glm::mat4 projection, glm::mat4 view)
+{
+    if(required_car_speed == 0.0f)
+    {
+        if(current_car_speed > 0.0f)
+        {
+            current_car_speed = std::max(current_car_speed - 0.05f, required_car_speed);
+            frontWhellJoint->SetMotorSpeed(current_car_speed);
+            rearWhellJoint->SetMotorSpeed(current_car_speed);
+        }else{
+            current_car_speed = std::min(current_car_speed + 0.05f, required_car_speed);
+            frontWhellJoint->SetMotorSpeed(current_car_speed);
+            rearWhellJoint->SetMotorSpeed(current_car_speed);
+        }
+
+    }else if(required_car_speed < 0.0f)
+    {
+        current_car_speed = std::max(current_car_speed - 0.55f, required_car_speed);
+        frontWhellJoint->SetMotorSpeed(current_car_speed);
+        rearWhellJoint->SetMotorSpeed(current_car_speed);
+    }else if(required_car_speed > 0.0f)
+    {
+        current_car_speed = std::min(current_car_speed + 0.55f, required_car_speed);
+        frontWhellJoint->SetMotorSpeed(current_car_speed);
+        rearWhellJoint->SetMotorSpeed(current_car_speed);
+    }
+
+
+    //UPDATE CAR BODY
+    b2Vec2 carBodyPos = carBody_body->GetPosition();
+    mBodyPos.x = carBodyPos.x;
+    mBodyPos.y = carBodyPos.y;
+    mBodyAngle = carBody_body->GetAngle();
+
+    //FRONT WHELL POS
+    b2Vec2 frontWhellPos = frontWhell_body->GetPosition();
+    mFrontWhellPos.x = frontWhellPos.x;
+    mFrontWhellPos.y = frontWhellPos.y;
+    mFrontWhellAngle = frontWhell_body->GetAngle();
+
+    //REAR WHELL POS
+    b2Vec2 rearWhellPos = rearWhell_body->GetPosition();
+    mRearWhellPos.x = rearWhellPos.x;
+    mRearWhellPos.y = rearWhellPos.y;
+    mRearWhellAngle = rearWhell_body->GetAngle();
+
+    CarRenderer::render(projection, view);
 }
 
 float Car::getSpeed()
@@ -127,58 +215,4 @@ float Car::getXPosition(){
 float Car::getYPosition()
 {
     return carBody_body->GetPosition().y;
-}
-
-void Car::render(glm::mat4 projection, glm::mat4 view)
-{
-    // frontWhellJoint->SetMotorSpeed(required_car_speed);
-    //          rearWhellJoint->SetMotorSpeed(required_car_speed);
-
-    //cout << "Car::render()" << endl;
-    if(required_car_speed == 0.0f)
-    {
-        if(current_car_speed > 0.0f)
-        {
-            current_car_speed = std::max(current_car_speed - 0.05f, required_car_speed);
-            frontWhellJoint->SetMotorSpeed(current_car_speed);
-            rearWhellJoint->SetMotorSpeed(current_car_speed);
-        }else{
-            current_car_speed = std::min(current_car_speed + 0.05f, required_car_speed);
-            frontWhellJoint->SetMotorSpeed(current_car_speed);
-            rearWhellJoint->SetMotorSpeed(current_car_speed);
-        }
-
-    }else if(required_car_speed < 0.0f)
-    {
-        current_car_speed = std::max(current_car_speed - 0.55f, required_car_speed);
-        frontWhellJoint->SetMotorSpeed(current_car_speed);
-        rearWhellJoint->SetMotorSpeed(current_car_speed);
-    }else if(required_car_speed > 0.0f)
-    {
-        current_car_speed = std::min(current_car_speed + 0.55f, required_car_speed);
-        frontWhellJoint->SetMotorSpeed(current_car_speed);
-        rearWhellJoint->SetMotorSpeed(current_car_speed);
-    }
-
-
-    carBodyRectangle.projection = projection;
-    carBodyRectangle.view = view;
-
-    carWhellRectangle.projection = projection;
-    carWhellRectangle.view = view;
-
-
-    b2Vec2 points[4];
-
-    for(int i=0;i<4;i++){
-        points[i]=((b2PolygonShape*)carBody_body->GetFixtureList()->GetShape())->m_vertices[i];
-    }
-
-    glDisable(GL_DEPTH_TEST);
-
-    drawCarBodyRectangle(points,carBody_body->GetPosition(),carBody_body->GetAngle());
-    drawCarWhell(frontWhell_body->GetPosition(),((b2CircleShape*)frontWhell_body->GetFixtureList()->GetShape())->m_radius,frontWhell_body->GetAngle());
-    drawCarWhell(rearWhell_body->GetPosition(),((b2CircleShape*)rearWhell_body->GetFixtureList()->GetShape())->m_radius,rearWhell_body->GetAngle());
-
-    glEnable(GL_DEPTH_TEST);
 }

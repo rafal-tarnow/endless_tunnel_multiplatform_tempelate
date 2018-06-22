@@ -8,7 +8,7 @@ extern "C" {
 #endif
 }
 
-#define DEBUG_TAG "EndlessTunnel:Native"
+#define DEBUG_TAG "CapAfri"
 
 #ifdef __ANDROID__
 #   define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, DEBUG_TAG, __VA_ARGS__))
