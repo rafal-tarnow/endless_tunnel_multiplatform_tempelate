@@ -57,7 +57,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     mapEditorGui_setEventListener(this);
 
 
-    yellowDotIndex = level.ground_verticles.begin();
+    yellowDotIndex = level.ground_verticles.end();
 }
 
 
@@ -134,7 +134,8 @@ void MapEditor::systemCallback_Render()
 
         yellowDotRectangle.projection = camera.getProjectionMatrix();
         yellowDotRectangle.view = camera.getViewMatrix();
-        yellowDotRectangle.model = glm::translate(glm::mat4(1), *yellowDotIndex);
+        if((cursorMode == CURSOR_MOVE_ELEMENT) && (yellowDotIndex != level.ground_verticles.end()))
+            yellowDotRectangle.model = glm::translate(glm::mat4(1), *yellowDotIndex);
         DE_drawRectangle(&yellowDotRectangle);
 
         for (auto & coin : level.coins_vector){
@@ -400,7 +401,8 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
     if(pointerId == 0)
         fbCoordToWorldCoord(coords->x, coords->y, touch_0_start_position_in_world);
 
-    switch (cursorMode) {
+    switch (cursorMode)
+    {
     case CURSOR_MOVE_CAMERA:
         if(pointerId == 1)
         {
@@ -621,6 +623,7 @@ void MapEditor::gui_onCursorModeChanged(int mode)
     else if(mode == 4)
     {
         cursorMode = CURSOR_MOVE_ELEMENT;
+        yellowDotIndex = level.ground_verticles.end();
     }
 }
 
