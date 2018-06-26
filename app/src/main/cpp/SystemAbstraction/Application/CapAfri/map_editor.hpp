@@ -135,9 +135,10 @@ public:
 
     typedef enum
     {
-        CURSOR_MOVE = 0,
+        CURSOR_MOVE_CAMERA = 0,
         CURSOR_ADD_FANT,
-        CURSOR_ZOOM
+        CURSOR_ZOOM,
+        CURSOR_MOVE_ELEMENT
     }CursorMode;
 
     typedef enum
@@ -180,6 +181,7 @@ private:
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
     void fbCoordToWorldCoord(double x_window, double y_window, glm::vec3 & world_position);
+void updateGuiDebugInfo();
 
     PointerCoords pointer_0_coords;
     PointerCoords pointer_1_coords;
@@ -197,17 +199,24 @@ private:
     //CAMERA
     Camera camera;
 
-    //RED DOT
-    DE_Rectangle redDotPointerRectangle;
-    glm::mat4 redDotCursorModel = glm::mat4(1);
-    GLuint redDotTextureId = 0;
-
     //LEVEL FILE
     string mapFileOpenErrorString;
     stringstream mapFilePath;
     unsigned int currentMapIndex = 0;
     int mapFileOpenErrno = 0;
     Level level;
+
+    //RED DOT
+    DE_Rectangle redDotPointerRectangle;
+    glm::mat4 redDotCursorModel = glm::mat4(1);
+    GLuint redDotTextureId = 0;
+
+    //YELLOW DOT
+    vector<glm::vec3>::iterator yellowDotIndex;
+    DE_Rectangle yellowDotRectangle;
+    glm::mat4 yellowDotModel = glm::mat4(1);
+    GLuint yellowDotTextureId = 0;
+
 
     //TEXT RENDERER
     TextRenderer_v2 * textRenderer_v2;
@@ -217,13 +226,13 @@ private:
     LS_LineStrip y_lineStrip;
 
     //DOTS
-    vector<glm::vec3> dots;
     LS_LineStrip lineStripGround;
 
     FantMode fantMode = FANT_GROUND;
 
     CursorMode cursorMode = CURSOR_ADD_FANT;
-    glm::vec3 touch_start_position_in_world;
+    CursorMode previousCursorMode = CURSOR_ADD_FANT;
+    glm::vec3 touch_0_start_position_in_world;
 
     bool leftMouseButtonIsPressed = false;
 

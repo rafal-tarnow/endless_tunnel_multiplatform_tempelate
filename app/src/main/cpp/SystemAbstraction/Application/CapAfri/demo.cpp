@@ -18,7 +18,7 @@ struct nk_font *font_18;
 struct nk_font *font_20;
 struct nk_font *font_22;
 struct nk_font *font_30;
-struct nk_image images[4];
+struct nk_image images[5];
 struct nk_image next_png;
 struct nk_image prev_png;
 struct nk_image plus_png;
@@ -31,6 +31,17 @@ struct nk_context ctx;
 
 static MapEditorGuiEventListener * toolboxEventListener = nullptr;
 
+static string mCursorMode = "Cursor Mode:";
+static string mFantMode = "Fant Mode:";
+
+void demo_setCursorModeText_dbg(string cursorMode)
+{
+    mCursorMode = "Cursor Mode: " + cursorMode;
+}
+void demo_setFantModeText_dbg(string fantMode)
+{
+    mFantMode = "Fant Mode:" + fantMode;
+}
 
 /* ===============================================================
  *
@@ -52,55 +63,12 @@ static void ui_widget(struct nk_context *ctx, float height)
     nk_spacing(ctx, 1);
 }
 
-static void ui_widget_centered(struct nk_context *ctx, float height)
-{
-    static const float ratio[] = {0.15f, 0.50f, 0.35f};
-    nk_style_set_font(ctx, &font_22->handle);
-    nk_layout_row(ctx, NK_DYNAMIC, height, 3, ratio);
-    nk_spacing(ctx, 1);
-}
 
-void select_map_window(struct nk_context * ctx)
-{
-    static size_t prog_value = 20;
-    nk_begin(ctx, "Select map", nk_rect(100,100,400,400),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
-    {
-        ui_header(ctx, "Select map to edit:");
-
-        nk_layout_row_template_begin(ctx, 80);
-        {
-            nk_layout_row_template_push_static(ctx, 80);
-            nk_layout_row_template_push_variable(ctx, 80);
-            nk_layout_row_template_push_static(ctx, 80);
-        }
-        nk_layout_row_template_end(ctx);
-
-        if(nk_button_image(ctx, prev_png))
-        {
-            if(prog_value > 0)
-                prog_value--;
-        }
-        nk_labelf(ctx, NK_TEXT_CENTERED, "Map to edit: %zu" , prog_value + 1);
-        if(nk_button_image(ctx, next_png))
-        {
-            if(prog_value < 39)
-                prog_value++;
-        }
-        nk_layout_row_dynamic(ctx, 80, 1);
-        nk_button_label(ctx, "Edit");
-
-        ui_header(ctx, "or create new map:");
-
-        nk_layout_row_dynamic(ctx, 80, 1);
-        nk_button_label(ctx, "New map");
-    }
-    nk_end(ctx);
-}
 
 void toolbox_demo(struct nk_context *ctx)
 {
     static unsigned int prog_value = 0;
-    static const char *items[] = {"Ground","Coin","Mushroom","Meta"};
+    static const char *items[] = {"Ground","Coin","Mushroom","Meta","Move"};
     static int selected_icon = 0;
     int i = 0;
 
@@ -108,6 +76,31 @@ void toolbox_demo(struct nk_context *ctx)
 
     nk_begin(ctx, "Toolbox", nk_rect(0,0,400,570),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
+        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_label(ctx, mCursorMode.c_str(), NK_TEXT_LEFT);
+
+        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_label(ctx, mFantMode.c_str(), NK_TEXT_LEFT);
+
+
+        ui_header(ctx, "Cursor Mode");
+
+        ui_widget(ctx, 40);
+        if (nk_combo_begin_image_label(ctx, items[selected_icon], images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
+            nk_layout_row_dynamic(ctx, 35, 1);
+            for (i = 0; i < 5; ++i)
+                if (nk_combo_item_image_label(ctx, images[i], items[i], NK_TEXT_RIGHT))
+                {
+                    selected_icon = i;
+                    if(toolboxEventListener != nullptr)
+                    {
+                        toolboxEventListener->gui_onCursorModeChanged(selected_icon);
+                    }
+                }
+            nk_combo_end(ctx);
+        }
+
+
         ui_header(ctx, "Select map to edit:");
 
         nk_layout_row_template_begin(ctx, 80);
@@ -162,22 +155,7 @@ void toolbox_demo(struct nk_context *ctx)
             }
         }
 
-        ui_header(ctx, "Cursor Mode");
 
-        ui_widget(ctx, 40);
-        if (nk_combo_begin_image_label(ctx, items[selected_icon], images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
-            nk_layout_row_dynamic(ctx, 35, 1);
-            for (i = 0; i < 4; ++i)
-                if (nk_combo_item_image_label(ctx, images[i], items[i], NK_TEXT_RIGHT))
-                {
-                    selected_icon = i;
-                    if(toolboxEventListener != nullptr)
-                    {
-                        toolboxEventListener->gui_onCursorModeChanged(selected_icon);
-                    }
-                }
-            nk_combo_end(ctx);
-        }
 
         ui_header(ctx, "ZOOM");
 
@@ -253,6 +231,7 @@ void demo_init(int width, int height)
     images[1] = icon_load_from_TextureManager("textures/coin_2.png");
     images[2] = icon_load_from_TextureManager("textures/Tango_Style_Mushroom_icon.svg.png");
     images[3] = icon_load_from_TextureManager("textures/meta.jpg");
+    images[4] = icon_load_from_TextureManager("textures/move.png");
     prev_png = icon_load_from_TextureManager("textures/prev.png");
     next_png = icon_load_from_TextureManager("textures/next.png");
     plus_png = icon_load_from_TextureManager("textures/plus_grey.png");

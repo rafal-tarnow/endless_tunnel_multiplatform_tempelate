@@ -2,6 +2,9 @@
 
 #include "./Application/libs/nuklear/implementation/nuklear_gles2.hpp"
 #include "system_abstraction.hpp"
+#include <string>
+
+using namespace std;
 
 #define UNUSED(a) (void)a
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
@@ -30,6 +33,9 @@ void demo_onMouseButtonCallback(SystemAbstraction::MouseButton mouseButton, Syst
 void demo_onMouseMoveCallcack(int x, int y);
 void demo_onPointerMoveCallback(int pointerId, const struct PointerCoords *coords);
 void demo_onKeyCallback(SystemAbstraction::ButtonEvent event, SystemAbstraction::Key key, SystemAbstraction::Mods mods, int x, int y);
+
+void demo_setCursorModeText_dbg(string cursorMode);
+void demo_setFantModeText_dbg(string fantMode);
 
 int mapEditorGui_isAnyWindowHovered();
 void mapEditorGui_setEventListener(MapEditorGuiEventListener *eventListener);
