@@ -111,13 +111,13 @@ void MapEditor::systemCallback_Render()
         glm::vec3 camPosition = camera.getPosition();
         camPosition.y += camera.getViewHeight()*0.5*0.7;
         carRenderer->setPosition(camPosition);
-        //carRenderer->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+        carRenderer->render(camera.getProjectionMatrix(), camera.getViewMatrix());
 
         //DRAW GRID LINES
         glLineWidth(1.0);
 
         glm::mat4 PVM = camera.getProjectionMatrix()*camera.getViewMatrix()*glm::mat4(1);
-        //gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
+        gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
 
         redDotPointerRectangle.projection = camera.getProjectionMatrix();
         redDotPointerRectangle.view = camera.getViewMatrix();
@@ -139,7 +139,7 @@ void MapEditor::systemCallback_Render()
         DE_drawRectangle(&yellowDotRectangle);
 
         for (auto & coin : level.coins_vector){
-            //coin->render(camera.getProjectionMatrix(),camera.getViewMatrix());
+            coin->render(camera.getProjectionMatrix(),camera.getViewMatrix());
         }
 
 
@@ -147,13 +147,13 @@ void MapEditor::systemCallback_Render()
         {
             for( auto & mushroom : level.mushroom_vector)
             {
-                //mushroom->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+                mushroom->render(camera.getProjectionMatrix(), camera.getViewMatrix());
             }
         }
 
         if(level.meta != nullptr)
         {
-            //level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
+            level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
         }
 
 
@@ -161,12 +161,12 @@ void MapEditor::systemCallback_Render()
         x_lineStrip.projection = camera.getProjectionMatrix();
         x_lineStrip.view = camera.getViewMatrix();
         x_lineStrip.model = glm::mat4(1);
-        //LS_draw(&x_lineStrip, 2);
+        LS_draw(&x_lineStrip, 2);
 
         y_lineStrip.projection = camera.getProjectionMatrix();
         y_lineStrip.view = camera.getViewMatrix();
         y_lineStrip.model = glm::mat4(1);
-        // LS_draw(&y_lineStrip, 2);
+         LS_draw(&y_lineStrip, 2);
 
         //DRAW GROUND LINE
         lineStripGround.projection = camera.getProjectionMatrix();

@@ -74,7 +74,7 @@ void toolbox_demo(struct nk_context *ctx)
 
     nk_style_set_font(ctx, &font_30->handle);
 
-    nk_begin(ctx, "Toolbox", nk_rect(0,0,400,570),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    nk_begin(ctx, "Toolbox", nk_rect(0,0,360,630),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
     {
         nk_layout_row_dynamic(ctx, 20, 1);
         nk_label(ctx, mCursorMode.c_str(), NK_TEXT_LEFT);
