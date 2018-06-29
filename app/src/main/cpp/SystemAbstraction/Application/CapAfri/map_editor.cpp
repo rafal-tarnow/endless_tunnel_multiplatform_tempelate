@@ -166,7 +166,7 @@ void MapEditor::systemCallback_Render()
         y_lineStrip.projection = camera.getProjectionMatrix();
         y_lineStrip.view = camera.getViewMatrix();
         y_lineStrip.model = glm::mat4(1);
-         LS_draw(&y_lineStrip, 2);
+        LS_draw(&y_lineStrip, 2);
 
         //DRAW GROUND LINE
         lineStripGround.projection = camera.getProjectionMatrix();
@@ -202,6 +202,12 @@ void MapEditor::updateGuiDebugInfo()
         break;
     case CURSOR_MOVE_ELEMENT:
         cursorModeTxt = "CURSOR_MOVE_ELEMENT";
+        break;
+    case CURSOR_MOVE_ELEMENT_MOVE_CAMERA:
+        cursorModeTxt = "CURSOR_MOVE_ELEMENT_MOVE_CAMERA";
+        break;
+    case CURSOR_MOVE_ELEMENT_ZOOM:
+        cursorModeTxt = "CURSOR_MOVE_ELEMENT_ZOOM";
         break;
     }
 
@@ -257,132 +263,51 @@ void MapEditor::systemCallback_MouseScroll(double yoffset){
 
 bool myfunction (glm::vec3 &i,glm::vec3  &j) { return (i.x<j.x); }
 
-void MapEditor::addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+void MapEditor::addGroundPointInFramebufferCoordinates()
 {
-    glm::vec3 world_position;
-    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
-    world_position.z = 0.0f;
-
-
-    level.ground_verticles.push_back(world_position);
+    level.ground_verticles.push_back(world_current_position_0);
     std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
 
     LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
-void MapEditor::addMetaInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+void MapEditor::addMetaInFramebufferCoordinates()
 {
-    glm::vec3 world_position;
-    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
-
     if(level.meta == nullptr)
     {
-        level.meta = new MetaRenderer(world_position.x, world_position.y, -2.0f, 1.5);
+        level.meta = new MetaRenderer(world_current_position_0.x, world_current_position_0.y, -2.0f, 1.5);
     }
     else
     {
-        level.meta->setPosAndDimm(world_position.x, world_position.y, -2.0f, 1.5);
+        level.meta->setPosAndDimm(world_current_position_0.x, world_current_position_0.y, -2.0f, 1.5);
     }
 }
 
-void MapEditor::addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+void MapEditor::addCoinInFramebufferCoordinates()
 {
-    glm::vec3 world_position;
-    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
-
-    level.coins_vector.push_back(new CircleCoinRender(world_position.x, world_position.y, -2.0f, 0.25));
+    level.coins_vector.push_back(new CircleCoinRender(world_current_position_0.x, world_current_position_0.y, -2.0f, 0.25));
 }
 
-void MapEditor::addMushroomInFramebufferCoordinates(int framebuffer_x, int framebuffer_y)
+void MapEditor::addMushroomInFramebufferCoordinates()
 {
-    glm::vec3 world_position;
-    fbCoordToWorldCoord(framebuffer_x, framebuffer_y, world_position);
-
     glm::vec2 dimm(2.0, 2.0);
-
-    level.mushroom_vector.push_back(new MushroomRenderer(world_position));
+    level.mushroom_vector.push_back(new MushroomRenderer(world_current_position_0));
 }
 
 void MapEditor::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
-    LOGD("MapEditor::systemCallback_mouseButton()\n");
-    pointer_0_coords.x = window_x;
-    pointer_0_coords.y = window_y;
-
-    demo_onMouseButtonCallback(mouseButton, event, window_x, window_y);
-    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
-
-    if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
-    {
-        leftMouseButtonIsPressed = true;
-        fbCoordToWorldCoord(window_x, window_y, touch_0_start_position_in_world);
-    }
-    else if((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_UP))
-    {
-        leftMouseButtonIsPressed = false;
-
-        if(cursorMode == CURSOR_ADD_FANT)
-        {
-            if(fantMode == FANT_GROUND) {
-                addGroundPointInFramebufferCoordinates(window_x, window_y);
-            }else if(fantMode == FANT_COIN)
-            {
-                addCoinInFramebufferCoordinates(window_x, window_y);
-            }
-            else if(fantMode == FANT_MUSHROOM)
-            {
-                addMushroomInFramebufferCoordinates(window_x, window_y);
-            }
-            else if(fantMode == FANT_META)
-            {
-                addMetaInFramebufferCoordinates(window_x, window_y);
-            }
-        }
-        //if pointer in Move mode change to add fant
-        cursorMode = CURSOR_ADD_FANT;
-    }
 
 }
 
-
-
 void MapEditor::systemCallback_mouseMove(int x, int y)
 {
-    LOGD("MapEditor::systemCallback_mouseMove(%d, %d)", x, y);
-    demo_onMouseMoveCallcack(x, y);
-    if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
-        return;
 
-    if(leftMouseButtonIsPressed == false)
-        return;
-
-    pointer_0_coords.x = x;
-    pointer_0_coords.y = y;
-
-
-    glm::vec3 touch_current_position_in_world;
-    fbCoordToWorldCoord(pointer_0_coords.x,pointer_0_coords.y,touch_current_position_in_world);
-
-
-    float delta_cam_x = touch_current_position_in_world.x - touch_0_start_position_in_world.x;
-    float delta_cam_y = touch_current_position_in_world.y - touch_0_start_position_in_world.y;
-
-    if(delta_cam_x > 1.0f || delta_cam_y > 1.0f || delta_cam_x < -1.0f || delta_cam_y < -1.0f)
-    {
-        cursorMode = CURSOR_MOVE_CAMERA;
-    }
-
-    if(cursorMode == CURSOR_MOVE_CAMERA) {
-        camera.changeXPosition(-delta_cam_x);
-        camera.changeYPosition(-delta_cam_y);
-    }
-
-    redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
 }
 
 void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
+    LOGD("onPointerDown %d",pointerId);
+
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
                                SystemAbstraction::EVENT_DOWN, (int) coords->x, (int) coords->y);
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
@@ -391,15 +316,21 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
 
     if(pointerId == 0)
     {
-        pointer_0_coords = *coords;
+        pointer_0_start_coords = *coords;
+        pointer_0_current_coords = *coords;
+
+        fbCoordToWorldCoord(coords->x, coords->y, world_start_position_0);
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_0);
     }
     else if(pointerId == 1)
     {
-        pointer_1_coords = *coords;
+        pointer_1_start_coords = *coords;
+        pointer_1_current_coords = *coords;
+
+        fbCoordToWorldCoord(coords->x, coords->y, world_start_position_1);
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_1);
     }
 
-    if(pointerId == 0)
-        fbCoordToWorldCoord(coords->x, coords->y, touch_0_start_position_in_world);
 
     switch (cursorMode)
     {
@@ -407,6 +338,9 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
         if(pointerId == 1)
         {
             cursorMode = CURSOR_ZOOM;
+
+            start_zoom_distance = glm::distance(world_current_position_1, world_current_position_0);
+            start_camera_zoom = camera.getZoom();
             return;
         }
         break;
@@ -414,6 +348,9 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
         if(pointerId == 1)
         {
             cursorMode = CURSOR_ZOOM;
+
+            start_zoom_distance = glm::distance(world_current_position_1, world_current_position_0);
+            start_camera_zoom = camera.getZoom();
             return;
         }
         break;
@@ -425,30 +362,51 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
     case CURSOR_MOVE_ELEMENT:
         if(pointerId == 0)
         {
-            glm::vec3 world_position;
-            fbCoordToWorldCoord(pointer_0_coords.x, pointer_0_coords.y, world_position);
-            world_position.z = 0.0f;
 
             float minimalDistance;
+            auto minimalDistanceIndex = level.ground_verticles.begin();
 
             for(auto i = level.ground_verticles.begin(); i != level.ground_verticles.end(); i++)
             {
 
-                float distance = glm::distance(world_position, *i);
+                float distance = glm::distance(world_current_position_0, *i);
+
                 if(i == level.ground_verticles.begin())
                 {
                     minimalDistance = distance;
-                    yellowDotIndex = i;
+                    minimalDistanceIndex = i;
                 }
                 else
                 {
                     if(distance < minimalDistance)
                     {
                         minimalDistance = distance;
-                        yellowDotIndex = i;
+                        minimalDistanceIndex = i;
                     }
                 }
             }
+
+            if(minimalDistance < 1.0)
+            {
+                yellowDotIndex = minimalDistanceIndex;
+            }
+            else
+            {
+                cursorMode = CURSOR_MOVE_ELEMENT_MOVE_CAMERA;
+                fbCoordToWorldCoord(coords->x, coords->y, world_move_camera_position_start);
+            }
+
+        }
+        break;
+    case CURSOR_MOVE_ELEMENT_MOVE_CAMERA:
+        if(pointerId == 1)
+        {
+            cursorMode = CURSOR_MOVE_ELEMENT_ZOOM;
+
+            start_zoom_distance = glm::distance(world_current_position_1, world_current_position_0);
+            start_camera_zoom = camera.getZoom();
+
+            //world_zoom_start_middle_position =
         }
         break;
     }
@@ -456,14 +414,19 @@ void MapEditor::systemCallback_OnPointerDown(int pointerId, const struct Pointer
 
 void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords)
 {
+    LOGD("onPointerMove %d",pointerId);
+
     if(pointerId == 0)
     {
-        pointer_0_coords = *coords;
+        pointer_0_current_coords = *coords;
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_0);
     }
     else if(pointerId == 1)
     {
-        pointer_1_coords = *coords;
+        pointer_1_current_coords = *coords;
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_1);
     }
+
 
     demo_onPointerMoveCallback(pointerId, coords);
     if(mapEditorGui_isAnyWindowHovered()) //if input is on window, end process events
@@ -474,53 +437,73 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
     case CURSOR_MOVE_CAMERA:
         if(pointerId == 0)
         {
-            glm::vec3 touch_current_position_in_world;
-            fbCoordToWorldCoord(pointer_0_coords.x,pointer_0_coords.y,touch_current_position_in_world);
 
-            float delta_cam_x = touch_current_position_in_world.x - touch_0_start_position_in_world.x;
-            float delta_cam_y = touch_current_position_in_world.y - touch_0_start_position_in_world.y;
+            float delta_cam_x = world_current_position_0.x - world_move_camera_position_start.x;
+            float delta_cam_y = world_current_position_0.y - world_move_camera_position_start.y;
 
             camera.changeXPosition(-delta_cam_x);
             camera.changeYPosition(-delta_cam_y);
 
-            redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
+            redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(world_current_position_0.x, world_current_position_0.y, 0.0f));
         }
         break;
     case CURSOR_ADD_FANT:
         if(pointerId == 0)
         {
-            glm::vec3 touch_current_position_in_world;
-            fbCoordToWorldCoord(pointer_0_coords.x,pointer_0_coords.y,touch_current_position_in_world);
 
-
-            float delta_cam_x = touch_current_position_in_world.x - touch_0_start_position_in_world.x;
-            float delta_cam_y = touch_current_position_in_world.y - touch_0_start_position_in_world.y;
+            float delta_cam_x = world_current_position_0.x - world_start_position_0.x;
+            float delta_cam_y = world_current_position_0.y - world_start_position_0.y;
 
             if(delta_cam_x > 1.0f*camera.getZoom() || delta_cam_y > 1.0f*camera.getZoom() || delta_cam_x < -1.0f*camera.getZoom() || delta_cam_y < -1.0f*camera.getZoom())
             {
                 cursorMode = CURSOR_MOVE_CAMERA;
+                fbCoordToWorldCoord(pointer_0_current_coords.x,pointer_0_current_coords.y, world_move_camera_position_start);
             }
 
-            redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(touch_current_position_in_world.x, touch_current_position_in_world.y, 0.0f));
+            redDotCursorModel = glm::translate(glm::mat4(1),glm::vec3(world_current_position_0.x, world_current_position_0.y, 0.0f));
         }
         break;
 
     case CURSOR_ZOOM:
-
+        if(pointerId == 0 || pointerId == 1)
+        {
+            float current_distance = glm::distance(world_current_position_1, world_current_position_0);
+            camera.setZoom(start_camera_zoom*(start_zoom_distance/current_distance));
+        }
         break;
 
     case CURSOR_MOVE_ELEMENT:
         if(pointerId == 0)
         {
-            glm::vec3 world_position;
-            fbCoordToWorldCoord(pointer_0_coords.x, pointer_0_coords.y, world_position);
-            world_position.z = 0.0f;
-
-            *yellowDotIndex = world_position;
-
+            *yellowDotIndex = world_current_position_0;
             std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
-
             LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+        }
+        break;
+
+    case CURSOR_MOVE_ELEMENT_MOVE_CAMERA:
+        if(pointerId == 0)
+        {
+            float delta_cam_x = world_current_position_0.x - world_move_camera_position_start.x;
+            float delta_cam_y = world_current_position_0.y - world_move_camera_position_start.y;
+
+            camera.changeXPosition(-delta_cam_x);
+            camera.changeYPosition(-delta_cam_y);
+        }
+            if(pointerId == 1)
+            {
+                float delta_cam_x = world_current_position_1.x - world_move_camera_position_start.x;
+                float delta_cam_y = world_current_position_1.y - world_move_camera_position_start.y;
+
+                camera.changeXPosition(-delta_cam_x);
+                camera.changeYPosition(-delta_cam_y);
+            }
+        break;
+    case CURSOR_MOVE_ELEMENT_ZOOM:
+        if(pointerId == 0 || pointerId == 1)
+        {
+            float current_distance = glm::distance(world_current_position_1, world_current_position_0);
+            camera.setZoom(start_camera_zoom*(start_zoom_distance/current_distance));
         }
         break;
     }
@@ -533,13 +516,22 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
 
 void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
+    LOGD("onPointerUp %d",pointerId);
     if(pointerId == 0)
     {
-        pointer_0_coords = *coords;
+        pointer_0_current_coords = *coords;
+        pointer_0_stop_coords = *coords;
+
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_0);
+        fbCoordToWorldCoord(coords->x, coords->y, world_stop_position_0);
     }
     else if(pointerId == 1)
     {
-        pointer_1_coords = *coords;
+        pointer_1_current_coords = *coords;
+        pointer_1_stop_coords = *coords;
+
+        fbCoordToWorldCoord(coords->x, coords->y, world_current_position_1);
+        fbCoordToWorldCoord(coords->x, coords->y, world_stop_position_1);
     }
     
     demo_onMouseButtonCallback(SystemAbstraction::MOUSE_LEFT_BUTTON,
@@ -549,41 +541,61 @@ void MapEditor::systemCallback_OnPointerUp(int pointerId, const struct PointerCo
     
 
 
-    if(pointerId == 1)
-    {
-        cursorMode = CURSOR_ADD_FANT;
-        return;
-    }
-
-
     switch (cursorMode) {
     case CURSOR_MOVE_CAMERA:
         cursorMode = CURSOR_ADD_FANT;
         break;
     case CURSOR_ADD_FANT:
         if(fantMode == FANT_GROUND) {
-            addGroundPointInFramebufferCoordinates(coords->x, coords->y);
+            addGroundPointInFramebufferCoordinates();
         }
         else if(fantMode == FANT_COIN)
         {
-            addCoinInFramebufferCoordinates(coords->x, coords->y);
+            addCoinInFramebufferCoordinates();
         }
         else if(fantMode == FANT_MUSHROOM)
         {
-            addMushroomInFramebufferCoordinates(coords->x, coords->y);
+            addMushroomInFramebufferCoordinates();
         }
         else if(fantMode == FANT_META)
         {
-            addMetaInFramebufferCoordinates(coords->x, coords->y);
+            addMetaInFramebufferCoordinates();
         }
         break;
 
     case CURSOR_ZOOM:
-
+        if(pointerId == 0)
+        {
+            cursorMode = CURSOR_MOVE_CAMERA;
+            fbCoordToWorldCoord(pointer_1_current_coords.x, pointer_1_current_coords.y, world_move_camera_position_start);
+        }
+        else if(pointerId == 1)
+        {
+            cursorMode = CURSOR_MOVE_CAMERA;
+            fbCoordToWorldCoord(pointer_0_current_coords.x, pointer_0_current_coords.y, world_move_camera_position_start);
+        }
         break;
 
     case CURSOR_MOVE_ELEMENT:
 
+        break;
+    case CURSOR_MOVE_ELEMENT_MOVE_CAMERA:
+        if(pointerId == 0 || pointerId == 1)
+        {
+            cursorMode = CURSOR_MOVE_ELEMENT;
+        }
+        break;
+    case CURSOR_MOVE_ELEMENT_ZOOM:
+        if(pointerId == 0)
+        {
+            cursorMode = CURSOR_MOVE_ELEMENT_MOVE_CAMERA;
+            fbCoordToWorldCoord(pointer_1_current_coords.x, pointer_1_current_coords.y, world_move_camera_position_start);
+        }
+        else if(pointerId == 1)
+        {
+            cursorMode = CURSOR_MOVE_ELEMENT_MOVE_CAMERA;
+            fbCoordToWorldCoord(pointer_0_current_coords.x, pointer_0_current_coords.y, world_move_camera_position_start);
+        }
         break;
     }
 
@@ -680,18 +692,11 @@ void MapEditor::systemCallback_OnKey(SystemAbstraction::ButtonEvent event,System
 
 void MapEditor::fbCoordToWorldCoord(double window_x_pos, double window_y_pos, glm::vec3 & position_in_world)
 {
-    //    Transformation::Config config;
-    //    config.framebuffer.framebuffer_height = framebuffer_height;
-    //    config.framebuffer.framebuffer_width = framebuffer_width;
-    //    config.projection = camera.getProjectionMatrix();
-    //    config.view = camera.getViewMatrix();
-
-    //    Transformation::framebufferCoordinatesToWorldCoordinates(config, window_x_pos, window_y_pos, position_in_world);
-
     glm::vec3 window_position(window_x_pos, framebuffer_height - window_y_pos, 0.0f);
     glm::vec4 viewport(0,0,framebuffer_width, framebuffer_height);
 
     position_in_world = glm::unProject(window_position,camera.getViewMatrix(), camera.getProjectionMatrix(),viewport);
+    position_in_world.z = 0;
 }
 
 

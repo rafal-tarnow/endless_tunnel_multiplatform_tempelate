@@ -49,6 +49,23 @@ public:
         cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
     }
 
+    void setZoom(float zoomm)
+    {
+        zoom = zoomm;
+        if(zoom > 50.0)
+            zoom = 50.0;
+
+        if(zoom < 0.01)
+            zoom = 0.01;
+
+        float aspect = ((float)framebuffer_width)/((float)framebuffer_height);
+
+        box_view_width_in_meters = 30.0f*zoom;
+        box_view_height_in_meters = box_view_width_in_meters/aspect;
+
+        cameraProjectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+    }
+
     GLfloat getZoom()
     {
         return zoom;
@@ -138,7 +155,9 @@ public:
         CURSOR_MOVE_CAMERA = 0,
         CURSOR_ADD_FANT,
         CURSOR_ZOOM,
-        CURSOR_MOVE_ELEMENT
+        CURSOR_MOVE_ELEMENT,
+        CURSOR_MOVE_ELEMENT_MOVE_CAMERA,
+        CURSOR_MOVE_ELEMENT_ZOOM
     }CursorMode;
 
     typedef enum
@@ -157,10 +176,10 @@ public:
     void systemCallback_Render();
     void systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
     void systemCallback_mouseMove(int x, int y);
-    void systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords);
     void systemCallback_OnKey(SystemAbstraction::ButtonEvent event,SystemAbstraction:: Key key, SystemAbstraction::Mods mods, int x, int y);
     void systemCallback_OnChar(unsigned int codepoint);
     void systemCallback_OnPointerDown(int pointerId, const struct PointerCoords *coords) ;
+    void systemCallback_OnPointerMove(int pointerId, const struct PointerCoords *coords);
     void systemCallback_OnPointerUp(int pointerId, const struct PointerCoords *coords);
 
     void gui_onSaveMapButtonClicked();
@@ -173,19 +192,35 @@ public:
 private:
     void loadMap(string mapFilePath);
 
-    void addGroundPointInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
-    void addMetaInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
-    void addCoinInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
-    void addMushroomInFramebufferCoordinates(int framebuffer_x, int framebuffer_y);
+    void addGroundPointInFramebufferCoordinates();
+    void addMetaInFramebufferCoordinates();
+    void addCoinInFramebufferCoordinates();
+    void addMushroomInFramebufferCoordinates();
 
     void updateCameraViewMatrix();
     void get_ndc_coordinates(float current_mouse_x_pos, float current_mouse_y_pos, float * x_ndc, float * y_ndc);
     void fbCoordToWorldCoord(double x_window, double y_window, glm::vec3 & world_position);
-void updateGuiDebugInfo();
+    void updateGuiDebugInfo();
 
-    PointerCoords pointer_0_coords;
-    PointerCoords pointer_1_coords;
+    PointerCoords pointer_0_start_coords;
+    PointerCoords pointer_1_start_coords;
+    glm::vec3 world_start_position_0;
+    glm::vec3 world_start_position_1;
 
+    glm::vec3 world_move_camera_position_start;
+
+    PointerCoords pointer_0_current_coords;
+    PointerCoords pointer_1_current_coords;
+    glm::vec3 world_current_position_0;
+    glm::vec3 world_current_position_1;
+
+    PointerCoords pointer_0_stop_coords;
+    PointerCoords pointer_1_stop_coords;
+    glm::vec3 world_stop_position_0;
+    glm::vec3 world_stop_position_1;
+
+    float start_zoom_distance;
+    float start_camera_zoom;
 
     float framebuffer_width;
     float framebuffer_height;
@@ -232,7 +267,6 @@ void updateGuiDebugInfo();
 
     CursorMode cursorMode = CURSOR_ADD_FANT;
     CursorMode previousCursorMode = CURSOR_ADD_FANT;
-    glm::vec3 touch_0_start_position_in_world;
 
     bool leftMouseButtonIsPressed = false;
 

@@ -194,22 +194,25 @@ static bool CookEvent_Joy(AInputEvent *event, CookedEventCallback callback) {
 }
 
 static bool CookEvent_Motion(AInputEvent *event, CookedEventCallback callback) {
+    LOGD("CookEvent_Motion()");
     int src = AInputEvent_getSource(event);
     int action = AMotionEvent_getAction(event);
     int actionMasked = action & AMOTION_EVENT_ACTION_MASK;
-    int ptrIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >>
-            AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+    int ptrIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
 
     struct CookedEvent ev;
     memset(&ev, 0, sizeof(ev));
 
-    if (actionMasked == AMOTION_EVENT_ACTION_DOWN || actionMasked ==
-            AMOTION_EVENT_ACTION_POINTER_DOWN) {
+    if (actionMasked == AMOTION_EVENT_ACTION_DOWN || actionMasked == AMOTION_EVENT_ACTION_POINTER_DOWN)
+    {
         ev.type = COOKED_EVENT_TYPE_POINTER_DOWN;
-    } else if (actionMasked == AMOTION_EVENT_ACTION_UP || actionMasked ==
-            AMOTION_EVENT_ACTION_POINTER_UP) {
+    }
+    else if(actionMasked == AMOTION_EVENT_ACTION_UP || actionMasked == AMOTION_EVENT_ACTION_POINTER_UP)
+    {
         ev.type = COOKED_EVENT_TYPE_POINTER_UP;
-    } else {
+    }
+    else
+    {
         ev.type = COOKED_EVENT_TYPE_POINTER_MOVE;
     }
 
@@ -218,21 +221,23 @@ static bool CookEvent_Motion(AInputEvent *event, CookedEventCallback callback) {
     ev.motionX = AMotionEvent_getX(event, ptrIndex);
     ev.motionY = AMotionEvent_getY(event, ptrIndex);
 
-    if (ev.motionIsOnScreen) {
+    if (ev.motionIsOnScreen)
+    {
         // use screen size as the motion range
         ev.motionMinX = 0.0f;
         ev.motionMaxX = SceneManager::GetInstance()->GetScreenWidth();
         ev.motionMinY = 0.0f;
         ev.motionMaxY = SceneManager::GetInstance()->GetScreenHeight();
-    } else {
+    }
+    else
+    {
         // look up motion range for this device
-        _look_up_motion_range((int) AInputEvent_getDeviceId(event),
-            (int)AInputEvent_getSource(event), &ev.motionMinX, &ev.motionMaxX,
-            &ev.motionMinY, &ev.motionMaxY);
+        _look_up_motion_range((int) AInputEvent_getDeviceId(event), (int)AInputEvent_getSource(event), &ev.motionMinX, &ev.motionMaxX, &ev.motionMinY, &ev.motionMaxY);
     }
 
     // deliver event
     callback(&ev);
+    int deliveredEventPointerId = ev.motionPointerId; //prevent to deliver event twice
 
     // deliver motion info about other pointers (for multi-touch)
     int ptrCount = AMotionEvent_getPointerCount(event);
@@ -241,7 +246,8 @@ static bool CookEvent_Motion(AInputEvent *event, CookedEventCallback callback) {
         ev.motionX = AMotionEvent_getX(event, i);
         ev.motionY = AMotionEvent_getY(event, i);
         ev.motionPointerId = AMotionEvent_getPointerId(event, i);
-        callback(&ev);        
+        if(deliveredEventPointerId != ev.motionPointerId)
+        callback(&ev);
     }
 
     // If this is a touch-nav event, return false to indicate that we haven't handled it.

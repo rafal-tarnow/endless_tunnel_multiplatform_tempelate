@@ -244,6 +244,7 @@ static bool _cooked_event_callback(struct CookedEvent *event) {
             SystemAbstraction::onPointerUp(event->motionPointerId, &coords);
             return true;
         case COOKED_EVENT_TYPE_POINTER_MOVE:
+            LOGD("case COOKED_EVENT_TYPE_POINTER_MOVE:");
             SystemAbstraction::onPointerMove(event->motionPointerId, &coords);
             return true;
         case COOKED_EVENT_TYPE_KEY_DOWN:

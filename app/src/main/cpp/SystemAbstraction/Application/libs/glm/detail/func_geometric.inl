@@ -146,7 +146,7 @@ namespace detail
 
 	// distance
 	template <typename genType>
-	GLM_FUNC_QUALIFIER genType distance(genType const & p0, genType const & p1)
+	GLM_FUNC_QUALIFIER float distance(genType const & p0, genType const & p1)
 	{
 		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559, "'distance' accepts only floating-point inputs");
 

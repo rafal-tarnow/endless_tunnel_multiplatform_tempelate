@@ -31,16 +31,16 @@ struct nk_context ctx;
 
 static MapEditorGuiEventListener * toolboxEventListener = nullptr;
 
-static string mCursorMode = "Cursor Mode:";
-static string mFantMode = "Fant Mode:";
+static string mCursorMode = "CM:";
+static string mFantMode = "FM:";
 
 void demo_setCursorModeText_dbg(string cursorMode)
 {
-    mCursorMode = "Cursor Mode: " + cursorMode;
+    mCursorMode = /*"CM: " +*/ cursorMode;
 }
 void demo_setFantModeText_dbg(string fantMode)
 {
-    mFantMode = "Fant Mode:" + fantMode;
+    mFantMode = /*"FM: " +*/ fantMode;
 }
 
 /* ===============================================================
