@@ -21,7 +21,9 @@ android {
 
     defaultConfig {
         applicationId 'com.google.sample.tunnel'
-        minSdkVersion 14
+        minSdkVersion 23
+        //minSdkVersion 14
+
         targetSdkVersion 25
         versionCode     1
         versionName    '1.0'
@@ -48,3 +50,6 @@ android.lintOptions {
         abortOnError  = false
 }
 
+dependencies {
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+}
