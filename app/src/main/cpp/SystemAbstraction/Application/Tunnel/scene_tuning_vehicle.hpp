@@ -57,7 +57,7 @@ private:
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
-    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
 
     Config config;
     float dampingRatio = 0.0f;

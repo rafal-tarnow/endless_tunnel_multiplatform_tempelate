@@ -48,7 +48,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     //LEVEL LOAD
     mapFilePath.str("");
     mapFilePath.clear();
-    mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
+    mapFilePath << getStandardCommonReadWriteDirecory() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
 
@@ -74,7 +74,7 @@ void MapEditor::loadMap(string mapFilePath)
 
 MapEditor::~MapEditor()
 {
-    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     Config config;
     config.loadDataFromFileToMemory(configFilePath);
     config.set_uint32_t("currentMapIndex",currentMapIndex);
@@ -610,7 +610,7 @@ void MapEditor::gui_onSaveMapButtonClicked()
     //LEVEL LOAD
     mapFilePath.str("");
     mapFilePath.clear();
-    mapFilePath << getAppConfigFilePath() << "/CapitanAfrica_" << currentMapIndex <<  ".map";
+    mapFilePath << getStandardCommonReadWriteDirecory() << "/CapitanAfrica_" << currentMapIndex <<  ".map";
     mapFileOpenErrno = level.saveLevelToFile(mapFilePath.str());
     if(mapFileOpenErrno)
     {
@@ -645,7 +645,7 @@ void MapEditor::gui_onCurrentMapChanged(unsigned int currentMap)
 
     mapFilePath.str("");
     mapFilePath.clear();
-    mapFilePath << getAppConfigFilePath() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
+    mapFilePath << getStandardCommonReadWriteDirecory() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
 }

@@ -111,7 +111,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height)
     current_fb_width = fb_width;
     current_fb_height = fb_height;
 
-    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     config.loadDataFromFileToMemory(configFilePath);
 
     //GLuint fontSize = 82;
@@ -151,7 +151,7 @@ void Game::loadCoins()
 
 void Game::saveCoins()
 {
-    string configFilePath = getAppConfigFilePath() + "/CapitanAfrica.config";
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     config.set_uint32_t("coins",money);
     config.saveDataFromMemoryToFile(configFilePath);
 }
@@ -171,7 +171,7 @@ void Game::loadLevel()
     Level level;
     uint32_t currentMapIntex = config.get_uint32_t("currentMapIndex");
     stringstream mapFilePath;
-    mapFilePath << getAppConfigFilePath() << "/CapitanAfrica_" << currentMapIntex << ".map";
+    mapFilePath << getStandardCommonReadWriteDirecory() << "/CapitanAfrica_" << currentMapIntex << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
     int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath.str());
 
