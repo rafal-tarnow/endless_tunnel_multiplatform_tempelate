@@ -10,10 +10,10 @@ string getStandardCommonReadWriteDirecory()
 #if   defined(__ANDROID__)
     string text = getenv("EXTERNAL_STORAGE");
     return text;
-#elif defined(__linux__) //&& !defined(__ANDROID__)
+#else// defined(__linux__) //&& !defined(__ANDROID__)
     string text_home = getenv("HOME");
-    string text_user = getenv("USER");
-    return "/" + text_home + "/" + text_user + "/.config";
+    //string text_user = getenv("USER");
+    return "/" + text_home + "/.config";
 #endif
 }
 

@@ -16,8 +16,8 @@ void  printOpenGLVersion();
 
 #define GL_CHECK_ERRORS assert(glGetError()== GL_NO_ERROR);
 
-#define WINDOW_WIDTH 160
-#define WINDOW_HEIGHT 120
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
 
 GLFWwindow *win;
 int window_width = 0;

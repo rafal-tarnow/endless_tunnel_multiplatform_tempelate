@@ -29,7 +29,7 @@ struct backend_device {
     GLint attrib_col;
     GLint uniform_tex;
     GLint uniform_proj;
-    GLuint font_tex;
+    GLuint font_tex = 0;
     void *vertices;
     void *elements;
     GLsizei vs;

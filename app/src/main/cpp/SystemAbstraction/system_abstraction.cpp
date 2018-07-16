@@ -31,7 +31,9 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
     framebuffer_height = fb_height;
     mgr->StartGraphics(framebuffer_width, framebuffer_height);
 
-    demo_init(framebuffer_width, framebuffer_height);
+
+    float scale = framebuffer_height/1080.0f;
+    demo_init(framebuffer_width, framebuffer_height, scale);
 }
 
 void SystemAbstraction::onPause()
@@ -50,6 +52,10 @@ void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int 
     framebuffer_height = fb_height;
     mgr->SetScreenSize(framebuffer_width, framebuffer_height);
     glViewport(0, 0, framebuffer_width, framebuffer_height);
+
+
+    float scale = framebuffer_height/1080.0f;
+    demo_setScale(framebuffer_width, framebuffer_height, scale);
 }
 
 void SystemAbstraction::onRenderFirstFrame()

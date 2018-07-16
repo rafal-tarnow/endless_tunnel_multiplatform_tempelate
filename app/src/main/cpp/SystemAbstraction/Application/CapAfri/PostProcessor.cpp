@@ -12,6 +12,7 @@ const GLchar* vShaderCode =
         "                           \n"
         "varying vec2 TexCoords;    \n"
         "                           \n"
+        "uniform bool  black;           \n"
         "uniform bool  chaos;           \n"
         "uniform bool  confuse;         \n"
         "uniform bool  shake;           \n"
@@ -33,7 +34,7 @@ const GLchar* vShaderCode =
         "    {                                                              \n"
         "        TexCoords = vec2(1.0 - texture.x, 1.0 - texture.y);        \n"
         "    }                                                              \n"
-        "    else if(spin)                                                  \n"
+        "    else if(spin || black)                                                  \n"
         "    {                                                              \n"
         "        TexCoords = texture;                                       \n"
         "    }                                                              \n"
@@ -65,6 +66,7 @@ const GLchar * fShaderCode =
         "uniform int       edge_kernel[9];                                              \n"
         "uniform float     blur_kernel[9];                                              \n"
         "                                                                               \n"
+        "uniform bool  black;           \n"
         "uniform bool chaos;                                                            \n"
         "uniform bool confuse;                                                          \n"
         "uniform bool spin;                                                             \n"
@@ -91,6 +93,12 @@ const GLchar * fShaderCode =
         "    else if(confuse)                                                           \n"
         "    {                                                                          \n"
         "        color = vec4(1.0 - texture2D(textureMap, TexCoords).rgb, 1.0);              \n"
+        "    }                                                                          \n"
+        "    else if(black)                                                           \n"
+        "    {                                                                          \n"
+        "       color = texture2D(textureMap, TexCoords);                                   \n"
+        "       float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;     \n"
+        "       color = vec4(average, average, average, 1.0);                               \n"
         "    }                                                                          \n"
         "    else if(shake)                                                             \n"
         "    {                                                                          \n"
@@ -138,7 +146,7 @@ const GLchar * fShaderCode =
 
 
 PostProcessor::PostProcessor(GLuint width, GLuint height)
-    : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE),Spin(GL_FALSE), Shake(GL_FALSE),
+    : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE),Spin(GL_FALSE),Black(GL_FALSE), Shake(GL_FALSE),
       TWidth (0), THeight (0), Internal_Format (GL_RGB), Image_Format (GL_RGB), Wrap_S (GL_CLAMP_TO_EDGE), Wrap_T (GL_CLAMP_TO_EDGE), Filter_Min (GL_LINEAR), Filter_Max (GL_LINEAR)
 {
 
@@ -201,7 +209,7 @@ PostProcessor::PostProcessor(GLuint width, GLuint height)
     };
     glUniform1fv(glGetUniformLocation(this->PostProcessingShader.ID, "blur_kernel"), 9, blur_kernel);
 
-     this->PostProcessingShader.SetFloat("spin_inversion_param", 0.0);
+    this->PostProcessingShader.SetFloat("spin_inversion_param", 0.0);
 }
 
 void PostProcessor::BeginRender()
@@ -227,6 +235,7 @@ void PostProcessor::Render(GLfloat time)
     this->PostProcessingShader.SetInteger("confuse", this->Confuse);
     this->PostProcessingShader.SetInteger("chaos", this->Chaos);
     this->PostProcessingShader.SetInteger("spin", this->Spin);
+    this->PostProcessingShader.SetInteger("black", this->Black);
     this->PostProcessingShader.SetInteger("shake", this->Shake);
     // Render textured quad
     glActiveTexture(GL_TEXTURE0);

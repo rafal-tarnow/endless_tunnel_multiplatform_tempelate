@@ -52,6 +52,9 @@ int Level::loadLevelFromFile(string levelFilePath)
         mushroom_vector.push_back(new MushroomRenderer(mushroom_position));
     }
 
+    glm::vec3 metaPosition = config.get_glm_vec3("metaPosition");
+    meta = new MetaRenderer(metaPosition.x, metaPosition.y, metaPosition.z, 0.5);
+
     return 0;
 }
 

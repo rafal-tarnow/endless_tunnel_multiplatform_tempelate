@@ -25,7 +25,7 @@ MetaRenderer::MetaRenderer(float x, float y, float z, float radius)
 
     if(instancesCount == 1)
     {
-        coinTextureId = TextureManager::getTextureId("textures/meta.jpg");
+        coinTextureId = TextureManager::getTextureId("textures/meta.png");
         DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
     }
 }

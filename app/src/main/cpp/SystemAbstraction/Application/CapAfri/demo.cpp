@@ -33,6 +33,7 @@ static MapEditorGuiEventListener * toolboxEventListener = nullptr;
 
 static string mCursorMode = "CM:";
 static string mFantMode = "FM:";
+static float scale = 1.0f;
 
 void demo_setCursorModeText_dbg(string cursorMode)
 {
@@ -51,7 +52,7 @@ void demo_setFantModeText_dbg(string fantMode)
 static void ui_header(struct nk_context *ctx, const char *title)
 {
     nk_style_set_font(ctx, &font_22->handle);
-    nk_layout_row_dynamic(ctx, 20, 1);
+    nk_layout_row_dynamic(ctx, 20*scale, 1);
     nk_label(ctx, title, NK_TEXT_CENTERED);
 }
 
@@ -74,20 +75,20 @@ void toolbox_demo(struct nk_context *ctx)
 
     nk_style_set_font(ctx, &font_30->handle);
 
-    nk_begin(ctx, "Toolbox", nk_rect(0,0,360,630),NK_WINDOW_BORDER| NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE);
+    nk_begin(ctx, "Toolbox", nk_rect(0,0,360.0f*scale,630.0f*scale),NK_WINDOW_BORDER|/* NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE |*/ NK_WINDOW_TITLE);
     {
-        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_layout_row_dynamic(ctx, 20*scale, 1);
         nk_label(ctx, mCursorMode.c_str(), NK_TEXT_LEFT);
 
-        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_layout_row_dynamic(ctx, 20*scale, 1);
         nk_label(ctx, mFantMode.c_str(), NK_TEXT_LEFT);
 
 
         ui_header(ctx, "Cursor Mode");
 
-        ui_widget(ctx, 40);
-        if (nk_combo_begin_image_label(ctx, items[selected_icon], images[selected_icon], nk_vec2(nk_widget_width(ctx), 200))) {
-            nk_layout_row_dynamic(ctx, 35, 1);
+        ui_widget(ctx, 40*scale);
+        if (nk_combo_begin_image_label(ctx, items[selected_icon], images[selected_icon], nk_vec2(nk_widget_width(ctx), 200*scale))) {
+            nk_layout_row_dynamic(ctx, 35*scale, 1);
             for (i = 0; i < 5; ++i)
                 if (nk_combo_item_image_label(ctx, images[i], items[i], NK_TEXT_RIGHT))
                 {
@@ -103,11 +104,11 @@ void toolbox_demo(struct nk_context *ctx)
 
         ui_header(ctx, "Select map to edit:");
 
-        nk_layout_row_template_begin(ctx, 80);
+        nk_layout_row_template_begin(ctx, 80*scale);
         {
-            nk_layout_row_template_push_static(ctx, 80);
-            nk_layout_row_template_push_variable(ctx, 80);
-            nk_layout_row_template_push_static(ctx, 80);
+            nk_layout_row_template_push_static(ctx, 80*scale);
+            nk_layout_row_template_push_variable(ctx, 80*scale);
+            nk_layout_row_template_push_static(ctx, 80*scale);
         }
         nk_layout_row_template_end(ctx);
 
@@ -133,7 +134,7 @@ void toolbox_demo(struct nk_context *ctx)
         static const float ratio[] = {0.0f, 1.0f};
         nk_style_set_font(ctx, &font_30->handle);
 
-        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_layout_row(ctx, NK_DYNAMIC, 105*scale, 2, ratio);
         nk_spacing(ctx, 1);
 
         if (nk_button_label(ctx, "Save map"))
@@ -144,7 +145,7 @@ void toolbox_demo(struct nk_context *ctx)
             }
         }
 
-        nk_layout_row(ctx, NK_DYNAMIC, 105, 2, ratio);
+        nk_layout_row(ctx, NK_DYNAMIC, 105*scale, 2, ratio);
         nk_spacing(ctx, 1);
 
         if (nk_button_label(ctx, "Clear map"))
@@ -159,11 +160,11 @@ void toolbox_demo(struct nk_context *ctx)
 
         ui_header(ctx, "ZOOM");
 
-        nk_layout_row_template_begin(ctx, 80);
+        nk_layout_row_template_begin(ctx, 80*scale);
         {
-            nk_layout_row_template_push_static(ctx, 80);
-            nk_layout_row_template_push_variable(ctx, 80);
-            nk_layout_row_template_push_static(ctx, 80);
+            nk_layout_row_template_push_static(ctx, 80*scale);
+            nk_layout_row_template_push_variable(ctx, 80*scale);
+            nk_layout_row_template_push_static(ctx, 80*scale);
         }
         nk_layout_row_template_end(ctx);
 
@@ -192,45 +193,49 @@ struct nk_image icon_load_from_TextureManager(string fileName)
     return nk_image_id((int)tex);
 }
 
-void demo_init(int width, int height)
+
+void prepare_font_atlas()
 {
+    const void *image; int w, h;
+    struct nk_font_config cfg = nk_font_config(0);
+    cfg.oversample_h = 3; cfg.oversample_v = 2;
+    // Loading one font with different heights is only required if you want higher
+    // quality text otherwise you can just set the font height directly
+    // e.g.: ctx->style.font.height = 20.
+    nk_font_atlas_init_default(&atlas);
+    nk_font_atlas_begin(&atlas);
+
+#include "./data_headers/extra_font/Roboto-Regular.ttf.hpp"
+
+    font_14 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 14.0f*scale, &cfg);
+    font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f*scale, &cfg);
+    font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f*scale, &cfg);
+    font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f*scale, &cfg);
+    font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f*scale, &cfg);
+
+    image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
+    backend_upload_atlas(&backend_device, image, w, h);
+    nk_font_atlas_end(&atlas, nk_handle_id((int)backend_device.font_tex), &backend_device.null);
+}
+
+void demo_init(int width, int height, float mscale)
+{
+    scale = mscale;
     glViewport(0, 0, width, height);
 
 
-    {/* GUI */
-        backend_init(&backend_device);
-        {
-            const void *image; int w, h;
-            struct nk_font_config cfg = nk_font_config(0);
-            cfg.oversample_h = 3; cfg.oversample_v = 2;
-            // Loading one font with different heights is only required if you want higher
-            // quality text otherwise you can just set the font height directly
-            // e.g.: ctx->style.font.height = 20.
-            nk_font_atlas_init_default(&atlas);
-            nk_font_atlas_begin(&atlas);
+    backend_init(&backend_device);
+    prepare_font_atlas();
+    nk_init_default(&ctx, &font_14->handle);
 
-#           include "./data_headers/extra_font/Roboto-Regular.ttf.hpp"
-            font_14 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 14.0f, &cfg);
-            font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f, &cfg);
-            font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f, &cfg);
-            font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f, &cfg);
-            font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f, &cfg);
-
-            image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
-            backend_upload_atlas(&backend_device, image, w, h);
-            nk_font_atlas_end(&atlas, nk_handle_id((int)backend_device.font_tex), &backend_device.null);
-        }
-        nk_init_default(&ctx, &font_14->handle);
-    }
 
     /* icons */
     glEnable(GL_TEXTURE_2D);
 
-
     images[0] = icon_load_from_TextureManager("textures/red_dot.png");
     images[1] = icon_load_from_TextureManager("textures/coin_2.png");
     images[2] = icon_load_from_TextureManager("textures/Tango_Style_Mushroom_icon.svg.png");
-    images[3] = icon_load_from_TextureManager("textures/meta.jpg");
+    images[3] = icon_load_from_TextureManager("textures/meta.png");
     images[4] = icon_load_from_TextureManager("textures/move.png");
     prev_png = icon_load_from_TextureManager("textures/prev.png");
     next_png = icon_load_from_TextureManager("textures/next.png");
@@ -238,7 +243,15 @@ void demo_init(int width, int height)
     minus_png = icon_load_from_TextureManager("textures/minus_grey.png");
 }
 
+void demo_setScale(int width, int height, float mscale)
+{
+    scale = mscale;
+    glViewport(0, 0, width, height);
 
+    prepare_font_atlas();
+
+    LOGD("scale = %f\n", scale);
+}
 
 struct nk_context * demo_getContext()
 {

@@ -24,7 +24,9 @@ public:
 enum theme {THEME_BLACK, THEME_WHITE, THEME_RED, THEME_BLUE, THEME_DARK};
 void set_style(struct nk_context *ctx, enum theme theme);
 
-void demo_init(int width, int height);
+void demo_init(int width, int height, float scale);
+void demo_setScale(int width, int height, float scale);
+
 struct nk_context * demo_getContext();
 
 void demo_onCharCallback(unsigned int codepoint);

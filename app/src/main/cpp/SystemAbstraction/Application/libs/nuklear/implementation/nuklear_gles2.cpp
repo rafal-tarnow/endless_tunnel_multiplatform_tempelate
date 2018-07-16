@@ -152,6 +152,12 @@ void backend_init(struct backend_device *dev)
 
 void backend_upload_atlas(struct backend_device *dev, const void *image, int width, int height)
 {
+    if(dev->font_tex != 0) //if any atlas previously was inited, delete it
+    {
+        glDeleteTextures(1, &dev->font_tex);
+        dev->font_tex = 0;
+    }
+
     glGenTextures(1, &dev->font_tex);
     glBindTexture(GL_TEXTURE_2D, dev->font_tex);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

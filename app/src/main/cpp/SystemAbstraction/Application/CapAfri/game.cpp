@@ -64,7 +64,7 @@ void Game::BeginContact(b2Contact* contact)
                 pAudioManager->PlaySFX(m_mushroomHandle);
             }
             mushroomsToDelete.insert(static_cast<Mushroom *>(object_1));
-            mEffects->Spin = GL_TRUE;
+            mEffects->Black = GL_TRUE;
             mushroomEffectStartTime = current_time;
             return;
         }
@@ -78,7 +78,7 @@ void Game::BeginContact(b2Contact* contact)
                 pAudioManager->PlaySFX(m_mushroomHandle);
             }
             mushroomsToDelete.insert(static_cast<Mushroom *>(object));
-            mEffects->Spin = GL_TRUE;
+            mEffects->Black = GL_TRUE;
             mushroomEffectStartTime = current_time;
             return;
         }
@@ -319,11 +319,11 @@ void Game::updateGameLogics()
         mushroomsToDelete.clear();
     }
 
-    if(mEffects->Spin == GL_TRUE)
+    if(mEffects->Black == GL_TRUE)
     {
-        if((current_time - mushroomEffectStartTime) > 12.0)
+        if((current_time - mushroomEffectStartTime) > 120.0)
         {
-            mEffects->Spin = GL_FALSE;
+            mEffects->Black = GL_FALSE;
         }
     }
 }
@@ -341,7 +341,7 @@ void Game::systemCallback_Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if(mEffects->Spin == GL_TRUE)
+    if(mEffects->Black == GL_TRUE)
         mEffects->BeginRender();
     {
         if(car != nullptr)
@@ -354,7 +354,7 @@ void Game::systemCallback_Render()
         renderWorldBodies();
         renderHUD();
     }
-    if(mEffects->Spin == GL_TRUE)
+    if(mEffects->Black == GL_TRUE)
     {
         mEffects->EndRender();
         mEffects->Render (current_time);
