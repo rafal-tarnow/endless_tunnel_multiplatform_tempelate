@@ -9,10 +9,10 @@
 
 class MetaRenderer : public RenderableGameObject{
 public:
-    MetaRenderer(float x, float y, float z, float radius);
+    MetaRenderer(glm::vec3, float radius);
     ~MetaRenderer();
 
-    void setPosAndDimm(float x, float y, float z, float radius);
+    void setPosAndDimm(glm::vec3, float radius);
 
     void render(glm::mat4 projection, glm::mat4 view);
     void drawCircleSquare(b2Vec2 position,float radius,float angle);
@@ -22,17 +22,16 @@ public:
 protected:
     static DE_Rectangle rectangle;
     static uint32_t instancesCount;
+    glm::vec3 pos;
 private:
     static GLuint coinTextureId;
-
     float m_radius;
-    glm::vec3 pos;
 };
 
 
 class Meta: public MetaRenderer{
 public:
-    Meta(float32 x,float32 y, float z, float32 radius, b2World* world);
+    Meta(glm::vec3 position, float32 radius, b2World* world);
     ~Meta();
     void render(glm::mat4 projection, glm::mat4 view);
 private:

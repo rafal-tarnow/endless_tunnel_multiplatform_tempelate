@@ -275,11 +275,11 @@ void MapEditor::addMetaInFramebufferCoordinates()
 {
     if(level.meta == nullptr)
     {
-        level.meta = new MetaRenderer(world_current_position_0.x, world_current_position_0.y, -2.0f, 1.5);
+        level.meta = new MetaRenderer(glm::vec3(world_current_position_0.x, world_current_position_0.y, -2.0f), 1.5);
     }
     else
     {
-        level.meta->setPosAndDimm(world_current_position_0.x, world_current_position_0.y, -2.0f, 1.5);
+        level.meta->setPosAndDimm(glm::vec3(world_current_position_0.x, world_current_position_0.y, -2.0f), 1.5);
     }
 }
 

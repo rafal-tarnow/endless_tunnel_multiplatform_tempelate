@@ -13,11 +13,9 @@ uint32_t MetaRenderer::instancesCount = 0;
 GLuint MetaRenderer::coinTextureId = 0;
 DE_Rectangle MetaRenderer::rectangle;
 
-MetaRenderer::MetaRenderer(float x, float y, float z, float radius)
+MetaRenderer::MetaRenderer(glm::vec3 position, float radius)
 {
-    pos.x = x;
-    pos.y = y;
-    pos.z = z;
+    pos = position;
     m_radius = radius;
 
     instancesCount++;
@@ -30,11 +28,9 @@ MetaRenderer::MetaRenderer(float x, float y, float z, float radius)
     }
 }
 
-void MetaRenderer::setPosAndDimm(float x, float y, float z, float radius)
+void MetaRenderer::setPosAndDimm(glm::vec3 position, float radius)
 {
-    pos.x = x;
-    pos.y = y;
-    pos.z = z;
+    pos = position;
     m_radius = radius;
 }
 
@@ -84,11 +80,11 @@ void MetaRenderer::render(glm::mat4 projection, glm::mat4 view)
 
 
 
-Meta::Meta(float32 x,float32 y, float z, float32 radius, b2World* world) : MetaRenderer(x, y, z, radius){
+Meta::Meta(glm::vec3 position, float32 radius, b2World* world) : MetaRenderer(position, radius){
     GameObject::setObjectType(OBJECT_COIN);
 
     b2BodyDef bodydef;
-    bodydef.position.Set(x,y);
+    bodydef.position.Set(pos.x,pos.y);
     bodydef.type=b2_dynamicBody;
     bodydef.gravityScale = 0.0f;
     body=world->CreateBody(&bodydef);
