@@ -12,6 +12,7 @@
 #include "../system_abstraction.hpp"
 #include "./Bodies/coin_circle_body.hpp"
 #include "./Bodies/mushroom.hpp"
+#include "./Bodies/meta_body.hpp"
 #include <set>
 #include <list>
 #include <OpenSLWrap.hpp>
@@ -70,11 +71,14 @@ private:
     PostProcessor* mEffects;
 
     Car * car = nullptr;
+    Meta * meta = nullptr;
     list<CircleCoin *> coinsList;
     set<CircleCoin *> coinsToDelete;
     list<Mushroom *> mushroomList;
     set<Mushroom *> mushroomsToDelete;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
+
+
 
     glm::mat4 projectionMatrix = glm::mat4(1);
     glm::mat4 viewMatrix = glm::mat4(1);

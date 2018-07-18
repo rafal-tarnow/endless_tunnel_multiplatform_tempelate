@@ -187,6 +187,9 @@ void Game::loadLevel()
         coinsList.push_back(new CircleCoin(pos.x, pos.y, -1.0f, 0.25, world));
     }
 
+    glm::vec3 metaPosition = level.meta->getPosition();
+    meta = new Meta(metaPosition, 1.5, world);
+
     for(auto & mushroom : level.mushroom_vector)
     {
         mushroomList.push_back(new Mushroom(mushroom->getPosition(), world));
@@ -208,6 +211,9 @@ void Game::loadAudio()
 
 Game::~Game()
 {
+    delete meta;
+    meta = nullptr;
+
     for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
     {
         delete (*it);
@@ -372,6 +378,9 @@ void Game::renderWorldBodies()
 {
     if(car)
         car->render(projectionMatrix, viewMatrix);
+
+    if(meta)
+        meta->render(projectionMatrix, viewMatrix);
 
     for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
     {

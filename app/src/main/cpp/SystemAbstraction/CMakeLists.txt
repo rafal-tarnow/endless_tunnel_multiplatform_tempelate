@@ -17,6 +17,9 @@ set(GLM_STATIC_LIBRARY_ENABLE TRUE)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Application/libs)
 add_subdirectory(Application/libs/glm)
 
+include_directories(Application/libs/lib_system)
+add_subdirectory(Application/libs/lib_system)
+
 #LIB_CONFIG
 include_directories(Application/libs/lib_config)
 add_subdirectory(Application/libs/lib_config)
@@ -28,7 +31,6 @@ add_subdirectory(Application/libs/libfreetype)
 
 include_directories(Application/libs/SOIL/src)
 add_subdirectory(Application/libs/SOIL)
-
 
 include_directories(Application)
 add_subdirectory(Application/CapAfri)
@@ -70,6 +72,7 @@ target_include_directories(system_abstraction PRIVATE
 
 
 target_link_libraries(system_abstraction
+    lib_system
     CapAfri
     library_opengles_2
     Box2D

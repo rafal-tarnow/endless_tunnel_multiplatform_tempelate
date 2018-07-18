@@ -53,7 +53,7 @@ int Level::loadLevelFromFile(string levelFilePath)
     }
 
     glm::vec3 metaPosition = config.get_glm_vec3("metaPosition");
-    meta = new MetaRenderer(metaPosition, 0.5);
+    meta = new MetaRenderer(metaPosition, 1.5);
 
     return 0;
 }
