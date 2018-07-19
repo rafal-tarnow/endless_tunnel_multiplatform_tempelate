@@ -90,6 +90,7 @@ private:
     AudioManager::AudioHandle m_musicHandle;
     AudioManager::AudioHandle m_coinHandle;
     AudioManager::AudioHandle m_mushroomHandle;
+    AudioManager::AudioHandle m_levelCompletedHandle;
 
     Config config;
 

@@ -83,6 +83,28 @@ void Game::BeginContact(b2Contact* contact)
             return;
         }
 
+        //CHECK IS CAR COLLIDE WITH META
+        if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_META))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
+            {
+                pAudioManager->PlaySFX(m_levelCompletedHandle);
+            }
+            return;
+        }
+
+        //CHECK IS META COLLIDE WITH CAR
+        if ((object->getObjectType() == GameObject::OBJECT_META) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
+        {
+            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
+            if (pAudioManager)
+            {
+                pAudioManager->PlaySFX(m_levelCompletedHandle);
+            }
+            return;
+        }
+
     }
 
     //LOGD("<-- Game::BeginContact(...)");
@@ -175,7 +197,7 @@ void Game::loadLevel()
 #warning "dorobic obsluge bledu otwarcia pliku"
     int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath.str());
 
-       groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
+    groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 
 
     //TODO dorobic delete circle coin
@@ -207,6 +229,9 @@ void Game::loadAudio()
 
     std::string mushroomEffectName("sounds/mushroom.wav");
     m_mushroomHandle = audioManager.CreateSFX(mushroomEffectName, false);
+
+    std::string levelCompletedEffectName("sounds/level_up.wav");
+    m_levelCompletedHandle = audioManager.CreateSFX(levelCompletedEffectName, false);
 }
 
 Game::~Game()

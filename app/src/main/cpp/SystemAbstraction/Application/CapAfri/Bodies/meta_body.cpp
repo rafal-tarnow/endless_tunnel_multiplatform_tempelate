@@ -81,7 +81,7 @@ void MetaRenderer::render(glm::mat4 projection, glm::mat4 view)
 
 
 Meta::Meta(glm::vec3 position, float32 radius, b2World* world) : MetaRenderer(position, radius){
-    GameObject::setObjectType(OBJECT_COIN);
+    GameObject::setObjectType(OBJECT_META);
 
     b2BodyDef bodydef;
     bodydef.position.Set(pos.x,pos.y);

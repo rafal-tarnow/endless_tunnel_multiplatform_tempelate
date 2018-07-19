@@ -14,6 +14,7 @@
 using namespace  std;
 
 static FPS fps;
+static DeltaTimer deltaTimer;
 static SceneManager *mgr = SceneManager::GetInstance();
 static TextRenderer_v2 * textRenderer_v2;
 
@@ -76,15 +77,36 @@ void SystemAbstraction::onRenderFirstFrame()
 
 void SystemAbstraction::onRenderFrame()
 {
+//    deltaTimer.start();
     mgr->DoFrame();
 
-    double fpsd = fps.getFPS();
+//    static double render_time_ms;
+//    static double fpsd;
+//    static double render_time_ms_copy;
+//    static double fpsd_copy;
 
-    stringstream text;
+//    render_time_ms = deltaTimer.getTimeFromStart_ms();
+//    fpsd = fps.getFPS();
 
-    text << std::fixed << std::setprecision(0) << "FPS "<< fpsd;
+//static int skip = 0;
+//    skip++;
 
-    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.75, framebuffer_height*0.9);
+//    if(!(skip % 20))
+//    {
+//        render_time_ms_copy = render_time_ms;
+//        fpsd_copy = fpsd;
+//    }
+
+//    stringstream text;
+
+//    text << std::fixed << std::setprecision(1) << "FPS "<< fpsd_copy;
+
+//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.75, framebuffer_height*0.9);
+
+//    text.str("");
+//    text << "Rnd t: " << render_time_ms_copy <<"[ms]";
+//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.55, framebuffer_height*0.8);
+
 }
 
 void SystemAbstraction::onMouseScroll(double yoffset)

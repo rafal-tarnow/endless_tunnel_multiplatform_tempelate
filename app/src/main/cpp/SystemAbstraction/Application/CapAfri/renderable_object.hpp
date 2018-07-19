@@ -13,6 +13,7 @@ public:
         OBJECT_COIN,
         OBJECT_CAR,
         OBJECT_MUSHROOM,
+        OBJECT_META,
         OBJECT_UNINIT,
     }ObjectType;
 
