@@ -118,7 +118,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height)
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(current_fb_width,current_fb_height);
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
-    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

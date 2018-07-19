@@ -41,8 +41,8 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
     textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
-    Resource font_design_graffiti_agentorange("fonts/arial.ttf");
-    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    Resource font_arial("fonts/arial.ttf");
+    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
 }
 
 void SystemAbstraction::onPause()

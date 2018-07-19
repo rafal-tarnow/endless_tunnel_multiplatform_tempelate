@@ -127,7 +127,7 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
     //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
     textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
-    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 }
 
 void TuningVehicleScene::OnKillGraphics()

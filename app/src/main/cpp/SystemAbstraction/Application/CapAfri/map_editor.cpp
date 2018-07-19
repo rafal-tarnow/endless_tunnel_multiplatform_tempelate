@@ -35,7 +35,7 @@ MapEditor::MapEditor(int fb_width, int fb_height)
     textRenderer_v2 = new TextRenderer_v2(fb_width, fb_height);
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
 
-    textRenderer_v2->LoadFromMemory(font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fb_height*0.06);
+    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fb_height*0.06);
 
     //COORDINATES LINES
     glm::vec4 green_color(0.0f, 1.0f, 0.0f, 1.0f);
