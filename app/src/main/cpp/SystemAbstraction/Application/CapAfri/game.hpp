@@ -16,6 +16,7 @@
 #include <set>
 #include <list>
 #include <OpenSLWrap.hpp>
+#include "camera.hpp"
 #include "PostProcessor.hpp"
 
 
@@ -49,16 +50,11 @@ private:
     b2World * getWorld();
     void renderWorldBodies();
     void renderHUD();
-    void windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out);
     float current_fb_width;
     float current_fb_height;
 
-    float camera_x_position_m = 1.0f;
-    float camera_y_position_m = 1.5f;
+    Camera camWorld;
 
-    float box_view_width_in_meters = 0;
-    float box_view_height_in_meters = 0;
-    float box_zero_offset_meters = 0.0f;
 
     float mushroomEffectStartTime = 0.0f;
     float current_time = 0.0;
@@ -78,20 +74,13 @@ private:
     set<Mushroom *> mushroomsToDelete;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
-
-
-    glm::mat4 projectionMatrix = glm::mat4(1);
-    glm::mat4 viewMatrix = glm::mat4(1);
-
-    GLfloat zoom = 1.0f;
-
     uint32_t money = 0;
 
+    AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
     AudioManager::AudioHandle m_musicHandle;
     AudioManager::AudioHandle m_coinHandle;
     AudioManager::AudioHandle m_mushroomHandle;
     AudioManager::AudioHandle m_levelCompletedHandle;
 
     Config config;
-
 };

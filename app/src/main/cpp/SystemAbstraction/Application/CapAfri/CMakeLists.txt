@@ -17,6 +17,7 @@ add_library (CapAfri STATIC
     Bodies/ground_body_chain.cpp
     Bodies/mushroom.cpp
     game.cpp
+    camera.cpp
     map_editor.cpp
     level.cpp
     demo.cpp

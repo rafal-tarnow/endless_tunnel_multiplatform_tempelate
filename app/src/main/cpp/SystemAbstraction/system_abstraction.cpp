@@ -84,28 +84,28 @@ void SystemAbstraction::onRenderFrame()
 //    static double fpsd;
 //    static double render_time_ms_copy;
 //    static double fpsd_copy;
-
+//
 //    render_time_ms = deltaTimer.getTimeFromStart_ms();
 //    fpsd = fps.getFPS();
-
+//
 //static int skip = 0;
 //    skip++;
-
+//
 //    if(!(skip % 20))
 //    {
 //        render_time_ms_copy = render_time_ms;
 //        fpsd_copy = fpsd;
 //    }
-
+//
 //    stringstream text;
-
+//
 //    text << std::fixed << std::setprecision(1) << "FPS "<< fpsd_copy;
-
-//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.75, framebuffer_height*0.9);
-
+//
+//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.95, framebuffer_height*0.9, TextRenderer_v2::TEXT_LEFT);
+//
 //    text.str("");
 //    text << "Rnd t: " << render_time_ms_copy <<"[ms]";
-//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.55, framebuffer_height*0.8);
+//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.95, framebuffer_height*0.8, TextRenderer_v2::TEXT_LEFT);
 
 }
 

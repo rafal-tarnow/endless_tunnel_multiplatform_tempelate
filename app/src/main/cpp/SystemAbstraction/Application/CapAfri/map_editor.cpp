@@ -5,6 +5,7 @@
 #include <system_paths.hpp>
 #include <system_log.hpp>
 #include "demo.hpp"
+#include "camera.hpp"
 #include "../system_abstraction.hpp"
 #include "transformation.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
@@ -12,7 +13,7 @@
 
 using namespace std;
 
-MapEditor::MapEditor(int fb_width, int fb_height)
+MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
 {
     framebuffer_width = fb_width;
     framebuffer_height = fb_height;
@@ -111,16 +112,16 @@ void MapEditor::systemCallback_Render()
         glm::vec3 camPosition = camera.getPosition();
         camPosition.y += camera.getViewHeight()*0.5*0.7;
         carRenderer->setPosition(camPosition);
-        carRenderer->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+        carRenderer->render(camera.projection(), camera.view());
 
         //DRAW GRID LINES
         glLineWidth(1.0);
 
-        glm::mat4 PVM = camera.getProjectionMatrix()*camera.getViewMatrix()*glm::mat4(1);
+        glm::mat4 PVM = camera.projection()*camera.view()*glm::mat4(1);
         gridLines->Render(glm::value_ptr(PVM), glm::value_ptr(glm::mat4(1)), glm::value_ptr(glm::mat4(1)));
 
-        redDotPointerRectangle.projection = camera.getProjectionMatrix();
-        redDotPointerRectangle.view = camera.getViewMatrix();
+        redDotPointerRectangle.projection = camera.projection();
+        redDotPointerRectangle.view = camera.view();
         redDotPointerRectangle.model = redDotCursorModel;
         DE_drawRectangle(&redDotPointerRectangle);
 
@@ -132,14 +133,14 @@ void MapEditor::systemCallback_Render()
             DE_drawRectangle(&redDotPointerRectangle);
         }
 
-        yellowDotRectangle.projection = camera.getProjectionMatrix();
-        yellowDotRectangle.view = camera.getViewMatrix();
+        yellowDotRectangle.projection = camera.projection();
+        yellowDotRectangle.view = camera.view();
         if((cursorMode == CURSOR_MOVE_ELEMENT) && (yellowDotIndex != level.ground_verticles.end()))
             yellowDotRectangle.model = glm::translate(glm::mat4(1), *yellowDotIndex);
         DE_drawRectangle(&yellowDotRectangle);
 
         for (auto & coin : level.coins_vector){
-            coin->render(camera.getProjectionMatrix(),camera.getViewMatrix());
+            coin->render(camera.projection(),camera.view());
         }
 
 
@@ -147,30 +148,30 @@ void MapEditor::systemCallback_Render()
         {
             for( auto & mushroom : level.mushroom_vector)
             {
-                mushroom->render(camera.getProjectionMatrix(), camera.getViewMatrix());
+                mushroom->render(camera.projection(), camera.view());
             }
         }
 
         if(level.meta != nullptr)
         {
-            level.meta->render(camera.getProjectionMatrix(),camera.getViewMatrix());
+            level.meta->render(camera.projection(),camera.view());
         }
 
 
         //DRAW COORDINATES LINES
-        x_lineStrip.projection = camera.getProjectionMatrix();
-        x_lineStrip.view = camera.getViewMatrix();
+        x_lineStrip.projection = camera.projection();
+        x_lineStrip.view = camera.view();
         x_lineStrip.model = glm::mat4(1);
         LS_draw(&x_lineStrip, 2);
 
-        y_lineStrip.projection = camera.getProjectionMatrix();
-        y_lineStrip.view = camera.getViewMatrix();
+        y_lineStrip.projection = camera.projection();
+        y_lineStrip.view = camera.view();
         y_lineStrip.model = glm::mat4(1);
         LS_draw(&y_lineStrip, 2);
 
         //DRAW GROUND LINE
-        lineStripGround.projection = camera.getProjectionMatrix();
-        lineStripGround.view = camera.getViewMatrix();
+        lineStripGround.projection = camera.projection();
+        lineStripGround.view = camera.view();
         lineStripGround.model = glm::mat4(1);
         LS_draw(&lineStripGround, 2);
 
@@ -695,7 +696,7 @@ void MapEditor::fbCoordToWorldCoord(double window_x_pos, double window_y_pos, gl
     glm::vec3 window_position(window_x_pos, framebuffer_height - window_y_pos, 0.0f);
     glm::vec4 viewport(0,0,framebuffer_width, framebuffer_height);
 
-    position_in_world = glm::unProject(window_position,camera.getViewMatrix(), camera.getProjectionMatrix(),viewport);
+    position_in_world = glm::unProject(window_position,camera.view(), camera.projection(),viewport);
     position_in_world.z = 0;
 }
 

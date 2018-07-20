@@ -33,7 +33,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS CAR COLLIDE WITH COIN
         if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_COIN))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_coinHandle);
@@ -45,7 +44,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS COIN COLLIDE WITH CAR
         if ((object->getObjectType() == GameObject::OBJECT_COIN) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_coinHandle);
@@ -58,7 +56,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS CAR COLLIDE WITH MUSHROOM
         if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_MUSHROOM))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_mushroomHandle);
@@ -72,7 +69,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS MUSHROOM COLLIDE WITH CAR
         if ((object->getObjectType() == GameObject::OBJECT_MUSHROOM) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_mushroomHandle);
@@ -86,7 +82,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS CAR COLLIDE WITH META
         if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_META))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_levelCompletedHandle);
@@ -97,7 +92,6 @@ void Game::BeginContact(b2Contact* contact)
         //CHECK IS META COLLIDE WITH CAR
         if ((object->getObjectType() == GameObject::OBJECT_META) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
         {
-            AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_levelCompletedHandle);
@@ -128,7 +122,7 @@ void Game::EndContact(b2Contact* contact)
 
 
 
-Game::Game(unsigned int fb_width,unsigned int fb_height)
+Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb_height)
 {
     current_fb_width = fb_width;
     current_fb_height = fb_height;
@@ -150,13 +144,14 @@ Game::Game(unsigned int fb_width,unsigned int fb_height)
     world = new b2World(b2Vec2(0.0,-1.81));
     world->SetContactListener(this);
 
-    background = new BackGround(0.0f, 10.0f, 10000.0f, 10.0f, world);
+
+
+    background = new BackGround(-50.0f, camWorld.getViewHeight()/2, 10000.0f, camWorld.getViewHeight(), world);
 
     loadLevel();
     loadAudio();
     loadCoins();
 
-    AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
     if (pAudioManager)
     {
         pAudioManager->PlaySFX(m_musicHandle);
@@ -180,8 +175,6 @@ void Game::saveCoins()
 
 void Game::loadLevel()
 {
-
-
     float dampingRatio = config.get_float("dampingRatio");
     float frequencyHz = config.get_float("frequencyHz");
     float maxMotorTorque = config.get_float("maxMotorTorque");
@@ -266,37 +259,15 @@ Game::~Game()
     }
 }
 
-void Game::windowCoordinatesToBoxCoordinates(int x, int y, float &x_out, float &y_out)
-{
-    float x_in = (float)x;
-    float y_in = (float)y;
-
-    float szerokosc_okna_do_szerokosci_swiata = current_fb_width / box_view_width_in_meters;
-    float wysokosc_okna_do_wysokosci_swiata = current_fb_height / box_view_height_in_meters;
-
-    x_out = (x_in / szerokosc_okna_do_szerokosci_swiata) - camera_x_position_m;
-    y_out = ((current_fb_height - y_in) / wysokosc_okna_do_wysokosci_swiata) - camera_y_position_m;
-}
-
 void Game::systemCallback_Scroll(double yoffset){
     if(yoffset > 0)
     {
-        zoom = zoom / 1.2;
-        if(zoom < 0.2)
-            zoom = 0.2;
+        camWorld.zoomIn();
     }
     else
     {
-        zoom = zoom * 1.2;
-        if(zoom > 5)
-            zoom = 5.0;
+        camWorld.zoomOut();
     }
-
-    float aspect = ((float)current_fb_width)/((float)current_fb_height);
-
-    box_view_width_in_meters = 30.0f*zoom;
-    box_view_height_in_meters = box_view_width_in_meters/aspect;
-    projectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
 }
 
 void Game::systemCallback_WindowResize(unsigned int win_width,unsigned int win_height)
@@ -307,11 +278,7 @@ void Game::systemCallback_WindowResize(unsigned int win_width,unsigned int win_h
 
     textRenderer_v2->onVievportResize(current_fb_width, current_fb_height);
 
-    float aspect = ((float)current_fb_width)/((float)current_fb_height);
-
-    box_view_width_in_meters = 18.0f*zoom;
-    box_view_height_in_meters = box_view_width_in_meters/aspect;
-    projectionMatrix = glm::ortho(-box_view_width_in_meters/2.0f, box_view_width_in_meters/2.0f, -box_view_height_in_meters/2.0f, box_view_height_in_meters/2.0f ,-1000.0f,1000.0f);
+    camWorld.onFrameBufferResize(current_fb_width, current_fb_height);
 }
 
 void Game::updateGameLogics()
@@ -379,8 +346,11 @@ void Game::systemCallback_Render()
         {
             float x, y;
             car->getPosition(&x,&y);
-            viewMatrix = glm::lookAt(glm::vec3(x, y, 10.0f),glm::vec3(x, y, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            camWorld.setPosition(x,y);
         }
+
+        background->setModel(glm::translate(glm::mat4(1), glm::vec3(0.0, camWorld.getPosition().y, 0.0)));
+        background->render(camWorld.projection(), camWorld.view());
 
         renderWorldBodies();
         renderHUD();
@@ -392,31 +362,29 @@ void Game::systemCallback_Render()
     }
 
 
-
     glFlush();
-    //LOGD("<-- Game::systemCallback_Render()\n");
 
-    current_time += 0.030;
+    current_time += 0.017;
 }
 
 void Game::renderWorldBodies()
 {
     if(car)
-        car->render(projectionMatrix, viewMatrix);
+        car->render(camWorld.projection(), camWorld.view());
 
     if(meta)
-        meta->render(projectionMatrix, viewMatrix);
+        meta->render(camWorld.projection(), camWorld.view());
 
     for(list<CircleCoin*>::iterator it = coinsList.begin(); it != coinsList.end(); it++)
     {
-        (*it)->render(projectionMatrix, viewMatrix);
+        (*it)->render(camWorld.projection(), camWorld.view());
     }
 
     for(list<Mushroom*>::iterator it = mushroomList.begin(); it != mushroomList.end(); it++)
     {
-        (*it)->render(projectionMatrix, viewMatrix);
+        (*it)->render(camWorld.projection(), camWorld.view());
     }
-    groundChain->render(projectionMatrix, viewMatrix);
+    groundChain->render(camWorld.projection(), camWorld.view());
 }
 
 void Game::renderHUD()
@@ -443,20 +411,8 @@ b2World * Game::getWorld()
 
 void Game::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int window_x, int window_y)
 {
-    float world_x, world_y;
-    windowCoordinatesToBoxCoordinates(window_x, window_y, world_x, world_y);
 
-    if ((mouseButton == SystemAbstraction::MOUSE_LEFT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
-    {
-
-
-    }else if((mouseButton == SystemAbstraction::MOUSE_RIGHT_BUTTON) && (event == SystemAbstraction::EVENT_DOWN))
-    {
-
-    }
 }
-
-#include <system_audio.hpp>
 
 void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
 {

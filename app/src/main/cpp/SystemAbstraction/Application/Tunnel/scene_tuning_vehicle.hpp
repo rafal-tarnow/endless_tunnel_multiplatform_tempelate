@@ -6,6 +6,9 @@
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <lib_config.hpp>
 #include <system_paths.hpp>
+#include <sstream>
+
+using namespace std;
 
 class TuningVehicleScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener{
 public:
@@ -65,4 +68,5 @@ private:
     float maxMotorTorque = 0.0f;
     float friction = 0.0f;
 
+    stringstream stream;
 };

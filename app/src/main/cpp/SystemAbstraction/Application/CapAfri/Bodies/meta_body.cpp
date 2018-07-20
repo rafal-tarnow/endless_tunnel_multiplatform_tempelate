@@ -85,7 +85,7 @@ Meta::Meta(glm::vec3 position, float32 radius, b2World* world) : MetaRenderer(po
 
     b2BodyDef bodydef;
     bodydef.position.Set(pos.x,pos.y);
-    bodydef.type=b2_dynamicBody;
+    bodydef.type=b2_staticBody;
     bodydef.gravityScale = 0.0f;
     body=world->CreateBody(&bodydef);
     body->SetUserData(static_cast<GameObject*>(this));

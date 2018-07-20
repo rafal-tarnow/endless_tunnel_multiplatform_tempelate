@@ -7,6 +7,7 @@
 #include "welcome_scene.hpp"
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -32,6 +33,8 @@ TuningVehicleScene::TuningVehicleScene()
     frequencyHz = config.get_float("frequencyHz");
     maxMotorTorque = config.get_float("maxMotorTorque");
     friction = config.get_float("friction");
+
+    stream << std::fixed << std::setprecision(1);
 }
 
 void TuningVehicleScene::initNormalButtons()
@@ -190,8 +193,8 @@ void TuningVehicleScene::DoFrame()
 
 
 
-    stringstream stream;
 
+    stream.str("");
     if(currentRadioButton == &button_shockAbsorber)
     {
         stream << "Damping " << dampingRatio;
@@ -209,9 +212,7 @@ void TuningVehicleScene::DoFrame()
         stream << "Friction " << friction;
     }
 
-    textRenderer_v2->RenderText(stream.str(), mViewport.z*0.3, mViewport.w*0.46);
-    //textRenderer_v2_second->RenderText(stream.str(), mViewport.z*0.3, mViewport.w*0.46);
-
+    textRenderer_v2->RenderText(stream.str(), mViewport.z*0.5, mViewport.w*0.46, TextRenderer_v2::TEXT_CENTER);
 
     glFlush();
 }

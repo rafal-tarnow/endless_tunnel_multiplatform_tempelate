@@ -10,10 +10,10 @@ class BackGround: public RenderableGameObject{
 public:
     BackGround(float x_top_left, float y_top_left, float width, float height, b2World *  world);
     ~BackGround();
-
-    void drawSquare(b2Vec2* points,b2Vec2 center,float angle,   GLuint texture);
+    void setModel(const glm::mat4 & model);
     void render(glm::mat4 projection, glm::mat4 view);
 private:
     DE_Rectangle rectangle;
+    glm::mat4 mModel = glm::mat4(1);
 
 };
