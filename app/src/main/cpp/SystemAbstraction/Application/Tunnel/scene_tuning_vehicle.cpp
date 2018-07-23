@@ -43,23 +43,23 @@ void TuningVehicleScene::initNormalButtons()
     buttonPlus.setPosition(position);
     buttonPlus.setDimm(glm::vec2(138,138));
     buttonPlus.setMatrices(&mViewport, &mProjection, &mView);
-    buttonPlus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/plus_green.png"));
-    buttonPlus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/plus_grey.png"));
+    buttonPlus.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/plus_green.png"));
+    buttonPlus.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/plus_grey.png"));
     buttonPlus.setEventListener(this);
 
     position = glm::vec3(1920.0f*(3.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonMinus.setPosition(position);
     buttonMinus.setDimm(glm::vec2(138,138));
     buttonMinus.setMatrices(&mViewport, &mProjection, &mView);
-    buttonMinus.setNormalBackgroundTexture(TextureManager::getTextureId("textures/minus_red.png"));
-    buttonMinus.setPressedBackgroundTexture(TextureManager::getTextureId("textures/minus_grey.png"));
+    buttonMinus.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_red.png"));
+    buttonMinus.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_grey.png"));
     buttonMinus.setEventListener(this);
 
     position = glm::vec3(1920.0f*(6.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonPlay.setPosition(position);
     buttonPlay.setMatrices(&mViewport, &mProjection, &mView);
-    buttonPlay.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
-    buttonPlay.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber.png"));
+    buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber_pressed.png"));
     buttonPlay.setEventListener(this);
 }
 
@@ -70,29 +70,29 @@ void TuningVehicleScene::initRadioButtons()
 
     button_shockAbsorber.setPosition(position);
     button_shockAbsorber.setMatrices(&mViewport, &mProjection, &mView);
-    button_shockAbsorber.setNormalBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber.png"));
-    button_shockAbsorber.setPressedBackgroundTexture(TextureManager::getTextureId("textures/shock_absorber_pressed.png"));
+    button_shockAbsorber.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber.png"));
+    button_shockAbsorber.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber_pressed.png"));
 
     position = glm::vec3(1920.0f*(1.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
 
     button_spring.setPosition(position);
     button_spring.setMatrices(&mViewport, &mProjection, &mView);
-    button_spring.setNormalBackgroundTexture(TextureManager::getTextureId("textures/spring.png"));
-    button_spring.setPressedBackgroundTexture(TextureManager::getTextureId("textures/spring_pressed.png"));
+    button_spring.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/spring.png"));
+    button_spring.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/spring_pressed.png"));
 
     position = glm::vec3(1920.0f*(3.0f/4.0f),1080.0f*(2.0f/3.0f),0.0f);
 
     button_tires.setPosition(position);
     button_tires.setMatrices(&mViewport, &mProjection, &mView);
-    button_tires.setNormalBackgroundTexture(TextureManager::getTextureId("textures/tires.png"));
-    button_tires.setPressedBackgroundTexture(TextureManager::getTextureId("textures/tires_pressed.png"));
+    button_tires.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/tires.png"));
+    button_tires.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/tires_pressed.png"));
 
     position = glm::vec3(1920.0f*(3.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
 
     button_motorTorque.setPosition(position);
     button_motorTorque.setMatrices(&mViewport, &mProjection, &mView);
-    button_motorTorque.setNormalBackgroundTexture(TextureManager::getTextureId("textures/engine.png"));
-    button_motorTorque.setPressedBackgroundTexture(TextureManager::getTextureId("textures/engine_pressed.png"));
+    button_motorTorque.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/engine.png"));
+    button_motorTorque.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/engine_pressed.png"));
 
 
     radioButtonManager.addRadioButton(&button_shockAbsorber);
@@ -214,7 +214,6 @@ void TuningVehicleScene::DoFrame()
 
     textRenderer_v2->RenderText(stream.str(), mViewport.z*0.5, mViewport.w*0.46, TextRenderer_v2::TEXT_CENTER);
 
-    glFlush();
 }
 
 void TuningVehicleScene::buttonPlusClicked()

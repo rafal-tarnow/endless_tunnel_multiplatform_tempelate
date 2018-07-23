@@ -8,10 +8,14 @@ using namespace std;
 
 BackGround::BackGround(float x_left, float y_top, float width, float height, b2World * world){
 
+    GLuint texture_id = TextureManager::getInstance()->getTextureId("textures/bg.png");
+    glm::vec2 textureSize = TextureManager::getInstance()->getTextureSize(texture_id);
+    float textureAspect = textureSize.x/textureSize.y;
+
     glm::vec3 verticles[4];
     glm::vec2 texCoords[4];
 
-    float repeats = width/height;
+    float repeats = width/(height*textureAspect);
 
     float x_right = x_left + width;
     float y_bottom = y_top - height;
@@ -26,12 +30,11 @@ BackGround::BackGround(float x_left, float y_top, float width, float height, b2W
     texCoords[2] = glm::vec2(0.0, 0.0);
     texCoords[3] = glm::vec2(0.0, 1.0);
 
-    GLuint texture_id = TextureManager::getTextureId("textures/bg.png");
+
 
     glBindTexture(GL_TEXTURE_2D, texture_id);
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 

@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include "./Bodies/car_body.hpp"
 #include <iomanip>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
@@ -80,22 +79,14 @@ void Game::BeginContact(b2Contact* contact)
         }
 
         //CHECK IS CAR COLLIDE WITH META
-        if ((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_META))
+        if (((object->getObjectType() == GameObject::OBJECT_CAR) && (object_1->getObjectType() == GameObject::OBJECT_META))
+                || ((object->getObjectType() == GameObject::OBJECT_META) && (object_1->getObjectType() == GameObject::OBJECT_CAR)))
         {
             if (pAudioManager)
             {
                 pAudioManager->PlaySFX(m_levelCompletedHandle);
             }
-            return;
-        }
-
-        //CHECK IS META COLLIDE WITH CAR
-        if ((object->getObjectType() == GameObject::OBJECT_META) && (object_1->getObjectType() == GameObject::OBJECT_CAR))
-        {
-            if (pAudioManager)
-            {
-                pAudioManager->PlaySFX(m_levelCompletedHandle);
-            }
+            gameState = GAME_LEVEL_COMPLETED;
             return;
         }
 
@@ -139,7 +130,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glClearColor(0.0,0.0,0.0,1.0);
+    glClearColor(1.0,1.0,1.0,1.0);
 
     world = new b2World(b2Vec2(0.0,-1.81));
     world->SetContactListener(this);
@@ -244,7 +235,6 @@ Game::~Game()
 
     AudioManager::GetSingleton().StopSFX(m_musicHandle);
 
-    TextureManager::deleteAllTextures();
     delete background;
     delete groundChain;
     delete car;
@@ -328,7 +318,9 @@ void Game::updateGameLogics()
 
 void Game::systemCallback_TimerTick()
 {
-    world->Step(1.0/30.0,8,3);
+    if(gameState == GAME_RUN)
+        world->Step(1.0/30.0,8,3);
+
 }
 
 void Game::systemCallback_Render()
@@ -338,6 +330,11 @@ void Game::systemCallback_Render()
     updateGameLogics();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if(gameState ==  GAME_LEVEL_COMPLETED)
+    {
+        mEffects->Black = GL_TRUE;
+    }
 
     if(mEffects->Black == GL_TRUE)
         mEffects->BeginRender();
@@ -354,6 +351,8 @@ void Game::systemCallback_Render()
 
         renderWorldBodies();
         renderHUD();
+
+
     }
     if(mEffects->Black == GL_TRUE)
     {
@@ -361,8 +360,12 @@ void Game::systemCallback_Render()
         mEffects->Render (current_time);
     }
 
-
-    glFlush();
+    if(gameState ==  GAME_LEVEL_COMPLETED)
+    {
+        glDisable(GL_DEPTH_TEST);
+        textRenderer_v2->setColour(glm::vec4(0.0, 1.0, 0.0, 1.0f));
+        textRenderer_v2->RenderText("LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
+    }
 
     current_time += 0.017;
 }
@@ -384,6 +387,7 @@ void Game::renderWorldBodies()
     {
         (*it)->render(camWorld.projection(), camWorld.view());
     }
+
     groundChain->render(camWorld.projection(), camWorld.view());
 }
 

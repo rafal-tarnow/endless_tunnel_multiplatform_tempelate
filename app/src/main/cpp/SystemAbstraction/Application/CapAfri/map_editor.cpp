@@ -24,10 +24,10 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    redDotTextureId = TextureManager::getTextureId("textures/red_dot.png");
+    redDotTextureId = TextureManager::getInstance()->getTextureId("textures/red_dot.png");
     DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
 
-    yellowDotTextureId = TextureManager::getTextureId("textures/yellow_dot.png");
+    yellowDotTextureId = TextureManager::getInstance()->getTextureId("textures/yellow_dot.png");
     DE_initRectangle(&yellowDotRectangle, &yellowDotTextureId, 0.25f, 0.25f, 0.0f);
 
     gridLines = new CGridLines(0, 1000, 50, 0);
@@ -183,7 +183,6 @@ void MapEditor::systemCallback_Render()
 
     mapEditorGui_render(framebuffer_width, framebuffer_height);
 
-    glFlush();
 }
 
 void MapEditor::updateGuiDebugInfo()

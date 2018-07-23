@@ -19,7 +19,7 @@ MushroomRenderer::MushroomRenderer(glm::vec3 position)
 
     if(instanceCount == 1)
     {
-        mushroomTextureId = TextureManager::getTextureId("textures/Tango_Style_Mushroom_icon.svg.png");
+        mushroomTextureId = TextureManager::getInstance()->getTextureId("textures/Tango_Style_Mushroom_icon.svg.png");
         DE_initRectangle(&rectangle, mushroomTextureId, mDimm);
     }
 }

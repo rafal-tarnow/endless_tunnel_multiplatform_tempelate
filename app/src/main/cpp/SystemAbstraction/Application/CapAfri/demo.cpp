@@ -189,7 +189,7 @@ void toolbox_demo(struct nk_context *ctx)
 
 struct nk_image icon_load_from_TextureManager(string fileName)
 {
-    GLuint tex = TextureManager::getTextureId(fileName);
+    GLuint tex = TextureManager::getInstance()->getTextureId(fileName);
     return nk_image_id((int)tex);
 }
 

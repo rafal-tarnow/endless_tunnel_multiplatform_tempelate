@@ -25,6 +25,11 @@ using namespace std;
 class Game : public b2ContactListener{
 public:
 
+    typedef enum{
+        GAME_RUN,
+        GAME_LEVEL_COMPLETED
+    }GameState;
+
     Game(unsigned int win_width,unsigned int win_height);
     ~Game();
 
@@ -55,7 +60,6 @@ private:
 
     Camera camWorld;
 
-
     float mushroomEffectStartTime = 0.0f;
     float current_time = 0.0;
 
@@ -83,4 +87,6 @@ private:
     AudioManager::AudioHandle m_levelCompletedHandle;
 
     Config config;
+
+    GameState gameState = GAME_RUN;
 };
