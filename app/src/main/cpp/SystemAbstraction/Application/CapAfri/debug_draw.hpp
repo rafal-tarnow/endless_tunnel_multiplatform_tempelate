@@ -4,6 +4,7 @@
 
 
 #include <Box2D/Box2D.h>
+#include <library_opengles_2/RectangleRenderer/LineStrip_Renderer.hpp>
 
 struct b2AABB;
 
@@ -32,6 +33,12 @@ public:
     void DrawString(int x, int y, const char* string, ...);
 
     void DrawAABB(b2AABB* aabb, const b2Color& color);
+
+    void setProjectionView(glm::mat4 projection, glm::mat4 view);
+private:
+    LS_LineStrip lineStrip;
+    glm::mat4 mProjection;
+    glm::mat4 mView;
 };
 
 

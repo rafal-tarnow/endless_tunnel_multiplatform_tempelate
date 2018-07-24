@@ -18,6 +18,7 @@
 #include <OpenSLWrap.hpp>
 #include "camera.hpp"
 #include "PostProcessor.hpp"
+#include "debug_draw.hpp"
 
 
 using namespace std;
@@ -79,6 +80,8 @@ private:
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     uint32_t money = 0;
+    bool skipBackgroundDraw = true;
+    bool debugDrawFlag = false;
 
     AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
     AudioManager::AudioHandle m_musicHandle;
@@ -89,4 +92,6 @@ private:
     Config config;
 
     GameState gameState = GAME_RUN;
+
+    GLESDebugDraw debugDraw;
 };

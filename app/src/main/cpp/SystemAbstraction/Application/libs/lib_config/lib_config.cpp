@@ -75,17 +75,31 @@ bool Config::loadDataFromFileToMemory(string fileName)
 
             map_uint32_t[name] = uint32_t(stoul(value_1));
         }
+        else if(type == "bool")
+        {
+            infile >> name >> equal >> value_1;
+
+            cout << "----------------------" << endl;
+            cout << "type = " << type << endl;
+            cout << "name = " << name << endl;
+            cout << "equal = " << equal << endl;
+            cout << "value_1 = " << value_1 << endl;
+            cout << "value_2 = " << value_2 << endl;
+            cout << "value_3 = " << value_3 << endl;
+
+            map_bool[name] = bool(stoi(value_1));;
+        }
         else if(type == "glm::vec3")
         {
             infile >> name >> equal >> value_1 >> value_2 >> value_3;
 
-//            cout << "----------------------" << endl;
-//            cout << "type = " << type << endl;
-//            cout << "name = " << name << endl;
-//            cout << "equal = " << equal << endl;
-//            cout << "value_1 = " << value_1 << endl;
-//            cout << "value_2 = " << value_2 << endl;
-//            cout << "value_3 = " << value_3 << endl;
+            //            cout << "----------------------" << endl;
+            //            cout << "type = " << type << endl;
+            //            cout << "name = " << name << endl;
+            //            cout << "equal = " << equal << endl;
+            //            cout << "value_1 = " << value_1 << endl;
+            //            cout << "value_2 = " << value_2 << endl;
+            //            cout << "value_3 = " << value_3 << endl;
 
             glm::vec3 value(stof(value_1),stof(value_2),stof(value_3));
             map_glm_vec3[name] = value;
@@ -142,7 +156,18 @@ bool Config::saveDataFromMemoryToFile(string fileName)
         it_glm_vec3++;
     }
 
+    //SAVE BOOL
+    std::map<std::string, bool>::iterator it_bool = map_bool.begin();
+    while (it_bool != map_bool.end())
+    {
+        std::string name = it_bool->first;
+        bool value = it_bool->second;
+        onfile << "bool " << name << " = " << value << endl;
+        it_bool++;
+    }
+
     //CLOSE FILE
+    onfile.flush();
     onfile.close();
 }
 
@@ -165,6 +190,11 @@ void Config::set_glm_vec3(string name, glm::vec3 & value)
     map_glm_vec3[name] = value;
 }
 
+void Config::set_bool(string name, bool value)
+{
+    map_bool[name] = value;
+}
+
 float Config::get_float(string name)
 {
     return map_float[name];
@@ -183,5 +213,10 @@ int32_t Config::get_int32_t(string name)
 uint32_t Config::get_uint32_t(string name)
 {
     return map_uint32_t[name];
+}
+
+bool Config::get_bool(string name)
+{
+    return map_bool[name];
 }
 

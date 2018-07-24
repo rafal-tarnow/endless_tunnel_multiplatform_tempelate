@@ -134,14 +134,17 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
 
     world = new b2World(b2Vec2(0.0,-1.81));
     world->SetContactListener(this);
-
+    world->SetDebugDraw(&debugDraw);
 
 
     background = new BackGround(-50.0f, camWorld.getViewHeight()/2, 10000.0f, camWorld.getViewHeight(), world);
 
     loadLevel();
     loadAudio();
+    skipBackgroundDraw =  config.get_bool("skipBackgroundDraw");
+    debugDrawFlag = config.get_bool("debugDrawFlag");
     loadCoins();
+
 
     if (pAudioManager)
     {
@@ -240,6 +243,7 @@ Game::~Game()
     delete car;
     delete world;
     delete textRenderer_v2;
+
     saveCoins();
 
     if (mEffects)
@@ -346,8 +350,15 @@ void Game::systemCallback_Render()
             camWorld.setPosition(x,y);
         }
 
-        background->setModel(glm::translate(glm::mat4(1), glm::vec3(0.0, camWorld.getPosition().y, 0.0)));
-        background->render(camWorld.projection(), camWorld.view());
+        if(skipBackgroundDraw == true)
+        {
+
+        }
+        else
+        {
+            background->setModel(glm::translate(glm::mat4(1), glm::vec3(0.0, camWorld.getPosition().y, 0.0)));
+            background->render(camWorld.projection(), camWorld.view());
+        }
 
         renderWorldBodies();
         renderHUD();
@@ -365,6 +376,13 @@ void Game::systemCallback_Render()
         glDisable(GL_DEPTH_TEST);
         textRenderer_v2->setColour(glm::vec4(0.0, 1.0, 0.0, 1.0f));
         textRenderer_v2->RenderText("LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
+    }
+
+    if(debugDrawFlag == true)
+    {
+        debugDraw.setProjectionView(camWorld.projection(), camWorld.view());
+        debugDraw.SetFlags(0xFFFFFFFF);
+        world->DrawDebugData();
     }
 
     current_time += 0.017;

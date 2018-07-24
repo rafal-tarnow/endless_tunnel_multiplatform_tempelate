@@ -5,56 +5,79 @@
 #include <cstdarg>
 
 #include <cstring>
+#include <iostream>
+
+using namespace std;
 
 
 GLESDebugDraw::GLESDebugDraw()
 {
-
+    glm::vec3 verticles[4];
+    LS_init(&lineStrip, verticles, 4, glm::vec4(1.0, 0.0, 0.0, 1.0), GL_LINE_LOOP, GL_DYNAMIC_DRAW);
 }
 
 GLESDebugDraw::~GLESDebugDraw()
 {
-
+    LS_delete(&lineStrip);
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    //glColor4f(color.r, color.g, color.b,1);
-    //glVertexPointer(2, GL_FLOAT, 0, vertices);
-    glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+    cout << "GLESDebugDraw::DrawPolygon()" << endl;
+    vector<glm::vec3> vert;
+    for(int32 i = 0; i < vertexCount; i++)
+    {
+        vert.push_back(glm::vec3(vertices[i].x, vertices[i].y, 2.0f));
+    }
+    LS_setMode(&lineStrip, GL_LINE_LOOP);
+    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    LS_updateData(&lineStrip, vert.data(), vert.size());
+    lineStrip.projection = mProjection;
+    lineStrip.view = mView;
+    LS_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    //glVertexPointer(2, GL_FLOAT, 0, vertices);
+    cout << "GLESDebugDraw::DrawSolidPolygon()" << endl;
 
-    //glColor4f(color.r, color.g, color.b,0.5f);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+    vector<glm::vec3> vert;
+    for(int32 i = 0; i < vertexCount; i++)
+    {
+        vert.push_back(glm::vec3(vertices[i].x, vertices[i].y, 2.0f));
+    }
+    LS_setMode(&lineStrip, GL_TRIANGLE_FAN);
+    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    LS_updateData(&lineStrip, vert.data(), vert.size());
+    lineStrip.projection = mProjection;
+    lineStrip.view = mView;
+    LS_draw(&lineStrip, 1.0);
 
-    //glColor4f(color.r, color.g, color.b,1);
-    glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
 }
 
 void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
+    cout << "GLESDebugDraw::DrawCircle()" << endl;
+
     const float32 k_segments = 16.0f;
     int vertexCount=16;
     const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 theta = 0.0f;
 
-    GLfloat				glVertices[vertexCount*2];
+    glm::vec3 glVertices[vertexCount];
     for (int32 i = 0; i < k_segments; ++i)
     {
         b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-        glVertices[i*2]=v.x;
-        glVertices[i*2+1]=v.y;
+        glVertices[i] = glm::vec3(v.x, v.y, 2.0);
         theta += k_increment;
     }
 
-    //glColor4f(color.r, color.g, color.b,1);
-    //glVertexPointer(2, GL_FLOAT, 0, glVertices);
-
-    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+    LS_setMode(&lineStrip, GL_LINE_LOOP);
+    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    LS_updateData(&lineStrip, glVertices, vertexCount);
+    lineStrip.projection = mProjection;
+    lineStrip.view = mView;
+    LS_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
@@ -64,20 +87,20 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
     const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 theta = 0.0f;
 
-    GLfloat				glVertices[vertexCount*2];
+    glm::vec3 glVertices[vertexCount];
     for (int32 i = 0; i < k_segments; ++i)
     {
         b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-        glVertices[i*2]=v.x;
-        glVertices[i*2+1]=v.y;
+        glVertices[i] = glm::vec3(v.x, v.y, 2.0);
         theta += k_increment;
     }
 
-    //glColor4f(color.r, color.g, color.b,0.5f);
-    //glVertexPointer(2, GL_FLOAT, 0, glVertices);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-    //glColor4f(color.r, color.g, color.b,1);
-    glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+    LS_setMode(&lineStrip, GL_TRIANGLE_FAN);
+    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    LS_updateData(&lineStrip, glVertices, vertexCount);
+    lineStrip.projection = mProjection;
+    lineStrip.view = mView;
+    LS_draw(&lineStrip, 1.0);
 
     // Draw the axis line
     DrawSegment(center,center+radius*axis,color);
@@ -107,14 +130,18 @@ void GLESDebugDraw::DrawTransform(const b2Transform& xf)
 
 void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
-    //glColor4f(color.r, color.g, color.b,1);
-    //glPointSize(size);
-    GLfloat				glVertices[] = {
-        p.x,p.y
-    };
-    //glVertexPointer(2, GL_FLOAT, 0, glVertices);
-    glDrawArrays(GL_POINTS, 0, 1);
-    //glPointSize(1.0f);
+    cout << "GLESDebugDraw::DrawPoint()" << endl;
+    vector<glm::vec3> vert;
+
+    vert.push_back(glm::vec3(p.x, p.y, 2.0f));
+
+    LS_setPointSize(&lineStrip, size);
+    LS_setMode(&lineStrip, GL_POINTS);
+    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    LS_updateData(&lineStrip, vert.data(), vert.size());
+    lineStrip.projection = mProjection;
+    lineStrip.view = mView;
+    LS_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawString(int x, int y, const char *string, ...)
@@ -137,4 +164,10 @@ void GLESDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
     //glVertexPointer(2, GL_FLOAT, 0, glVertices);
     glDrawArrays(GL_LINE_LOOP, 0, 8);
 
+}
+
+void GLESDebugDraw::setProjectionView(glm::mat4 projection, glm::mat4 view)
+{
+    mProjection = projection;
+    mView = view;
 }
