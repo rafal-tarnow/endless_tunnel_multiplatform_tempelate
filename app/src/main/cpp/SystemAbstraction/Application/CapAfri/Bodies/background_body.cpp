@@ -2,13 +2,17 @@
 
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <sstream>
 
 using namespace std;
 
 
-BackGround::BackGround(float x_left, float y_top, float width, float height, b2World * world){
+BackGround::BackGround(float x_left, float y_top, float width, float height, uint32_t image_index){
 
-    GLuint texture_id = TextureManager::getInstance()->getTextureId("textures/bg.png");
+    stringstream stream;
+    stream << "textures/bg_" << image_index << ".png";
+
+    GLuint texture_id = TextureManager::getInstance()->getTextureId(stream.str());
     glm::vec2 textureSize = TextureManager::getInstance()->getTextureSize(texture_id);
     float textureAspect = textureSize.x/textureSize.y;
 

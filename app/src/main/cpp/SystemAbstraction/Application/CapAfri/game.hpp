@@ -82,6 +82,7 @@ private:
     uint32_t money = 0;
     bool skipBackgroundDraw = true;
     bool debugDrawFlag = false;
+    glm::vec4 clearColour = glm::vec4(0.0,0.0,0.0,1.0);
 
     AudioManager* pAudioManager = AudioManager::GetSingletonPtr();
     AudioManager::AudioHandle m_musicHandle;

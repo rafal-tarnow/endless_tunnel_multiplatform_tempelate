@@ -8,7 +8,7 @@
 
 class BackGround: public RenderableGameObject{
 public:
-    BackGround(float x_top_left, float y_top_left, float width, float height, b2World *  world);
+    BackGround(float x_top_left, float y_top_left, float width, float height, uint32_t image_index);
     ~BackGround();
     void setModel(const glm::mat4 & model);
     void render(glm::mat4 projection, glm::mat4 view);

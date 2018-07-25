@@ -27,6 +27,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
     string value_1;
     string value_2;
     string value_3;
+    string value_4;
 
 #warning "DOROBIC OBSLUGE BLEDU PARSOWANIA PLIKU"
 
@@ -104,6 +105,21 @@ bool Config::loadDataFromFileToMemory(string fileName)
             glm::vec3 value(stof(value_1),stof(value_2),stof(value_3));
             map_glm_vec3[name] = value;
         }
+        else if(type == "glm::vec4")
+        {
+            infile >> name >> equal >> value_1 >> value_2 >> value_3 >> value_4;
+
+            //            cout << "----------------------" << endl;
+            //            cout << "type = " << type << endl;
+            //            cout << "name = " << name << endl;
+            //            cout << "equal = " << equal << endl;
+            //            cout << "value_1 = " << value_1 << endl;
+            //            cout << "value_2 = " << value_2 << endl;
+            //            cout << "value_3 = " << value_3 << endl;
+
+            glm::vec4 value(stof(value_1),stof(value_2),stof(value_3),stof(value_4));
+            map_glm_vec4[name] = value;
+        }
     }
 
     //close stream
@@ -156,6 +172,16 @@ bool Config::saveDataFromMemoryToFile(string fileName)
         it_glm_vec3++;
     }
 
+    //SAVE GLM_VEC4
+    std::map<std::string, glm::vec4>::iterator it_glm_vec4 = map_glm_vec4.begin();
+    while (it_glm_vec4 != map_glm_vec4.end())
+    {
+        std::string name = it_glm_vec4->first;
+        glm::vec4 value = it_glm_vec4->second;
+        onfile << "glm::vec4 " << name << " = " << value.x << " " << value.y << " " << value.z << " " << value.w << endl;
+        it_glm_vec4++;
+    }
+
     //SAVE BOOL
     std::map<std::string, bool>::iterator it_bool = map_bool.begin();
     while (it_bool != map_bool.end())
@@ -190,6 +216,11 @@ void Config::set_glm_vec3(string name, glm::vec3 & value)
     map_glm_vec3[name] = value;
 }
 
+void Config::set_glm_vec4(string name, glm::vec4 & value)
+{
+    map_glm_vec4[name] = value;
+}
+
 void Config::set_bool(string name, bool value)
 {
     map_bool[name] = value;
@@ -203,6 +234,11 @@ float Config::get_float(string name)
 glm::vec3 & Config::get_glm_vec3(string name)
 {
     return map_glm_vec3[name];
+}
+
+glm::vec4 & Config::get_glm_vec4(string name)
+{
+    return map_glm_vec4[name];
 }
 
 int32_t Config::get_int32_t(string name)

@@ -127,24 +127,24 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glClearColor(1.0,1.0,1.0,1.0);
 
     world = new b2World(b2Vec2(0.0,-1.81));
     world->SetContactListener(this);
     world->SetDebugDraw(&debugDraw);
 
 
-    background = new BackGround(-50.0f, camWorld.getViewHeight()/2, 10000.0f, camWorld.getViewHeight(), world);
+
 
     loadLevel();
     loadAudio();
     skipBackgroundDraw =  config.get_bool("skipBackgroundDraw");
     debugDrawFlag = config.get_bool("debugDrawFlag");
+    clearColour = config.get_glm_vec4("clearColour");
     loadCoins();
 
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearColor(clearColour.r,clearColour.g,clearColour.b,clearColour.a);
 
     if (pAudioManager)
     {
@@ -203,6 +203,8 @@ void Game::loadLevel()
     {
         mushroomList.push_back(new Mushroom(mushroom->getPosition(), world));
     }
+
+    background = new BackGround(-50.0f, camWorld.getViewHeight()/2, 10000.0f, camWorld.getViewHeight(), level.background_image_index);
 }
 
 void Game::loadAudio()

@@ -22,7 +22,6 @@ TuningVehicleScene::TuningVehicleScene()
     safe_area_dim = glm::vec2(1920.0f,1080.0f);
     DE_initRectangle(&safe_area, "textures/garage.png", glm::vec3(safe_area_dim.x/2.0f, safe_area_dim.y/2.0f, 0.0f),safe_area_dim);
 
-    DE_initRectangle(&backgroundRect, "textures/bg.png", glm::vec3(0.0f,0.0f,0.0f),safe_area_dim);
 
     initNormalButtons();
     initRadioButtons();
@@ -109,7 +108,6 @@ void TuningVehicleScene::initRadioButtons()
 TuningVehicleScene::~TuningVehicleScene()
 {
     DE_deleteRectangle(&safe_area);
-    DE_deleteRectangle(&backgroundRect);
 
     config.set_float("dampingRatio", dampingRatio);
     config.set_float("frequencyHz", frequencyHz);
@@ -167,12 +165,6 @@ void TuningVehicleScene::DoFrame()
     //glm::mat4 P_GUI = glm::mat4(1);
     mView = glm::lookAt(glm::vec3(safe_area_dim.x/2.0f, safe_area_dim.y/2.0f, 1.0f), glm::vec3(safe_area_dim.x/2.0f, safe_area_dim.y/2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 M_GUI = glm::mat4(1);
-
-
-    backgroundRect.projection = mProjection;
-    backgroundRect.view = mView;
-    backgroundRect.model = M_GUI;
-    //DE_drawRectangle(&backgroundRect);
 
 
     safe_area.projection = mProjection;

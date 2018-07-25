@@ -55,6 +55,8 @@ int Level::loadLevelFromFile(string levelFilePath)
     glm::vec3 metaPosition = config.get_glm_vec3("metaPosition");
     meta = new MetaRenderer(metaPosition, 1.5);
 
+    background_image_index = config.get_uint32_t("background_image_index");
+
     return 0;
 }
 
@@ -88,6 +90,8 @@ int Level::saveLevelToFile(string levelFilePath)
 
         config.set_glm_vec3(stream.str(), mushroom_vector.at(i)->getPosition());
     }
+
+    config.set_uint32_t("background_image_index", background_image_index);
 
     config.set_glm_vec3("metaPosition", meta->getPosition());
 

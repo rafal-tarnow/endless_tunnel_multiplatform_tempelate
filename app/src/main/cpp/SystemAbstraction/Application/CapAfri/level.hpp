@@ -27,6 +27,7 @@ public:
     vector<CircleCoinRender *> coins_vector;
     vector<MushroomRenderer *> mushroom_vector;
     MetaRenderer * meta = nullptr;
+    uint32_t background_image_index = 0;
 private:
     Config config;
 };

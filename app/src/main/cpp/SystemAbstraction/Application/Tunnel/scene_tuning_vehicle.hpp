@@ -50,7 +50,6 @@ private:
     RadioButton button_tires;
     RadioButton button_motorTorque;
 
-    DE_Rectangle backgroundRect;
     DE_Rectangle safe_area;
     glm::vec2 safe_area_dim;
 
