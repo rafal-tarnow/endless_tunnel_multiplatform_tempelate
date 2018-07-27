@@ -41,10 +41,10 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     //COORDINATES LINES
     glm::vec4 green_color(0.0f, 1.0f, 0.0f, 1.0f);
     float xlineVerticles[6] = {-1000.0f, 0.0f, 0.0f, 1000.0f, 0.0f, 0.0f};
-    LS_init(&x_lineStrip,xlineVerticles,6, green_color);
+    PR_init(&x_lineStrip,xlineVerticles,6, green_color);
 
     float ylineVerticles[6] = {0.0f, 1000.0f, 0.0f, 0.0f, -1000.0f, 0.0f};
-    LS_init(&y_lineStrip,ylineVerticles,6, green_color);
+    PR_init(&y_lineStrip,ylineVerticles,6, green_color);
 
     //LEVEL LOAD
     mapFilePath.str("");
@@ -70,7 +70,7 @@ void MapEditor::loadMap(string mapFilePath)
         mapFileOpenErrorString = strerror(mapFileOpenErrno);
     }
     glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
-    LS_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
+    PR_init(&lineStripGround, level.ground_verticles.data(), level.ground_verticles.size(), red_color);
 }
 
 MapEditor::~MapEditor()
@@ -85,8 +85,8 @@ MapEditor::~MapEditor()
     delete gridLines;
     DE_deleteRectangle(&redDotPointerRectangle);
     DE_deleteRectangle(&yellowDotRectangle);
-    LS_delete(&x_lineStrip);
-    LS_delete(&y_lineStrip);
+    PR_delete(&x_lineStrip);
+    PR_delete(&y_lineStrip);
 
     delete carRenderer;
 }
@@ -162,18 +162,18 @@ void MapEditor::systemCallback_Render()
         x_lineStrip.projection = camera.projection();
         x_lineStrip.view = camera.view();
         x_lineStrip.model = glm::mat4(1);
-        LS_draw(&x_lineStrip, 2);
+        PR_draw(&x_lineStrip, 2);
 
         y_lineStrip.projection = camera.projection();
         y_lineStrip.view = camera.view();
         y_lineStrip.model = glm::mat4(1);
-        LS_draw(&y_lineStrip, 2);
+        PR_draw(&y_lineStrip, 2);
 
         //DRAW GROUND LINE
         lineStripGround.projection = camera.projection();
         lineStripGround.view = camera.view();
         lineStripGround.model = glm::mat4(1);
-        LS_draw(&lineStripGround, 2);
+        PR_draw(&lineStripGround, 2);
 
 
     }
@@ -268,7 +268,7 @@ void MapEditor::addGroundPointInFramebufferCoordinates()
     level.ground_verticles.push_back(world_current_position_0);
     std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
 
-    LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+    PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 void MapEditor::addMetaInFramebufferCoordinates()
@@ -477,7 +477,7 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
         {
             *yellowDotIndex = world_current_position_0;
             std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
-            LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+            PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
         }
         break;
 
@@ -621,7 +621,7 @@ void MapEditor::gui_onSaveMapButtonClicked()
 void MapEditor::gui_onClearMapButtonClicked()
 {
     level.clear();
-    LS_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+    PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 void MapEditor::gui_onCursorModeChanged(int mode)

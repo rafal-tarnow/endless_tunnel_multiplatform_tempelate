@@ -7,6 +7,7 @@
 #include <lib_config.hpp>
 #include <system_paths.hpp>
 #include <sstream>
+#include "../CapAfri/camera_safe_area.hpp"
 
 using namespace std;
 
@@ -50,12 +51,12 @@ private:
     RadioButton button_tires;
     RadioButton button_motorTorque;
 
-    DE_Rectangle safe_area;
-    glm::vec2 safe_area_dim;
+    DE_Rectangle safe_area_background;
 
-    glm::vec4 mViewport;
-    glm::mat4 mProjection;
-    glm::mat4 mView;
+    SafeAreaCam safeAreaCam;
+
+
+    glm::vec2 framebuffer_dimm = glm::vec2(1000,1000);
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 

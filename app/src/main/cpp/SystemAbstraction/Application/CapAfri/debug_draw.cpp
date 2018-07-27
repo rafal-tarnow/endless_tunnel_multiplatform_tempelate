@@ -13,12 +13,12 @@ using namespace std;
 GLESDebugDraw::GLESDebugDraw()
 {
     glm::vec3 verticles[4];
-    LS_init(&lineStrip, verticles, 4, glm::vec4(1.0, 0.0, 0.0, 1.0), GL_LINE_LOOP, GL_DYNAMIC_DRAW);
+    PR_init(&lineStrip, verticles, 4, glm::vec4(1.0, 0.0, 0.0, 1.0), GL_LINE_LOOP, GL_DYNAMIC_DRAW);
 }
 
 GLESDebugDraw::~GLESDebugDraw()
 {
-    LS_delete(&lineStrip);
+    PR_delete(&lineStrip);
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -29,12 +29,12 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const
     {
         vert.push_back(glm::vec3(vertices[i].x, vertices[i].y, 2.0f));
     }
-    LS_setMode(&lineStrip, GL_LINE_LOOP);
-    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    LS_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setMode(&lineStrip, GL_LINE_LOOP);
+    PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    PR_updateData(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
-    LS_draw(&lineStrip, 1.0);
+    PR_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -46,12 +46,12 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
     {
         vert.push_back(glm::vec3(vertices[i].x, vertices[i].y, 2.0f));
     }
-    LS_setMode(&lineStrip, GL_TRIANGLE_FAN);
-    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    LS_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setMode(&lineStrip, GL_TRIANGLE_FAN);
+    PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    PR_updateData(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
-    LS_draw(&lineStrip, 1.0);
+    PR_draw(&lineStrip, 1.0);
 
 }
 
@@ -72,12 +72,12 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
         theta += k_increment;
     }
 
-    LS_setMode(&lineStrip, GL_LINE_LOOP);
-    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    LS_updateData(&lineStrip, glVertices, vertexCount);
+    PR_setMode(&lineStrip, GL_LINE_LOOP);
+    PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    PR_updateData(&lineStrip, glVertices, vertexCount);
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
-    LS_draw(&lineStrip, 1.0);
+    PR_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
@@ -95,12 +95,12 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
         theta += k_increment;
     }
 
-    LS_setMode(&lineStrip, GL_TRIANGLE_FAN);
-    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    LS_updateData(&lineStrip, glVertices, vertexCount);
+    PR_setMode(&lineStrip, GL_TRIANGLE_FAN);
+    PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    PR_updateData(&lineStrip, glVertices, vertexCount);
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
-    LS_draw(&lineStrip, 1.0);
+    PR_draw(&lineStrip, 1.0);
 
     // Draw the axis line
     DrawSegment(center,center+radius*axis,color);
@@ -135,13 +135,13 @@ void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& colo
 
     vert.push_back(glm::vec3(p.x, p.y, 2.0f));
 
-    LS_setPointSize(&lineStrip, size);
-    LS_setMode(&lineStrip, GL_POINTS);
-    LS_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    LS_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setPointSize(&lineStrip, size);
+    PR_setMode(&lineStrip, GL_POINTS);
+    PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
+    PR_updateData(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
-    LS_draw(&lineStrip, 1.0);
+    PR_draw(&lineStrip, 1.0);
 }
 
 void GLESDebugDraw::DrawString(int x, int y, const char *string, ...)

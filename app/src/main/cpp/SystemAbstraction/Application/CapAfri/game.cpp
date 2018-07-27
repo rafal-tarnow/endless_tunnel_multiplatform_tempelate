@@ -8,6 +8,7 @@
 #include "../../system_log.hpp"
 #include <system_paths.hpp>
 #include <library_opengles_2/Resources/Resources.hpp>
+#include <library_opengles_2/TextureManager/texture_manager.hpp>
 
 using namespace std;
 
@@ -112,6 +113,18 @@ void Game::EndContact(b2Contact* contact)
 }
 
 
+void Game::Button_onClicked(Button * button)
+{
+    if(button == &buttonNextLevel)
+    {
+        //buttonPlusClicked();
+    }
+    else if(button == &buttonRetryLevel)
+    {
+        //buttonMinusClicked();
+    }
+}
+
 
 Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb_height)
 {
@@ -152,6 +165,38 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     }
 
     mEffects = new PostProcessor (current_fb_width, current_fb_height);
+
+
+    safeAreaCam.setSafeAreaDim(glm::vec2(1.0,1.0));
+    safeAreaCam.onResize(current_fb_width, current_fb_height);
+
+    glm::vec3 vert[4];
+    vert[0] = glm::vec3(0.0,1.0,2.0);
+    vert[1] = glm::vec3(0.0,0.0,2.0);
+    vert[2] = glm::vec3(1.0,0.0,2.0);
+    vert[3] = glm::vec3(1.0,1.0,2.0);
+//    vert[0] = glm::vec3(0.25,0.75,2.0);
+//    vert[1] = glm::vec3(0.25,0.25,2.0);
+//    vert[2] = glm::vec3(0.75,0.25,2.0);
+//    vert[3] = glm::vec3(0.75,0.75,2.0);
+    PR_init(&summaryBackground, &vert[0],4, glm::vec4(0.0,0.0,0.0,0.72), GL_TRIANGLE_FAN,GL_STATIC_DRAW);
+
+
+    glm::vec3 position = glm::vec3((1.0f/3.0f),(1.0f/4.0f),0.0f);
+    buttonNextLevel.setPosition(position);
+    buttonNextLevel.setDimm(glm::vec2(0.2,0.2));
+    buttonNextLevel.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+    buttonNextLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/meta.png"));
+    buttonNextLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/plus_grey.png"));
+    buttonNextLevel.setEventListener(this);
+
+    position = glm::vec3((2.0f/3.0f),(1.0f/4.0f),0.0f);
+    buttonRetryLevel.setPosition(position);
+    buttonRetryLevel.setDimm(glm::vec2(0.2,0.2));
+    buttonRetryLevel.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+    buttonRetryLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_red.png"));
+    buttonRetryLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_grey.png"));
+    buttonRetryLevel.setEventListener(this);
 }
 
 
@@ -177,7 +222,6 @@ void Game::loadLevel()
 
 
     //LEVEL LOAD
-    Level level;
     uint32_t currentMapIntex = config.get_uint32_t("currentMapIndex");
     stringstream mapFilePath;
     mapFilePath << getStandardCommonReadWriteDirecory() << "/CapitanAfrica_" << currentMapIntex << ".map";
@@ -205,6 +249,7 @@ void Game::loadLevel()
     }
 
     background = new BackGround(-50.0f, camWorld.getViewHeight()/2, 10000.0f, camWorld.getViewHeight(), level.background_image_index);
+
 }
 
 void Game::loadAudio()
@@ -225,6 +270,7 @@ void Game::loadAudio()
 
 Game::~Game()
 {
+    PR_delete(&summaryBackground);
     delete meta;
     meta = nullptr;
 
@@ -275,6 +321,8 @@ void Game::systemCallback_WindowResize(unsigned int win_width,unsigned int win_h
     textRenderer_v2->onVievportResize(current_fb_width, current_fb_height);
 
     camWorld.onFrameBufferResize(current_fb_width, current_fb_height);
+
+    safeAreaCam.onResize(current_fb_width, current_fb_height);
 }
 
 void Game::updateGameLogics()
@@ -329,6 +377,18 @@ void Game::systemCallback_TimerTick()
 
 }
 
+void Game::OnPointerDown(int pointerId, const struct PointerCoords *coords)
+{
+    buttonNextLevel.onPointerDown(coords->x, coords->y);
+    buttonRetryLevel.onPointerDown(coords->x, coords->y);
+}
+
+void Game::OnPointerUp(int pointerId, const struct PointerCoords *coords)
+{
+    buttonNextLevel.onPointerUp();
+    buttonRetryLevel.onPointerUp();
+}
+
 void Game::systemCallback_Render()
 {
 
@@ -349,7 +409,7 @@ void Game::systemCallback_Render()
         {
             float x, y;
             car->getPosition(&x,&y);
-            camWorld.setPosition(x,y);
+            camWorld.setPosition(x + level.cameraOffset.x, y + level.cameraOffset.y);
         }
 
         if(skipBackgroundDraw == true)
@@ -373,11 +433,25 @@ void Game::systemCallback_Render()
         mEffects->Render (current_time);
     }
 
+
+
+
+
     if(gameState ==  GAME_LEVEL_COMPLETED)
     {
+
+
+        summaryBackground.projection = safeAreaCam.projection();
+        summaryBackground.view =safeAreaCam.view();
+        summaryBackground.model = glm::mat4(1);
+        PR_draw(&summaryBackground,1.0);
+
         glDisable(GL_DEPTH_TEST);
         textRenderer_v2->setColour(glm::vec4(0.0, 1.0, 0.0, 1.0f));
         textRenderer_v2->RenderText("LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
+
+        buttonNextLevel.Render();
+        buttonRetryLevel.Render();
     }
 
     if(debugDrawFlag == true)

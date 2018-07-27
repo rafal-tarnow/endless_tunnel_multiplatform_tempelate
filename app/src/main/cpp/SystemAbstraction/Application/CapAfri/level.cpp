@@ -57,6 +57,8 @@ int Level::loadLevelFromFile(string levelFilePath)
 
     background_image_index = config.get_uint32_t("background_image_index");
 
+    cameraOffset = config.get_glm_vec3("cameraOffset");
+
     return 0;
 }
 
@@ -94,6 +96,8 @@ int Level::saveLevelToFile(string levelFilePath)
     config.set_uint32_t("background_image_index", background_image_index);
 
     config.set_glm_vec3("metaPosition", meta->getPosition());
+
+    config.set_glm_vec3("cameraOffset", cameraOffset);
 
     config.saveDataFromMemoryToFile(levelFilePath);
 

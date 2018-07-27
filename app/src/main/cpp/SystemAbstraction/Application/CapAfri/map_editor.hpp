@@ -5,7 +5,7 @@
 #include <system_abstraction.hpp>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include "level.hpp"
-#include <library_opengles_2/RectangleRenderer/LineStrip_Renderer.hpp>
+#include <library_opengles_2/RectangleRenderer/Primitive_Renderer.hpp>
 #include <system_abstraction.hpp>
 #include <sstream>
 #include "demo.hpp"
@@ -125,11 +125,11 @@ private:
     TextRenderer_v2 * textRenderer_v2;
 
     //COORDINATES LINES
-    LS_LineStrip x_lineStrip;
-    LS_LineStrip y_lineStrip;
+    PR_LineStrip x_lineStrip;
+    PR_LineStrip y_lineStrip;
 
     //DOTS
-    LS_LineStrip lineStripGround;
+    PR_LineStrip lineStripGround;
 
     FantMode fantMode = FANT_GROUND;
 

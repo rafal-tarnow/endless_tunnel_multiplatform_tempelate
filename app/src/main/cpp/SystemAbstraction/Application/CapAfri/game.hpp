@@ -6,6 +6,7 @@
 #include "./Bodies/car_body.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
+#include <library_opengles_2/RectangleRenderer/Primitive_Renderer.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -17,13 +18,15 @@
 #include <list>
 #include <OpenSLWrap.hpp>
 #include "camera.hpp"
+#include "camera_safe_area.hpp"
 #include "PostProcessor.hpp"
 #include "debug_draw.hpp"
+#include "gui/button.hpp"
 
 
 using namespace std;
 
-class Game : public b2ContactListener{
+class Game : public b2ContactListener, public ButtonEventListener{
 public:
 
     typedef enum{
@@ -36,6 +39,8 @@ public:
 
     void systemCallback_WindowResize(unsigned int win_width, unsigned int win_height);
     void systemCallback_Scroll(double yoffset);
+    void OnPointerDown(int pointerId, const struct PointerCoords *coords);
+    void OnPointerUp(int pointerId, const struct PointerCoords *coords);
     void systemCallback_Render();
     void systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton, SystemAbstraction::ButtonEvent event, int x, int y);
     void systemCallback_keyboard(SystemAbstraction::ButtonEvent, unsigned int key, int x, int y );
@@ -46,6 +51,8 @@ public:
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
     void EndContact(b2Contact* contact);
+
+       void Button_onClicked(Button * button);
 
 private:
     void loadCoins();
@@ -60,6 +67,11 @@ private:
     float current_fb_height;
 
     Camera camWorld;
+
+    SafeAreaCam safeAreaCam;
+
+    Button buttonNextLevel;
+    Button buttonRetryLevel;
 
     float mushroomEffectStartTime = 0.0f;
     float current_time = 0.0;
@@ -90,9 +102,13 @@ private:
     AudioManager::AudioHandle m_mushroomHandle;
     AudioManager::AudioHandle m_levelCompletedHandle;
 
+    PR_LineStrip summaryBackground;
+
     Config config;
 
     GameState gameState = GAME_RUN;
 
     GLESDebugDraw debugDraw;
+
+    Level level;
 };

@@ -26,7 +26,7 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
 
 
     glm::vec4 line_color(0.0f, 1.0f, 0.0f, 1.0f);
-    LS_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size(), line_color);
+    PR_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size(), line_color);
 
 
     vector<glm::vec3> triangle_strip_verticles;
@@ -69,7 +69,7 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
 }
 
 GroundChain::~GroundChain(){
-    LS_delete(&lineStripRenderer);
+    PR_delete(&lineStripRenderer);
     TS_deleteTriangleStrip(&triangleStrip);
 }
 
@@ -88,7 +88,7 @@ void GroundChain::render(glm::mat4 projection, glm::mat4 view){
     lineStripRenderer.view = view;
     lineStripRenderer.model = glm::mat4(1);
 
-    LS_draw(&lineStripRenderer, 10.0f);
+    PR_draw(&lineStripRenderer, 10.0f);
 
     glEnable(GL_DEPTH_TEST);
 
