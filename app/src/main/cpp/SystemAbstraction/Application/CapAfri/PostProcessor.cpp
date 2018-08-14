@@ -1,5 +1,5 @@
 #include "PostProcessor.hpp"
-
+#include <system_log.hpp>
 #include <iostream>
 
 
@@ -149,8 +149,9 @@ PostProcessor::PostProcessor(GLuint width, GLuint height)
     : Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE),Spin(GL_FALSE),Black(GL_FALSE), Shake(GL_FALSE),
       TWidth (0), THeight (0), Internal_Format (GL_RGB), Image_Format (GL_RGB), Wrap_S (GL_CLAMP_TO_EDGE), Wrap_T (GL_CLAMP_TO_EDGE), Filter_Min (GL_LINEAR), Filter_Max (GL_LINEAR)
 {
-
+    LOGD("PostProcessor::PostProcessor(1)");
     PostProcessingShader.Compile(vShaderCode, fShaderCode);
+    LOGD("PostProcessor::PostProcessor(2)");
 
 
     glGenTextures (1, &this->ID);

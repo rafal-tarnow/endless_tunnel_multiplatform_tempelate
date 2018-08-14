@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId 'com.google.sample.tunnel'
-        minSdkVersion 19
+        minSdkVersion 15
         //minSdkVersion 14
 
         targetSdkVersion 25

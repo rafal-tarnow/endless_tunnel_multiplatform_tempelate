@@ -128,49 +128,70 @@ void Game::Button_onClicked(Button * button)
 
 Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb_height)
 {
+    LOGD("Game::Game(1)");
     current_fb_width = fb_width;
     current_fb_height = fb_height;
-
+    LOGD("Game::Game(2)");
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
+    LOGD("Game::Game(3)");
     config.loadDataFromFileToMemory(configFilePath);
-
+    LOGD("Game::Game(4)");
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
+    LOGD("Game::Game(5)");
     textRenderer_v2 = new TextRenderer_v2(current_fb_width,current_fb_height);
+    LOGD("Game::Game(6)");
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    LOGD("Game::Game(7)");
     textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    LOGD("Game::Game(8)");
 
 
     world = new b2World(b2Vec2(0.0,-1.81));
+    LOGD("Game::Game(9)");
     world->SetContactListener(this);
+    LOGD("Game::Game(10)");
     world->SetDebugDraw(&debugDraw);
+    LOGD("Game::Game(11)");
 
 
 
 
     loadLevel();
+    LOGD("Game::Game(12)");
     loadAudio();
+    LOGD("Game::Game(13)");
     skipBackgroundDraw =  config.get_bool("skipBackgroundDraw");
+    LOGD("Game::Game(14)");
     debugDrawFlag = config.get_bool("debugDrawFlag");
+    LOGD("Game::Game(15)");
     clearColour = config.get_glm_vec4("clearColour");
+    LOGD("Game::Game(16)");
     loadCoins();
+    LOGD("Game::Game(17)");
 
     glEnable (GL_BLEND);
+    LOGD("Game::Game(18)");
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    LOGD("Game::Game(19)");
     glClearColor(clearColour.r,clearColour.g,clearColour.b,clearColour.a);
+    LOGD("Game::Game(20)");
 
     if (pAudioManager)
     {
         pAudioManager->PlaySFX(m_musicHandle);
     }
-
+    LOGD("Game::Game(21)");
     mEffects = new PostProcessor (current_fb_width, current_fb_height);
-
+    LOGD("Game::Game(22)");
 
     safeAreaCam.setSafeAreaDim(glm::vec2(1.0,1.0));
+    LOGD("Game::Game(23)");
     safeAreaCam.onResize(current_fb_width, current_fb_height);
+    LOGD("Game::Game(24)");
 
     glm::vec3 vert[4];
+    LOGD("Game::Game(25)");
     vert[0] = glm::vec3(0.0,1.0,2.0);
     vert[1] = glm::vec3(0.0,0.0,2.0);
     vert[2] = glm::vec3(1.0,0.0,2.0);
@@ -179,8 +200,9 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
 //    vert[1] = glm::vec3(0.25,0.25,2.0);
 //    vert[2] = glm::vec3(0.75,0.25,2.0);
 //    vert[3] = glm::vec3(0.75,0.75,2.0);
+    LOGD("Game::Game(26)");
     PR_init(&summaryBackground, &vert[0],4, glm::vec4(0.0,0.0,0.0,0.72), GL_TRIANGLE_FAN,GL_STATIC_DRAW);
-
+    LOGD("Game::Game(27)");
 
     glm::vec3 position = glm::vec3((1.0f/3.0f),(1.0f/4.0f),0.0f);
     buttonNextLevel.setPosition(position);
@@ -190,6 +212,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     buttonNextLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/plus_grey.png"));
     buttonNextLevel.setEventListener(this);
 
+    LOGD("Game::Game(28)");
     position = glm::vec3((2.0f/3.0f),(1.0f/4.0f),0.0f);
     buttonRetryLevel.setPosition(position);
     buttonRetryLevel.setDimm(glm::vec2(0.2,0.2));
@@ -197,6 +220,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     buttonRetryLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_red.png"));
     buttonRetryLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_grey.png"));
     buttonRetryLevel.setEventListener(this);
+    LOGD("Game::Game(29)");
 }
 
 

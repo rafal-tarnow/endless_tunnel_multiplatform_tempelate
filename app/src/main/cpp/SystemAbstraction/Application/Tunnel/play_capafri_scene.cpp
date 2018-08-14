@@ -49,17 +49,24 @@ PlayCapAfriScene::PlayCapAfriScene() : Scene() {
 }
 
 void PlayCapAfriScene::OnStartGraphics(int width, int height) {
+    LOGD("PlayCapAfriScene::OnStartGraphics(int width, int height)");
     current_width = width;
     current_height = height;
 
+    LOGD("PlayCapAfriScene::OnStartGraphics(0.1)");
     game = new Game(current_width, current_height);
+    LOGD("PlayCapAfriScene::OnStartGraphics(0.2)");
     game->systemCallback_WindowResize(current_width, current_height);
+    LOGD("PlayCapAfriScene::OnStartGraphics(0.3)");
 
+    LOGD("PlayCapAfriScene::OnStartGraphics(1)");
     mmTrivialShader = new TrivialShader();
     mmTrivialShader->Compile();
-
+    LOGD("PlayCapAfriScene::OnStartGraphics(2)");
     mmTextRenderer = new TextRenderer(mmTrivialShader);
+    LOGD("PlayCapAfriScene::OnStartGraphics(3)");
     mmShapeRenderer = new ShapeRenderer(mmTrivialShader);
+    LOGD("PlayCapAfriScene::OnStartGraphics(4)");
 }
 
 void PlayCapAfriScene::OnKillGraphics()
