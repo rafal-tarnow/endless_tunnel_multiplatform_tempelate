@@ -102,7 +102,7 @@ private:
     AudioManager::AudioHandle m_mushroomHandle;
     AudioManager::AudioHandle m_levelCompletedHandle;
 
-    PR_LineStrip summaryBackground;
+    Primitive summaryBackground;
 
     Config config;
 

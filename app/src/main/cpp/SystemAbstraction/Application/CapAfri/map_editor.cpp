@@ -268,7 +268,7 @@ void MapEditor::addGroundPointInFramebufferCoordinates()
     level.ground_verticles.push_back(world_current_position_0);
     std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
 
-    PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+    PR_setVerticles(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 void MapEditor::addMetaInFramebufferCoordinates()
@@ -477,7 +477,7 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
         {
             *yellowDotIndex = world_current_position_0;
             std::sort (level.ground_verticles.begin(), level.ground_verticles.end(), myfunction);
-            PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+            PR_setVerticles(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
         }
         break;
 
@@ -621,7 +621,7 @@ void MapEditor::gui_onSaveMapButtonClicked()
 void MapEditor::gui_onClearMapButtonClicked()
 {
     level.clear();
-    PR_updateData(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+    PR_setVerticles(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
 }
 
 void MapEditor::gui_onCursorModeChanged(int mode)

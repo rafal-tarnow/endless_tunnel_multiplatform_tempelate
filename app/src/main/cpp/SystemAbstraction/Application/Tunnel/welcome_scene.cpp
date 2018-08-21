@@ -15,7 +15,7 @@
  */
 #include "anim.hpp"
 #include "dialog_scene.hpp"
-#include "scene_tuning_vehicle.hpp"
+#include "scene_select_map.hpp"
 #include "map_editor_scene.hpp"
 #include "welcome_scene.hpp"
 #include "play_capafri_scene.hpp"
@@ -78,7 +78,7 @@ void WelcomeScene::OnButtonClicked(int id) {
 
     if (id == mPlayCapAfriButtonId)
     {
-        mgr->RequestNewScene(new TuningVehicleScene());
+        mgr->RequestNewScene(new SelectMapScene());
     }
     else if(id == mmPlayTunnelButtonId)
     {

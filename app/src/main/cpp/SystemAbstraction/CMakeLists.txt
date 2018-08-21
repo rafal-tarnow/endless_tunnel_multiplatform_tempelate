@@ -41,7 +41,7 @@ add_subdirectory(Application/libs/library_opengles_2)
 add_subdirectory(Application/libs/nuklear/implementation)
 
 add_library (system_abstraction STATIC
-#    oboe
+    #    oboe
     system_audio.cpp
     OpenSLWrap.cpp
     system_abstraction.cpp
@@ -63,6 +63,7 @@ add_library (system_abstraction STATIC
     Application/Tunnel/vertexbuf.cpp
     Application/Tunnel/welcome_scene.cpp
     Application/Tunnel/scene_tuning_vehicle.cpp
+    Application/Tunnel/scene_select_map.cpp
     )
 
 target_include_directories(system_abstraction PRIVATE

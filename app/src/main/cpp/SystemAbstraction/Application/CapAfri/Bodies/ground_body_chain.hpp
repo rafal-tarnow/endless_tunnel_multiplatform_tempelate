@@ -16,7 +16,7 @@ public:
     void render(glm::mat4 projection, glm::mat4 view);
 private:
     b2Body * body = nullptr;
-    PR_LineStrip lineStripRenderer;
+    Primitive lineStripRenderer;
     TS_TriangleStrip triangleStrip;
 
      GLuint coinTextureId;

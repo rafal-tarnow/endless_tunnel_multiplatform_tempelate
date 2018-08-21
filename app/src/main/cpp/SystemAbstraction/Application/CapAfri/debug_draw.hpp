@@ -36,7 +36,7 @@ public:
 
     void setProjectionView(glm::mat4 projection, glm::mat4 view);
 private:
-    PR_LineStrip lineStrip;
+    Primitive lineStrip;
     glm::mat4 mProjection;
     glm::mat4 mView;
 };

@@ -31,7 +31,7 @@ void GLESDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const
     }
     PR_setMode(&lineStrip, GL_LINE_LOOP);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setVerticles(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);
@@ -48,7 +48,7 @@ void GLESDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
     }
     PR_setMode(&lineStrip, GL_TRIANGLE_FAN);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setVerticles(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);
@@ -74,7 +74,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 
     PR_setMode(&lineStrip, GL_LINE_LOOP);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_updateData(&lineStrip, glVertices, vertexCount);
+    PR_setVerticles(&lineStrip, glVertices, vertexCount);
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);
@@ -97,7 +97,7 @@ void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 
     PR_setMode(&lineStrip, GL_TRIANGLE_FAN);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_updateData(&lineStrip, glVertices, vertexCount);
+    PR_setVerticles(&lineStrip, glVertices, vertexCount);
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);
@@ -138,7 +138,7 @@ void GLESDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& colo
     PR_setPointSize(&lineStrip, size);
     PR_setMode(&lineStrip, GL_POINTS);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_updateData(&lineStrip, vert.data(), vert.size());
+    PR_setVerticles(&lineStrip, vert.data(), vert.size());
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);

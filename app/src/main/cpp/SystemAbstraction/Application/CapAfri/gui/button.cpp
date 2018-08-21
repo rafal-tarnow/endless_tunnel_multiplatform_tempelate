@@ -22,6 +22,11 @@ void Button::setPosition(glm::vec3 &position)
     mModel = glm::translate(glm::mat4(1),position);
 }
 
+void Button::setModel(glm::mat4 model)
+{
+    mModel = model;
+}
+
 void Button::setDimm(glm::vec2 dim)
 {
     mDimm = dim;

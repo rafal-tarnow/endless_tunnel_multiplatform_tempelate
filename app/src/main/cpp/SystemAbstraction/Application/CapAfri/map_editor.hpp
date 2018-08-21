@@ -125,11 +125,11 @@ private:
     TextRenderer_v2 * textRenderer_v2;
 
     //COORDINATES LINES
-    PR_LineStrip x_lineStrip;
-    PR_LineStrip y_lineStrip;
+    Primitive x_lineStrip;
+    Primitive y_lineStrip;
 
     //DOTS
-    PR_LineStrip lineStripGround;
+    Primitive lineStripGround;
 
     FantMode fantMode = FANT_GROUND;
 
