@@ -2,6 +2,7 @@
 
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include <string>
+#include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Button{
     Button();
     ~Button();
 
+    void setText(string text);
     void setPosition(glm::vec3 &position);
     void setModel(glm::mat4 model);
     void setDimm(glm::vec2 dim);
@@ -41,8 +43,13 @@ protected:
       glm::mat4 mModel;
       DE_Rectangle rectangle;
 
+
+
 private:
+    string mText;
     ButtonEventListener * mListener = nullptr;
+
+    TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     glm::vec4 *mViewport;
     glm::vec3 mPosition;

@@ -74,6 +74,7 @@ void SelectMapScene::initRadioButtons()
 
     glm::vec3 position = glm::vec3(1920.0f*(1.0f/4.0f),1080.0f*(2.0f/3.0f),0.0f);
 
+    button_shockAbsorber.setText("1");
     button_shockAbsorber.setModel(glm::translate(glm::mat4(1),position));
     button_shockAbsorber.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
     button_shockAbsorber.setDimm(glm::vec2(200,200));
@@ -82,6 +83,7 @@ void SelectMapScene::initRadioButtons()
 
     position = glm::vec3(1920.0f*(1.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
 
+    button_spring.setText("1");
     button_spring.setModel(glm::translate(glm::mat4(1),position));
     button_spring.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
     button_spring.setDimm(glm::vec2(200,200));
@@ -90,6 +92,7 @@ void SelectMapScene::initRadioButtons()
 
     position = glm::vec3(1920.0f*(3.0f/4.0f),1080.0f*(2.0f/3.0f),0.0f);
 
+    button_tires.setText("1");
     button_tires.setModel(glm::translate(glm::mat4(1),position));
     button_tires.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
     button_tires.setDimm(glm::vec2(200,200));
@@ -98,6 +101,7 @@ void SelectMapScene::initRadioButtons()
 
     position = glm::vec3(1920.0f*(3.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
 
+    button_motorTorque.setText("1");
     button_motorTorque.setModel(glm::translate(glm::mat4(1),position));
     button_motorTorque.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
     button_motorTorque.setDimm(glm::vec2(200,200));
@@ -212,10 +216,10 @@ void SelectMapScene::DoFrame()
 
     button_motorTorque.setModel(all_model*model);
 
-      model = glm::translate(model,glm::vec3(400,0,0));
-     button_shockAbsorber.setModel(all_model*model);
+    model = glm::translate(model,glm::vec3(400,0,0));
+    button_shockAbsorber.setModel(all_model*model);
 
-   button_shockAbsorber.Render();
+    button_shockAbsorber.Render();
     button_spring.Render();
     button_tires.Render();
     button_motorTorque.Render();

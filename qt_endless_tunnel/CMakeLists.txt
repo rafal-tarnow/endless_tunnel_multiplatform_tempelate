@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Wall")
+
+
 project (linux_endless_tunnel)
 
 
@@ -11,8 +14,6 @@ else()
 endif()
 
 
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../app/src/main/cpp/SystemAbstraction")
 
