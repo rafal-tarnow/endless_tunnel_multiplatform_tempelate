@@ -40,7 +40,7 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
     glm::vec4 color(0.59f, 0.29f, 0.0f, 1.0f);
 
 
-    coinTextureId = TextureManager::getInstance()->getTextureId("textures/ground_1.png", SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    coinTextureId = TextureManager::getInstance()->getTextureId("textures/ground_3.png", SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), coinTextureId);
 
     b2Vec2 * vs;

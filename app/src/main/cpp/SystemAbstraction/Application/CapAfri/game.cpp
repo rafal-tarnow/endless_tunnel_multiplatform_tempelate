@@ -128,23 +128,21 @@ void Game::Button_onClicked(Button * button)
 
 Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb_height)
 {
-    LOGD("Game::Game(1)");
+
     current_fb_width = fb_width;
     current_fb_height = fb_height;
-    LOGD("Game::Game(2)");
+
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    LOGD("Game::Game(3)");
+
     config.loadDataFromFileToMemory(configFilePath);
-    LOGD("Game::Game(4)");
+
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
-    LOGD("Game::Game(5)");
+
     textRenderer_v2 = new TextRenderer_v2(current_fb_width,current_fb_height);
-    LOGD("Game::Game(6)");
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
-    LOGD("Game::Game(7)");
     textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
-    LOGD("Game::Game(8)");
+
 
 
     world = new b2World(b2Vec2(0.0,-1.81));
