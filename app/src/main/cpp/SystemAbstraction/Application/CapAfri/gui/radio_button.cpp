@@ -21,9 +21,9 @@ void RadioButton::setRadioState(bool state)
 
 void RadioButton::Render()
 {
-    rectangle.projection = *mProjection;
-    rectangle.view = *mView;
-    rectangle.model = mModel;
+//    rectangle.projection = *mProjection;
+//    rectangle.view = *mView;
+//    rectangle.model = mModel;
 
     if(isRadioActive || isTouched)
     {
@@ -34,5 +34,7 @@ void RadioButton::Render()
         rectangle.texture_id = normalTexture;
     }
 
-    DE_drawRectangle(&rectangle);
+    Button::Render();
+
+    //DE_drawRectangle(&rectangle);
 }

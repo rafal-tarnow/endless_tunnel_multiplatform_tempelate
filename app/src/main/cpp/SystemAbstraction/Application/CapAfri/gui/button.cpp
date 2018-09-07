@@ -92,6 +92,7 @@ void Button::Render()
     int width = 320;
 
 
+    //textRenderer_v2->setModel(mModel);
     textRenderer_v2->RenderText(mText, (width*0.5), height*0.46, TextRenderer_v2::TEXT_CENTER);
 }
 
