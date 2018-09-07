@@ -57,7 +57,11 @@ int Level::loadLevelFromFile(string levelFilePath)
 
     background_image_index = config.get_uint32_t("background_image_index");
 
+    ground_image_index = config.get_uint32_t("ground_image_index");
+
     cameraOffset = config.get_glm_vec3("cameraOffset");
+
+    groundContourColor = config.get_glm_vec4("groundContourColor");
 
     return 0;
 }
@@ -95,9 +99,13 @@ int Level::saveLevelToFile(string levelFilePath)
 
     config.set_uint32_t("background_image_index", background_image_index);
 
+    config.set_uint32_t("ground_image_index", ground_image_index);
+
     config.set_glm_vec3("metaPosition", meta->getPosition());
 
     config.set_glm_vec3("cameraOffset", cameraOffset);
+
+    config.set_glm_vec4("groundContourColor", groundContourColor);
 
     config.saveDataFromMemoryToFile(levelFilePath);
 

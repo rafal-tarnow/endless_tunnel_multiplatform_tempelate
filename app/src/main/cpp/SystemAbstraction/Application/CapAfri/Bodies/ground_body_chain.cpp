@@ -4,6 +4,7 @@
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include <system_paths.hpp>
 #include <SOIL.h>
+#include <sstream>
 
 using namespace std;
 
@@ -40,7 +41,10 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
     glm::vec4 color(0.59f, 0.29f, 0.0f, 1.0f);
 
 
-    coinTextureId = TextureManager::getInstance()->getTextureId("textures/ground_3.png", SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    stringstream stream;
+    stream << "textures/ground_" << level.ground_image_index << ".png";
+
+    coinTextureId = TextureManager::getInstance()->getTextureId(stream.str().c_str(), SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     TS_initTriangleStrip(&triangleStrip,triangle_strip_verticles.data(),triangle_strip_verticles.size(), coinTextureId);
 
     b2Vec2 * vs;
@@ -61,11 +65,7 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
     body->CreateFixture(&fixturedef);
 
 
-    GLfloat x_bottom_right = x_top_left + width;
-    GLfloat y_bottom_right = y_top_left - height;
-
-
-
+    PR_setColour(&lineStripRenderer, level.groundContourColor);
 }
 
 GroundChain::~GroundChain(){

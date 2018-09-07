@@ -28,7 +28,9 @@ public:
     vector<MushroomRenderer *> mushroom_vector;
     MetaRenderer * meta = nullptr;
     uint32_t background_image_index = 0;
+    uint32_t ground_image_index = 0;
     glm::vec3 cameraOffset = glm::vec3(0,0,0);
+    glm::vec4 groundContourColor = glm::vec4(0.9686, 0.7137, 0.0941, 1.0);
 private:
     Config config;
 };
