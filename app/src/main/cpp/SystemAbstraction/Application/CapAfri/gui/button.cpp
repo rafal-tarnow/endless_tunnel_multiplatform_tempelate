@@ -11,8 +11,8 @@ Button::Button()
     DE_initRectangle(&rectangle,normalTexture,mDimm);
 
 
-    int height = 240;
-    int width = 320;
+    int height = 1080;
+    int width = 1920;
 
     GLuint fontSize = GLuint(float(height)*0.076f);
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
@@ -20,6 +20,7 @@ Button::Button()
 
     textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    textRenderer_v2->setColour(glm::vec4(0,0,0,1));
 }
 
 Button::~Button()
@@ -31,6 +32,11 @@ Button::~Button()
 void Button::setText(string text)
 {
     mText = text;
+}
+
+string Button::getText()
+{
+    return mText;
 }
 
 void Button::setPosition(glm::vec3 &position)
@@ -92,8 +98,8 @@ void Button::Render()
     int width = 320;
 
 
-    //textRenderer_v2->setModel(mModel);
-    textRenderer_v2->RenderText(mText, (width*0.5), height*0.46, TextRenderer_v2::TEXT_CENTER);
+    textRenderer_v2->setCustomPV(*mProjection, *mView);
+    textRenderer_v2->RenderText(mText, mModel, TextRenderer_v2::TEXT_CENTER);
 }
 
 bool Button::onPointerDown(float x_ndc, float y_ndc)

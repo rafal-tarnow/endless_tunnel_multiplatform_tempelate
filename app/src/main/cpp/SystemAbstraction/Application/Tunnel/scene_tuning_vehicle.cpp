@@ -4,7 +4,7 @@
 #include "play_capafri_scene.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
-#include "welcome_scene.hpp"
+#include "scene_select_map.hpp"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -278,7 +278,7 @@ void TuningVehicleScene::OnPointerMove(int pointerId, const struct PointerCoords
 
 bool TuningVehicleScene::OnBackKeyPressed()
 {
-    SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
+    SceneManager::GetInstance()->RequestNewScene(new SelectMapScene());
 }
 
 void TuningVehicleScene::OnFramebufferResized(int width, int height)

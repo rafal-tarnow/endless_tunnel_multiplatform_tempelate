@@ -34,23 +34,20 @@ public:
     void Button_onClicked(Button * button);
 
 private:
-    void buttonPlusClicked();
-    void buttonMinusClicked();
     void initNormalButtons();
     void initRadioButtons();
 
-    Button buttonPlus;
-    Button buttonMinus;
-    Button buttonPlay;
+    const unsigned int LEVELS_COUNT = 3;
 
-    RadioButton * currentRadioButton = nullptr;
+    Button buttonPlay;
 
     RadioButtonManager radioButtonManager;
 
-    RadioButton button_shockAbsorber;
-    RadioButton button_spring;
-    RadioButton button_tires;
-    RadioButton button_motorTorque;
+    RadioButton *button_1;
+
+    vector<RadioButton *> buttons;
+
+    uint32_t currentMapIndex = 0;
 
     DE_Rectangle safe_area_background;
 
@@ -61,15 +58,10 @@ private:
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
 
-    Config config;
-    float dampingRatio = 0.0f;
-    float frequencyHz = 0.0f;
-    float maxMotorTorque = 0.0f;
-    float friction = 0.0f;
-
-    stringstream stream;
 
     Primitive testPrimitive;
+
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
+    Config config;
 };

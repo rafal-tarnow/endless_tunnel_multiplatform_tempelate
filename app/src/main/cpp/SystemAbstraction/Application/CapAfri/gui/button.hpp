@@ -16,9 +16,10 @@ class ButtonEventListener{
 class Button{
   public:
     Button();
-    ~Button();
+    virtual ~Button();
 
     void setText(string text);
+    string getText();
     void setPosition(glm::vec3 &position);
     void setModel(glm::mat4 model);
     void setDimm(glm::vec2 dim);

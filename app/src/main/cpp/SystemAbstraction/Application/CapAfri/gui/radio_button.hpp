@@ -9,7 +9,7 @@ using namespace std;
 class RadioButton : public Button{
 public:
     RadioButton();
-    ~RadioButton();
+    virtual ~RadioButton();
 
     void setRadioState(bool state);
 
