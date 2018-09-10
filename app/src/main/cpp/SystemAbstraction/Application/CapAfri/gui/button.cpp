@@ -94,12 +94,11 @@ void Button::Render()
 
     DE_drawRectangle(&rectangle);
 
-    int height = 240;
-    int width = 320;
+    glm::mat4 txt_model = glm::translate(mModel, glm::vec3(0,-20,0));
 
 
     textRenderer_v2->setCustomPV(*mProjection, *mView);
-    textRenderer_v2->RenderText(mText, mModel, TextRenderer_v2::TEXT_CENTER);
+    textRenderer_v2->RenderText(mText, txt_model, TextRenderer_v2::TEXT_CENTER);
 }
 
 bool Button::onPointerDown(float x_ndc, float y_ndc)

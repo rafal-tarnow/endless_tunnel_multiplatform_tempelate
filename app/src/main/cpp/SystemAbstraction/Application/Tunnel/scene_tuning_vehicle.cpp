@@ -56,8 +56,8 @@ void TuningVehicleScene::initNormalButtons()
     position = glm::vec3(1920.0f*(6.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonPlay.setPosition(position);
     buttonPlay.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-    buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber.png"));
-    buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/play.png"));
+    buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/play_pressed.png"));
     buttonPlay.setEventListener(this);
 }
 
@@ -70,6 +70,8 @@ void TuningVehicleScene::initRadioButtons()
     button_shockAbsorber.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
     button_shockAbsorber.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber.png"));
     button_shockAbsorber.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber_pressed.png"));
+
+    button_shockAbsorber.setRadioState(true);
 
     position = glm::vec3(1920.0f*(1.0f/4.0f),1080.0f*(1.0f/3.0f),0.0f);
 
@@ -209,18 +211,34 @@ void TuningVehicleScene::buttonMinusClicked()
     if(currentRadioButton == &button_shockAbsorber)
     {
         dampingRatio -= 0.1f;
+        if(dampingRatio < 0.1)
+        {
+            dampingRatio = 0.1;
+        }
     }
     else if(currentRadioButton == &button_spring)
     {
         frequencyHz -= 0.1f;
+        if(frequencyHz < 0.1)
+        {
+            frequencyHz = 0.1;
+        }
     }
     else if(currentRadioButton == &button_motorTorque)
     {
         maxMotorTorque -= 0.1f;
+        if(maxMotorTorque < 0.1)
+        {
+            maxMotorTorque = 0.1;
+        }
     }
     else if(currentRadioButton == &button_tires)
     {
         friction -= 0.1f;
+        if(friction < 0.1)
+        {
+            friction = 0.1;
+        }
     }
 }
 

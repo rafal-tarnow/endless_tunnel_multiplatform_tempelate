@@ -30,11 +30,24 @@ GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, floa
     PR_init(&lineStripRenderer, level.ground_verticles.data(), level.ground_verticles.size(), line_color);
 
 
+    //get lowest verticle
+    glm::vec3 lowest_verticle = level.ground_verticles.at(0);
+
+    for(auto verticle : level.ground_verticles)
+    {
+        if(verticle.y < lowest_verticle.y)
+        {
+            lowest_verticle = verticle;
+        }
+    }
+
+
+
     vector<glm::vec3> triangle_strip_verticles;
     for(auto verticle : level.ground_verticles)
     {
         triangle_strip_verticles.push_back(verticle);
-        verticle.y = verticle.y - 18.0f;
+        verticle.y = lowest_verticle.y - 18.0f;
         triangle_strip_verticles.push_back(verticle);
     }
 

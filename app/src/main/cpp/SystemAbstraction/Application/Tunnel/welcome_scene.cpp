@@ -149,10 +149,10 @@ void WelcomeScene::OnCreateWidgets() {
             ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
 
     // create the "Endless Tunnel" button
-    mmPlayTunnelButtonId = NewWidget()->SetText(S_ENDLESS_TUNNEL)->SetTextColor(BUTTON_COLOR)
-            ->SetCenter(BUTTON_ENDLESS_TUNNEL_POS)->SetSize(BUTTON_ENDLESS_TUNNEL_SIZE)
-            ->SetFontScale(BUTTON_ENDLESS_TUNNEL_FONT_SCALE)->SetIsButton(true)
-            ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
+//    mmPlayTunnelButtonId = NewWidget()->SetText(S_ENDLESS_TUNNEL)->SetTextColor(BUTTON_COLOR)
+//            ->SetCenter(BUTTON_ENDLESS_TUNNEL_POS)->SetSize(BUTTON_ENDLESS_TUNNEL_SIZE)
+//            ->SetFontScale(BUTTON_ENDLESS_TUNNEL_FONT_SCALE)->SetIsButton(true)
+//            ->SetTransition(UiWidget::TRANS_SCALE)->GetId();
 
     // create the "Map Editor" button
     mMapEditorButtonId = NewWidget()->SetText(S_MAP_EDITOR)->SetTextColor(BUTTON_COLOR)

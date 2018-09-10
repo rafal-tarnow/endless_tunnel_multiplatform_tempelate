@@ -14,6 +14,9 @@ using namespace std;
 
 SelectMapScene::SelectMapScene()
 {
+    config.loadDataFromFileToMemory(configFilePath);
+    currentMapIndex = config.get_uint32_t("currentMapIndex");
+
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -35,8 +38,7 @@ SelectMapScene::SelectMapScene()
     verticles.push_back(glm::vec3(0,1080,0));
     PR_init(&testPrimitive, verticles.data(), 4,glm::vec4(1.0, 0.0, 0.0, 1.0), GL_TRIANGLE_FAN, GL_DYNAMIC_DRAW);
 
-    config.loadDataFromFileToMemory(configFilePath);
-    currentMapIndex = config.get_uint32_t("currentMapIndex");
+
 }
 
 void SelectMapScene::initNormalButtons()
@@ -44,8 +46,8 @@ void SelectMapScene::initNormalButtons()
     glm::vec3 position = glm::vec3(1920.0f*(6.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
     buttonPlay.setPosition(position);
     buttonPlay.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-    buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber.png"));
-    buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/shock_absorber_pressed.png"));
+    buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue.png"));
+    buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_pressed.png"));
     buttonPlay.setEventListener(this);
 }
 
@@ -68,7 +70,7 @@ void SelectMapScene::initRadioButtons()
         buttons.push_back(button_1);
 
     }
-
+    buttons.at(currentMapIndex)->setRadioState(true);
 
     for(unsigned int i = 0; i < buttons.size(); i++)
     {
@@ -130,7 +132,7 @@ void SelectMapScene::DoFrame()
     x_pos += 0.5f;
 
 
-    glm::mat4 all_model = glm::translate(glm::mat4(1),glm::vec3(200,1080/2,0));
+    glm::mat4 all_model = glm::translate(glm::mat4(1),glm::vec3(0,700,0));
 
 
     testPrimitive.model = glm::mat4(1);
@@ -148,7 +150,7 @@ void SelectMapScene::DoFrame()
     verticles.push_back(glm::vec3(0,1080,0));
     PR_setVerticles(&testPrimitive, verticles.data(), 4);
 
-    PR_draw(&testPrimitive, 1.0);
+    //PR_draw(&testPrimitive, 1.0);
 
     glStencilMask(0x00);
     glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -166,14 +168,26 @@ void SelectMapScene::DoFrame()
 
 
 
-    glm::mat4 model = glm::mat4(1);
-    glm::vec3 translation = glm::vec3(300,0,0);
+    glm::mat4 model_h = glm::mat4(1);
+    glm::mat4 model_v = glm::mat4(1);
+    glm::vec3 horizontal_translation = glm::vec3(220,0,0);
+    glm::vec3 vertical_translation = glm::vec3(0,-220,0);
 
+
+    unsigned int column_index = 0;
 
     for(unsigned int i = 0; i < buttons.size(); i++)
     {
-        model = glm::translate(model,translation);
-        buttons.at(i)->setModel(all_model*model);
+        model_h = glm::translate(model_h,horizontal_translation);
+        buttons.at(i)->setModel(all_model*model_h*model_v);
+
+        column_index++;
+        if(column_index == 8)
+        {
+            column_index = 0;
+            model_v = glm::translate(model_v, vertical_translation);
+            model_h = glm::mat4(1);
+        }
     }
 
 
@@ -261,7 +275,11 @@ void SelectMapScene::OnPointerMove(int pointerId, const struct PointerCoords *co
 
 bool SelectMapScene::OnBackKeyPressed()
 {
+    config.set_uint32_t("currentMapIndex",currentMapIndex);
+    config.saveDataFromMemoryToFile(configFilePath);
+
     SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
+    return true;
 }
 
 void SelectMapScene::OnFramebufferResized(int width, int height)
