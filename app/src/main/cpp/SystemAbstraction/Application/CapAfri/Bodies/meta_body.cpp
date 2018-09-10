@@ -24,7 +24,7 @@ MetaRenderer::MetaRenderer(glm::vec3 position, float radius)
     if(instancesCount == 1)
     {
         coinTextureId = TextureManager::getInstance()->getTextureId("textures/meta.png");
-        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
+        DE_initRectangle_7(&rectangle, &coinTextureId, radius*2.0f, radius*2, pos.z);
     }
 }
 

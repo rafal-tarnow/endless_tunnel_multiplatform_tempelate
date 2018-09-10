@@ -21,7 +21,10 @@ TuningVehicleScene::TuningVehicleScene()
     glm::vec2 safe_area_dimension = glm::vec2(1920.0f,1080.0f);
     safeAreaCam.setSafeAreaDim(safe_area_dimension);
 
-    DE_initRectangle(&safe_area_background, "textures/garage.png", glm::vec3(safe_area_dimension.x/2.0f, safe_area_dimension.y/2.0f, 0.0f),safe_area_dimension);
+
+    GLuint txtId = TextureManager::getInstance()->getTextureId("textures/garage.png");
+    DE_initRectangle_3(&safe_area_background, txtId ,safe_area_dimension);
+    DE_setModel(&safe_area_background, glm::translate(glm::mat4(1),glm::vec3(safe_area_dimension.x/2.0f, safe_area_dimension.y/2.0f, 0.0f)));
 
     initNormalButtons();
     initRadioButtons();
@@ -33,6 +36,11 @@ TuningVehicleScene::TuningVehicleScene()
     friction = config.get_float("friction");
 
     stream << std::fixed << std::setprecision(1);
+
+
+    AudioManager& audioManager = AudioManager::GetSingleton();
+    std::string musicName("sounds/music_menu.wav");
+    menuMusicHandle = audioManager.CreateSFX(musicName, true);
 }
 
 void TuningVehicleScene::initNormalButtons()
@@ -108,6 +116,9 @@ void TuningVehicleScene::initRadioButtons()
 
 TuningVehicleScene::~TuningVehicleScene()
 {
+
+
+
     DE_deleteRectangle(&safe_area_background);
 
     config.set_float("dampingRatio", dampingRatio);
@@ -122,6 +133,8 @@ TuningVehicleScene::~TuningVehicleScene()
 
 void TuningVehicleScene::OnStartGraphics(int width, int height)
 {
+    AudioManager::GetSingleton().PlaySFX(menuMusicHandle);
+
     framebuffer_dimm = glm::vec2(width, height);
 
     safeAreaCam.onResize(width, height);
@@ -136,7 +149,7 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
 
 void TuningVehicleScene::OnKillGraphics()
 {
-
+    AudioManager::GetSingleton().StopSFX(menuMusicHandle);
 }
 
 void TuningVehicleScene::DoFrame()
@@ -144,11 +157,8 @@ void TuningVehicleScene::DoFrame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glm::mat4 M_GUI = glm::mat4(1);
-
     safe_area_background.projection = safeAreaCam.projection();
     safe_area_background.view = safeAreaCam.view();
-    safe_area_background.model = M_GUI;
 
     DE_drawRectangle(&safe_area_background);
 

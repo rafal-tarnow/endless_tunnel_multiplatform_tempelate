@@ -52,7 +52,7 @@ public:
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
     void EndContact(b2Contact* contact);
 
-       void Button_onClicked(Button * button);
+    void Button_onClicked(Button * button);
 
 private:
     void loadCoins();
@@ -111,4 +111,8 @@ private:
     GLESDebugDraw debugDraw;
 
     Level level;
+
+    Button buttonGaz;
+    Button buttonBrake;
+    SafeAreaCam safeAreaCamBreaks;
 };

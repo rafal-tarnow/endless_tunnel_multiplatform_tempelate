@@ -12,8 +12,8 @@ CarRenderer::CarRenderer(glm::vec3 position)
     mFrontWhellPos = glm::vec3(1,-1,0);
     mRearWhellPos = glm::vec3(-1,-1,0);
 
-    DE_initRectangle(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, mBodyPos.z);
-    DE_initRectangle(&carWhellRectangle, "textures/kolo.png", mFrontWhellRadius*2.0f,mFrontWhellRadius*2.0f, mBodyPos.z);
+    DE_initRectangle_5(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, mBodyPos.z);
+    DE_initRectangle_5(&carWhellRectangle, "textures/kolo.png", mFrontWhellRadius*2.0f,mFrontWhellRadius*2.0f, mBodyPos.z);
 }
 
 CarRenderer::~CarRenderer()

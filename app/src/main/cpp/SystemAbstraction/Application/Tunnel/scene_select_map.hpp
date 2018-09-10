@@ -7,6 +7,7 @@
 #include <library_opengles_2/RectangleRenderer/Primitive_Renderer.hpp>
 #include <lib_config.hpp>
 #include <system_paths.hpp>
+#include <OpenSLWrap.hpp>
 #include <sstream>
 #include "../CapAfri/camera_safe_area.hpp"
 
@@ -58,7 +59,7 @@ private:
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
-
+    AudioManager::AudioHandle menuMusicHandle;
 
     Primitive testPrimitive;
 

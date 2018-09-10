@@ -7,6 +7,7 @@
 #include <lib_config.hpp>
 #include <system_paths.hpp>
 #include <sstream>
+#include <OpenSLWrap.hpp>
 #include "../CapAfri/camera_safe_area.hpp"
 
 using namespace std;
@@ -69,4 +70,6 @@ private:
     float friction = 0.0f;
 
     stringstream stream;
+
+    AudioManager::AudioHandle menuMusicHandle;
 };

@@ -26,7 +26,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
     if(instancesCount == 1)
     {
         coinTextureId = TextureManager::getInstance()->getTextureId("textures/coin_2.png");
-        DE_initRectangle(&rectangle, &coinTextureId, radius*2.0f, radius*2, mPos.z);
+        DE_initRectangle_7(&rectangle, &coinTextureId, radius*2.0f, radius*2, mPos.z);
     }
 }
 CircleCoinRender::~CircleCoinRender()

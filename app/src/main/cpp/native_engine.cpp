@@ -67,7 +67,10 @@ NativeEngine::NativeEngine(struct android_app *app) {
     LOGD("NativeEngine: API version %d.", mApiVersion);
 
     systemInput_initConfigPath(app->activity->internalDataPath);
-    new AudioManager(app->activity->assetManager);
+
+    if(!AudioManager::GetSingletonPtr()) {
+        new AudioManager(app->activity->assetManager);
+    }
     Resource::initAndroid(app->activity->assetManager);
 }
 

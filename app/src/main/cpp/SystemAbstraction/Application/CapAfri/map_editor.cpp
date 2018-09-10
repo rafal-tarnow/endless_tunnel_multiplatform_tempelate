@@ -25,10 +25,10 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     redDotTextureId = TextureManager::getInstance()->getTextureId("textures/red_dot.png");
-    DE_initRectangle(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
+    DE_initRectangle_7(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
 
     yellowDotTextureId = TextureManager::getInstance()->getTextureId("textures/yellow_dot.png");
-    DE_initRectangle(&yellowDotRectangle, &yellowDotTextureId, 0.25f, 0.25f, 0.0f);
+    DE_initRectangle_7(&yellowDotRectangle, &yellowDotTextureId, 0.25f, 0.25f, 0.0f);
 
     gridLines = new CGridLines(0, 1000, 50, 0);
 

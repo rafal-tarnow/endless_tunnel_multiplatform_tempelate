@@ -194,10 +194,10 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     vert[1] = glm::vec3(0.0,0.0,2.0);
     vert[2] = glm::vec3(1.0,0.0,2.0);
     vert[3] = glm::vec3(1.0,1.0,2.0);
-//    vert[0] = glm::vec3(0.25,0.75,2.0);
-//    vert[1] = glm::vec3(0.25,0.25,2.0);
-//    vert[2] = glm::vec3(0.75,0.25,2.0);
-//    vert[3] = glm::vec3(0.75,0.75,2.0);
+    //    vert[0] = glm::vec3(0.25,0.75,2.0);
+    //    vert[1] = glm::vec3(0.25,0.25,2.0);
+    //    vert[2] = glm::vec3(0.75,0.25,2.0);
+    //    vert[3] = glm::vec3(0.75,0.75,2.0);
     LOGD("Game::Game(26)");
     PR_init(&summaryBackground, &vert[0],4, glm::vec4(0.0,0.0,0.0,0.72), GL_TRIANGLE_FAN,GL_STATIC_DRAW);
     LOGD("Game::Game(27)");
@@ -219,6 +219,29 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     buttonRetryLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_grey.png"));
     buttonRetryLevel.setEventListener(this);
     LOGD("Game::Game(29)");
+
+    glm::vec2 safe_area_dimension = glm::vec2(1920.0f,1080.0f);
+    safeAreaCamBreaks.setSafeAreaDim(safe_area_dimension);
+    safeAreaCamBreaks.onResize(current_fb_width, current_fb_height);
+
+    position = glm::vec3(1920.0f-265.0f,0.0f+128.0,0.0f);
+    buttonGaz.setPosition(position);
+    buttonGaz.setDimm(glm::vec2(256,256));
+    buttonGaz.setMatrices(&safeAreaCamBreaks.viewport(), &safeAreaCamBreaks.projection(), &safeAreaCamBreaks.view());
+    buttonGaz.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz.png"));
+    buttonGaz.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz_pressed.png"));
+    buttonGaz.setEventListener(this);
+
+
+
+    position = glm::vec3(256.0f,0.0f+128.0,0.0f);
+    buttonBrake.setPosition(position);
+    buttonBrake.setDimm(glm::vec2(256,256));
+    buttonBrake.setMatrices(&safeAreaCamBreaks.viewport(), &safeAreaCamBreaks.projection(), &safeAreaCamBreaks.view());
+    buttonBrake.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake.png"));
+    buttonBrake.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake_pressed.png"));
+    buttonBrake.setEventListener(this);
+
 }
 
 
@@ -345,6 +368,7 @@ void Game::systemCallback_WindowResize(unsigned int win_width,unsigned int win_h
     camWorld.onFrameBufferResize(current_fb_width, current_fb_height);
 
     safeAreaCam.onResize(current_fb_width, current_fb_height);
+    safeAreaCamBreaks.onResize(current_fb_width, current_fb_height);
 }
 
 void Game::updateGameLogics()
@@ -403,12 +427,18 @@ void Game::OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
     buttonNextLevel.onPointerDown(coords->x, coords->y);
     buttonRetryLevel.onPointerDown(coords->x, coords->y);
+
+    buttonGaz.onPointerDown(coords->x, coords->y);
+    buttonBrake.onPointerDown(coords->x, coords->y);
 }
 
 void Game::OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
     buttonNextLevel.onPointerUp();
     buttonRetryLevel.onPointerUp();
+
+    buttonGaz.onPointerUp();
+    buttonBrake.onPointerUp();
 }
 
 void Game::systemCallback_Render()
@@ -447,6 +477,8 @@ void Game::systemCallback_Render()
         renderWorldBodies();
         renderHUD();
 
+        buttonGaz.Render();
+        buttonBrake.Render();
 
     }
     if(mEffects->Black == GL_TRUE)
@@ -537,22 +569,33 @@ void Game::systemCallback_mouseButton(SystemAbstraction::MouseButton mouseButton
 void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigned int key, int x, int y )
 {
     if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_DOWN)){
-        if(car) car->setSpeed(-15);
+        if(car)
+        {
+            car->setSpeed(-15);
+            buttonGaz.setPressed(true);
+        }
+    }
+
+    if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_UP)){
+        if(car)
+        {
+            car->setSpeed(0);
+            buttonGaz.setPressed(false);
+        }
     }
 
     if((key == 'a' || key == 'A') && (event == SystemAbstraction::EVENT_DOWN)){
         if(car)
         {
             car->setSpeed(15);
+            buttonBrake.setPressed(true);
         }
     }
 
-    if((key == 'd' || key == 'D') && (event == SystemAbstraction::EVENT_UP)){
-        if(car) car->setSpeed(0);
-    }
 
     if((key == 'a' || key == 'A') && (event == SystemAbstraction::EVENT_UP)){
         if(car) car->setSpeed(0);
+        buttonBrake.setPressed(false);
     }
 }
 

@@ -42,7 +42,7 @@ BackGround::BackGround(float x_left, float y_top, float width, float height, uin
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    DE_initRectangle(&rectangle,texture_id, verticles, texCoords);
+    DE_initRectangle_6(&rectangle,texture_id, verticles, texCoords);
 }
 
 BackGround::~BackGround(){

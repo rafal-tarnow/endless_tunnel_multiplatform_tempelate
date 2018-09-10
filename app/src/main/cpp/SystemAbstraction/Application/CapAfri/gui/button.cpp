@@ -8,7 +8,7 @@ Button::Button()
 { 
     mDimm = glm::vec2(246,133);
 
-    DE_initRectangle(&rectangle,normalTexture,mDimm);
+    DE_initRectangle_4(&rectangle,normalTexture,mDimm);
 
 
     int height = 1080;
@@ -56,6 +56,20 @@ void Button::setDimm(glm::vec2 dim)
     DE_setDimm(&rectangle, mDimm);
 }
 
+void Button::setPressed(bool pressed)
+{
+    if(pressed == true)
+    {
+        isTouched = true;
+        rectangle.texture_id = touchedTexture;
+    }else
+    {
+        isTouched = false;
+        rectangle.texture_id = normalTexture;
+    }
+
+}
+
 void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
 {
     mViewport = Viewport;
@@ -94,11 +108,15 @@ void Button::Render()
 
     DE_drawRectangle(&rectangle);
 
-    glm::mat4 txt_model = glm::translate(mModel, glm::vec3(0,-20,0));
+
+    if(mText != "")
+    {
+        glm::mat4 txt_model = glm::translate(mModel, glm::vec3(0,-20,0));
 
 
-    textRenderer_v2->setCustomPV(*mProjection, *mView);
-    textRenderer_v2->RenderText(mText, txt_model, TextRenderer_v2::TEXT_CENTER);
+        textRenderer_v2->setCustomPV(*mProjection, *mView);
+        textRenderer_v2->RenderText(mText, txt_model, TextRenderer_v2::TEXT_CENTER);
+    }
 }
 
 bool Button::onPointerDown(float x_ndc, float y_ndc)

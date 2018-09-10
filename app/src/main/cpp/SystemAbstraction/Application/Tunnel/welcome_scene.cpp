@@ -62,11 +62,10 @@ WelcomeScene::WelcomeScene() {
     AudioManager& audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
-    audioManager.PlaySFX(menuMusicHandle);
 }
 
 WelcomeScene::~WelcomeScene() {
-    AudioManager::GetSingleton().StopSFX(menuMusicHandle);
+
 }
 
 void WelcomeScene::RenderBackground() {
@@ -130,6 +129,7 @@ void WelcomeScene::UpdateWidgetStates() {
 
 void WelcomeScene::OnStartGraphics(int width, int height) {
     UiScene::OnStartGraphics(width, height);
+    AudioManager::GetSingleton().PlaySFX(menuMusicHandle);
 }
 
 void WelcomeScene::OnCreateWidgets() {
@@ -180,6 +180,7 @@ void WelcomeScene::OnCreateWidgets() {
 }
 
 void WelcomeScene::OnKillGraphics() {
+    AudioManager::GetSingleton().StopSFX(menuMusicHandle);
     UiScene::OnKillGraphics();
 }
 
