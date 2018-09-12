@@ -70,8 +70,8 @@ private:
 
     SafeAreaCam safeAreaCam;
 
-    Button buttonNextLevel;
     Button buttonRetryLevel;
+    Button buttonNextLevel;
 
     float mushroomEffectStartTime = 0.0f;
     float current_time = 0.0;

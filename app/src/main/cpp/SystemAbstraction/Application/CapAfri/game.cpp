@@ -115,11 +115,11 @@ void Game::EndContact(b2Contact* contact)
 
 void Game::Button_onClicked(Button * button)
 {
-    if(button == &buttonNextLevel)
+    if(button == &buttonRetryLevel)
     {
         //buttonPlusClicked();
     }
-    else if(button == &buttonRetryLevel)
+    else if(button == &buttonNextLevel)
     {
         //buttonMinusClicked();
     }
@@ -203,21 +203,21 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     LOGD("Game::Game(27)");
 
     glm::vec3 position = glm::vec3((1.0f/3.0f),(1.0f/4.0f),0.0f);
-    buttonNextLevel.setPosition(position);
-    buttonNextLevel.setDimm(glm::vec2(0.2,0.2));
-    buttonNextLevel.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-    buttonNextLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/meta.png"));
-    buttonNextLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/plus_grey.png"));
-    buttonNextLevel.setEventListener(this);
-
-    LOGD("Game::Game(28)");
-    position = glm::vec3((2.0f/3.0f),(1.0f/4.0f),0.0f);
     buttonRetryLevel.setPosition(position);
     buttonRetryLevel.setDimm(glm::vec2(0.2,0.2));
     buttonRetryLevel.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-    buttonRetryLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_red.png"));
-    buttonRetryLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/minus_grey.png"));
+    buttonRetryLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
+    buttonRetryLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
     buttonRetryLevel.setEventListener(this);
+
+    LOGD("Game::Game(28)");
+    position = glm::vec3((2.0f/3.0f),(1.0f/4.0f),0.0f);
+    buttonNextLevel.setPosition(position);
+    buttonNextLevel.setDimm(glm::vec2(0.2,0.2));
+    buttonNextLevel.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+    buttonNextLevel.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
+    buttonNextLevel.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
+    buttonNextLevel.setEventListener(this);
     LOGD("Game::Game(29)");
 
     glm::vec2 safe_area_dimension = glm::vec2(1920.0f,1080.0f);
@@ -425,17 +425,19 @@ void Game::systemCallback_TimerTick()
 
 void Game::OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-    buttonNextLevel.onPointerDown(coords->x, coords->y);
-    buttonRetryLevel.onPointerDown(coords->x, coords->y);
-
-    buttonGaz.onPointerDown(coords->x, coords->y);
-    buttonBrake.onPointerDown(coords->x, coords->y);
+    if(gameState ==  GAME_LEVEL_COMPLETED) {
+        buttonRetryLevel.onPointerDown(coords->x, coords->y);
+        buttonNextLevel.onPointerDown(coords->x, coords->y);
+    }else {
+        buttonGaz.onPointerDown(coords->x, coords->y);
+        buttonBrake.onPointerDown(coords->x, coords->y);
+    }
 }
 
 void Game::OnPointerUp(int pointerId, const struct PointerCoords *coords)
 {
-    buttonNextLevel.onPointerUp();
     buttonRetryLevel.onPointerUp();
+    buttonNextLevel.onPointerUp();
 
     buttonGaz.onPointerUp();
     buttonBrake.onPointerUp();
@@ -504,8 +506,8 @@ void Game::systemCallback_Render()
         textRenderer_v2->setColour(glm::vec4(0.0, 1.0, 0.0, 1.0f));
         textRenderer_v2->RenderText("LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
 
-        buttonNextLevel.Render();
         buttonRetryLevel.Render();
+        buttonNextLevel.Render();
     }
 
     if(debugDrawFlag == true)
