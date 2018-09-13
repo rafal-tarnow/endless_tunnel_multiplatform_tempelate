@@ -115,4 +115,9 @@ private:
     Button buttonGaz;
     Button buttonBrake;
     SafeAreaCam safeAreaCamBreaks;
+
+    bool useFixedSimFPS = true;
+    bool useAverageSimFPS = false;
+    bool useCurrentSimFPS = false;
+    float simFPS = 30.0f;
 };

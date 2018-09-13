@@ -12,6 +12,9 @@ struct PointerCoords {
     float maxX, maxY;
 };
 
+extern double current_fps;
+extern double average_fps;
+
 class SystemAbstraction{
 public:
 

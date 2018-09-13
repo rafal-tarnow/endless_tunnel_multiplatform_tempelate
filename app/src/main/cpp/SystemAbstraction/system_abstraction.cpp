@@ -102,11 +102,15 @@ void SystemAbstraction::onRenderFirstFrame()
 Average<double> averageFPS(600);
 Average<double> averageFrameTime(600);
 
+double current_fps = 30;
+double average_fps = 30;
+
+
 void SystemAbstraction::onRenderFrame()
 {
-    if(showFPS) {
+
         deltaTimer.start();
-    }
+
 
     mgr->DoFrame();
 
@@ -116,17 +120,18 @@ void SystemAbstraction::onRenderFrame()
     }
 
     static double render_time_ms;
-    static double fpsd;
+
     static double render_time_ms_copy;
     static double fpsd_copy;
 
-    if(showFPS) {
+
 
 
         render_time_ms = deltaTimer.getTimeFromStart_ms();
-        fpsd = fps.getFPS();
+        current_fps = fps.getFPS();
 
-        averageFPS.putValue(fpsd);
+        averageFPS.putValue(current_fps);
+        average_fps = averageFPS.getSrednia();
         averageFrameTime.putValue(render_time_ms);
 
         static int skip = 0;
@@ -134,9 +139,10 @@ void SystemAbstraction::onRenderFrame()
 
         if (!(skip % 20)) {
             render_time_ms_copy = render_time_ms;
-            fpsd_copy = fpsd;
+            fpsd_copy = current_fps;
         }
 
+    if(showFPS) {
 
         text.str("");
         text << "FPS " << fpsd_copy;
@@ -146,7 +152,7 @@ void SystemAbstraction::onRenderFrame()
                                     framebuffer_height * 0.95, TextRenderer_v2::TEXT_LEFT);
 
         text.str("");
-        text << "AFPS: " << averageFPS.getSrednia();
+        text << "AFPS: " << average_fps;
 
         textRenderer_v2->RenderText(2, text.str(), framebuffer_width * 0.95,
                                     framebuffer_height * 0.93, TextRenderer_v2::TEXT_LEFT);

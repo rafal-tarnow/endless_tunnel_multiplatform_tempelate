@@ -248,12 +248,22 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
 void Game::loadCoins()
 {
     money = config.get_uint32_t("coins");
+
+    useFixedSimFPS  = config.get_bool("useFixedSimFPS");
+    useAverageSimFPS = config.get_bool("useAverageSimFPS");
+    useCurrentSimFPS = config.get_bool("useCurrentSimFPS");
+    simFPS = config.get_float("simFPS");
 }
 
 void Game::saveCoins()
 {
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     config.set_uint32_t("coins",money);
+    config.set_bool("useFixedSimFPS",useFixedSimFPS);
+    config.set_bool("useAverageSimFPS", useAverageSimFPS);
+    config.set_bool("useCurrentSimFPS", useCurrentSimFPS);
+    config.set_float("simFPS",simFPS);
+
     config.saveDataFromMemoryToFile(configFilePath);
 }
 
@@ -417,9 +427,19 @@ void Game::updateGameLogics()
 }
 
 void Game::systemCallback_TimerTick()
-{
+{   
     if(gameState == GAME_RUN)
-        world->Step(1.0/30.0,8,3);
+    {
+        if(useFixedSimFPS)
+            world->Step(1.0/simFPS,8,3);
+        else if(useCurrentSimFPS)
+            world->Step(1.0/(float(current_fps)*0.5f),8,3);
+        else if(useAverageSimFPS)
+            world->Step(1.0/(float(average_fps)*0.5f),8,3);
+    }
+
+
+
 
 }
 
