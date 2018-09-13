@@ -490,9 +490,6 @@ void Game::systemCallback_Render()
     }
 
 
-
-
-
     if(gameState ==  GAME_LEVEL_COMPLETED)
     {
 

@@ -2,6 +2,46 @@
 
 #include <sys/time.h>
 #include <stdlib.h>
+#include <vector>
+
+using namespace std;
+
+template <class Type>
+class Average
+{
+public:
+    Average(int size)
+    {
+        mSize = size;
+        elements.resize(size);
+        for(unsigned int i = 0; i < elements.size(); i++)
+        {
+            elements.at(i) = 0;
+        }
+    }
+
+    void putValue(Type curr_val)
+    {
+        Type prev_val  = elements.at(index);
+        elements.at(index) = curr_val;
+        sum = sum - prev_val + curr_val;
+        if(++index == elements.size())
+        {
+            index = 0;
+        }
+    }
+
+    Type getSrednia()
+    {
+        return sum/mSize;
+    }
+private:
+    vector<Type> elements;
+    Type sum = 0;
+    Type mSize = 0;
+    unsigned int index = 0;
+};
+
 
 class DeltaTimer{
 public:

@@ -31,6 +31,20 @@ int SystemAbstraction::framebuffer_width = 0;
 int SystemAbstraction::framebuffer_height = 0;
 
 
+class Srednia
+{
+    Srednia(int size)
+    {
+
+    }
+
+private:
+};
+
+  stringstream text;
+
+bool showFPS = false;
+bool waitForGlFinish = false;
 
 void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 {
@@ -42,10 +56,18 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
     float scale = framebuffer_height/1080.0f;
     demo_init(framebuffer_width, framebuffer_height, scale);
 
-    GLuint fontSize = GLuint(float(fb_height)*0.076f);
-//    textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
-//    Resource font_arial("fonts/arial.ttf");
-//    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
+    GLuint fontSize = GLuint(float(fb_height)*0.020f);
+    textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
+    Resource font_arial("fonts/arial.ttf");
+    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
+
+   text << std::fixed << std::setprecision(1);
+
+    Config config;
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
+    config.loadDataFromFileToMemory(configFilePath);
+    showFPS = config.get_bool("showFPS");
+    waitForGlFinish = config.get_bool("waitForGlFinish");
 }
 
 void SystemAbstraction::onPause()
@@ -69,7 +91,7 @@ void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int 
     float scale = framebuffer_height/1080.0f;
     demo_setScale(framebuffer_width, framebuffer_height, scale);
 
-     //textRenderer_v2->onVievportResize(framebuffer_width, framebuffer_height);
+     textRenderer_v2->onVievportResize(framebuffer_width, framebuffer_height);
 }
 
 void SystemAbstraction::onRenderFirstFrame()
@@ -77,40 +99,72 @@ void SystemAbstraction::onRenderFirstFrame()
     mgr->RequestNewScene(new WelcomeScene());
 }
 
+Average<double> averageFPS(600);
+Average<double> averageFrameTime(600);
+
 void SystemAbstraction::onRenderFrame()
 {
-//    deltaTimer.start();
+    if(showFPS) {
+        deltaTimer.start();
+    }
+
     mgr->DoFrame();
 
-//    static double render_time_ms;
-//    static double fpsd;
-//    static double render_time_ms_copy;
-//    static double fpsd_copy;
-//
-//    render_time_ms = deltaTimer.getTimeFromStart_ms();
-//    fpsd = fps.getFPS();
-//
-//static int skip = 0;
-//    skip++;
-//
-//    if(!(skip % 20))
-//    {
-//        render_time_ms_copy = render_time_ms;
-//        fpsd_copy = fpsd;
-//    }
-//
-//    stringstream text;
-//
-//    text << std::fixed << std::setprecision(1) << "FPS "<< fpsd_copy;
-//
-//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.95, framebuffer_height*0.9, TextRenderer_v2::TEXT_LEFT);
-//
-//    text.str("");
-//    text << "Rnd t: " << render_time_ms_copy <<"[ms]";
-//    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.95, framebuffer_height*0.8, TextRenderer_v2::TEXT_LEFT);
+    if(waitForGlFinish) {
+        glFlush();
+        glFinish();
+    }
+
+    static double render_time_ms;
+    static double fpsd;
+    static double render_time_ms_copy;
+    static double fpsd_copy;
+
+    if(showFPS) {
 
 
-    ObjectCounter::printObjects();
+        render_time_ms = deltaTimer.getTimeFromStart_ms();
+        fpsd = fps.getFPS();
+
+        averageFPS.putValue(fpsd);
+        averageFrameTime.putValue(render_time_ms);
+
+        static int skip = 0;
+        skip++;
+
+        if (!(skip % 20)) {
+            render_time_ms_copy = render_time_ms;
+            fpsd_copy = fpsd;
+        }
+
+
+        text.str("");
+        text << "FPS " << fpsd_copy;
+
+        glDisable(GL_DEPTH_TEST);
+        textRenderer_v2->RenderText(1, text.str(), framebuffer_width * 0.95,
+                                    framebuffer_height * 0.95, TextRenderer_v2::TEXT_LEFT);
+
+        text.str("");
+        text << "AFPS: " << averageFPS.getSrednia();
+
+        textRenderer_v2->RenderText(2, text.str(), framebuffer_width * 0.95,
+                                    framebuffer_height * 0.93, TextRenderer_v2::TEXT_LEFT);
+
+        text.str("");
+        text << "T: " << render_time_ms_copy << "[ms]";
+
+        textRenderer_v2->RenderText(3, text.str(), framebuffer_width * 0.95,
+                                    framebuffer_height * 0.91, TextRenderer_v2::TEXT_LEFT);
+
+        text.str("");
+        text << "AT: " << averageFrameTime.getSrednia() << "[ms]";
+
+        textRenderer_v2->RenderText(4, text.str(), framebuffer_width * 0.95,
+                                    framebuffer_height * 0.89, TextRenderer_v2::TEXT_LEFT);
+    }
+    //ObjectCounter::printObjects();
+
 }
 
 void SystemAbstraction::onMouseScroll(double yoffset)
@@ -174,10 +228,17 @@ void SystemAbstraction::onTimerTick()
 
 void SystemAbstraction::onUninit()
 {
-    //delete textRenderer_v2;
+    delete textRenderer_v2;
 
     mgr->KillGraphics();
     demo_uninit();
+
+    Config config;
+    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
+    config.loadDataFromFileToMemory(configFilePath);
+    config.set_bool("showFPS",showFPS);
+    config.set_bool("waitForGlFinish",waitForGlFinish);
+    config.saveDataFromMemoryToFile(configFilePath);
 }
 
 
