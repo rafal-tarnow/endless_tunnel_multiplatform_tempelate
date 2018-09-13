@@ -504,7 +504,7 @@ void Game::systemCallback_Render()
 
         glDisable(GL_DEPTH_TEST);
         textRenderer_v2->setColour(glm::vec4(0.0, 1.0, 0.0, 1.0f));
-        textRenderer_v2->RenderText("LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
+        textRenderer_v2->RenderText(3, "LEVEL COMPLETED!", current_fb_width*0.5, current_fb_height*0.5, TextRenderer_v2::TEXT_CENTER);
 
         buttonRetryLevel.Render();
         buttonNextLevel.Render();
@@ -550,12 +550,12 @@ void Game::renderHUD()
         text << "$ 0";
     }
 
-    textRenderer_v2->RenderText(text.str(), current_fb_width*0.03, current_fb_height*0.9);
+    textRenderer_v2->RenderText(1, text.str(), current_fb_width*0.03, current_fb_height*0.9);
 
     text.str("");
     text << "$ " << money;
 
-    textRenderer_v2->RenderText(text.str(), current_fb_width*0.03, current_fb_height*0.8);
+    textRenderer_v2->RenderText(2, text.str(), current_fb_width*0.03, current_fb_height*0.8);
 }
 
 b2World * Game::getWorld()
@@ -574,7 +574,8 @@ void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigne
         if(car)
         {
             car->setSpeed(-15);
-            buttonGaz.setPressed(true);
+            if(gameState ==  GAME_RUN)
+                buttonGaz.setPressed(true);
         }
     }
 
@@ -590,7 +591,8 @@ void Game::systemCallback_keyboard(SystemAbstraction::ButtonEvent event, unsigne
         if(car)
         {
             car->setSpeed(15);
-            buttonBrake.setPressed(true);
+            if(gameState ==  GAME_RUN)
+                buttonBrake.setPressed(true);
         }
     }
 

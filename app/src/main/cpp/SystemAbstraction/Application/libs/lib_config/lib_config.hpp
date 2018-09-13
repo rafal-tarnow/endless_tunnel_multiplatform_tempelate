@@ -9,11 +9,15 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <library_opengles_2/Debug/Debug.hpp>
 
-
-class Config
+class Config : ObjectCounter
 {
 public:
+    Config() : ObjectCounter("Config")
+    {
+
+    }
     bool loadDataFromFileToMemory(string fileName);
     bool saveDataFromMemoryToFile(string fileName);
 

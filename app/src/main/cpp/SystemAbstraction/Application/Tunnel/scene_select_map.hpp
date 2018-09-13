@@ -57,7 +57,7 @@ private:
 
     glm::vec2 framebuffer_dimm = glm::vec2(1000,1000);
 
-    TextRenderer_v2 * textRenderer_v2 = nullptr;
+//    TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     AudioManager::AudioHandle menuMusicHandle;
 

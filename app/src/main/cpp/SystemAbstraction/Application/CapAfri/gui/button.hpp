@@ -3,6 +3,7 @@
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include <string>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ class ButtonEventListener{
     virtual void Button_onClicked(Button * button) = 0;
 };
 
-class Button{
+class Button : public ObjectCounter{
   public:
     Button();
     virtual ~Button();

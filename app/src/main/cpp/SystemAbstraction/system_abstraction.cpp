@@ -11,6 +11,8 @@
 #include <CapAfri/demo.hpp>
 #include <fps.hpp>
 
+#include <library_opengles_2/Debug/Debug.hpp>
+
 using namespace  std;
 
 static FPS fps;
@@ -41,9 +43,9 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
     demo_init(framebuffer_width, framebuffer_height, scale);
 
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
-    textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
-    Resource font_arial("fonts/arial.ttf");
-    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
+//    textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
+//    Resource font_arial("fonts/arial.ttf");
+//    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
 }
 
 void SystemAbstraction::onPause()
@@ -67,7 +69,7 @@ void SystemAbstraction::onFramebufferResize(unsigned int fb_width, unsigned int 
     float scale = framebuffer_height/1080.0f;
     demo_setScale(framebuffer_width, framebuffer_height, scale);
 
-     textRenderer_v2->onVievportResize(framebuffer_width, framebuffer_height);
+     //textRenderer_v2->onVievportResize(framebuffer_width, framebuffer_height);
 }
 
 void SystemAbstraction::onRenderFirstFrame()
@@ -107,6 +109,8 @@ void SystemAbstraction::onRenderFrame()
 //    text << "Rnd t: " << render_time_ms_copy <<"[ms]";
 //    textRenderer_v2->RenderText(text.str(), framebuffer_width*0.95, framebuffer_height*0.8, TextRenderer_v2::TEXT_LEFT);
 
+
+    ObjectCounter::printObjects();
 }
 
 void SystemAbstraction::onMouseScroll(double yoffset)
@@ -170,7 +174,7 @@ void SystemAbstraction::onTimerTick()
 
 void SystemAbstraction::onUninit()
 {
-      delete textRenderer_v2;
+    //delete textRenderer_v2;
 
     mgr->KillGraphics();
     demo_uninit();

@@ -4,34 +4,40 @@
 
 using namespace std;
 
-Button::Button()
+Button::Button() : ObjectCounter("Button")
 { 
     mDimm = glm::vec2(246,133);
 
     DE_initRectangle_4(&rectangle,normalTexture,mDimm);
 
 
-    int height = 1080;
-    int width = 1920;
-
-    GLuint fontSize = GLuint(float(height)*0.076f);
-    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
-    //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
-
-    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
-    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
-    textRenderer_v2->setColour(glm::vec4(0,0,0,1));
 }
 
 Button::~Button()
 {
     DE_deleteRectangle(&rectangle);
-    delete textRenderer_v2;
+    if(textRenderer_v2)
+        delete textRenderer_v2;
 }
 
 void Button::setText(string text)
 {
     mText = text;
+
+    if(textRenderer_v2 == nullptr)
+    {
+
+        int height = 1080;
+        int width = 1920;
+
+        GLuint fontSize = GLuint(float(height)*0.076f);
+        Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+        //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
+
+        textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
+        textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+        textRenderer_v2->setColour(glm::vec4(0,0,0,1));
+    }
 }
 
 string Button::getText()
@@ -115,7 +121,7 @@ void Button::Render()
 
 
         textRenderer_v2->setCustomPV(*mProjection, *mView);
-        textRenderer_v2->RenderText(mText, txt_model, TextRenderer_v2::TEXT_CENTER);
+        textRenderer_v2->RenderText(1,mText, txt_model, TextRenderer_v2::TEXT_CENTER);
     }
 }
 

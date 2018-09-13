@@ -32,5 +32,4 @@ public:
     glm::vec3 cameraOffset = glm::vec3(0,0,0);
     glm::vec4 groundContourColor = glm::vec4(0.9686, 0.7137, 0.0941, 1.0);
 private:
-    Config config;
 };

@@ -6,6 +6,7 @@
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 class CircleCoinRender : public RenderableGameObject{
 public:
@@ -27,7 +28,7 @@ private:
 };
 
 
-class CircleCoin: public CircleCoinRender{
+class CircleCoin: public CircleCoinRender, public ObjectCounter{
 public:
     CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world);
     ~CircleCoin();

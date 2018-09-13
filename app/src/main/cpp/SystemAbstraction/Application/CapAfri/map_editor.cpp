@@ -89,6 +89,7 @@ MapEditor::~MapEditor()
     PR_delete(&y_lineStrip);
 
     delete carRenderer;
+    delete textRenderer_v2;
 }
 
 void MapEditor::systemCallback_Render()

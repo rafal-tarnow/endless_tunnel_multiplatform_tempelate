@@ -9,7 +9,7 @@
 using namespace std;
 
 
-GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, float width, float height, float z, b2World * world){
+GroundChain::GroundChain(Level & level, float x_top_left, float y_top_left, float width, float height, float z, b2World * world) : ObjectCounter("GroundChain"){
 
     float box2d_xpos = x_top_left + width/2.0f;
     float box2d_ypos = y_top_left - height/2.0f;

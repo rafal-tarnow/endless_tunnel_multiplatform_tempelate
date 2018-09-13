@@ -75,7 +75,7 @@ void CircleCoinRender::render(glm::mat4 projection, glm::mat4 view)
 
 
 
-CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world) : CircleCoinRender(x, y, z, radius){
+CircleCoin::CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world) : CircleCoinRender(x, y, z, radius), ObjectCounter("CircleCoin"){
     GameObject::setObjectType(OBJECT_COIN);
 
     //BODY

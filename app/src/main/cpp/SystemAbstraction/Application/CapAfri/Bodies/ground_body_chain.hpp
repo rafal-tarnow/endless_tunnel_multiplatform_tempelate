@@ -7,8 +7,9 @@
 #include "../renderable_object.hpp"
 #include "../level.hpp"
 #include <library_opengles_2/RectangleRenderer/TriangleStrip_Renderer.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 
-class GroundChain: public RenderableGameObject{
+class GroundChain: public RenderableGameObject, public ObjectCounter{
 public:
     GroundChain(Level & level, float x_top_left, float y_top_left, float width, float height, GLfloat z, b2World *  world);
     ~GroundChain();
