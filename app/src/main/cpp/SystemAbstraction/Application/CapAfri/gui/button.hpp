@@ -14,7 +14,7 @@ class ButtonEventListener{
     virtual void Button_onClicked(Button * button) = 0;
 };
 
-class Button : public ObjectCounter{
+class Button{
   public:
     Button();
     virtual ~Button();
@@ -58,5 +58,5 @@ private:
     glm::vec3 mPosition;
     glm::vec2 mDimm;
 
-
+    DBG_COUNT("Button");
 };

@@ -3,6 +3,7 @@
 #define PostProcessor_hpp
 
 #include <system_opengl_include.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 #include <glm/glm.hpp>
 
 
@@ -50,6 +51,8 @@ private:
     GLuint Filter_Max; // Filtering mode if texture pixels > screen pixels
     // Initialize quad for rendering postprocessing texture
     void initRenderData();
+private:
+    DBG_COUNT("PostProcessor");
 };
 
 #endif /* PostProcessor_hpp */

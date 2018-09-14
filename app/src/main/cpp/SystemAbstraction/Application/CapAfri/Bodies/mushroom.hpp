@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 class MushroomRenderer : public RenderableGameObject{
 public:
@@ -21,6 +22,7 @@ protected:
 
 private:
     static GLuint mushroomTextureId;
+    DBG_COUNT("MushroomRenderer");
 };
 
 
@@ -31,4 +33,5 @@ public:
     void render(glm::mat4 projection, glm::mat4 view);
 private:
     b2Body * mBody = nullptr;
+    DBG_COUNT("Mushroom");
 };

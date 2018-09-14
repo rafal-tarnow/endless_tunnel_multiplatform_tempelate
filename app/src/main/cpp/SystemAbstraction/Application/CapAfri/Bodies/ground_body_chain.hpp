@@ -9,7 +9,7 @@
 #include <library_opengles_2/RectangleRenderer/TriangleStrip_Renderer.hpp>
 #include <library_opengles_2/Debug/Debug.hpp>
 
-class GroundChain: public RenderableGameObject, public ObjectCounter{
+class GroundChain: public RenderableGameObject{
 public:
     GroundChain(Level & level, float x_top_left, float y_top_left, float width, float height, GLfloat z, b2World *  world);
     ~GroundChain();
@@ -21,4 +21,6 @@ private:
     TS_TriangleStrip triangleStrip;
 
      GLuint coinTextureId;
+
+     DBG_COUNT("GroundChain");
 };

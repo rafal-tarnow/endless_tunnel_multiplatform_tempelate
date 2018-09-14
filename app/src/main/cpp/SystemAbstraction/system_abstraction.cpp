@@ -169,7 +169,7 @@ void SystemAbstraction::onRenderFrame()
         textRenderer_v2->RenderText(4, text.str(), framebuffer_width * 0.95,
                                     framebuffer_height * 0.89, TextRenderer_v2::TEXT_LEFT);
     }
-    //ObjectCounter::printObjects();
+    ObjectCounter::print();
 
 }
 

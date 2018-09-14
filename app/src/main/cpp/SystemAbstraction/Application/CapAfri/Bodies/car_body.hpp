@@ -4,6 +4,7 @@
 
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 #include "../renderable_object.hpp"
 
 class CarRenderer: public RenderableGameObject{
@@ -39,6 +40,7 @@ private:
 
     DE_Rectangle carWhellRectangle;
     DE_Rectangle carBodyRectangle;
+    DBG_COUNT("CarRenderer");
 };
 
 
@@ -64,5 +66,6 @@ private:
 
     float current_car_speed = 0.0f;
     float required_car_speed = 0.0f;
+    DBG_COUNT("Car");
 };
 

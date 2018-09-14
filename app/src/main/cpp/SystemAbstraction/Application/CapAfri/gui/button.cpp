@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Button::Button() : ObjectCounter("Button")
+Button::Button()
 { 
     mDimm = glm::vec2(246,133);
 

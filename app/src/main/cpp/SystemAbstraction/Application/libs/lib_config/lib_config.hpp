@@ -11,13 +11,9 @@ using namespace std;
 
 #include <library_opengles_2/Debug/Debug.hpp>
 
-class Config : ObjectCounter
+class Config
 {
 public:
-    Config() : ObjectCounter("Config")
-    {
-
-    }
     bool loadDataFromFileToMemory(string fileName);
     bool saveDataFromMemoryToFile(string fileName);
 
@@ -42,4 +38,5 @@ private:
     map<string, glm::vec3> map_glm_vec3;
     map<string, glm::vec4> map_glm_vec4;
     map<string, bool> map_bool;
+    DBG_COUNT("Config");
 };

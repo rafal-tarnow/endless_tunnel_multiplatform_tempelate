@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <library_opengles_2/Debug/Debug.hpp>
+
 class Camera{
 public:
     Camera(int width, int height);
@@ -54,4 +56,5 @@ private:
 
     float camera_position_x = 0;
     float camera_position_y = 0;
+    DBG_COUNT("Camera");
 };

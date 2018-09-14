@@ -25,7 +25,6 @@ add_library (CapAfri STATIC
     gui/button.cpp
     gui/radio_button.cpp
     gui/radio_button_manager.cpp
-    transformation.cpp
     PostProcessor.cpp
     Shader.cpp
 )

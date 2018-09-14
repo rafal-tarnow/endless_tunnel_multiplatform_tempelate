@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 class BackGround: public RenderableGameObject{
 public:
@@ -15,5 +16,5 @@ public:
 private:
     DE_Rectangle rectangle;
     glm::mat4 mModel = glm::mat4(1);
-
+    DBG_COUNT("BackGround");
 };

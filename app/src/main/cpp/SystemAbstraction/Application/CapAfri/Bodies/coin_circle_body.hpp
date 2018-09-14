@@ -28,11 +28,12 @@ private:
 };
 
 
-class CircleCoin: public CircleCoinRender, public ObjectCounter{
+class CircleCoin: public CircleCoinRender{
 public:
     CircleCoin(float32 x,float32 y, float z, float32 radius, b2World* world);
     ~CircleCoin();
     void render(glm::mat4 projection, glm::mat4 view);
 private:
     b2Body* mBody = nullptr;
+    DBG_COUNT("CircleCoin");
 };

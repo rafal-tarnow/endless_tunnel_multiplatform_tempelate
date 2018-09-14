@@ -7,7 +7,6 @@
 #include "demo.hpp"
 #include "camera.hpp"
 #include "../system_abstraction.hpp"
-#include "transformation.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 
