@@ -37,7 +37,8 @@ void Game::BeginContact(b2Contact* contact)
             {
                 pAudioManager->PlaySFX(m_coinHandle);
             }
-            coinsToDelete.insert(static_cast<CircleCoin *>(object_1));
+            CircleCoin * circleCoin = static_cast<CircleCoin *>(object_1);
+            coinsToDelete[circleCoin] = circleCoin;
             money++;
             return;
         }
@@ -48,7 +49,8 @@ void Game::BeginContact(b2Contact* contact)
             {
                 pAudioManager->PlaySFX(m_coinHandle);
             }
-            coinsToDelete.insert(static_cast<CircleCoin *>(object));
+            CircleCoin * circleCoin = static_cast<CircleCoin *>(object);
+            coinsToDelete[circleCoin] = circleCoin;
             money++;
             return;
         }
@@ -60,7 +62,8 @@ void Game::BeginContact(b2Contact* contact)
             {
                 pAudioManager->PlaySFX(m_mushroomHandle);
             }
-            mushroomsToDelete.insert(static_cast<Mushroom *>(object_1));
+            Mushroom * mushroom = static_cast<Mushroom *>(object_1);
+            mushroomsToDelete[mushroom] = mushroom;
             mEffects->Black = GL_TRUE;
             mushroomEffectStartTime = current_time;
             return;
@@ -73,7 +76,8 @@ void Game::BeginContact(b2Contact* contact)
             {
                 pAudioManager->PlaySFX(m_mushroomHandle);
             }
-            mushroomsToDelete.insert(static_cast<Mushroom *>(object));
+            Mushroom * mushroom = static_cast<Mushroom *>(object);
+            mushroomsToDelete[mushroom] = mushroom;
             mEffects->Black = GL_TRUE;
             mushroomEffectStartTime = current_time;
             return;
@@ -398,25 +402,25 @@ void Game::updateGameLogics()
     
     if(coinsToDelete.size())
     {
-        set<CircleCoin *>::iterator it;
+        map<CircleCoin *, CircleCoin *>::iterator it;
 
         // wyświetlenie zawartości
         for( it=coinsToDelete.begin(); it != coinsToDelete.end(); it++)
         {
-            coinsList.remove(*it);
-            delete *it;
+            coinsList.remove((*it).second);
+            delete (*it).second;
         }
         coinsToDelete.clear();
     }
 
     if(mushroomsToDelete.size())
     {
-        set<Mushroom*>::iterator it;
+        map<Mushroom*, Mushroom*>::iterator it;
 
         for(it=mushroomsToDelete.begin(); it != mushroomsToDelete.end(); it++)
         {
-            mushroomList.remove(*it);
-            delete *it;
+            mushroomList.remove((*it).second);
+            delete (*it).second;
         }
         mushroomsToDelete.clear();
     }

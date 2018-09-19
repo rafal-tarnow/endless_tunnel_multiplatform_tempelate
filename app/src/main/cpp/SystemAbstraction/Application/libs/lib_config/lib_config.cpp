@@ -5,17 +5,16 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-class mystream : public iostream
-{
-
-};
 
 bool Config::loadDataFromMemoryToMemory(char * data, int size)
 {
-    mystream stream;
-    stream.write(data, size);
 
-    loadFromInstream(stream);
+
+    stringstream stringStream;
+
+    stringStream.write((const char*) data, size);
+
+    loadFromInstream(stringStream);
 
     return true;
 }
@@ -23,13 +22,13 @@ bool Config::loadDataFromMemoryToMemory(char * data, int size)
 bool Config::loadDataFromFileToMemory(string fileName)
 {
 
-
     //OPEN FILE
     std::ifstream instream(fileName.c_str());
     if(instream.fail())
     {
         return false;
     }
+
 
     loadFromInstream(instream);
 

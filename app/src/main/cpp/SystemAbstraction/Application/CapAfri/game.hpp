@@ -86,9 +86,9 @@ private:
     Car * car = nullptr;
     Meta * meta = nullptr;
     list<CircleCoin *> coinsList;
-    set<CircleCoin *> coinsToDelete;
+    map<CircleCoin *,CircleCoin *> coinsToDelete;
     list<Mushroom *> mushroomList;
-    set<Mushroom *> mushroomsToDelete;
+    map<Mushroom *, Mushroom *> mushroomsToDelete;
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
     uint32_t money = 0;
