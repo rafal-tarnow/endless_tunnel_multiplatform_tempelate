@@ -12,15 +12,32 @@ Level::Level()
 
 Level::~Level()
 {
-   clear();
+    clear();
+}
+
+int Level::loadLevelFromMemory(unsigned char * data, int size)
+{
+    Config config;
+    config.loadDataFromMemoryToMemory((char *)data, size);
+
+    loadLevel(config);
+
+    return 0;
 }
 
 int Level::loadLevelFromFile(string levelFilePath)
-{
-    this->clear();
-
+{ 
     Config config;
     config.loadDataFromFileToMemory(levelFilePath);
+
+    loadLevel(config);
+
+    return 0;
+}
+
+int Level::loadLevel(Config & config)
+{
+    this->clear();
 
     int32_t map_size = config.get_int32_t("ground_verticles.size()");
     for(int i = 0; i < map_size; i++)

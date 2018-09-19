@@ -279,9 +279,13 @@ void Game::loadLevel()
     //LEVEL LOAD
     uint32_t currentMapIntex = config.get_uint32_t("currentMapIndex");
     stringstream mapFilePath;
-    mapFilePath << getStandardCommonReadWriteDirecory() << "/CapitanAfrica_" << currentMapIntex << ".map";
+    mapFilePath << "/CapitanAfrica_" << currentMapIntex << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
-    int mapFileOpenErrno = level.loadLevelFromFile(mapFilePath.str());
+    //int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
+
+
+    Resource mapFromAssets("maps" + mapFilePath.str());
+    level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
 
     groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 

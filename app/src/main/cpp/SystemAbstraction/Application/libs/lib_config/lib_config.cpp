@@ -5,8 +5,40 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
+class mystream : public iostream
+{
+
+};
+
+bool Config::loadDataFromMemoryToMemory(char * data, int size)
+{
+    mystream stream;
+    stream.write(data, size);
+
+    loadFromInstream(stream);
+
+    return true;
+}
 
 bool Config::loadDataFromFileToMemory(string fileName)
+{
+
+
+    //OPEN FILE
+    std::ifstream instream(fileName.c_str());
+    if(instream.fail())
+    {
+        return false;
+    }
+
+    loadFromInstream(instream);
+
+    //close stream
+    instream.close();
+    return true;
+}
+
+bool Config::loadFromInstream(istream & instream)
 {
     //CLEAR DATAS
     map_float.clear();
@@ -14,12 +46,6 @@ bool Config::loadDataFromFileToMemory(string fileName)
     map_uint32_t.clear();
     map_glm_vec3.clear();
 
-    //OPEN FILE
-    std::ifstream infile(fileName.c_str());
-    if(infile.fail())
-    {
-        return false;
-    }
 
     string type;
     string name;
@@ -32,11 +58,11 @@ bool Config::loadDataFromFileToMemory(string fileName)
 #warning "DOROBIC OBSLUGE BLEDU PARSOWANIA PLIKU"
 
     //READ FILE LINE BY LINE
-    while (infile >> type)
+    while (instream >> type)
     {
         if(type == "float")
         {
-            infile >> name >> equal >> value_1;
+            instream >> name >> equal >> value_1;
 
             cout << "----------------------" << endl;
             cout << "type = " << type << endl;
@@ -50,7 +76,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
         else if(type == "int32_t")
         {
-            infile >> name >> equal >> value_1;
+            instream >> name >> equal >> value_1;
 
             cout << "----------------------" << endl;
             cout << "type = " << type << endl;
@@ -64,7 +90,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
         else if(type == "uint32_t")
         {
-            infile >> name >> equal >> value_1;
+            instream >> name >> equal >> value_1;
 
             cout << "----------------------" << endl;
             cout << "type = " << type << endl;
@@ -78,7 +104,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
         else if(type == "bool")
         {
-            infile >> name >> equal >> value_1;
+            instream >> name >> equal >> value_1;
 
             cout << "----------------------" << endl;
             cout << "type = " << type << endl;
@@ -92,7 +118,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
         else if(type == "glm::vec3")
         {
-            infile >> name >> equal >> value_1 >> value_2 >> value_3;
+            instream >> name >> equal >> value_1 >> value_2 >> value_3;
 
             //            cout << "----------------------" << endl;
             //            cout << "type = " << type << endl;
@@ -107,7 +133,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
         else if(type == "glm::vec4")
         {
-            infile >> name >> equal >> value_1 >> value_2 >> value_3 >> value_4;
+            instream >> name >> equal >> value_1 >> value_2 >> value_3 >> value_4;
 
             //            cout << "----------------------" << endl;
             //            cout << "type = " << type << endl;
@@ -122,8 +148,6 @@ bool Config::loadDataFromFileToMemory(string fileName)
         }
     }
 
-    //close stream
-    infile.close();
 }
 
 bool Config::saveDataFromMemoryToFile(string fileName)

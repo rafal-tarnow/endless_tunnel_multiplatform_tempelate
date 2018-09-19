@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <istream>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ using namespace std;
 class Config
 {
 public:
+    bool loadDataFromMemoryToMemory(char * data, int size);
     bool loadDataFromFileToMemory(string fileName);
     bool saveDataFromMemoryToFile(string fileName);
 
@@ -32,6 +34,7 @@ public:
     bool get_bool(string name);
 
 private:
+    bool loadFromInstream(istream & stream);
     map<string, float> map_float;
     map<string, int32_t> map_int32_t;
     map<string, uint32_t> map_uint32_t;

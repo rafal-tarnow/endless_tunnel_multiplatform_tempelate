@@ -19,6 +19,7 @@ public:
     ~Level();
 
     /* if error while procceding file function return file open() errno value */
+    int loadLevelFromMemory(unsigned char * data, int size);
     int loadLevelFromFile(string levelFilePath);
     int saveLevelToFile(string levelFileName);
     void clear();
@@ -32,4 +33,5 @@ public:
     glm::vec3 cameraOffset = glm::vec3(0,0,0);
     glm::vec4 groundContourColor = glm::vec4(0.9686, 0.7137, 0.0941, 1.0);
 private:
+    int loadLevel(Config & config);
 };
