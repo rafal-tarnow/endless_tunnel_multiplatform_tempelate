@@ -9,6 +9,7 @@
 #include <sstream>
 #include <OpenSLWrap.hpp>
 #include "../CapAfri/camera_safe_area.hpp"
+#include "../CapAfri/game_config.hpp"
 
 using namespace std;
 
@@ -61,9 +62,8 @@ private:
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
+    GameConfig *cfg = GameConfig::getInstance();
 
-    LibConfig config;
     float dampingRatio = 0.0f;
     float frequencyHz = 0.0f;
     float maxMotorTorque = 0.0f;

@@ -22,6 +22,7 @@
 #include "PostProcessor.hpp"
 #include "debug_draw.hpp"
 #include "gui/button.hpp"
+#include "game_config.hpp"
 #include <library_opengles_2/Debug/Debug.hpp>
 
 
@@ -107,13 +108,13 @@ private:
 
     Primitive summaryBackground;
 
-    LibConfig config;
 
     GameState gameState = GAME_RUN;
 
     GLESDebugDraw debugDraw;
 
     Level level;
+    GameConfig * cfg = GameConfig::getInstance();
 
     Button buttonGaz;
     Button buttonBrake;

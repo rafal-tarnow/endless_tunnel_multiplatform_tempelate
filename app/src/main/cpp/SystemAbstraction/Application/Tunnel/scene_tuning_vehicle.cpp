@@ -29,11 +29,10 @@ TuningVehicleScene::TuningVehicleScene()
     initNormalButtons();
     initRadioButtons();
 
-    config.loadDataFromFileToMemory(configFilePath);
-    dampingRatio = config.get_float("dampingRatio");
-    frequencyHz = config.get_float("frequencyHz");
-    maxMotorTorque = config.get_float("maxMotorTorque");
-    friction = config.get_float("friction");
+    dampingRatio =  cfg->dampingRatio;
+    frequencyHz =  cfg->frequencyHz;
+    maxMotorTorque =  cfg->maxMotorTorque;
+    friction =  cfg->friction;
 
     stream << std::fixed << std::setprecision(1);
 
@@ -121,11 +120,12 @@ TuningVehicleScene::~TuningVehicleScene()
 
     DE_deleteRectangle(&safe_area_background);
 
-    config.set_float("dampingRatio", dampingRatio);
-    config.set_float("frequencyHz", frequencyHz);
-    config.set_float("maxMotorTorque", maxMotorTorque);
-    config.set_float("friction", friction);
-    config.saveDataFromMemoryToFile(configFilePath);
+     cfg->dampingRatio = dampingRatio;
+     cfg->frequencyHz = frequencyHz;
+     cfg->maxMotorTorque = maxMotorTorque;
+     cfg->friction = friction;
+
+    cfg->sync();
 
     delete textRenderer_v2;
 }

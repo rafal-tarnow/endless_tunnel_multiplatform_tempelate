@@ -11,6 +11,7 @@
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include "../Tunnel/scene_manager.hpp"
 #include "../Tunnel/play_capafri_scene.hpp"
+#include "../Tunnel/scene_select_map.hpp"
 
 using namespace std;
 
@@ -125,6 +126,10 @@ void Game::btnRetryGame()
 }
 void Game::btnNextLevel()
 {
+    if(cfg->currentMapIndex < 2)
+        cfg->currentMapIndex++;
+
+    SceneManager::GetInstance()->RequestNewScene(new SelectMapScene());
     cout << "nextLevel()" << endl;
 }
 
@@ -157,10 +162,6 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     current_fb_width = fb_width;
     current_fb_height = fb_height;
 
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-
-    config.loadDataFromFileToMemory(configFilePath);
-
     //GLuint fontSize = 82;
     GLuint fontSize = GLuint(float(fb_height)*0.076f);
 
@@ -184,11 +185,11 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
     LOGD("Game::Game(12)");
     loadAudio();
     LOGD("Game::Game(13)");
-    skipBackgroundDraw =  config.get_bool("skipBackgroundDraw");
+    skipBackgroundDraw =  cfg->skipBackgroundDraw;
     LOGD("Game::Game(14)");
-    debugDrawFlag = config.get_bool("debugDrawFlag");
+    debugDrawFlag = cfg->debugDrawFlag;
     LOGD("Game::Game(15)");
-    clearColour = config.get_glm_vec4("clearColour");
+    clearColour = cfg->clearColour;
     LOGD("Game::Game(16)");
     loadCoins();
     LOGD("Game::Game(17)");
@@ -272,45 +273,44 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
 
 void Game::loadCoins()
 {
-    money = config.get_uint32_t("coins");
+    money = cfg->coins;
 
-    useFixedSimFPS  = config.get_bool("useFixedSimFPS");
-    useAverageSimFPS = config.get_bool("useAverageSimFPS");
-    useCurrentSimFPS = config.get_bool("useCurrentSimFPS");
-    simFPS = config.get_float("simFPS");
+    useFixedSimFPS  = cfg->useFixedSimFPS;
+    useAverageSimFPS = cfg->useAverageSimFPS;
+    useCurrentSimFPS = cfg->useCurrentSimFPS;
+    simFPS = cfg->simFPS;
 }
 
 void Game::saveCoins()
 {
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    config.set_uint32_t("coins",money);
-    config.set_bool("useFixedSimFPS",useFixedSimFPS);
-    config.set_bool("useAverageSimFPS", useAverageSimFPS);
-    config.set_bool("useCurrentSimFPS", useCurrentSimFPS);
-    config.set_float("simFPS",simFPS);
+    cfg->coins = money;
+    cfg->useFixedSimFPS = useFixedSimFPS;
+    cfg->useAverageSimFPS = useAverageSimFPS;
+    cfg->useCurrentSimFPS = useCurrentSimFPS;
+    cfg->simFPS = simFPS;
 
-    config.saveDataFromMemoryToFile(configFilePath);
 }
 
 void Game::loadLevel()
 {
-    float dampingRatio = config.get_float("dampingRatio");
-    float frequencyHz = config.get_float("frequencyHz");
-    float maxMotorTorque = config.get_float("maxMotorTorque");
-    float friction = config.get_float("friction");
+    float dampingRatio = cfg->dampingRatio;
+    float frequencyHz = cfg->frequencyHz;
+    float maxMotorTorque = cfg->maxMotorTorque;
+    float friction = cfg->friction;
     car = new Car(glm::vec3(1.0f, 5.0f, -1.0f), world, dampingRatio, frequencyHz, maxMotorTorque, friction);
 
 
     //LEVEL LOAD
-    uint32_t currentMapIntex = config.get_uint32_t("currentMapIndex");
+    uint32_t currentMapIntex = cfg->currentMapIndex;
     stringstream mapFilePath;
     mapFilePath << "/CapitanAfrica_" << currentMapIntex << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
-    int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
+    //int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
 
 
-    //Resource mapFromAssets("maps" + mapFilePath.str());
-    //level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
+    Resource mapFromAssets("maps" + mapFilePath.str());
+    level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
 
     groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 
@@ -383,6 +383,8 @@ Game::~Game()
         delete mEffects;
         mEffects = nullptr;
     }
+
+    cfg->sync();
 }
 
 void Game::systemCallback_Scroll(double yoffset){

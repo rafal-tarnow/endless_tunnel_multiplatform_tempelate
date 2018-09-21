@@ -14,8 +14,7 @@ using namespace std;
 
 SelectMapScene::SelectMapScene()
 {
-    config.loadDataFromFileToMemory(configFilePath);
-    currentMapIndex = config.get_uint32_t("currentMapIndex");
+    currentMapIndex = cfg->currentMapIndex;
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -104,7 +103,8 @@ SelectMapScene::~SelectMapScene()
         delete buttons.at(i);
     }
 
- //   delete textRenderer_v2;
+    cfg->currentMapIndex = currentMapIndex;
+    cfg->sync();
 }
 
 
@@ -117,11 +117,11 @@ void SelectMapScene::OnStartGraphics(int width, int height)
     safeAreaCam.onResize(width, height);
 
     GLuint fontSize = GLuint(float(height)*0.076f);
-//    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    //    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
-//    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
-//    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    //    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
+    //    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 }
 
 void SelectMapScene::OnKillGraphics()
@@ -229,8 +229,7 @@ void SelectMapScene::Button_onClicked(Button * button)
 {
     if(button == &buttonPlay)
     {
-        config.set_uint32_t("currentMapIndex",currentMapIndex);
-        config.saveDataFromMemoryToFile(configFilePath);
+        cfg->currentMapIndex = currentMapIndex;
 
         SceneManager *mgr = SceneManager::GetInstance();
         mgr->RequestNewScene(new TuningVehicleScene());
@@ -279,9 +278,6 @@ void SelectMapScene::OnPointerMove(int pointerId, const struct PointerCoords *co
 
 bool SelectMapScene::OnBackKeyPressed()
 {
-    config.set_uint32_t("currentMapIndex",currentMapIndex);
-    config.saveDataFromMemoryToFile(configFilePath);
-
     SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
     return true;
 }
@@ -291,7 +287,7 @@ void SelectMapScene::OnFramebufferResized(int width, int height)
     framebuffer_dimm = glm::vec2(width, height);
 
     safeAreaCam.onResize(width, height);
-//    textRenderer_v2->onVievportResize(width, height);
+    //    textRenderer_v2->onVievportResize(width, height);
 }
 
 void SelectMapScene::OnJoy(float joyX, float joyY)

@@ -9,6 +9,7 @@
 #include <system_paths.hpp>
 #include <OpenSLWrap.hpp>
 #include <sstream>
+#include "../CapAfri/game_config.hpp"
 #include "../CapAfri/camera_safe_area.hpp"
 
 using namespace std;
@@ -63,6 +64,5 @@ private:
 
     Primitive testPrimitive;
 
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    LibConfig config;
+    GameConfig *cfg = GameConfig::getInstance();
 };

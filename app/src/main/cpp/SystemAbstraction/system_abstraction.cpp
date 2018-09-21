@@ -10,6 +10,7 @@
 #include <CapAfri/game.hpp>
 #include <CapAfri/demo.hpp>
 #include <fps.hpp>
+#include <CapAfri/game_config.hpp>
 
 #include <library_opengles_2/Debug/Debug.hpp>
 
@@ -42,8 +43,8 @@ private:
 
   stringstream text;
 
-bool showFPS = false;
-bool waitForGlFinish = false;
+
+GameConfig *cfg;
 
 void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 {
@@ -62,11 +63,7 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 
    text << std::fixed << std::setprecision(1);
 
-    LibConfig config;
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    config.loadDataFromFileToMemory(configFilePath);
-    showFPS = config.get_bool("showFPS");
-    waitForGlFinish = config.get_bool("waitForGlFinish");
+   cfg = GameConfig::create(getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config");
 }
 
 void SystemAbstraction::onPause()
@@ -113,7 +110,7 @@ void SystemAbstraction::onRenderFrame()
 
     mgr->DoFrame();
 
-    if(waitForGlFinish) {
+    if(cfg->waitForGlFinish) {
         glFlush();
         glFinish();
     }
@@ -141,7 +138,7 @@ void SystemAbstraction::onRenderFrame()
             fpsd_copy = current_fps;
         }
 
-    if(showFPS) {
+    if(cfg->showFPS) {
 
         text.str("");
         text << "FPS " << fpsd_copy;
@@ -239,12 +236,7 @@ void SystemAbstraction::onUninit()
     mgr->KillGraphics();
     demo_uninit();
 
-    LibConfig config;
-    string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    config.loadDataFromFileToMemory(configFilePath);
-    config.set_bool("showFPS",showFPS);
-    config.set_bool("waitForGlFinish",waitForGlFinish);
-    config.saveDataFromMemoryToFile(configFilePath);
+    GameConfig::deleteInstance();
 }
 
 
