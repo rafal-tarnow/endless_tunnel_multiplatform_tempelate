@@ -63,7 +63,7 @@ private:
 
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
 
-    Config config;
+    LibConfig config;
     float dampingRatio = 0.0f;
     float frequencyHz = 0.0f;
     float maxMotorTorque = 0.0f;

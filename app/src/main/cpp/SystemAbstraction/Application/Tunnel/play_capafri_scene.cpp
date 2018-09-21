@@ -113,6 +113,7 @@ void PlayCapAfriScene::OnPointerDown(int pointerId, const struct PointerCoords *
         if (coords->x < current_width / 2) {
             game->systemCallback_keyboard(SystemAbstraction::EVENT_DOWN, 'a', coords->x, coords->y);
         }
+        game->OnPointerDown(pointerId,coords);
     }
 }
 
@@ -137,6 +138,7 @@ void PlayCapAfriScene::OnPointerUp(int pointerId, const struct PointerCoords *co
         {
             game->systemCallback_keyboard(SystemAbstraction::EVENT_UP, 'a', coords->x, coords->y);
         }
+        game->OnPointerUp(pointerId,coords);
     }
 }
 

@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 
 class SafeAreaCam
 {
@@ -69,4 +70,5 @@ private:
     glm::mat4 mProjection;
     glm::mat4 mView;
     glm::vec4 mViewport;
+    DBG_COUNT("SafeAreaCam");
 };

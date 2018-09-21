@@ -6,6 +6,7 @@
 
 #include <Box2D/Box2D.h>
 #include "../renderable_object.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 
 class BoxCoordinates: public RenderableGameObject{
@@ -15,5 +16,6 @@ public:
     void render();
 private:
     b2Body * body = nullptr;
+    DBG_COUNT("BoxCoordinates");
 };
 

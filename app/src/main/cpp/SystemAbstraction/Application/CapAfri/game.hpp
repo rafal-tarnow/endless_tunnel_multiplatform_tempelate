@@ -22,6 +22,7 @@
 #include "PostProcessor.hpp"
 #include "debug_draw.hpp"
 #include "gui/button.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 
 using namespace std;
@@ -53,6 +54,8 @@ public:
     void EndContact(b2Contact* contact);
 
     void Button_onClicked(Button * button);
+    void btnRetryGame();
+    void btnNextLevel();
 
 private:
     void loadCoins();
@@ -104,7 +107,7 @@ private:
 
     Primitive summaryBackground;
 
-    Config config;
+    LibConfig config;
 
     GameState gameState = GAME_RUN;
 
@@ -120,4 +123,6 @@ private:
     bool useAverageSimFPS = false;
     bool useCurrentSimFPS = false;
     float simFPS = 30.0f;
+
+    DBG_COUNT("Game");
 };

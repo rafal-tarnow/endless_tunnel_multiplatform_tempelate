@@ -22,7 +22,6 @@ static TextRenderer_v2 * textRenderer_v2;
 
 
 #include "./Application/libs/library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp"
-#include "./Application/Tunnel/data/design_graffiti_agentorange_www_myfontfree_com.ttf.hpp"
 
 #include <bitset>
 
@@ -63,7 +62,7 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
 
    text << std::fixed << std::setprecision(1);
 
-    Config config;
+    LibConfig config;
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     config.loadDataFromFileToMemory(configFilePath);
     showFPS = config.get_bool("showFPS");
@@ -170,6 +169,7 @@ void SystemAbstraction::onRenderFrame()
                                     framebuffer_height * 0.89, TextRenderer_v2::TEXT_LEFT);
     }
     ObjectCounter::print();
+    cout << flush;
 
 }
 
@@ -239,7 +239,7 @@ void SystemAbstraction::onUninit()
     mgr->KillGraphics();
     demo_uninit();
 
-    Config config;
+    LibConfig config;
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
     config.loadDataFromFileToMemory(configFilePath);
     config.set_bool("showFPS",showFPS);

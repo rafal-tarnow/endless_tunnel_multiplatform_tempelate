@@ -21,7 +21,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
     m_radius = radius;
 
     instancesCount++;
-    LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
+    //LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
 
     if(instancesCount == 1)
     {
@@ -32,7 +32,7 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
 CircleCoinRender::~CircleCoinRender()
 {
     instancesCount--;
-    LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
+    //LOGD("CircleCoinRender::instancesCount = %d\n", instancesCount);
 
     if(instancesCount == 0)
     {

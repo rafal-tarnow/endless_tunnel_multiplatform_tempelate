@@ -9,6 +9,8 @@
 #include <system_paths.hpp>
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include "../Tunnel/scene_manager.hpp"
+#include "../Tunnel/play_capafri_scene.hpp"
 
 using namespace std;
 
@@ -116,16 +118,35 @@ void Game::EndContact(b2Contact* contact)
     //cout << "A:EndContact(...)" << endl;
 }
 
+void Game::btnRetryGame()
+{
+    cout << "retryGame()" << endl;
+    SceneManager::GetInstance()->RequestNewScene(new PlayCapAfriScene());
+}
+void Game::btnNextLevel()
+{
+    cout << "nextLevel()" << endl;
+}
 
 void Game::Button_onClicked(Button * button)
 {
-    if(button == &buttonRetryLevel)
+    if(button == &buttonGaz)
     {
-        //buttonPlusClicked();
+        cout << "Button Gaz clicked" << endl;
+    }
+    else if(button == &buttonBrake)
+    {
+        cout << "Button Brake clicked" << endl;
+    }
+    else if(button == &buttonRetryLevel)
+    {
+        cout << "Button Retry clicked" << endl;
+        btnRetryGame();
     }
     else if(button == &buttonNextLevel)
     {
-        //buttonMinusClicked();
+        cout << "Button Next clicked" << endl;
+        btnNextLevel();
     }
 }
 
@@ -285,11 +306,11 @@ void Game::loadLevel()
     stringstream mapFilePath;
     mapFilePath << "/CapitanAfrica_" << currentMapIntex << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
-    //int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
+    int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
 
 
-    Resource mapFromAssets("maps" + mapFilePath.str());
-    level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
+    //Resource mapFromAssets("maps" + mapFilePath.str());
+    //level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
 
     groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 
@@ -453,6 +474,7 @@ void Game::systemCallback_TimerTick()
 
 void Game::OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
+    //cout << "Game::OnPointerDown" << endl;
     if(gameState ==  GAME_LEVEL_COMPLETED) {
         buttonRetryLevel.onPointerDown(coords->x, coords->y);
         buttonNextLevel.onPointerDown(coords->x, coords->y);

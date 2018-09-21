@@ -10,6 +10,7 @@ using namespace std;
 #include "./Bodies/coin_circle_body.hpp"
 #include "./Bodies/mushroom.hpp"
 #include "./Bodies/meta_body.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 
 class Level{
@@ -33,5 +34,6 @@ public:
     glm::vec3 cameraOffset = glm::vec3(0,0,0);
     glm::vec4 groundContourColor = glm::vec4(0.9686, 0.7137, 0.0941, 1.0);
 private:
-    int loadLevel(Config & config);
+    int loadLevel(LibConfig & config);
+    DBG_COUNT("Level");
 };

@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-bool Config::loadDataFromMemoryToMemory(char * data, int size)
+bool LibConfig::loadDataFromMemoryToMemory(char * data, int size)
 {
 
 
@@ -19,7 +19,7 @@ bool Config::loadDataFromMemoryToMemory(char * data, int size)
     return true;
 }
 
-bool Config::loadDataFromFileToMemory(string fileName)
+bool LibConfig::loadDataFromFileToMemory(string fileName)
 {
 
     //OPEN FILE
@@ -37,7 +37,7 @@ bool Config::loadDataFromFileToMemory(string fileName)
     return true;
 }
 
-bool Config::loadFromInstream(istream & instream)
+bool LibConfig::loadFromInstream(istream & instream)
 {
     //CLEAR DATAS
     map_float.clear();
@@ -149,7 +149,7 @@ bool Config::loadFromInstream(istream & instream)
 
 }
 
-bool Config::saveDataFromMemoryToFile(string fileName)
+bool LibConfig::saveDataFromMemoryToFile(string fileName)
 {
     //OPEN FILE
     std::ofstream onfile(fileName.c_str());
@@ -220,61 +220,61 @@ bool Config::saveDataFromMemoryToFile(string fileName)
     onfile.close();
 }
 
-void Config::set_float(string name, float value)
+void LibConfig::set_float(string name, float value)
 {
     map_float[name] = value;
 }
 
-void Config::set_int32_t(string name, int32_t value)
+void LibConfig::set_int32_t(string name, int32_t value)
 {
     map_int32_t[name] = value;
 }
-void Config::set_uint32_t(string name, uint32_t value)
+void LibConfig::set_uint32_t(string name, uint32_t value)
 {
     map_uint32_t[name] = value;
 }
 
-void Config::set_glm_vec3(string name, glm::vec3 & value)
+void LibConfig::set_glm_vec3(string name, glm::vec3 & value)
 {
     map_glm_vec3[name] = value;
 }
 
-void Config::set_glm_vec4(string name, glm::vec4 & value)
+void LibConfig::set_glm_vec4(string name, glm::vec4 & value)
 {
     map_glm_vec4[name] = value;
 }
 
-void Config::set_bool(string name, bool value)
+void LibConfig::set_bool(string name, bool value)
 {
     map_bool[name] = value;
 }
 
-float Config::get_float(string name)
+float LibConfig::get_float(string name)
 {
     return map_float[name];
 }
 
-glm::vec3 & Config::get_glm_vec3(string name)
+glm::vec3 & LibConfig::get_glm_vec3(string name)
 {
     return map_glm_vec3[name];
 }
 
-glm::vec4 & Config::get_glm_vec4(string name)
+glm::vec4 & LibConfig::get_glm_vec4(string name)
 {
     return map_glm_vec4[name];
 }
 
-int32_t Config::get_int32_t(string name)
+int32_t LibConfig::get_int32_t(string name)
 {
     return map_int32_t[name];
 }
 
-uint32_t Config::get_uint32_t(string name)
+uint32_t LibConfig::get_uint32_t(string name)
 {
     return map_uint32_t[name];
 }
 
-bool Config::get_bool(string name)
+bool LibConfig::get_bool(string name)
 {
     return map_bool[name];
 }

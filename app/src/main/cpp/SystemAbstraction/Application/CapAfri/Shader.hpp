@@ -14,6 +14,7 @@
 #include <system_opengl_include.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <library_opengles_2/Debug/Debug.hpp>
 
 //#define SHADER_FULL_DIR "./data/shaders/"
 
@@ -44,5 +45,6 @@ public:
 private:
     // Checks if compilation or linking failed and if so, print the error logs
     void checkCompileErrors (GLuint object, std::string type);
+    DBG_COUNT("LShader");
 };
 #endif /* Shader_hpp */

@@ -12,7 +12,7 @@ using namespace std;
 
 #include <library_opengles_2/Debug/Debug.hpp>
 
-class Config
+class LibConfig
 {
 public:
     bool loadDataFromMemoryToMemory(char * data, int size);

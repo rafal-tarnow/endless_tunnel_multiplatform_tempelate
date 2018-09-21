@@ -25,6 +25,7 @@ private:
 
     float m_radius;
     glm::vec3 mPos;
+    DBG_COUNT("CircleCoinRenderer");
 };
 
 

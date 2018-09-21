@@ -17,7 +17,7 @@ Level::~Level()
 
 int Level::loadLevelFromMemory(unsigned char * data, int size)
 {
-    Config config;
+    LibConfig config;
     config.loadDataFromMemoryToMemory((char *)data, size);
 
     loadLevel(config);
@@ -27,7 +27,7 @@ int Level::loadLevelFromMemory(unsigned char * data, int size)
 
 int Level::loadLevelFromFile(string levelFilePath)
 { 
-    Config config;
+    LibConfig config;
     config.loadDataFromFileToMemory(levelFilePath);
 
     loadLevel(config);
@@ -35,7 +35,7 @@ int Level::loadLevelFromFile(string levelFilePath)
     return 0;
 }
 
-int Level::loadLevel(Config & config)
+int Level::loadLevel(LibConfig & config)
 {
     this->clear();
 
@@ -85,7 +85,7 @@ int Level::loadLevel(Config & config)
 
 int Level::saveLevelToFile(string levelFilePath)
 {
-    Config config;
+    LibConfig config;
 
     config.set_int32_t("ground_verticles.size()", (int32_t)ground_verticles.size());
     for(unsigned int i = 0; i < ground_verticles.size(); i++)

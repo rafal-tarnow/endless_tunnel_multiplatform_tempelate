@@ -64,5 +64,5 @@ private:
     Primitive testPrimitive;
 
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    Config config;
+    LibConfig config;
 };

@@ -6,6 +6,7 @@
 #include <Box2D/Box2D.h>
 #include <library_opengles_2/RectangleRenderer/Rectangle_Renderer.hpp>
 #include "../renderable_object.hpp"
+#include <library_opengles_2/Debug/Debug.hpp>
 
 class MetaRenderer : public RenderableGameObject{
 public:
@@ -26,6 +27,7 @@ protected:
 private:
     static GLuint coinTextureId;
     float m_radius;
+    DBG_COUNT("MetaRenderer");
 };
 
 
@@ -36,4 +38,5 @@ public:
     void render(glm::mat4 projection, glm::mat4 view);
 private:
     b2Body* body = nullptr;
+    DBG_COUNT("Meta");
 };

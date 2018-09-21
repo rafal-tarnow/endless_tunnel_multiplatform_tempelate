@@ -75,7 +75,7 @@ void MapEditor::loadMap(string mapFilePath)
 MapEditor::~MapEditor()
 {
     string configFilePath = getStandardCommonReadWriteDirecory() + "/CapitanAfrica.config";
-    Config config;
+    LibConfig config;
     config.loadDataFromFileToMemory(configFilePath);
     config.set_uint32_t("currentMapIndex",currentMapIndex);
     config.saveDataFromMemoryToFile(configFilePath);

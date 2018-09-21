@@ -65,6 +65,7 @@ protected:
     TrivialShader *mmTrivialShader;
     ShapeRenderer *mmShapeRenderer;
     TextRenderer *mmTextRenderer;
+    DBG_COUNT("PlayCapAfriScene");
 };
 
 
