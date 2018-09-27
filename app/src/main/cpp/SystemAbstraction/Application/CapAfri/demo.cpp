@@ -4,6 +4,7 @@
 #include "system_log.hpp"
 #include <string>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/Resources/Resources.hpp>
 
 using namespace std;
 
@@ -205,13 +206,15 @@ void prepare_font_atlas()
     nk_font_atlas_init_default(&atlas);
     nk_font_atlas_begin(&atlas);
 
-#include "./data_headers/extra_font/Roboto-Regular.ttf.hpp"
+    Resource robotoRegular("fonts/Roboto-Regular.ttf");
 
-    font_14 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 14.0f*scale, &cfg);
-    font_18 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 18.0f*scale, &cfg);
-    font_20 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 20.0f*scale, &cfg);
-    font_22 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 22.0f*scale, &cfg);
-    font_30 = nk_font_atlas_add_from_memory(&atlas, Roboto_Regular, size_of_Roboto_Regular, 30.0f*scale, &cfg);
+
+    font_14 = nk_font_atlas_add_from_memory(&atlas, robotoRegular.getData(), robotoRegular.getSize(), 14.0f*scale, &cfg);
+    font_18 = nk_font_atlas_add_from_memory(&atlas, robotoRegular.getData(), robotoRegular.getSize(), 18.0f*scale, &cfg);
+    font_20 = nk_font_atlas_add_from_memory(&atlas, robotoRegular.getData(), robotoRegular.getSize(), 20.0f*scale, &cfg);
+    font_22 = nk_font_atlas_add_from_memory(&atlas, robotoRegular.getData(), robotoRegular.getSize(), 22.0f*scale, &cfg);
+    font_30 = nk_font_atlas_add_from_memory(&atlas, robotoRegular.getData(), robotoRegular.getSize(), 30.0f*scale, &cfg);
+
 
     image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
     backend_upload_atlas(&backend_device, image, w, h);
