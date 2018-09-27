@@ -1,4 +1,4 @@
-package com.google.sample.tunnel;
+package com.reyfel.sample.CapAfri;
 
 import android.Manifest;
 import android.app.NativeActivity;
