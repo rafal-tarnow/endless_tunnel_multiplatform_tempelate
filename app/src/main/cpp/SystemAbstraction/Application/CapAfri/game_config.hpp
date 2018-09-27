@@ -28,25 +28,25 @@ public:
 
     void sync()
     {
-          LibConfig config;
+        LibConfig config;
 
-          config.set_float("dampingRatio", dampingRatio);
-          config.set_float("frequencyHz", frequencyHz);
-          config.set_float("friction", friction);
-          config.set_float("maxMotorTorque", maxMotorTorque);
-          config.set_float("simFPS", simFPS);
-          config.set_uint32_t("coins", coins);
-          config.set_uint32_t("currentMapIndex", currentMapIndex);
-          config.set_glm_vec4("clearColour", clearColour);
-          config.set_bool("debugDrawFlag", debugDrawFlag);
-          config.set_bool("showFPS", showFPS);
-          config.set_bool("skipBackgroundDraw", skipBackgroundDraw);
-          config.set_bool("useAverageSimFPS", useAverageSimFPS);
-          config.set_bool("useCurrentSimFPS", useCurrentSimFPS);
-          config.set_bool("useFixedSimFPS", useFixedSimFPS);
-          config.set_bool("waitForGlFinish", waitForGlFinish);
+        config.set_float("dampingRatio", dampingRatio);
+        config.set_float("frequencyHz", frequencyHz);
+        config.set_float("friction", friction);
+        config.set_float("maxMotorTorque", maxMotorTorque);
+        config.set_float("simFPS", simFPS);
+        config.set_uint32_t("coins", coins);
+        config.set_uint32_t("currentMapIndex", currentMapIndex);
+        config.set_glm_vec4("clearColour", clearColour);
+        config.set_bool("debugDrawFlag", debugDrawFlag);
+        config.set_bool("showFPS", showFPS);
+        config.set_bool("skipBackgroundDraw", skipBackgroundDraw);
+        config.set_bool("useAverageSimFPS", useAverageSimFPS);
+        config.set_bool("useCurrentSimFPS", useCurrentSimFPS);
+        config.set_bool("useFixedSimFPS", useFixedSimFPS);
+        config.set_bool("waitForGlFinish", waitForGlFinish);
 
-          config.saveDataFromMemoryToFile(mFullFilePath);
+        config.saveDataFromMemoryToFile(mFullFilePath);
     }
 
     float dampingRatio = 0.7;
@@ -70,23 +70,25 @@ protected:
     {
         mFullFilePath = fullFilePath;
         LibConfig config;
-        config.loadDataFromFileToMemory(mFullFilePath);
 
-        dampingRatio = config.get_float("dampingRatio");
-        frequencyHz = config.get_float("frequencyHz");
-        friction = config.get_float("friction");
-        maxMotorTorque = config.get_float("maxMotorTorque");
-        simFPS = config.get_float("simFPS");
-        coins = config.get_uint32_t("coins");
-        currentMapIndex = config.get_uint32_t("currentMapIndex");
-        clearColour = config.get_glm_vec4("clearColour");
-        debugDrawFlag = config.get_bool("debugDrawFlag");
-        showFPS = config.get_bool("showFPS");
-        skipBackgroundDraw = config.get_bool("skipBackgroundDraw");
-        useAverageSimFPS = config.get_bool("useAverageSimFPS");
-        useCurrentSimFPS = config.get_bool("useCurrentSimFPS");
-        useFixedSimFPS = config.get_bool("useFixedSimFPS");
-        waitForGlFinish = config.get_bool("waitForGlFinish");
+        if(config.loadDataFromFileToMemory(mFullFilePath))
+        {
+            config.get_float("dampingRatio", dampingRatio);
+            config.get_float("frequencyHz", frequencyHz);
+            config.get_float("friction", friction);
+            config.get_float("maxMotorTorque", maxMotorTorque);
+            config.get_float("simFPS", simFPS);
+            config.get_uint32_t("coins", coins);
+            config.get_uint32_t("currentMapIndex", currentMapIndex);
+            config.get_glm_vec4("clearColour", clearColour);
+            config.get_bool("debugDrawFlag", debugDrawFlag);
+            config.get_bool("showFPS", showFPS);
+            config.get_bool("skipBackgroundDraw", skipBackgroundDraw);
+            config.get_bool("useAverageSimFPS", useAverageSimFPS);
+            config.get_bool("useCurrentSimFPS", useCurrentSimFPS);
+            config.get_bool("useFixedSimFPS", useFixedSimFPS);
+            config.get_bool("waitForGlFinish", waitForGlFinish);
+        }
 
     }
 

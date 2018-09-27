@@ -39,46 +39,53 @@ int Level::loadLevel(LibConfig & config)
 {
     this->clear();
 
-    int32_t map_size = config.get_int32_t("ground_verticles.size()");
+    int32_t map_size;
+    config.get_int32_t("ground_verticles.size()", map_size);
     for(int i = 0; i < map_size; i++)
     {
         stringstream stream;
         stream << "ground_verticles.at(" << i << ")";
-
-        ground_verticles.push_back(config.get_glm_vec3(stream.str()));
+        glm::vec3 verticle;
+        config.get_glm_vec3(stream.str(),verticle);
+        ground_verticles.push_back(verticle);
     }
 
-    int32_t vector_size = config.get_int32_t("coins_vector.size()");
+    int32_t vector_size;
+    config.get_int32_t("coins_vector.size()",vector_size);
 
     for(int i = 0; i < vector_size; i++)
     {
         stringstream stream;
         stream << "coins_vector.at(" << i << ")";
-        glm::vec3 coin_position = config.get_glm_vec3(stream.str());
+        glm::vec3 coin_position;
+        config.get_glm_vec3(stream.str(), coin_position);
 
         coins_vector.push_back(new CircleCoinRender(coin_position.x, coin_position.y, -2.0f, 0.25f));
     }
 
-    int32_t mushroom_vector_size = config.get_int32_t("mushroom_vector.size()");
+    int32_t mushroom_vector_size;
+    config.get_int32_t("mushroom_vector.size()",mushroom_vector_size);
     for(int i = 0; i < mushroom_vector_size; i++)
     {
         stringstream stream;
         stream << "mushroom_vector.at(" << i << ")";
-        glm::vec3 mushroom_position = config.get_glm_vec3(stream.str());
+        glm::vec3 mushroom_position;
+        config.get_glm_vec3(stream.str(), mushroom_position);
         glm::vec2 dimm(2.0, 2.0);
         mushroom_vector.push_back(new MushroomRenderer(mushroom_position));
     }
 
-    glm::vec3 metaPosition = config.get_glm_vec3("metaPosition");
+    glm::vec3 metaPosition;
+    config.get_glm_vec3("metaPosition", metaPosition);
     meta = new MetaRenderer(metaPosition, 1.5);
 
-    background_image_index = config.get_uint32_t("background_image_index");
+    config.get_uint32_t("background_image_index", background_image_index);
 
-    ground_image_index = config.get_uint32_t("ground_image_index");
+    config.get_uint32_t("ground_image_index", ground_image_index);
 
-    cameraOffset = config.get_glm_vec3("cameraOffset");
+    config.get_glm_vec3("cameraOffset", cameraOffset);
 
-    groundContourColor = config.get_glm_vec4("groundContourColor");
+    config.get_glm_vec4("groundContourColor", groundContourColor);
 
     return 0;
 }

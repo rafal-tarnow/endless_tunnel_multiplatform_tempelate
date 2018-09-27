@@ -249,33 +249,69 @@ void LibConfig::set_bool(string name, bool value)
     map_bool[name] = value;
 }
 
-float LibConfig::get_float(string name)
+bool LibConfig::get_float(string name, float &value)
 {
-    return map_float[name];
+    if(map_float.count(name))
+    {
+        value =  map_float[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
-glm::vec3 & LibConfig::get_glm_vec3(string name)
+bool LibConfig::get_glm_vec3(string name, glm::vec3 & value)
 {
-    return map_glm_vec3[name];
+    if(map_glm_vec3.count(name))
+    {
+        value =  map_glm_vec3[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
-glm::vec4 & LibConfig::get_glm_vec4(string name)
+bool LibConfig::get_glm_vec4(string name, glm::vec4 & value)
 {
-    return map_glm_vec4[name];
+    if(map_glm_vec4.count(name))
+    {
+        value =  map_glm_vec4[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
-int32_t LibConfig::get_int32_t(string name)
+bool LibConfig::get_int32_t(string name, int32_t & value)
 {
-    return map_int32_t[name];
+    if(map_int32_t.count(name))
+    {
+        value =  map_int32_t[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
-uint32_t LibConfig::get_uint32_t(string name)
+bool LibConfig::get_uint32_t(string name, uint32_t & value)
 {
-    return map_uint32_t[name];
+    if(map_uint32_t.count(name))
+    {
+        value =  map_uint32_t[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
-bool LibConfig::get_bool(string name)
+bool LibConfig::get_bool(string name, bool & value)
 {
-    return map_bool[name];
+    if(map_bool.count(name))
+    {
+        value =  map_bool[name];
+        return true;
+    }else{
+        return false;
+    }
 }
 
