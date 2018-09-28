@@ -9,6 +9,9 @@
 #include "../system_abstraction.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include "../Tunnel/scene_manager.hpp"
+#include "../Tunnel/play_capafri_scene.hpp"
+
 
 using namespace std;
 
@@ -51,6 +54,7 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     mapFilePath << getStandardCommonReadWriteDirecory() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
+    camera.setPosition(level.lastCamPosition.x, level.lastCamPosition.y);
 
     carRenderer = new CarRenderer(glm::vec3(0,0,0));
 
@@ -490,14 +494,14 @@ void MapEditor::systemCallback_OnPointerMove(int pointerId, const struct Pointer
             camera.changeXPosition(-delta_cam_x);
             camera.changeYPosition(-delta_cam_y);
         }
-            if(pointerId == 1)
-            {
-                float delta_cam_x = world_current_position_1.x - world_move_camera_position_start.x;
-                float delta_cam_y = world_current_position_1.y - world_move_camera_position_start.y;
+        if(pointerId == 1)
+        {
+            float delta_cam_x = world_current_position_1.x - world_move_camera_position_start.x;
+            float delta_cam_y = world_current_position_1.y - world_move_camera_position_start.y;
 
-                camera.changeXPosition(-delta_cam_x);
-                camera.changeYPosition(-delta_cam_y);
-            }
+            camera.changeXPosition(-delta_cam_x);
+            camera.changeYPosition(-delta_cam_y);
+        }
         break;
     case CURSOR_MOVE_ELEMENT_ZOOM:
         if(pointerId == 0 || pointerId == 1)
@@ -611,6 +615,7 @@ void MapEditor::gui_onSaveMapButtonClicked()
     mapFilePath.str("");
     mapFilePath.clear();
     mapFilePath << getStandardCommonReadWriteDirecory() << "/CapitanAfrica_" << currentMapIndex <<  ".map";
+    level.lastCamPosition = camera.getPosition();
     mapFileOpenErrno = level.saveLevelToFile(mapFilePath.str());
     if(mapFileOpenErrno)
     {
@@ -622,6 +627,14 @@ void MapEditor::gui_onClearMapButtonClicked()
 {
     level.clear();
     PR_setVerticles(&lineStripGround,level.ground_verticles.data(), level.ground_verticles.size());
+}
+
+void MapEditor::gui_onTestButtonClicked()
+{
+    gui_onSaveMapButtonClicked();
+    SceneManager *mgr = SceneManager::GetInstance();
+    mgr->RequestNewScene(new PlayCapAfriScene(currentMapIndex, carRenderer->getPosition()));
+
 }
 
 void MapEditor::gui_onCursorModeChanged(int mode)
@@ -648,16 +661,6 @@ void MapEditor::gui_onCurrentMapChanged(unsigned int currentMap)
     mapFilePath << getStandardCommonReadWriteDirecory() + "/CapitanAfrica_" << currentMapIndex << ".map" ;
 
     loadMap(mapFilePath.str());
-}
-
-void MapEditor::gui_onZoomOut()
-{
-    camera.zoomOut();
-}
-
-void MapEditor::gui_onZoomIn()
-{
-    camera.zoomIn();
 }
 
 void MapEditor::systemCallback_OnChar(unsigned int codepoint)

@@ -85,6 +85,8 @@ int Level::loadLevel(LibConfig & config)
 
     config.get_glm_vec3("cameraOffset", cameraOffset);
 
+    config.get_glm_vec3("lastCamPosition", lastCamPosition);
+
     config.get_glm_vec4("groundContourColor", groundContourColor);
 
     return 0;
@@ -128,6 +130,8 @@ int Level::saveLevelToFile(string levelFilePath)
     config.set_glm_vec3("metaPosition", meta->getPosition());
 
     config.set_glm_vec3("cameraOffset", cameraOffset);
+
+    config.set_glm_vec3("lastCamPosition",lastCamPosition);
 
     config.set_glm_vec4("groundContourColor", groundContourColor);
 

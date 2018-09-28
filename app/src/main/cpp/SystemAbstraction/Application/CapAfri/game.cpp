@@ -156,7 +156,7 @@ void Game::Button_onClicked(Button * button)
 }
 
 
-Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb_height)
+Game::Game(unsigned int fb_width,unsigned int fb_height, uint32_t levelIndex, glm::vec3 carPosition) : camWorld(fb_width, fb_height)
 {
 
     current_fb_width = fb_width;
@@ -180,8 +180,7 @@ Game::Game(unsigned int fb_width,unsigned int fb_height) : camWorld(fb_width, fb
 
 
 
-
-    loadLevel();
+    loadLevel(levelIndex, carPosition);
     LOGD("Game::Game(12)");
     loadAudio();
     LOGD("Game::Game(13)");
@@ -292,25 +291,24 @@ void Game::saveCoins()
 
 }
 
-void Game::loadLevel()
+void Game::loadLevel(uint32_t levelNr, glm::vec3 carPosition)
 {
     float dampingRatio = cfg->dampingRatio;
     float frequencyHz = cfg->frequencyHz;
     float maxMotorTorque = cfg->maxMotorTorque;
     float friction = cfg->friction;
-    car = new Car(glm::vec3(1.0f, 5.0f, -1.0f), world, dampingRatio, frequencyHz, maxMotorTorque, friction);
+    car = new Car(carPosition, world, dampingRatio, frequencyHz, maxMotorTorque, friction);
 
 
     //LEVEL LOAD
-    uint32_t currentMapIntex = cfg->currentMapIndex;
     stringstream mapFilePath;
-    mapFilePath << "/CapitanAfrica_" << currentMapIntex << ".map";
+    mapFilePath << "/CapitanAfrica_" << levelNr << ".map";
 #warning "dorobic obsluge bledu otwarcia pliku"
-    //int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
+    int mapFileOpenErrno = level.loadLevelFromFile(getStandardCommonReadWriteDirecory() + mapFilePath.str());
 
 
-    Resource mapFromAssets("maps" + mapFilePath.str());
-    level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
+    //Resource mapFromAssets("maps" + mapFilePath.str());
+    //level.loadLevelFromMemory(mapFromAssets.getData(), mapFromAssets.getSize());
 
     groundChain = new GroundChain(level, -200.0f,0.0f,10000.0f,5000.0f, 0.0f, world);
 

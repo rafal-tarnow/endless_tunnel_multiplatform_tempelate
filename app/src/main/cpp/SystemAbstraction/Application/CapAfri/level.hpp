@@ -33,6 +33,7 @@ public:
     uint32_t ground_image_index = 0;
     glm::vec3 cameraOffset = glm::vec3(0,0,0);
     glm::vec4 groundContourColor = glm::vec4(0.9686, 0.7137, 0.0941, 1.0);
+    glm::vec3 lastCamPosition = glm::vec3(1,5,-1);
 private:
     int loadLevel(LibConfig & config);
     DBG_COUNT("Level");

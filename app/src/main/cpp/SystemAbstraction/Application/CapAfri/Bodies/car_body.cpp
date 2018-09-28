@@ -43,6 +43,11 @@ void CarRenderer::setPosition(glm::vec3 position)
     mRearWhellPos = position + glm::vec3(-1,-1,0);
 }
 
+glm::vec3 CarRenderer::getPosition()
+{
+    return mBodyPos;
+}
+
 void CarRenderer::render(glm::mat4 projection, glm::mat4 view)
 {
 

@@ -52,10 +52,9 @@ public:
 
     void gui_onSaveMapButtonClicked();
     void gui_onClearMapButtonClicked();
+    void gui_onTestButtonClicked();
     void gui_onCursorModeChanged(int mode);
     void gui_onCurrentMapChanged(unsigned int currentMap);
-    void gui_onZoomOut();
-    void gui_onZoomIn();
 
 private:
     void loadMap(string mapFilePath);

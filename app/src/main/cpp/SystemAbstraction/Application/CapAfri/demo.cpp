@@ -22,8 +22,8 @@ struct nk_font *font_30;
 struct nk_image images[5];
 struct nk_image next_png;
 struct nk_image prev_png;
-struct nk_image plus_png;
-struct nk_image minus_png;
+//struct nk_image plus_png;
+//struct nk_image minus_png;
 
 
 struct backend_device backend_device;
@@ -157,32 +157,17 @@ void toolbox_demo(struct nk_context *ctx)
             }
         }
 
+        nk_layout_row(ctx, NK_DYNAMIC, 105*scale, 2, ratio);
+        nk_spacing(ctx, 1);
 
-
-        ui_header(ctx, "ZOOM");
-
-        nk_layout_row_template_begin(ctx, 80*scale);
+        if (nk_button_label(ctx, "TEST"))
         {
-            nk_layout_row_template_push_static(ctx, 80*scale);
-            nk_layout_row_template_push_variable(ctx, 80*scale);
-            nk_layout_row_template_push_static(ctx, 80*scale);
-        }
-        nk_layout_row_template_end(ctx);
-
-
-        if(nk_button_image(ctx, minus_png))
-        {
+            printf("Test map clicked!\n");
             if(toolboxEventListener != nullptr) {
-                toolboxEventListener->gui_onZoomOut();
+                toolboxEventListener->gui_onTestButtonClicked();
             }
         }
-        nk_labelf(ctx, NK_TEXT_CENTERED, "-    +" , prog_value + 1);
-        if(nk_button_image(ctx, plus_png))
-        {
-            if(toolboxEventListener != nullptr) {
-                toolboxEventListener->gui_onZoomIn();
-            }
-        }
+
 
     }
     nk_end(ctx);
@@ -242,8 +227,6 @@ void demo_init(int width, int height, float mscale)
     images[4] = icon_load_from_TextureManager("textures/move.png");
     prev_png = icon_load_from_TextureManager("textures/prev.png");
     next_png = icon_load_from_TextureManager("textures/next.png");
-    plus_png = icon_load_from_TextureManager("textures/plus_grey.png");
-    minus_png = icon_load_from_TextureManager("textures/minus_grey.png");
 }
 
 void demo_setScale(int width, int height, float mscale)

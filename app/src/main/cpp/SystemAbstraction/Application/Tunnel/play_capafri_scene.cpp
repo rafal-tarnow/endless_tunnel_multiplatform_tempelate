@@ -28,7 +28,21 @@
 static const float MENUITEM_SEL_COLOR[] = { 1.0f, 1.0f, 0.0f };
 static const float MENUITEM_COLOR[] = { 1.0f, 1.0f, 1.0f };
 
-PlayCapAfriScene::PlayCapAfriScene() : Scene() {
+PlayCapAfriScene::PlayCapAfriScene(int level, glm::vec3 carPos) : Scene()
+{
+    carPosition = carPos;
+    levelIndex = level;
+    initScene();
+}
+
+PlayCapAfriScene::PlayCapAfriScene() : Scene()
+{
+    levelIndex = cfg->currentMapIndex;
+    initScene();
+}
+
+void PlayCapAfriScene::initScene()
+{
     mmTrivialShader = NULL;
     mmTextRenderer = NULL;
     mmShapeRenderer = NULL;
@@ -54,7 +68,7 @@ void PlayCapAfriScene::OnStartGraphics(int width, int height) {
     current_height = height;
 
     LOGD("PlayCapAfriScene::OnStartGraphics(0.1)");
-    game = new Game(current_width, current_height);
+    game = new Game(current_width, current_height, levelIndex, carPosition);
     LOGD("PlayCapAfriScene::OnStartGraphics(0.2)");
     game->systemCallback_WindowResize(current_width, current_height);
     LOGD("PlayCapAfriScene::OnStartGraphics(0.3)");
@@ -215,44 +229,44 @@ void PlayCapAfriScene::ShowMenu(int menu) {
     mMenu = menu;
     mMenuSel = 0;
     switch (menu) {
-        case MENU_PAUSE:
-            mMenuItems[0] = MENUITEM_UNPAUSE;
-            mMenuItems[1] = MENUITEM_QUIT;
-            mMenuItemCount = 2;
-            break;
-        case MENU_LEVEL:
-            mMenuItems[0] = MENUITEM_RESUME;
-            mMenuItems[1] = MENUITEM_START_OVER;
-            mMenuItemCount = 2;
-            break;
-        default:
-            // since we're leaving the menu, reset the frame clock to avoid a skip
-            // in the animation
-            //mFrameClock.Reset();
-            ;
+    case MENU_PAUSE:
+        mMenuItems[0] = MENUITEM_UNPAUSE;
+        mMenuItems[1] = MENUITEM_QUIT;
+        mMenuItemCount = 2;
+        break;
+    case MENU_LEVEL:
+        mMenuItems[0] = MENUITEM_RESUME;
+        mMenuItems[1] = MENUITEM_START_OVER;
+        mMenuItemCount = 2;
+        break;
+    default:
+        // since we're leaving the menu, reset the frame clock to avoid a skip
+        // in the animation
+        //mFrameClock.Reset();
+        ;
     }
 }
 
 void PlayCapAfriScene::HandleMenu(int menuItem) {
     switch (menuItem) {
-        case MENUITEM_QUIT:
-            SceneManager::GetInstance()->RequestNewScene(new TuningVehicleScene());
-            break;
-        case MENUITEM_UNPAUSE:
-            ShowMenu(MENU_NONE);
-            break;
-        case MENUITEM_RESUME:
-            // resume from saved level
-            //mDifficulty = (mSavedCheckpoint / LEVELS_PER_CHECKPOINT) * LEVELS_PER_CHECKPOINT;
-            //SetScore(SCORE_PER_LEVEL * mDifficulty);
-            //mObstacleGen.SetDifficulty(mDifficulty);
-            //ShowLevelSign();
-            ShowMenu(MENU_NONE);
-            break;
-        case MENUITEM_START_OVER:
-            // start over from scratch
-            ShowMenu(MENU_NONE);
-            break;
+    case MENUITEM_QUIT:
+        SceneManager::GetInstance()->RequestNewScene(new TuningVehicleScene());
+        break;
+    case MENUITEM_UNPAUSE:
+        ShowMenu(MENU_NONE);
+        break;
+    case MENUITEM_RESUME:
+        // resume from saved level
+        //mDifficulty = (mSavedCheckpoint / LEVELS_PER_CHECKPOINT) * LEVELS_PER_CHECKPOINT;
+        //SetScore(SCORE_PER_LEVEL * mDifficulty);
+        //mObstacleGen.SetDifficulty(mDifficulty);
+        //ShowLevelSign();
+        ShowMenu(MENU_NONE);
+        break;
+    case MENUITEM_START_OVER:
+        // start over from scratch
+        ShowMenu(MENU_NONE);
+        break;
     }
 }
 

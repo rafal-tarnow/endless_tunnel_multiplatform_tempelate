@@ -36,7 +36,7 @@ public:
         GAME_LEVEL_COMPLETED
     }GameState;
 
-    Game(unsigned int win_width,unsigned int win_height);
+    Game(unsigned int win_width,unsigned int win_height, uint32_t levelIndex, glm::vec3 carPosition);
     ~Game();
 
     void systemCallback_WindowResize(unsigned int win_width, unsigned int win_height);
@@ -61,7 +61,7 @@ public:
 private:
     void loadCoins();
     void loadAudio();
-    void loadLevel();
+    void loadLevel(uint32_t levelNr, glm::vec3 carPosition);
     void saveCoins();
     void updateGameLogics();
     b2World * getWorld();
