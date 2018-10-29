@@ -633,7 +633,7 @@ void MapEditor::gui_onTestButtonClicked()
 {
     gui_onSaveMapButtonClicked();
     SceneManager *mgr = SceneManager::GetInstance();
-    mgr->RequestNewScene(new PlayCapAfriScene(currentMapIndex, carRenderer->getPosition()));
+    mgr->RequestNewScene(new PlayCapAfriScene(currentMapIndex, carRenderer->getPosition(), true));
 
 }
 

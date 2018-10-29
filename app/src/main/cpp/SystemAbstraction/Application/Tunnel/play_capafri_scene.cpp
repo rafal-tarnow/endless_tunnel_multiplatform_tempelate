@@ -20,6 +20,7 @@
 #include "ascii_to_geom.hpp"
 #include "play_capafri_scene.hpp"
 #include "scene_tuning_vehicle.hpp"
+#include "map_editor_scene.hpp"
 #include "./data/cube_geom.inl"
 #include "./data/tunnel_geom.inl"
 #include "./data/strings.inl"
@@ -28,8 +29,9 @@
 static const float MENUITEM_SEL_COLOR[] = { 1.0f, 1.0f, 0.0f };
 static const float MENUITEM_COLOR[] = { 1.0f, 1.0f, 1.0f };
 
-PlayCapAfriScene::PlayCapAfriScene(int level, glm::vec3 carPos) : Scene()
+PlayCapAfriScene::PlayCapAfriScene(int level, glm::vec3 carPos, bool mapTestMode) : Scene()
 {
+    mMapTestMode = mapTestMode;
     carPosition = carPos;
     levelIndex = level;
     initScene();
@@ -68,7 +70,7 @@ void PlayCapAfriScene::OnStartGraphics(int width, int height) {
     current_height = height;
 
     LOGD("PlayCapAfriScene::OnStartGraphics(0.1)");
-    game = new Game(current_width, current_height, levelIndex, carPosition);
+    game = new Game(current_width, current_height, levelIndex, carPosition, mMapTestMode);
     LOGD("PlayCapAfriScene::OnStartGraphics(0.2)");
     game->systemCallback_WindowResize(current_width, current_height);
     LOGD("PlayCapAfriScene::OnStartGraphics(0.3)");
@@ -250,7 +252,14 @@ void PlayCapAfriScene::ShowMenu(int menu) {
 void PlayCapAfriScene::HandleMenu(int menuItem) {
     switch (menuItem) {
     case MENUITEM_QUIT:
-        SceneManager::GetInstance()->RequestNewScene(new TuningVehicleScene());
+        if(mMapTestMode == true)
+        {
+            SceneManager::GetInstance()->RequestNewScene(new MapEditorScene());
+        }
+        else
+        {
+            SceneManager::GetInstance()->RequestNewScene(new TuningVehicleScene());
+        }
         break;
     case MENUITEM_UNPAUSE:
         ShowMenu(MENU_NONE);

@@ -36,7 +36,7 @@ public:
         GAME_LEVEL_COMPLETED
     }GameState;
 
-    Game(unsigned int win_width,unsigned int win_height, uint32_t levelIndex, glm::vec3 carPosition);
+    Game(unsigned int win_width,unsigned int win_height, uint32_t levelIndex, glm::vec3 carPosition, bool mapTestMode);
     ~Game();
 
     void systemCallback_WindowResize(unsigned int win_width, unsigned int win_height);
@@ -124,6 +124,8 @@ private:
     bool useAverageSimFPS = false;
     bool useCurrentSimFPS = false;
     float simFPS = 30.0f;
+
+    bool mapTestMode = false;
 
     DBG_COUNT("Game");
 };

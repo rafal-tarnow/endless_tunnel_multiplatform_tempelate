@@ -14,7 +14,7 @@
  * the infinite tunnel, dodging obstacles, collecting bonuses and being awesome. */
 class PlayCapAfriScene : public Scene {
 public:
-    PlayCapAfriScene(int level, glm::vec3 carPosition);
+    PlayCapAfriScene(int level, glm::vec3 carPosition, bool mapTestMode);
     PlayCapAfriScene();
     virtual void OnStartGraphics(int width, int height);
     virtual void OnKillGraphics();
@@ -66,6 +66,8 @@ protected:
     TrivialShader *mmTrivialShader;
     ShapeRenderer *mmShapeRenderer;
     TextRenderer *mmTextRenderer;
+
+    bool mMapTestMode = false;
 
 private:
     GameConfig * cfg = GameConfig::getInstance();

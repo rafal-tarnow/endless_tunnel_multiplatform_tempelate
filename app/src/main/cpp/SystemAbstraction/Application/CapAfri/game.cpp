@@ -156,8 +156,10 @@ void Game::Button_onClicked(Button * button)
 }
 
 
-Game::Game(unsigned int fb_width,unsigned int fb_height, uint32_t levelIndex, glm::vec3 carPosition) : camWorld(fb_width, fb_height)
+Game::Game(unsigned int fb_width,unsigned int fb_height, uint32_t levelIndex, glm::vec3 carPosition, bool testMode) : camWorld(fb_width, fb_height)
 {
+
+    mapTestMode = testMode;
 
     current_fb_width = fb_width;
     current_fb_height = fb_height;
