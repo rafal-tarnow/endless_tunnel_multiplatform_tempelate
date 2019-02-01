@@ -60,11 +60,11 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
     cout << "GLESDebugDraw::DrawCircle()" << endl;
 
     const float32 k_segments = 16.0f;
-    int vertexCount=16;
+    const int vertex_count = 16;
     const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 theta = 0.0f;
 
-    glm::vec3 glVertices[vertexCount];
+    glm::vec3 glVertices[ vertex_count];
     for (int32 i = 0; i < k_segments; ++i)
     {
         b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
@@ -74,7 +74,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 
     PR_setMode(&lineStrip, GL_LINE_LOOP);
     PR_setColour(&lineStrip, glm::vec4(color.r, color.g, color.b, color.a));
-    PR_setVerticles(&lineStrip, glVertices, vertexCount);
+    PR_setVerticles(&lineStrip, glVertices,  vertex_count);
     lineStrip.projection = mProjection;
     lineStrip.view = mView;
     PR_draw(&lineStrip, 1.0);
@@ -83,7 +83,7 @@ void GLESDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Col
 void GLESDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
     const float32 k_segments = 16.0f;
-    int vertexCount=16;
+    const int vertexCount=16;
     const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 theta = 0.0f;
 

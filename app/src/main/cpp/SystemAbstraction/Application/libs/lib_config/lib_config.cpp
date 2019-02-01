@@ -45,7 +45,6 @@ bool LibConfig::loadFromInstream(istream & instream)
     map_uint32_t.clear();
     map_glm_vec3.clear();
 
-
     string type;
     string name;
     string equal;
@@ -57,6 +56,7 @@ bool LibConfig::loadFromInstream(istream & instream)
 #warning "DOROBIC OBSLUGE BLEDU PARSOWANIA PLIKU"
 
     //READ FILE LINE BY LINE
+
     while (instream >> type)
     {
         if(type == "float")
@@ -146,7 +146,7 @@ bool LibConfig::loadFromInstream(istream & instream)
             map_glm_vec4[name] = value;
         }
     }
-
+    return true;
 }
 
 bool LibConfig::saveDataFromMemoryToFile(string fileName)
@@ -218,6 +218,8 @@ bool LibConfig::saveDataFromMemoryToFile(string fileName)
     //CLOSE FILE
     onfile.flush();
     onfile.close();
+
+    return true;
 }
 
 void LibConfig::set_float(string name, float value)

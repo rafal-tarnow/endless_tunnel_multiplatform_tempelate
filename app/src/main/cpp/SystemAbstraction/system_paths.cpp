@@ -13,7 +13,7 @@ string getStandardCommonReadWriteDirecory()
 #else// defined(__linux__) //&& !defined(__ANDROID__)
     string text_home = getenv("HOME");
     //string text_user = getenv("USER");
-    return "/" + text_home + "/.config";
+    return text_home + "/.config";
 #endif
 }
 

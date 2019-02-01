@@ -307,6 +307,7 @@ void TuningVehicleScene::OnPointerMove(int pointerId, const struct PointerCoords
 bool TuningVehicleScene::OnBackKeyPressed()
 {
     SceneManager::GetInstance()->RequestNewScene(new SelectMapScene());
+    return true;
 }
 
 void TuningVehicleScene::OnFramebufferResized(int width, int height)

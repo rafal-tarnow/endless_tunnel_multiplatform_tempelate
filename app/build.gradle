@@ -29,7 +29,7 @@ android {
         versionName    '1.0'
         externalNativeBuild {
             cmake {
-                arguments '-DANDROID_STL=c++_static','-DANDROID_TOOLCHAIN=gcc'
+                arguments '-DANDROID_STL=c++_static','-DANDROID_TOOLCHAIN=clang','-DANDROID_STL=c++_shared'
             }
         }
     }
@@ -45,6 +45,7 @@ android {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
+
 }
 android.lintOptions {
         abortOnError  = false

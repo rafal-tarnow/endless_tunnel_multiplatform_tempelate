@@ -200,6 +200,7 @@ AudioManager::AudioHandle AudioManager::CreateSFX(std::string& filename, bool lo
 
     return handle;
 #endif
+    return 0;
 }
 
 void AudioManager::PlaySFX(AudioHandle handle)
