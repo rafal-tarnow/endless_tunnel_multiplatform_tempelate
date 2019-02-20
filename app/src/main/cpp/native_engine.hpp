@@ -20,6 +20,9 @@
 
 struct NativeEngineSavedState {};
 
+
+void showAlert(const char* message);
+
 class NativeEngine {
     public:
         // create an engine
