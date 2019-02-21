@@ -55,6 +55,13 @@ void SelectMapScene::initNormalButtons()
     buttonPlay.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue.png"));
     buttonPlay.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_pressed.png"));
     buttonPlay.setEventListener(this);
+
+    position = glm::vec3(1920.0f*(1.0f/7.0f),1080.0f*(1.0f/6.0f),0.0f);
+    buttonUnlock.setPosition(position);
+    buttonUnlock.setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+    buttonUnlock.setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/unlock.png"));
+    buttonUnlock.setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/unlock_pressed.png"));
+    buttonUnlock.setEventListener(this);
 }
 
 void SelectMapScene::initRadioButtons()
@@ -213,6 +220,7 @@ void SelectMapScene::DoFrame()
 
 
     buttonPlay.Render();
+    buttonUnlock.Render();
 
 
 
@@ -259,6 +267,7 @@ void SelectMapScene::OnPointerDown(int pointerId, const struct PointerCoords *co
     }
 
     buttonPlay.onPointerDown(coords->x, coords->y);
+    buttonUnlock.onPointerDown(coords->x, coords->y);
 }
 
 void SelectMapScene::OnPointerUp(int pointerId, const struct PointerCoords *coords)
@@ -269,6 +278,7 @@ void SelectMapScene::OnPointerUp(int pointerId, const struct PointerCoords *coor
     }
 
     buttonPlay.onPointerUp();
+    buttonUnlock.onPointerUp();
 }
 
 void SelectMapScene::OnPointerMove(int pointerId, const struct PointerCoords *coords)

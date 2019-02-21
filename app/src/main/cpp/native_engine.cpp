@@ -267,7 +267,7 @@ static bool _cooked_event_callback(struct CookedEvent *event) {
             return true;
         case COOKED_EVENT_TYPE_POINTER_DOWN:
             SystemAbstraction::onPointerDown(event->motionPointerId, &coords);
-            showAlert("Pointer down!");
+            showAlert("Purchase ");
             return true;
         case COOKED_EVENT_TYPE_POINTER_UP:
             SystemAbstraction::onPointerUp(event->motionPointerId, &coords);

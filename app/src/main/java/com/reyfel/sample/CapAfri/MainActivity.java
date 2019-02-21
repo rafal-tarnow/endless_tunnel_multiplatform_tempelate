@@ -118,7 +118,10 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
         this.runOnUiThread(new Runnable() {
             public void run() {
                 showToast(message);
-                bp.purchase(activity, "android.test.purchased");
+                boolean isOneTimePurchaseSupported = bp.isOneTimePurchaseSupported();
+                if(isOneTimePurchaseSupported) {
+                    bp.purchase(activity, "android.test.purchased");
+                }
             }
         });
 

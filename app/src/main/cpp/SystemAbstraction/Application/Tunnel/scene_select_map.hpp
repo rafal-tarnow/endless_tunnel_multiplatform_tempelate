@@ -42,6 +42,7 @@ private:
     const unsigned int LEVELS_COUNT = 3;
 
     Button buttonPlay;
+    Button buttonUnlock;
 
     RadioButtonManager radioButtonManager;
 
