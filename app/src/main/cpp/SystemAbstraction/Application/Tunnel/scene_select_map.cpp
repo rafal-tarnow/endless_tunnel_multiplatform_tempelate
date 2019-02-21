@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <system_billing.hpp>
 
 using namespace std;
 
@@ -43,7 +44,6 @@ SelectMapScene::SelectMapScene()
     AudioManager& audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
-
 
 }
 
@@ -97,9 +97,6 @@ void SelectMapScene::initRadioButtons()
 
 SelectMapScene::~SelectMapScene()
 {
-
-
-
 
     DE_deleteRectangle(&safe_area_background);
 
@@ -232,7 +229,6 @@ void SelectMapScene::DoFrame()
 
 }
 
-
 void SelectMapScene::Button_onClicked(Button * button)
 {
     if(button == &buttonPlay)
@@ -241,6 +237,10 @@ void SelectMapScene::Button_onClicked(Button * button)
 
         SceneManager *mgr = SceneManager::GetInstance();
         mgr->RequestNewScene(new TuningVehicleScene());
+    }
+    else if(button == &buttonUnlock)
+    {
+        purchase("Purchase product!");
     }
 }
 

@@ -22,6 +22,7 @@
 #include "./SystemAbstraction/system_abstraction.hpp"
 #include "./SystemAbstraction/system_log.hpp"
 #include "./SystemAbstraction/system_paths.hpp"
+#include "./SystemAbstraction/system_billing.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
 #include "./SystemAbstraction/Application/libs/library_opengles_2/Resources/Resources.hpp"
 
@@ -37,34 +38,9 @@
 // max # of GL errors to print before giving up
 #define MAX_GL_ERRORS 200
 
-
-android_app * androidApp;
-void showAlert(const char* message) {
-    JNIEnv* jni;
-    androidApp->activity->vm->AttachCurrentThread(&jni, NULL);
-
-    jclass clazz = jni->GetObjectClass(androidApp->activity->clazz);
-
-    // Get the ID of the method we want to call
-    // This must match the name and signature from the Java side
-    // Signature has to match java implementation (second string hints a t a java string parameter)
-    jmethodID methodID = jni->GetMethodID(clazz, "showAlert", "(Ljava/lang/String;)V");
-
-    // Strings passed to the function need to be converted to a java string object
-    jstring jmessage = jni->NewStringUTF(message);
-
-    jni->CallVoidMethod(androidApp->activity->clazz, methodID, jmessage);
-
-    // Remember to clean up passed values
-    jni->DeleteLocalRef(jmessage);
-
-    androidApp->activity->vm->DetachCurrentThread();
-}
-
 static NativeEngine *_singleton = NULL;
 
 NativeEngine::NativeEngine(struct android_app *app) {
-    androidApp = app;
     LOGD("NativeEngine: initializing.");
     mApp = app;
     mHasFocus = mIsVisible = mHasWindow = false;
@@ -97,6 +73,7 @@ NativeEngine::NativeEngine(struct android_app *app) {
         new AudioManager(app->activity->assetManager);
     }
     Resource::initAndroid(app->activity->assetManager);
+    initPurchase(app);
 }
 
 NativeEngine* NativeEngine::GetInstance() {
@@ -267,7 +244,6 @@ static bool _cooked_event_callback(struct CookedEvent *event) {
             return true;
         case COOKED_EVENT_TYPE_POINTER_DOWN:
             SystemAbstraction::onPointerDown(event->motionPointerId, &coords);
-            showAlert("Purchase ");
             return true;
         case COOKED_EVENT_TYPE_POINTER_UP:
             SystemAbstraction::onPointerUp(event->motionPointerId, &coords);
