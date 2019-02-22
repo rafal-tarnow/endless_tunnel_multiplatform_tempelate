@@ -10,7 +10,6 @@ Button::Button()
 
     DE_initRectangle_4(&rectangle,normalTexture,mDimm);
 
-
 }
 
 Button::~Button()
@@ -113,7 +112,6 @@ void Button::Render()
     rectangle.model = mModel;
 
     DE_drawRectangle(&rectangle);
-
 
     if(mText != "")
     {

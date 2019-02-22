@@ -135,6 +135,11 @@ void SelectMapScene::OnKillGraphics()
 
 void SelectMapScene::DoFrame()
 {
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+
     //glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);

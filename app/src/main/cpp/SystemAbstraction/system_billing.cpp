@@ -1,9 +1,8 @@
 #include "system_billing.hpp"
 
 
-
+#ifdef __ANDROID__
 static android_app * androidApp;
-
 
 void initPurchase(android_app * app)
 {
@@ -31,3 +30,10 @@ void purchase(const char* message) {
 
     androidApp->activity->vm->DetachCurrentThread();
 }
+#else
+
+void purchase(const char* message) {
+
+}
+
+#endif

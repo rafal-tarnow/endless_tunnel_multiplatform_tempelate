@@ -40,6 +40,7 @@ TuningVehicleScene::TuningVehicleScene()
     AudioManager& audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
+
 }
 
 void TuningVehicleScene::initNormalButtons()
@@ -154,6 +155,11 @@ void TuningVehicleScene::OnKillGraphics()
 
 void TuningVehicleScene::DoFrame()
 {
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
