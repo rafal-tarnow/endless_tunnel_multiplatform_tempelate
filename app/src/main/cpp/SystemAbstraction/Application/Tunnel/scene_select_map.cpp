@@ -79,6 +79,12 @@ void SelectMapScene::initRadioButtons()
         button_1->setDimm(glm::vec2(200,200));
         button_1->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
         button_1->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon_mark.png"));
+        button_1->setLockTexture(TextureManager::getInstance()->getTextureId("textures/lock.png"));
+        if(i > 0)
+        {
+            button_1->setLockable(true);
+            button_1->setLocked(true);
+        }
 
         buttons.push_back(button_1);
 

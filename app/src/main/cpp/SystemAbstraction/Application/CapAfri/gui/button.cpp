@@ -8,13 +8,16 @@ Button::Button()
 { 
     mDimm = glm::vec2(246,133);
 
-    DE_initRectangle_4(&rectangle,normalTexture,mDimm);
+    DE_initRectangle_4(&background_rectangle,normalTexture,mDimm);
+    DE_initRectangle_4(&lock_rectangle,normalTexture,mDimm);
 
 }
 
 Button::~Button()
 {
-    DE_deleteRectangle(&rectangle);
+    DE_deleteRectangle(&background_rectangle);
+    DE_deleteRectangle(&lock_rectangle);
+
     if(textRenderer_v2)
         delete textRenderer_v2;
 }
@@ -58,7 +61,8 @@ void Button::setModel(glm::mat4 model)
 void Button::setDimm(glm::vec2 dim)
 {
     mDimm = dim;
-    DE_setDimm(&rectangle, mDimm);
+    DE_setDimm(&background_rectangle, mDimm);
+    DE_setDimm(&lock_rectangle, mDimm);
 }
 
 void Button::setPressed(bool pressed)
@@ -66,13 +70,21 @@ void Button::setPressed(bool pressed)
     if(pressed == true)
     {
         isTouched = true;
-        rectangle.texture_id = touchedTexture;
+        background_rectangle.texture_id = touchedTexture;
     }else
     {
         isTouched = false;
-        rectangle.texture_id = normalTexture;
+        background_rectangle.texture_id = normalTexture;
     }
+}
 
+void Button::setLockable(bool lockable)
+{
+    isLockable = lockable;
+}
+void Button::setLocked(bool lckd)
+{
+    locked = lckd;
 }
 
 void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
@@ -92,7 +104,7 @@ void Button::setNormalBackgroundTexture(GLuint textureId)
     normalTexture = textureId;
     if(isTouched == false)
     {
-        rectangle.texture_id = normalTexture;
+        background_rectangle.texture_id = normalTexture;
     }
 }
 
@@ -101,17 +113,24 @@ void Button::setPressedBackgroundTexture(GLuint textureId)
     touchedTexture = textureId;
     if(isTouched == true)
     {
-        rectangle.texture_id = touchedTexture;
+        background_rectangle.texture_id = touchedTexture;
     }
+}
+
+void Button::setLockTexture(GLuint textureId)
+{
+    lock_rectangle.texture_id = textureId;
 }
 
 void Button::Render()
 {
-    rectangle.projection = *mProjection;
-    rectangle.view = *mView;
-    rectangle.model = mModel;
+    background_rectangle.projection = *mProjection;
+    background_rectangle.view = *mView;
+    background_rectangle.model = mModel;
 
-    DE_drawRectangle(&rectangle);
+    DE_drawRectangle(&background_rectangle);
+
+
 
     if(mText != "")
     {
@@ -120,6 +139,15 @@ void Button::Render()
 
         textRenderer_v2->setCustomPV(*mProjection, *mView);
         textRenderer_v2->RenderText(1,mText, txt_model, TextRenderer_v2::TEXT_CENTER);
+    }
+
+    if((isLockable == true) && (locked == true))
+    {
+    lock_rectangle.projection = *mProjection;
+    lock_rectangle.view = *mView;
+    lock_rectangle.model = mModel;
+
+    DE_drawRectangle(&lock_rectangle);
     }
 }
 
@@ -135,7 +163,7 @@ bool Button::onPointerDown(float x_ndc, float y_ndc)
     if((world_position.x >= (-mDimm.x/2.0f)) && (world_position.x <= (mDimm.x/2.0f)) && (world_position.y >= (-mDimm.y/2.0f)) && (world_position.y <= (mDimm.y/2.0f)))
     {
         isTouched = true;
-        rectangle.texture_id = touchedTexture;
+        background_rectangle.texture_id = touchedTexture;
         return true;
     }
     return false;
@@ -146,7 +174,7 @@ void Button::onPointerUp()
     if(isTouched == true)
     {
         isTouched = false;
-        rectangle.texture_id = normalTexture;
+        background_rectangle.texture_id = normalTexture;
         if(mListener)
         {
             mListener->Button_onClicked(this);
