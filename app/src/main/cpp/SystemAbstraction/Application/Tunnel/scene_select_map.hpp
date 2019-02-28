@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
+#include "../CapAfri/gui/widget.hpp"
 #include "../CapAfri/gui/radio_button.hpp"
 #include "../CapAfri/gui/radio_button_manager.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
@@ -47,6 +48,7 @@ private:
     RadioButtonManager radioButtonManager;
 
     RadioButton *button_1;
+    Widget * message_button;
 
     vector<RadioButton *> buttons;
 

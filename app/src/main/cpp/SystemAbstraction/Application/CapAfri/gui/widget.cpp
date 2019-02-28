@@ -1,23 +1,19 @@
-#include "button.hpp"
+#include "widget.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
-#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include <iostream>
 
 using namespace std;
 
-Button::Button()
+Widget::Widget()
 { 
     mDimm = glm::vec2(246,133);
 
-
     DE_initRectangle_4(&background_rectangle,normalTexture,mDimm);
     DE_initRectangle_4(&lock_rectangle,normalTexture,mDimm);
-    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp",texture_vertex_shader_source, texture_fragment_shader_source);
-    DE_setShader(&background_rectangle,shader);
-    DE_setShader(&lock_rectangle,shader);
+
 }
 
-Button::~Button()
+Widget::~Widget()
 {
     DE_deleteRectangle(&background_rectangle);
     DE_deleteRectangle(&lock_rectangle);
@@ -26,7 +22,7 @@ Button::~Button()
         delete textRenderer_v2;
 }
 
-void Button::setText(string text)
+void Widget::setText(string text)
 {
     mText = text;
 
@@ -46,30 +42,30 @@ void Button::setText(string text)
     }
 }
 
-string Button::getText()
+string Widget::getText()
 {
     return mText;
 }
 
-void Button::setPosition(glm::vec3 &position)
+void Widget::setPosition(glm::vec3 &position)
 {
     mPosition = position;
     mModel = glm::translate(glm::mat4(1),position);
 }
 
-void Button::setModel(glm::mat4 model)
+void Widget::setModel(glm::mat4 model)
 {
     mModel = model;
 }
 
-void Button::setDimm(glm::vec2 dim)
+void Widget::setDimm(glm::vec2 dim)
 {
     mDimm = dim;
     DE_setDimm(&background_rectangle, mDimm);
     DE_setDimm(&lock_rectangle, mDimm);
 }
 
-void Button::setPressed(bool pressed)
+void Widget::setPressed(bool pressed)
 {
     if(pressed == true)
     {
@@ -82,28 +78,28 @@ void Button::setPressed(bool pressed)
     }
 }
 
-void Button::setLockable(bool lockable)
+void Widget::setLockable(bool lockable)
 {
     isLockable = lockable;
 }
-void Button::setLocked(bool lckd)
+void Widget::setLocked(bool lckd)
 {
     locked = lckd;
 }
 
-void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
+void Widget::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
 {
     mViewport = Viewport;
     mProjection = Projection;
     mView = View;
 }
 
-void Button::setEventListener(ButtonEventListener * listener)
+void Widget::setEventListener(WidgetEventListener * listener)
 {
     mListener = listener;
 }
 
-void Button::setNormalBackgroundTexture(GLuint textureId)
+void Widget::setNormalBackgroundTexture(GLuint textureId)
 {
     normalTexture = textureId;
     if(isTouched == false)
@@ -112,7 +108,7 @@ void Button::setNormalBackgroundTexture(GLuint textureId)
     }
 }
 
-void Button::setPressedBackgroundTexture(GLuint textureId)
+void Widget::setPressedBackgroundTexture(GLuint textureId)
 {
     touchedTexture = textureId;
     if(isTouched == true)
@@ -121,18 +117,18 @@ void Button::setPressedBackgroundTexture(GLuint textureId)
     }
 }
 
-void Button::setLockTexture(GLuint textureId)
+void Widget::setLockTexture(GLuint textureId)
 {
     lock_rectangle.texture_id = textureId;
 }
 
-void Button::Render()
+void Widget::Render()
 {
     background_rectangle.projection = *mProjection;
     background_rectangle.view = *mView;
     background_rectangle.model = mModel;
 
-    DE_drawRectangleWithCustomShader(&background_rectangle);
+    DE_drawRectangle(&background_rectangle);
 
 
 
@@ -151,11 +147,11 @@ void Button::Render()
     lock_rectangle.view = *mView;
     lock_rectangle.model = glm::scale(glm::translate(mModel,glm::vec3(50,-45,0)),glm::vec3(0.35, 0.35, 0.35));
 
-    DE_drawRectangleWithCustomShader(&lock_rectangle);
+    DE_drawRectangle(&lock_rectangle);
     }
 }
 
-bool Button::onPointerDown(float x_ndc, float y_ndc)
+bool Widget::onPointerDown(float x_ndc, float y_ndc)
 {
     cout << "Button::onPointerDown x = " << x_ndc << " y = " <<  y_ndc << endl;
 
@@ -173,7 +169,7 @@ bool Button::onPointerDown(float x_ndc, float y_ndc)
     return false;
 }
 
-void Button::onPointerUp()
+void Widget::onPointerUp()
 {
     if(isTouched == true)
     {
@@ -181,7 +177,7 @@ void Button::onPointerUp()
         background_rectangle.texture_id = normalTexture;
         if(mListener)
         {
-            mListener->Button_onClicked(this);
+            mListener->Widget_onClicked(this);
         }
     }
 }

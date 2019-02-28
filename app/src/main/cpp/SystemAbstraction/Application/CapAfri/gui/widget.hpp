@@ -4,21 +4,20 @@
 #include <string>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <library_opengles_2/Debug/Debug.hpp>
-#include <library_opengles_2/ShaderManager/shader_manager.hpp>
 
 using namespace std;
 
-class Button;
+class Widget;
 
-class ButtonEventListener{
+class WidgetEventListener{
 public:
-    virtual void Button_onClicked(Button * button) = 0;
+    virtual void Widget_onClicked(Widget * widget) = 0;
 };
 
-class Button{
+class Widget{
 public:
-    Button();
-    virtual ~Button();
+    Widget();
+    virtual ~Widget();
 
 
     void setText(string text);
@@ -29,7 +28,7 @@ public:
     void setPressed(bool pressed);
     void setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View);
 
-    void setEventListener(ButtonEventListener * listener);
+    void setEventListener(WidgetEventListener * listener);
     void setLockable(bool lockable);
     void setLocked(bool locked);
 
@@ -49,7 +48,6 @@ protected:
     glm::mat4 *mProjection;
     glm::mat4 *mView;
     glm::mat4 mModel;
-    Shader_m * shader;
     DE_Rectangle background_rectangle;
     DE_Rectangle lock_rectangle;
 
@@ -57,7 +55,7 @@ protected:
 
 private:
     string mText;
-    ButtonEventListener * mListener = nullptr;
+    WidgetEventListener * mListener = nullptr;
 
     TextRenderer_v2 * textRenderer_v2 = nullptr;
 
@@ -68,5 +66,5 @@ private:
     bool isLockable = false;
     bool locked = false;
 
-    DBG_COUNT("Button");
+    DBG_COUNT("Widget");
 };

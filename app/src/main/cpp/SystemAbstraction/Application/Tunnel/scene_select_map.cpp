@@ -79,7 +79,7 @@ void SelectMapScene::initRadioButtons()
         button_1->setDimm(glm::vec2(200,200));
         button_1->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
         button_1->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon_mark.png"));
-        button_1->setLockTexture(TextureManager::getInstance()->getTextureId("textures/lock.png"));
+        button_1->setLockTexture(TextureManager::getInstance()->getTextureId("textures/lock_black.png"));
         if(i > 0)
         {
             button_1->setLockable(true);
@@ -99,6 +99,14 @@ void SelectMapScene::initRadioButtons()
 
     radioButtonManager.setEventListener(this);
 
+    message_button = new Widget();
+    message_button->setText("stream.str()");
+    message_button->setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+    message_button->setDimm(glm::vec2(200,200));
+    message_button->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
+    message_button->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon_mark.png"));
+
+
 }
 
 SelectMapScene::~SelectMapScene()
@@ -112,6 +120,8 @@ SelectMapScene::~SelectMapScene()
     {
         delete buttons.at(i);
     }
+
+    delete message_button;
 
     cfg->currentMapIndex = currentMapIndex;
     cfg->sync();
@@ -220,6 +230,9 @@ void SelectMapScene::DoFrame()
         buttons.at(i)->Render();
     }
 
+
+    message_button->setModel(glm::translate(glm::mat4(1),glm::vec3(1920/2, 1080/2, 0)));
+    message_button->Render();
 
     safe_area_background.projection = safeAreaCam.projection();
     safe_area_background.view = safeAreaCam.view();
