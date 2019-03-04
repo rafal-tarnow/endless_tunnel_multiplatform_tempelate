@@ -10,6 +10,7 @@
 #include <OpenSLWrap.hpp>
 #include "../CapAfri/camera_safe_area.hpp"
 #include "../CapAfri/game_config.hpp"
+#include <library_opengles_2/Shader/shader_m.h>
 
 using namespace std;
 
@@ -72,4 +73,5 @@ private:
     stringstream stream;
 
     AudioManager::AudioHandle menuMusicHandle;
+    Shader_m * shader;
 };

@@ -4,6 +4,7 @@
 #include "play_capafri_scene.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include "scene_select_map.hpp"
 #include <iostream>
 #include <sstream>
@@ -24,6 +25,8 @@ TuningVehicleScene::TuningVehicleScene()
 
     GLuint txtId = TextureManager::getInstance()->getTextureId("textures/garage.png");
     DE_initRectangle_3(&safe_area_background, txtId ,safe_area_dimension);
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+    DE_setShader(&safe_area_background, shader);
     DE_setModel(&safe_area_background, glm::translate(glm::mat4(1),glm::vec3(safe_area_dimension.x/2.0f, safe_area_dimension.y/2.0f, 0.0f)));
 
     initNormalButtons();

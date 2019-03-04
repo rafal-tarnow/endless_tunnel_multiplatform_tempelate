@@ -68,4 +68,5 @@ private:
     Primitive testPrimitive;
 
     GameConfig *cfg = GameConfig::getInstance();
+    Shader_m * shader;
 };

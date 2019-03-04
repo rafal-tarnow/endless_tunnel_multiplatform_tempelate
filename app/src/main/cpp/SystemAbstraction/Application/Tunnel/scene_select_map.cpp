@@ -10,6 +10,8 @@
 #include <sstream>
 #include <iomanip>
 #include <system_billing.hpp>
+#include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 
 using namespace std;
 
@@ -28,6 +30,8 @@ SelectMapScene::SelectMapScene()
 
     GLuint txtId = TextureManager::getInstance()->getTextureId("textures/select_map.png");
     DE_initRectangle_3(&safe_area_background, txtId,safe_area_dimension);
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+    DE_setShader(&safe_area_background, shader);
     DE_setModel(&safe_area_background, glm::translate(glm::mat4(1),glm::vec3(safe_area_dimension.x/2.0f, safe_area_dimension.y/2.0f, 0.0f)));
 
     initNormalButtons();
@@ -227,12 +231,12 @@ void SelectMapScene::DoFrame()
 
     for(unsigned int i = 0; i < buttons.size(); i++)
     {
-        buttons.at(i)->Render();
+        //buttons.at(i)->Render();
     }
 
 
     message_button->setModel(glm::translate(glm::mat4(1),glm::vec3(1920/2, 1080/2, 0)));
-    message_button->Render();
+    //message_button->Render();
 
     safe_area_background.projection = safeAreaCam.projection();
     safe_area_background.view = safeAreaCam.view();
@@ -241,7 +245,7 @@ void SelectMapScene::DoFrame()
 
 
     buttonPlay.Render();
-    buttonUnlock.Render();
+    //buttonUnlock.Render();
 
 
 

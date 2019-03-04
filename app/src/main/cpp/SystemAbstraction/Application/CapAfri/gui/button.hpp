@@ -49,7 +49,7 @@ protected:
     glm::mat4 *mProjection;
     glm::mat4 *mView;
     glm::mat4 mModel;
-    Shader_m * shader;
+    Shader_m * shader = nullptr;
     DE_Rectangle background_rectangle;
     DE_Rectangle lock_rectangle;
 
