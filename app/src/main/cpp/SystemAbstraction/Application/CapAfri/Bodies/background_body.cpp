@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include <sstream>
 
 using namespace std;
@@ -43,6 +45,8 @@ BackGround::BackGround(float x_left, float y_top, float width, float height, uin
     glBindTexture(GL_TEXTURE_2D, 0);
 
     DE_initRectangle_6(&rectangle,texture_id, verticles, texCoords);
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+    DE_setShader(&rectangle, shader);
 }
 
 BackGround::~BackGround(){

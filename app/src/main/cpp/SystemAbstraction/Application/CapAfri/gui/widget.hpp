@@ -54,6 +54,7 @@ protected:
 
 
 private:
+    Shader_m * shader;
     string mText;
     WidgetEventListener * mListener = nullptr;
 

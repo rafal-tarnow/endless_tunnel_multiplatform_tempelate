@@ -41,6 +41,7 @@ private:
 
     DE_Rectangle carWhellRectangle;
     DE_Rectangle carBodyRectangle;
+    Shader_m * shader;
     DBG_COUNT("CarRenderer");
 };
 

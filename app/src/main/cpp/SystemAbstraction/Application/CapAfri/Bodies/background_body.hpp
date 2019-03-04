@@ -16,5 +16,6 @@ public:
 private:
     DE_Rectangle rectangle;
     glm::mat4 mModel = glm::mat4(1);
+    Shader_m * shader;
     DBG_COUNT("BackGround");
 };

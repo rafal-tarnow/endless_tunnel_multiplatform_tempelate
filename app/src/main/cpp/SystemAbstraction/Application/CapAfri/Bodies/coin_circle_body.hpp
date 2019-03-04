@@ -22,7 +22,7 @@ protected:
     static uint32_t instancesCount;
 private:
     static GLuint coinTextureId;
-
+    Shader_m *shader;
     float m_radius;
     glm::vec3 mPos;
     DBG_COUNT("CircleCoinRenderer");
