@@ -100,7 +100,13 @@ void SelectMapScene::initRadioButtons()
 
     message_widget = new Widget();
     message_widget->setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-    message_widget->setDimm(glm::vec2(200, 200));
+
+    vector<glm::vec3> verticles;
+    verticles.push_back(glm::vec3(-100,100,0));
+    verticles.push_back(glm::vec3(-100,-100,0));
+    verticles.push_back(glm::vec3(100,-100,0));
+    verticles.push_back(glm::vec3(100,100,0));
+    message_widget->setVerticles(verticles);
 }
 
 SelectMapScene::~SelectMapScene()

@@ -20,7 +20,7 @@ public:
     virtual ~Widget();
 
     void setModel(glm::mat4 model);
-    void setDimm(glm::vec2 dim);
+    void setVerticles(vector<glm::vec3> & verticles);
     void setPressed(bool pressed);
     void setMatrices(glm::vec4 * viewport, glm::mat4 * projection, glm::mat4 * view);
 
@@ -29,6 +29,7 @@ public:
     virtual void Render();
 
 protected:
+    vector<Widget*> childs;
     glm::vec4 *mViewport;
     glm::mat4 *mProjection;
     glm::mat4 *mView;
@@ -40,6 +41,5 @@ private:
     Shader_m * shader;
     WidgetEventListener * mListener = nullptr;
 
-    glm::vec2 mDimm;
     DBG_COUNT("Widget");
 };
