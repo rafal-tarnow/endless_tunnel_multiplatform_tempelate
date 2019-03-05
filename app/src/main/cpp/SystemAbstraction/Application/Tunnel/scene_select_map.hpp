@@ -48,7 +48,7 @@ private:
     RadioButtonManager radioButtonManager;
 
     RadioButton *button_1;
-    Widget * message_button;
+    Widget * message_widget;
 
     vector<RadioButton *> buttons;
 

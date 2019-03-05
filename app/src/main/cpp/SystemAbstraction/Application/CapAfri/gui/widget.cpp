@@ -11,9 +11,9 @@ Widget::Widget()
     mDimm = glm::vec2(246,133);
 
     shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
-    DE_initRectangle_4(&background_rectangle,normalTexture,mDimm);
+    DE_initRectangle_3(&background_rectangle,normalTexture,mDimm);
     DE_setShader(&background_rectangle, shader);
-    DE_initRectangle_4(&lock_rectangle,normalTexture,mDimm);
+    DE_initRectangle_3(&lock_rectangle,normalTexture,mDimm);
     DE_setShader(&lock_rectangle,shader);
 
 }

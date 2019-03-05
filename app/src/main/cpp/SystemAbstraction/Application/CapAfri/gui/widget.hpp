@@ -51,8 +51,6 @@ protected:
     DE_Rectangle background_rectangle;
     DE_Rectangle lock_rectangle;
 
-
-
 private:
     Shader_m * shader;
     string mText;
