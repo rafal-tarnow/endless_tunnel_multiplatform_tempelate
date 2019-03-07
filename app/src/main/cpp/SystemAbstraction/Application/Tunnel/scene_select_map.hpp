@@ -37,6 +37,7 @@ public:
     void Button_onClicked(Button * button);
 
 private:
+    void initMessageBox();
     void initNormalButtons();
     void initRadioButtons();
 
@@ -49,6 +50,9 @@ private:
 
     RadioButton *button_1;
     Widget * message_widget;
+    Widget * label_widget;
+    Widget * unlock_widget;
+    Widget * cancel_widget;
 
     vector<RadioButton *> buttons;
 

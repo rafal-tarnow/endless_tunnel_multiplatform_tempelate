@@ -4,6 +4,7 @@
 #include <string>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <library_opengles_2/Debug/Debug.hpp>
+#include <set>
 
 using namespace std;
 
@@ -21,20 +22,25 @@ public:
 
     void setModel(glm::mat4 model);
     void setVerticles(vector<glm::vec3> & verticles);
-    void setPressed(bool pressed);
-    void setMatrices(glm::vec4 * viewport, glm::mat4 * projection, glm::mat4 * view);
+    void setDimm(glm::vec2 dimm);
 
     void setEventListener(WidgetEventListener * listener);
+    void addChild(Widget * );
+    virtual void Render(glm::vec4 &viewport,  glm::mat4 &P, glm::mat4 &V, glm::mat4 &M);
 
-    virtual void Render();
+    bool onPointerDown(float x_ndc, float y_ndc);
+    void onPointerUp();
 
 protected:
-    vector<Widget*> childs;
-    glm::vec4 *mViewport;
-    glm::mat4 *mProjection;
-    glm::mat4 *mView;
+    glm::vec2 mDimm;
+    bool isTouched = false;
+    set<Widget*> childs;
 
-    glm::mat4 mModel;
+    glm::vec4 mViewport;
+    glm::mat4 mProjection;
+    glm::mat4 mView;
+    glm::mat4 mLocalModel = glm::mat4(1);
+    glm::mat4 mGlobalModel = glm::mat4(1);
     DE_Rectangle background_rectangle;
 
 private:

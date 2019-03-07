@@ -98,15 +98,39 @@ void SelectMapScene::initRadioButtons()
 
     radioButtonManager.setEventListener(this);
 
-    message_widget = new Widget();
-    message_widget->setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
 
-    vector<glm::vec3> verticles;
-    verticles.push_back(glm::vec3(-100,100,0));
-    verticles.push_back(glm::vec3(-100,-100,0));
-    verticles.push_back(glm::vec3(100,-100,0));
-    verticles.push_back(glm::vec3(100,100,0));
-    message_widget->setVerticles(verticles);
+
+    initMessageBox();
+
+}
+
+void SelectMapScene::initMessageBox()
+{
+    message_widget = new Widget();
+    glm::vec2 dimm = glm::vec2(400,400);
+    message_widget->setDimm(dimm);
+
+    label_widget = new Widget();
+    dimm = glm::vec2(350,100);
+    label_widget->setDimm(dimm);
+    label_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,100,0)));
+
+    message_widget->addChild(label_widget);
+
+    unlock_widget = new Widget();
+    dimm = glm::vec2(100,100);
+    unlock_widget->setDimm(dimm);
+    unlock_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(120,-50,0)));
+
+    message_widget->addChild(unlock_widget);
+
+    cancel_widget = new Widget();
+    dimm = glm::vec2(100,100);
+    cancel_widget->setDimm(dimm);
+    cancel_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(-120,-50,0)));
+
+    message_widget->addChild(cancel_widget);
+
 }
 
 SelectMapScene::~SelectMapScene()
@@ -122,6 +146,10 @@ SelectMapScene::~SelectMapScene()
     }
 
     delete message_widget;
+    delete label_widget;
+    delete unlock_widget;
+    delete cancel_widget;
+
 
     cfg->currentMapIndex = currentMapIndex;
     cfg->sync();
@@ -221,8 +249,28 @@ void SelectMapScene::DoFrame()
         buttons.at(i)->Render();
     }
 
-    message_widget->setModel(glm::translate(glm::mat4(1), glm::vec3(1920 / 2, 1080 / 2, 0)));
-    message_widget->Render();
+    static float translate = 0;
+    translate += 0.5;
+    static float scale = 1.0;
+    static bool rise = true;
+    if(rise)
+    {
+        scale += 0.1;
+        if(scale > 2.5)
+            rise = false;
+    }
+    else
+    {
+        scale -= 0.1;
+        if(scale < 1.0)
+            rise = true;
+    }
+
+    glm::mat4 M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(translate, 1080 / 2, 0)),glm::vec3(1.0,1.0,1.0));
+    //glm::mat4 M = glm::translate(glm::mat4(1), glm::vec3(1920 / 2, 1080 / 2, 0));
+
+    message_widget->Render(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view(), M);
+
 
     safe_area_background.projection = safeAreaCam.projection();
     safe_area_background.view = safeAreaCam.view();
@@ -276,6 +324,7 @@ void SelectMapScene::OnPointerDown(int pointerId, const struct PointerCoords *co
 
     buttonPlay.onPointerDown(coords->x, coords->y);
     buttonUnlock.onPointerDown(coords->x, coords->y);
+    message_widget->onPointerDown(coords->x, coords->y);
 }
 
 void SelectMapScene::OnPointerUp(int pointerId, const struct PointerCoords *coords)
@@ -287,6 +336,7 @@ void SelectMapScene::OnPointerUp(int pointerId, const struct PointerCoords *coor
 
     buttonPlay.onPointerUp();
     buttonUnlock.onPointerUp();
+    message_widget->onPointerUp();
 }
 
 void SelectMapScene::OnPointerMove(int pointerId, const struct PointerCoords *coords)
