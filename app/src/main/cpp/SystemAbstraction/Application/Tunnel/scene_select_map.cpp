@@ -15,6 +15,8 @@
 
 using namespace std;
 
+float SelectMapScene::translate = 0.0f;
+
 SelectMapScene::SelectMapScene()
 {
     currentMapIndex = cfg->currentMapIndex;
@@ -46,6 +48,8 @@ SelectMapScene::SelectMapScene()
     AudioManager &audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
+
+    translate = 0.0f;
 }
 
 void SelectMapScene::initNormalButtons()
@@ -249,7 +253,7 @@ void SelectMapScene::DoFrame()
         buttons.at(i)->Render();
     }
 
-    static float translate = 0;
+
     translate += 0.5;
     static float scale = 1.0;
     static bool rise = true;
