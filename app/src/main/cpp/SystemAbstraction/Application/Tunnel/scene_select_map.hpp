@@ -73,5 +73,4 @@ private:
 
     GameConfig *cfg = GameConfig::getInstance();
     Shader_m * shader;
-    static float translate;
 };

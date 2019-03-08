@@ -15,8 +15,6 @@
 
 using namespace std;
 
-float SelectMapScene::translate = 0.0f;
-
 SelectMapScene::SelectMapScene()
 {
     currentMapIndex = cfg->currentMapIndex;
@@ -48,8 +46,6 @@ SelectMapScene::SelectMapScene()
     AudioManager &audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
-
-    translate = 0.0f;
 }
 
 void SelectMapScene::initNormalButtons()
@@ -111,7 +107,7 @@ void SelectMapScene::initRadioButtons()
 void SelectMapScene::initMessageBox()
 {
     message_widget = new Widget();
-    glm::vec2 dimm = glm::vec2(400,400);
+    glm::vec2 dimm = glm::vec2(800,800);
     message_widget->setDimm(dimm);
 
     label_widget = new Widget();
@@ -254,28 +250,6 @@ void SelectMapScene::DoFrame()
     }
 
 
-    translate += 0.5;
-    static float scale = 1.0;
-    static bool rise = true;
-    if(rise)
-    {
-        scale += 0.1;
-        if(scale > 2.5)
-            rise = false;
-    }
-    else
-    {
-        scale -= 0.1;
-        if(scale < 1.0)
-            rise = true;
-    }
-
-    glm::mat4 M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(translate, 1080 / 2, 0)),glm::vec3(1.0,1.0,1.0));
-    //glm::mat4 M = glm::translate(glm::mat4(1), glm::vec3(1920 / 2, 1080 / 2, 0));
-
-    message_widget->Render(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view(), M);
-
-
     safe_area_background.projection = safeAreaCam.projection();
     safe_area_background.view = safeAreaCam.view();
 
@@ -283,6 +257,10 @@ void SelectMapScene::DoFrame()
 
     buttonPlay.Render();
     buttonUnlock.Render();
+
+    glm::mat4 M = glm::translate(glm::mat4(1), glm::vec3(1920/2, 1080 / 2, 0));
+    message_widget->Render(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view(), M);
+
 
     testPrimitive.projection = safeAreaCam.projection();
     testPrimitive.view = safeAreaCam.view();
