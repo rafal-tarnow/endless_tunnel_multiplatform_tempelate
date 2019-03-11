@@ -9,11 +9,80 @@
 #include <lib_config.hpp>
 #include <system_paths.hpp>
 #include <OpenSLWrap.hpp>
+#include <library_opengles_2/Resources/Resources.hpp>
 #include <sstream>
 #include "../CapAfri/game_config.hpp"
 #include "../CapAfri/camera_safe_area.hpp"
 
 using namespace std;
+
+
+class Label : public Widget{
+  public:
+    Label()
+    {
+        int height = 1080;
+        int width = 1920;
+
+        GLuint fontSize = GLuint(float(height) * 0.076f);
+        Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+        // Resource font_design_graffiti_agentorange("fonts/arial.ttf");
+
+        textRenderer_v2 = new TextRenderer_v2(width, height, glm::vec4(1, 0, 0, 1));
+        textRenderer_v2->LoadFromMemory("design_graffiti_agentorange_www_myfontfree_com.ttf", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+        textRenderer_v2->setColour(glm::vec4(1, 0, 0, 1));
+    }
+
+    ~Label()
+    {
+        if(textRenderer_v2)
+            delete textRenderer_v2;
+    }
+
+    void CustromDraw() override
+    {
+        string mText = "LEVEL LOCKED!";
+        textRenderer_v2->setCustomPV(mProjection, mView);
+        textRenderer_v2->RenderText(1, mText, mGlobalModel, TextRenderer_v2::TEXT_CENTER);
+    }
+
+private:
+    TextRenderer_v2 * textRenderer_v2 = nullptr;
+};
+
+class Explain : public Widget{
+  public:
+    Explain()
+    {
+        int height = 1080;
+        int width = 1920;
+
+        GLuint fontSize = GLuint(float(height) * 0.076f);
+        //Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+        Resource font_ProggyClean("fonts/ProggyClean.ttf");
+
+        textRenderer_v2 = new TextRenderer_v2(width, height, glm::vec4(1, 0, 0, 1));
+        textRenderer_v2->LoadFromMemory("ProggyClean.ttf", font_ProggyClean.getData(), font_ProggyClean.getSize(), fontSize);
+        textRenderer_v2->setColour(glm::vec4(1, 0, 0, 1));
+    }
+
+    ~Explain()
+    {
+        if(textRenderer_v2)
+            delete textRenderer_v2;
+    }
+
+    void CustromDraw() override
+    {
+        string mText = "LEVEL LOCKED!";
+        textRenderer_v2->setCustomPV(mProjection, mView);
+        textRenderer_v2->RenderText(1, mText, mGlobalModel, TextRenderer_v2::TEXT_CENTER);
+    }
+
+private:
+    TextRenderer_v2 * textRenderer_v2 = nullptr;
+};
+
 
 class SelectMapScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener{
 public:
@@ -51,6 +120,7 @@ private:
     RadioButton *button_1;
     Widget * message_widget;
     Widget * label_widget;
+    Widget * explain_widget;
     Widget * unlock_widget;
     Widget * cancel_widget;
 

@@ -43,6 +43,11 @@ void Widget::setDimm(glm::vec2 dimm)
     DE_setDimm(&background_rectangle, dimm);
 }
 
+void Widget::setDrawBoundingBox(bool drawBoundingBox)
+{
+    mDrawBoundingBox = drawBoundingBox;
+}
+
 void Widget::setEventListener(WidgetEventListener *listener)
 {
     mListener = listener;
@@ -53,28 +58,48 @@ void Widget::addChild(Widget *child)
     childs.insert(child);
 }
 
-void Widget::Render(glm::vec4 &viewport, glm::mat4 &P, glm::mat4 &V, glm::mat4 &M)
+void Widget::setMatrices(glm::vec4 &viewport, glm::mat4 &P, glm::mat4 &V)
 {
     mViewport = viewport;
     mProjection = P;
     mView = V;
+
+    background_rectangle.projection = mProjection;
+    background_rectangle.view = mView;
+    background_rectangle.model = mGlobalModel;
+
+    for (auto it = childs.begin(); it != childs.end(); ++it)
+    {
+        (*it)->setMatrices(mViewport, mProjection, mView);
+    }
+}
+
+void Widget::Render()
+{
+    glm::mat4 M(1);
+    this->Draw(M);
+}
+
+void Widget::Draw(glm::mat4 &M)
+{
     mGlobalModel = M * mLocalModel;
 
-    background_rectangle.projection = P;
-    background_rectangle.view = V;
-    background_rectangle.model = mGlobalModel;
+    CustromDraw();
 
     if (isTouched)
     {
         DE_setColour(&background_rectangle, glm::vec4(1, 0, 0, 1));
         DE_drawRectangle(&background_rectangle, GL_TRIANGLE_FAN);
     }
-    DE_setColour(&background_rectangle, glm::vec4(0, 1, 0, 1));
-    DE_drawRectangle(&background_rectangle, GL_LINE_LOOP);
+    if(mDrawBoundingBox)
+    {
+        DE_setColour(&background_rectangle, glm::vec4(0, 1, 0, 1));
+        DE_drawRectangle(&background_rectangle, GL_LINE_LOOP);
+    }
 
     for (auto it = childs.begin(); it != childs.end(); ++it)
     {
-        (*it)->Render(viewport, P, V, mGlobalModel);
+        (*it)->Draw(mGlobalModel);
     }
 }
 

@@ -110,12 +110,19 @@ void SelectMapScene::initMessageBox()
     glm::vec2 dimm = glm::vec2(800,800);
     message_widget->setDimm(dimm);
 
-    label_widget = new Widget();
-    dimm = glm::vec2(350,100);
+    label_widget = new Label();
+    dimm = glm::vec2(700,100);
     label_widget->setDimm(dimm);
-    label_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,100,0)));
+    label_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,300,0)));
 
     message_widget->addChild(label_widget);
+
+    explain_widget = new Explain();
+    dimm = glm::vec2(700,100);
+    explain_widget->setDimm(dimm);
+    explain_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,150,0)));
+
+    message_widget->addChild(explain_widget);
 
     unlock_widget = new Widget();
     dimm = glm::vec2(100,100);
@@ -147,6 +154,7 @@ SelectMapScene::~SelectMapScene()
 
     delete message_widget;
     delete label_widget;
+    delete explain_widget;
     delete unlock_widget;
     delete cancel_widget;
 
@@ -258,8 +266,13 @@ void SelectMapScene::DoFrame()
     buttonPlay.Render();
     buttonUnlock.Render();
 
-    glm::mat4 M = glm::translate(glm::mat4(1), glm::vec3(1920/2, 1080 / 2, 0));
-    message_widget->Render(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view(), M);
+    static float alfa = 0.0f;
+    //alfa += 0.01;
+
+    glm::mat4 M = glm::rotate((glm::translate(glm::mat4(1), glm::vec3(1920/2, 1080/2, 0))),alfa, glm::vec3(0,0,1));
+    message_widget->setMatrices(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view());
+    message_widget->setModel(M);
+    message_widget->Render();
 
 
     testPrimitive.projection = safeAreaCam.projection();

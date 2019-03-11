@@ -23,10 +23,15 @@ public:
     void setModel(glm::mat4 model);
     void setVerticles(vector<glm::vec3> & verticles);
     void setDimm(glm::vec2 dimm);
+    void setDrawBoundingBox(bool drawBoundingBox);
 
     void setEventListener(WidgetEventListener * listener);
     void addChild(Widget * );
-    virtual void Render(glm::vec4 &viewport,  glm::mat4 &P, glm::mat4 &V, glm::mat4 &M);
+
+    virtual void CustromDraw(){}
+
+    void Render();
+    void setMatrices(glm::vec4 &viewport, glm::mat4 &P, glm::mat4 &V);
 
     bool onPointerDown(float x_ndc, float y_ndc);
     void onPointerUp();
@@ -43,7 +48,10 @@ protected:
     glm::mat4 mGlobalModel = glm::mat4(1);
     DE_Rectangle background_rectangle;
 
+   void Draw(glm::mat4 &M);
+
 private:
+    bool mDrawBoundingBox = true;
     Shader_m * shader;
     WidgetEventListener * mListener = nullptr;
 
