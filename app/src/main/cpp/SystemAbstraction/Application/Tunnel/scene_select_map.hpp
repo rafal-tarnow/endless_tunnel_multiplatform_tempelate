@@ -1,7 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
-#include "../CapAfri/gui/widget.hpp"
+#include "../CapAfri/gui/gui_v2/widget.hpp"
 #include "../CapAfri/gui/radio_button.hpp"
 #include "../CapAfri/gui/radio_button_manager.hpp"
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
@@ -57,7 +57,7 @@ class Explain : public Widget{
         int height = 1080;
         int width = 1920;
 
-        GLuint fontSize = GLuint(float(height) * 0.076f);
+        GLuint fontSize = GLuint(float(height) * 0.06f);
         //Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
         Resource font_ProggyClean("fonts/ProggyClean.ttf");
 
@@ -74,7 +74,7 @@ class Explain : public Widget{
 
     void CustromDraw() override
     {
-        string mText = "LEVEL LOCKED!";
+        string mText = "To play unlock previous\n level or go to store.";
         textRenderer_v2->setCustomPV(mProjection, mView);
         textRenderer_v2->RenderText(1, mText, mGlobalModel, TextRenderer_v2::TEXT_CENTER);
     }

@@ -23,7 +23,8 @@ add_library (CapAfri STATIC
     level.cpp
     demo.cpp
     debug_draw.cpp
-    gui/widget.cpp
+    gui/gui_v2/widget.hpp
+    gui/gui_v2/widget.cpp
     gui/button.cpp
     gui/radio_button.cpp
     gui/radio_button_manager.cpp
