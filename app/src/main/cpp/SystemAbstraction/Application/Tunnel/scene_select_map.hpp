@@ -19,16 +19,12 @@ using namespace std;
 
 class Label : public Widget{
   public:
-    Label()
+    Label(GLuint fontSize)
     {
-        int height = 1080;
-        int width = 1920;
-
-        GLuint fontSize = GLuint(float(height) * 0.076f);
         Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
         // Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
-        textRenderer_v2 = new TextRenderer_v2(width, height, glm::vec4(1, 0, 0, 1));
+        textRenderer_v2 = new TextRenderer_v2(1920, 1080, glm::vec4(1, 0, 0, 1));
         textRenderer_v2->LoadFromMemory("design_graffiti_agentorange_www_myfontfree_com.ttf", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
         textRenderer_v2->setColour(glm::vec4(1, 0, 0, 1));
     }

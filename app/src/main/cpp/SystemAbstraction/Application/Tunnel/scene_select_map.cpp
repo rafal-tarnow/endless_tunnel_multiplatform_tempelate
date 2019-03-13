@@ -109,37 +109,38 @@ void SelectMapScene::initMessageBox()
     message_widget = new Widget();
     glm::vec2 dimm = glm::vec2(800,800);
     message_widget->setDimm(dimm);
-    message_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
+    message_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/message_box.png"));
+    message_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/message_box.png"));
 
-    label_widget = new Label();
-    dimm = glm::vec2(700,100);
+    dimm = glm::vec2(600,80);
+    label_widget = new Label(72);
     label_widget->setDimm(dimm);
-    label_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,300,0)));
+    label_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,270,0)));
 
     message_widget->addChild(label_widget);
 
     explain_widget = new Explain();
     dimm = glm::vec2(700,100);
     explain_widget->setDimm(dimm);
-    explain_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,150,0)));
+    explain_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(0,80,0)));
 
     message_widget->addChild(explain_widget);
 
     unlock_widget = new Widget();
-    dimm = glm::vec2(100,100);
+    dimm = glm::vec2(200,200);
     unlock_widget->setDimm(dimm);
-    unlock_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(120,-50,0)));
-    unlock_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz.png"));
-    unlock_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz_pressed.png"));
+    unlock_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(160,-200,0)));
+    unlock_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
+    unlock_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
 
     message_widget->addChild(unlock_widget);
 
     cancel_widget = new Widget();
-    dimm = glm::vec2(100,100);
+    dimm = glm::vec2(200,200);
     cancel_widget->setDimm(dimm);
-    cancel_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(-120,-50,0)));
-    cancel_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake.png"));
-    cancel_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake_pressed.png"));
+    cancel_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(-160,-200,0)));
+    cancel_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
+    cancel_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
 
     message_widget->addChild(cancel_widget);
 
