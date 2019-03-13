@@ -25,6 +25,9 @@ public:
     void setDimm(glm::vec2 dimm);
     void setDrawBoundingBox(bool drawBoundingBox);
 
+    void setNormalBackgroundTexture(GLuint textureId);
+    void setPressedBackgroundTexture(GLuint textureId);
+
     void setEventListener(WidgetEventListener * listener);
     void addChild(Widget * );
 
@@ -39,6 +42,8 @@ public:
 protected:
     glm::vec2 mDimm;
     bool isTouched = false;
+    GLuint normalTexture = 0;
+    GLuint touchedTexture = 0;
     set<Widget*> childs;
 
     glm::vec4 mViewport;
@@ -51,8 +56,10 @@ protected:
    void Draw(glm::mat4 &M);
 
 private:
-    bool mDrawBoundingBox = true;
-    Shader_m * shader;
+    bool mDbgDrawBoundingBox = false;
+    bool mDbgDrawTouch = false;
+    Shader_m * shader_dbg = nullptr;
+    Shader_m * shader_texture = nullptr;
     WidgetEventListener * mListener = nullptr;
 
     DBG_COUNT("Widget");

@@ -109,6 +109,7 @@ void SelectMapScene::initMessageBox()
     message_widget = new Widget();
     glm::vec2 dimm = glm::vec2(800,800);
     message_widget->setDimm(dimm);
+    message_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
 
     label_widget = new Label();
     dimm = glm::vec2(700,100);
@@ -128,6 +129,8 @@ void SelectMapScene::initMessageBox()
     dimm = glm::vec2(100,100);
     unlock_widget->setDimm(dimm);
     unlock_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(120,-50,0)));
+    unlock_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz.png"));
+    unlock_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/gaz_pressed.png"));
 
     message_widget->addChild(unlock_widget);
 
@@ -135,6 +138,8 @@ void SelectMapScene::initMessageBox()
     dimm = glm::vec2(100,100);
     cancel_widget->setDimm(dimm);
     cancel_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(-120,-50,0)));
+    cancel_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake.png"));
+    cancel_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/brake_pressed.png"));
 
     message_widget->addChild(cancel_widget);
 
@@ -172,7 +177,7 @@ void SelectMapScene::OnStartGraphics(int width, int height)
     safeAreaCam.onResize(width, height);
 
     GLuint fontSize = GLuint(float(height) * 0.076f);
-    //    Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
+    // Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     // Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
     //    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));

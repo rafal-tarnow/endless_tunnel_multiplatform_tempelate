@@ -10,16 +10,24 @@ using namespace std;
 
 Widget::Widget()
 {
-    shader = ShaderManager::getInstance()->getShaderFromSource("colour_shader_source.hpp", colour_vertex_shader_source, colour_fragment_shader_source);
-
+    // GEOMETRY
     vector<glm::vec3> verticles_vector;
     verticles_vector.push_back(glm::vec3(-246 / 2, 133 / 2, 0));
     verticles_vector.push_back(glm::vec3(-246 / 2, -133 / 2, 0));
     verticles_vector.push_back(glm::vec3(246 / 2, -133 / 2, 0));
     verticles_vector.push_back(glm::vec3(246 / 2, 133 / 2, 0));
 
+    // DEBUG
+    shader_dbg = ShaderManager::getInstance()->getShaderFromSource("colour_shader_source.hpp", colour_vertex_shader_source, colour_fragment_shader_source);
+
+
+
+
+    // TEXTURE BACKGROUND
+    shader_texture = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+
     DE_initRectangle_8(&background_rectangle, verticles_vector);
-    DE_setShader(&background_rectangle, shader);
+    //DE_setShader(&background_rectangle, shader_texture);
 }
 
 Widget::~Widget()
@@ -43,9 +51,27 @@ void Widget::setDimm(glm::vec2 dimm)
     DE_setDimm(&background_rectangle, dimm);
 }
 
+void Widget::setNormalBackgroundTexture(GLuint textureId)
+{
+    normalTexture = textureId;
+    if (isTouched == false)
+    {
+        background_rectangle.texture_id = normalTexture;
+    }
+}
+
+void Widget::setPressedBackgroundTexture(GLuint textureId)
+{
+    touchedTexture = textureId;
+    if (isTouched == true)
+    {
+        background_rectangle.texture_id = touchedTexture;
+    }
+}
+
 void Widget::setDrawBoundingBox(bool drawBoundingBox)
 {
-    mDrawBoundingBox = drawBoundingBox;
+    mDbgDrawBoundingBox = drawBoundingBox;
 }
 
 void Widget::setEventListener(WidgetEventListener *listener)
@@ -84,17 +110,41 @@ void Widget::Draw(glm::mat4 &M)
 {
     mGlobalModel = M * mLocalModel;
 
+    
+    if(normalTexture && !isTouched)
+    {
+        shader_texture->use();
+        shader_texture->setMat4(shader_texture->projectionLocation, mProjection);
+        shader_texture->setMat4(shader_texture->viewLocation, mView);
+        shader_texture->setMat4(shader_texture->modelLocation, mGlobalModel);
+        DE_drawRectangle(&background_rectangle, GL_TRIANGLE_FAN, shader_texture);
+    }
+    else if(touchedTexture && isTouched)
+    {
+        shader_texture->use();
+        shader_texture->setMat4(shader_texture->projectionLocation, mProjection);
+        shader_texture->setMat4(shader_texture->viewLocation, mView);
+        shader_texture->setMat4(shader_texture->modelLocation, mGlobalModel);
+        DE_drawRectangle(&background_rectangle, GL_TRIANGLE_FAN, shader_texture);
+    }
+    
     CustromDraw();
 
-    if (isTouched)
+    
+    shader_dbg->use();
+    shader_dbg->setMat4(shader_dbg->projectionLocation, mProjection);
+    shader_dbg->setMat4(shader_dbg->viewLocation, mView);
+    shader_dbg->setMat4(shader_dbg->modelLocation, mGlobalModel);
+
+    if (isTouched && mDbgDrawTouch)
     {
-        DE_setColour(&background_rectangle, glm::vec4(1, 0, 0, 1));
-        DE_drawRectangle(&background_rectangle, GL_TRIANGLE_FAN);
+        shader_dbg->setVec4(shader_dbg->colourLocation, glm::vec4(1, 0, 0, 1));
+        DE_drawRectangle(&background_rectangle, GL_TRIANGLE_FAN,shader_dbg);
     }
-    if(mDrawBoundingBox)
+    if (mDbgDrawBoundingBox)
     {
-        DE_setColour(&background_rectangle, glm::vec4(0, 1, 0, 1));
-        DE_drawRectangle(&background_rectangle, GL_LINE_LOOP);
+        shader_dbg->setVec4(shader_dbg->colourLocation, glm::vec4(0, 1, 0, 1));
+        DE_drawRectangle(&background_rectangle, GL_LINE_LOOP,shader_dbg);
     }
 
     for (auto it = childs.begin(); it != childs.end(); ++it)
@@ -128,6 +178,7 @@ bool Widget::onPointerDown(float x_ndc, float y_ndc)
         if ((world_position.x >= (-mDimm.x / 2.0f)) && (world_position.x <= (mDimm.x / 2.0f)) && (world_position.y >= (-mDimm.y / 2.0f)) && (world_position.y <= (mDimm.y / 2.0f)))
         {
             isTouched = true;
+            background_rectangle.texture_id = touchedTexture;
             return true;
         }
         return false;
@@ -151,5 +202,6 @@ void Widget::onPointerUp()
     if (isTouched == true)
     {
         isTouched = false;
+        background_rectangle.texture_id = normalTexture;
     }
 }
