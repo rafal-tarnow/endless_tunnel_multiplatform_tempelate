@@ -81,7 +81,7 @@ private:
 };
 
 
-class SelectMapScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener{
+class SelectMapScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener, WidgetEventListener{
 public:
     SelectMapScene();
     ~SelectMapScene();
@@ -101,6 +101,7 @@ public:
 
     void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton);
     void Button_onClicked(Button * button);
+    void Widget_onClicked(Widget * widget) override;
 
 private:
     void initMessageBox();
@@ -142,4 +143,6 @@ private:
     Shader_m * shader;
 
     PostProcessor* mEffects = nullptr;
+
+    bool isMessageBoxVisible = false;
 };

@@ -91,6 +91,11 @@ void Button::setLocked(bool lckd)
     locked = lckd;
 }
 
+bool Button::isLocked()
+{
+    return locked;
+}
+
 void Button::setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View)
 {
     mViewport = Viewport;

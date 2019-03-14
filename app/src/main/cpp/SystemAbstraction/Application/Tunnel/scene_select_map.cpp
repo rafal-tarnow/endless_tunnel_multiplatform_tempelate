@@ -133,6 +133,7 @@ void SelectMapScene::initMessageBox()
     unlock_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(160,-200,0)));
     unlock_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
     unlock_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/continue_white.png"));
+    unlock_widget->setEventListener(this);
 
     message_widget->addChild(unlock_widget);
 
@@ -142,6 +143,7 @@ void SelectMapScene::initMessageBox()
     cancel_widget->setModel(glm::translate(glm::mat4(1),glm::vec3(-160,-200,0)));
     cancel_widget->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
     cancel_widget->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/replay_white.png"));
+    cancel_widget->setEventListener(this);
 
     message_widget->addChild(cancel_widget);
 
@@ -218,63 +220,66 @@ void SelectMapScene::DoFrame()
 
 
 
-        static float x_pos = 0;
-        x_pos += 0.5f;
+    static float x_pos = 0;
+    x_pos += 0.5f;
 
-        glm::mat4 all_model = glm::translate(glm::mat4(1), glm::vec3(0, 700, 0));
+    glm::mat4 all_model = glm::translate(glm::mat4(1), glm::vec3(0, 700, 0));
 
-        testPrimitive.model = glm::mat4(1);
+    testPrimitive.model = glm::mat4(1);
 
-        glStencilMask(0xFF);
-        glClear(GL_STENCIL_BUFFER_BIT);
+    glStencilMask(0xFF);
+    glClear(GL_STENCIL_BUFFER_BIT);
 
-        PR_setColour(&testPrimitive, glm::vec4(0.7, 0.7, 0.7, 1.0));
+    PR_setColour(&testPrimitive, glm::vec4(0.7, 0.7, 0.7, 1.0));
 
-        vector<glm::vec3> verticles;
-        verticles.push_back(glm::vec3(0, 0, 0));
-        verticles.push_back(glm::vec3(1920, 0, 0));
-        verticles.push_back(glm::vec3(1920, 1080, 0));
-        verticles.push_back(glm::vec3(0, 1080, 0));
-        PR_setVerticles(&testPrimitive, verticles.data(), 4);
+    vector<glm::vec3> verticles;
+    verticles.push_back(glm::vec3(0, 0, 0));
+    verticles.push_back(glm::vec3(1920, 0, 0));
+    verticles.push_back(glm::vec3(1920, 1080, 0));
+    verticles.push_back(glm::vec3(0, 1080, 0));
+    PR_setVerticles(&testPrimitive, verticles.data(), 4);
 
-        // PR_draw(&testPrimitive, 1.0);
+    // PR_draw(&testPrimitive, 1.0);
 
-        glStencilMask(0x00);
-        glStencilFunc(GL_EQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glStencilFunc(GL_EQUAL, 1, 0xFF);
 
-        verticles.clear();
-        verticles.push_back(glm::vec3(-200, 200, 0));
-        verticles.push_back(glm::vec3(-200, -200, 0));
-        verticles.push_back(glm::vec3(200, -200, 0));
-        verticles.push_back(glm::vec3(200, 200, 0));
-        PR_setVerticles(&testPrimitive, verticles.data(), 4);
-        PR_setColour(&testPrimitive, glm::vec4(1.0, 0.0, 0.0, 1.0));
+    verticles.clear();
+    verticles.push_back(glm::vec3(-200, 200, 0));
+    verticles.push_back(glm::vec3(-200, -200, 0));
+    verticles.push_back(glm::vec3(200, -200, 0));
+    verticles.push_back(glm::vec3(200, 200, 0));
+    PR_setVerticles(&testPrimitive, verticles.data(), 4);
+    PR_setColour(&testPrimitive, glm::vec4(1.0, 0.0, 0.0, 1.0));
 
-        glm::mat4 model_h = glm::mat4(1);
-        glm::mat4 model_v = glm::mat4(1);
-        glm::vec3 horizontal_translation = glm::vec3(220, 0, 0);
-        glm::vec3 vertical_translation = glm::vec3(0, -220, 0);
+    glm::mat4 model_h = glm::mat4(1);
+    glm::mat4 model_v = glm::mat4(1);
+    glm::vec3 horizontal_translation = glm::vec3(220, 0, 0);
+    glm::vec3 vertical_translation = glm::vec3(0, -220, 0);
 
-        unsigned int column_index = 0;
+    unsigned int column_index = 0;
 
-        for (unsigned int i = 0; i < buttons.size(); i++)
+    for (unsigned int i = 0; i < buttons.size(); i++)
+    {
+        model_h = glm::translate(model_h, horizontal_translation);
+        buttons.at(i)->setModel(all_model * model_h * model_v);
+
+        column_index++;
+        if (column_index == 8)
         {
-            model_h = glm::translate(model_h, horizontal_translation);
-            buttons.at(i)->setModel(all_model * model_h * model_v);
-
-            column_index++;
-            if (column_index == 8)
-            {
-                column_index = 0;
-                model_v = glm::translate(model_v, vertical_translation);
-                model_h = glm::mat4(1);
-            }
+            column_index = 0;
+            model_v = glm::translate(model_v, vertical_translation);
+            model_h = glm::mat4(1);
         }
+    }
 
-
+    if(isMessageBoxVisible)
         mEffects->Background = GL_TRUE;
-        mEffects->BeginRender(glm::vec4(1.0,1.0,1.0,1.0));
-        {
+    else
+        mEffects->Background = GL_FALSE;
+
+    mEffects->BeginRender(glm::vec4(1.0,1.0,1.0,1.0));
+    {
 
 
         for (unsigned int i = 0; i < buttons.size(); i++)
@@ -303,13 +308,16 @@ void SelectMapScene::DoFrame()
 
 
     static float alfa = 0.0f;
-    //alfa += 0.01;
+    alfa += 0.01;
 
-    glm::mat4 M = glm::rotate((glm::translate(glm::mat4(1), glm::vec3(1920/2, 1080/2, 0))),alfa, glm::vec3(0,0,1));
-    message_widget->setMatrices(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view());
-    message_widget->setModel(M);
-    message_widget->Render();
 
+    if(isMessageBoxVisible)
+    {
+        glm::mat4 M = glm::rotate((glm::translate(glm::mat4(1), glm::vec3(1920/2 + 10*glm::sin(15*time), 1080/2 + 10*glm::cos(15*time + 2), 0))),0.05f*sin(20*alfa), glm::vec3(0,0,1.0));
+        message_widget->setMatrices(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view());
+        message_widget->setModel(M);
+        message_widget->Render();
+    }
     // glDisable(GL_STENCIL_TEST);
 }
 
@@ -319,13 +327,33 @@ void SelectMapScene::Button_onClicked(Button *button)
     {
         cfg->currentMapIndex = currentMapIndex;
 
-        SceneManager *mgr = SceneManager::GetInstance();
-        mgr->RequestNewScene(new TuningVehicleScene());
+        if(buttons.at(currentMapIndex)->isLocked())
+        {
+            isMessageBoxVisible = true;
+        }
+        else
+        {
+            SceneManager *mgr = SceneManager::GetInstance();
+            mgr->RequestNewScene(new TuningVehicleScene());
+        }
     }
     else if (button == &buttonUnlock)
     {
         purchase("Purchase product!");
     }
+}
+
+void SelectMapScene::Widget_onClicked(Widget * widget)
+{
+    if(widget == cancel_widget)
+    {
+        isMessageBoxVisible = false;
+    }
+    else if(widget == unlock_widget)
+    {
+        isMessageBoxVisible = false;
+    }
+
 }
 
 void SelectMapScene::RadioButtonManager_onRadioButtonChanged(RadioButton *radioButton)
@@ -344,14 +372,20 @@ void SelectMapScene::RadioButtonManager_onRadioButtonChanged(RadioButton *radioB
 
 void SelectMapScene::OnPointerDown(int pointerId, const struct PointerCoords *coords)
 {
-    for (unsigned int i = 0; i < buttons.size(); i++)
+    if(!isMessageBoxVisible)
     {
-        buttons.at(i)->onPointerDown(coords->x, coords->y);
-    }
+        for (unsigned int i = 0; i < buttons.size(); i++)
+        {
+            buttons.at(i)->onPointerDown(coords->x, coords->y);
+        }
 
-    buttonPlay.onPointerDown(coords->x, coords->y);
-    buttonUnlock.onPointerDown(coords->x, coords->y);
-    message_widget->onPointerDown(coords->x, coords->y);
+        buttonPlay.onPointerDown(coords->x, coords->y);
+        buttonUnlock.onPointerDown(coords->x, coords->y);
+    }
+    else
+    {
+        message_widget->onPointerDown(coords->x, coords->y);
+    }
 }
 
 void SelectMapScene::OnPointerUp(int pointerId, const struct PointerCoords *coords)

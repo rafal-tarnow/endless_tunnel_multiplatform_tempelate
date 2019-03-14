@@ -203,5 +203,9 @@ void Widget::onPointerUp()
     {
         isTouched = false;
         background_rectangle.texture_id = normalTexture;
+        if(mListener)
+        {
+            mListener->Widget_onClicked(this);
+        }
     }
 }

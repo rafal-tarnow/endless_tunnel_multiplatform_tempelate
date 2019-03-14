@@ -32,6 +32,7 @@ public:
     void setEventListener(ButtonEventListener * listener);
     void setLockable(bool lockable);
     void setLocked(bool locked);
+    bool isLocked();
 
     virtual void Render();
 
