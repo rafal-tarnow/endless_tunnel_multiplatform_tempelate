@@ -46,6 +46,7 @@ SelectMapScene::SelectMapScene()
     AudioManager &audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
+
 }
 
 void SelectMapScene::initNormalButtons()
@@ -183,15 +184,27 @@ void SelectMapScene::OnStartGraphics(int width, int height)
 
     //    textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
     //    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+
+
+    mEffects = new PostProcessor(width, height);
 }
 
 void SelectMapScene::OnKillGraphics()
 {
     AudioManager::GetSingleton().StopSFX(menuMusicHandle);
+
+    if (mEffects)
+    {
+        delete mEffects;
+        mEffects = nullptr;
+    }
 }
 
 void SelectMapScene::DoFrame()
 {
+    static GLfloat time = 0.0f;
+    time += 0.017f;
+
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -203,74 +216,91 @@ void SelectMapScene::DoFrame()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    static float x_pos = 0;
-    x_pos += 0.5f;
 
-    glm::mat4 all_model = glm::translate(glm::mat4(1), glm::vec3(0, 700, 0));
 
-    testPrimitive.model = glm::mat4(1);
+        static float x_pos = 0;
+        x_pos += 0.5f;
 
-    glStencilMask(0xFF);
-    glClear(GL_STENCIL_BUFFER_BIT);
+        glm::mat4 all_model = glm::translate(glm::mat4(1), glm::vec3(0, 700, 0));
 
-    PR_setColour(&testPrimitive, glm::vec4(0.7, 0.7, 0.7, 1.0));
+        testPrimitive.model = glm::mat4(1);
 
-    vector<glm::vec3> verticles;
-    verticles.push_back(glm::vec3(0, 0, 0));
-    verticles.push_back(glm::vec3(1920, 0, 0));
-    verticles.push_back(glm::vec3(1920, 1080, 0));
-    verticles.push_back(glm::vec3(0, 1080, 0));
-    PR_setVerticles(&testPrimitive, verticles.data(), 4);
+        glStencilMask(0xFF);
+        glClear(GL_STENCIL_BUFFER_BIT);
 
-    // PR_draw(&testPrimitive, 1.0);
+        PR_setColour(&testPrimitive, glm::vec4(0.7, 0.7, 0.7, 1.0));
 
-    glStencilMask(0x00);
-    glStencilFunc(GL_EQUAL, 1, 0xFF);
+        vector<glm::vec3> verticles;
+        verticles.push_back(glm::vec3(0, 0, 0));
+        verticles.push_back(glm::vec3(1920, 0, 0));
+        verticles.push_back(glm::vec3(1920, 1080, 0));
+        verticles.push_back(glm::vec3(0, 1080, 0));
+        PR_setVerticles(&testPrimitive, verticles.data(), 4);
 
-    verticles.clear();
-    verticles.push_back(glm::vec3(-200, 200, 0));
-    verticles.push_back(glm::vec3(-200, -200, 0));
-    verticles.push_back(glm::vec3(200, -200, 0));
-    verticles.push_back(glm::vec3(200, 200, 0));
-    PR_setVerticles(&testPrimitive, verticles.data(), 4);
-    PR_setColour(&testPrimitive, glm::vec4(1.0, 0.0, 0.0, 1.0));
+        // PR_draw(&testPrimitive, 1.0);
 
-    glm::mat4 model_h = glm::mat4(1);
-    glm::mat4 model_v = glm::mat4(1);
-    glm::vec3 horizontal_translation = glm::vec3(220, 0, 0);
-    glm::vec3 vertical_translation = glm::vec3(0, -220, 0);
+        glStencilMask(0x00);
+        glStencilFunc(GL_EQUAL, 1, 0xFF);
 
-    unsigned int column_index = 0;
+        verticles.clear();
+        verticles.push_back(glm::vec3(-200, 200, 0));
+        verticles.push_back(glm::vec3(-200, -200, 0));
+        verticles.push_back(glm::vec3(200, -200, 0));
+        verticles.push_back(glm::vec3(200, 200, 0));
+        PR_setVerticles(&testPrimitive, verticles.data(), 4);
+        PR_setColour(&testPrimitive, glm::vec4(1.0, 0.0, 0.0, 1.0));
 
-    for (unsigned int i = 0; i < buttons.size(); i++)
-    {
-        model_h = glm::translate(model_h, horizontal_translation);
-        buttons.at(i)->setModel(all_model * model_h * model_v);
+        glm::mat4 model_h = glm::mat4(1);
+        glm::mat4 model_v = glm::mat4(1);
+        glm::vec3 horizontal_translation = glm::vec3(220, 0, 0);
+        glm::vec3 vertical_translation = glm::vec3(0, -220, 0);
 
-        column_index++;
-        if (column_index == 8)
+        unsigned int column_index = 0;
+
+        for (unsigned int i = 0; i < buttons.size(); i++)
         {
-            column_index = 0;
-            model_v = glm::translate(model_v, vertical_translation);
-            model_h = glm::mat4(1);
+            model_h = glm::translate(model_h, horizontal_translation);
+            buttons.at(i)->setModel(all_model * model_h * model_v);
+
+            column_index++;
+            if (column_index == 8)
+            {
+                column_index = 0;
+                model_v = glm::translate(model_v, vertical_translation);
+                model_h = glm::mat4(1);
+            }
         }
+
+
+        mEffects->Background = GL_TRUE;
+        mEffects->BeginRender(glm::vec4(1.0,1.0,1.0,1.0));
+        {
+
+
+        for (unsigned int i = 0; i < buttons.size(); i++)
+        {
+            buttons.at(i)->Render();
+        }
+
+
+        safe_area_background.projection = safeAreaCam.projection();
+        safe_area_background.view = safeAreaCam.view();
+
+        DE_drawRectangle(&safe_area_background);
+
+        buttonPlay.Render();
+        buttonUnlock.Render();
+
+
+
+
+        testPrimitive.projection = safeAreaCam.projection();
+        testPrimitive.view = safeAreaCam.view();
+
     }
+    mEffects->EndRender();
+    mEffects->Render(time);
 
-
-
-    for (unsigned int i = 0; i < buttons.size(); i++)
-    {
-        buttons.at(i)->Render();
-    }
-
-
-    safe_area_background.projection = safeAreaCam.projection();
-    safe_area_background.view = safeAreaCam.view();
-
-    DE_drawRectangle(&safe_area_background);
-
-    buttonPlay.Render();
-    buttonUnlock.Render();
 
     static float alfa = 0.0f;
     //alfa += 0.01;
@@ -279,10 +309,6 @@ void SelectMapScene::DoFrame()
     message_widget->setMatrices(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view());
     message_widget->setModel(M);
     message_widget->Render();
-
-
-    testPrimitive.projection = safeAreaCam.projection();
-    testPrimitive.view = safeAreaCam.view();
 
     // glDisable(GL_STENCIL_TEST);
 }

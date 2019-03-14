@@ -10,6 +10,7 @@
 #include <system_paths.hpp>
 #include <OpenSLWrap.hpp>
 #include <library_opengles_2/Resources/Resources.hpp>
+#include "../CapAfri/PostProcessor.hpp"
 #include <sstream>
 #include "../CapAfri/game_config.hpp"
 #include "../CapAfri/camera_safe_area.hpp"
@@ -139,4 +140,6 @@ private:
 
     GameConfig *cfg = GameConfig::getInstance();
     Shader_m * shader;
+
+    PostProcessor* mEffects = nullptr;
 };
