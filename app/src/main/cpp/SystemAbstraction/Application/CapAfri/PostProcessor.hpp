@@ -23,6 +23,7 @@ public:
     GLuint Width, Height;
     // Options
     GLboolean Confuse, Chaos, Shake, Spin, Black, Background;
+    GLfloat opaque = 1.0f;
     // Constructor
     PostProcessor(GLuint width, GLuint height);
     // Prepares the postprocessor's framebuffer operations before rendering the game   

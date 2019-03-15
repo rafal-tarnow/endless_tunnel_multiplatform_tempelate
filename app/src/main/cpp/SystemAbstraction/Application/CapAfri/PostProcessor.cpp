@@ -71,6 +71,7 @@ const GLchar *fShaderCode = "#version 100                                       
                             "uniform bool spin;                                                             \n"
                             "uniform bool shake;                                                            \n"
                             "uniform float time;                                                            \n"
+                            "uniform float opaque;                                                            \n"
                             "uniform float spin_inversion_param;                                            \n"
                             "                                                                               \n"
                             "void main()                                                                    \n"
@@ -101,13 +102,16 @@ const GLchar *fShaderCode = "#version 100                                       
                             "    }                                                                                  \n"
                             "    else if(background)                                                                \n"
                             "    {                                                                                  \n"
-                            "        for(int i = 0; i < 9; i++)                                                     \n"
-                            "            color += vec4(sample[i] * blur_kernel[i], 0.0);                            \n"
+                            "        //for(int i = 0; i < 9; i++)                                                     \n"
+                            "        //    color += vec4(sample[i] * blur_kernel[i], 0.0);                            \n"
                             "        //color.a = 1.0;                                                                 \n"
                             "                                                                                       \n"
                             "       //color = texture2D(textureMap, TexCoords);                                       \n"
-                            "       float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;         \n"
-                            "       color = vec4(average, average, average, 0.5);                                   \n"
+                            "       //float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;         \n"
+                            "       //color = vec4(average, average, average, opaque);                                \n"
+                            "                                                                                       \n"
+                            "       color = texture2D(textureMap, TexCoords);                                       \n"
+                            "       color.a = opaque;                                                                  \n"
                             "    }                                                                                  \n"
                             "    else if(shake)                                                                     \n"
                             "    {                                                                                  \n"
@@ -237,6 +241,7 @@ void PostProcessor::Render(GLfloat time)
     this->PostProcessingShader.SetInteger("black", this->Black);
     this->PostProcessingShader.SetInteger("background", this->Background);
     this->PostProcessingShader.SetInteger("shake", this->Shake);
+    this->PostProcessingShader.SetFloat("opaque", this->opaque);
     // Render textured quad
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->ID);

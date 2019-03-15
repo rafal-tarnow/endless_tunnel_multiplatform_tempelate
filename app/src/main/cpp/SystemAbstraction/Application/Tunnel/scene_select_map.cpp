@@ -273,10 +273,12 @@ void SelectMapScene::DoFrame()
         }
     }
 
-    if(isMessageBoxVisible)
+    //if(isMessageBoxVisible)
         mEffects->Background = GL_TRUE;
-    else
-        mEffects->Background = GL_FALSE;
+    //else
+        //mEffects->Background = GL_FALSE;
+
+    mEffects->opaque = opaque;
 
     mEffects->BeginRender(glm::vec4(1.0,1.0,1.0,1.0));
     {
@@ -313,12 +315,16 @@ void SelectMapScene::DoFrame()
 
     if(isMessageBoxVisible)
     {
-        glm::mat4 M = glm::rotate((glm::translate(glm::mat4(1), glm::vec3(1920/2 + 10*glm::sin(15*time), 1080/2 + 10*glm::cos(15*time + 2), 0))),0.05f*sin(20*alfa), glm::vec3(0,0,1.0));
+        glm::mat4 M = glm::rotate((glm::translate(glm::mat4(1), glm::vec3(position_x /*+ 10*glm::sin(15*time)*/, position_y /*+ 10*glm::cos(15*time + 2)*/, 0))),0.0f/*0.05f*sin(20*alfa)*/, glm::vec3(0,0,1.0));
         message_widget->setMatrices(safeAreaCam.viewport(), safeAreaCam.projection(), safeAreaCam.view());
         message_widget->setModel(M);
         message_widget->Render();
     }
     // glDisable(GL_STENCIL_TEST);
+
+    position_x.update(time);
+    position_y.update(time);
+    opaque.update(time);
 }
 
 void SelectMapScene::Button_onClicked(Button *button)
@@ -330,6 +336,9 @@ void SelectMapScene::Button_onClicked(Button *button)
         if(buttons.at(currentMapIndex)->isLocked())
         {
             isMessageBoxVisible = true;
+            position_x = 1920.0f/2.0f;
+            position_y = 1080.0f/2.0f;
+            opaque = 0.5;
         }
         else
         {
@@ -348,10 +357,17 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
     if(widget == cancel_widget)
     {
         isMessageBoxVisible = false;
+        position_x = 0;
+        position_y = 0;
+        opaque = 1.0f;
     }
     else if(widget == unlock_widget)
     {
         isMessageBoxVisible = false;
+        position_x = 0;
+        position_y = 0;
+        opaque = 1.0f;
+        purchase("Purchase product!");
     }
 
 }
@@ -407,7 +423,18 @@ void SelectMapScene::OnPointerMove(int pointerId, const struct PointerCoords *co
 
 bool SelectMapScene::OnBackKeyPressed()
 {
-    SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
+    if(isMessageBoxVisible)
+    {
+        isMessageBoxVisible = false;
+        position_x = 0;
+        position_y = 0;
+        opaque = 1.0f;
+    }
+    else
+    {
+         SceneManager::GetInstance()->RequestNewScene(new WelcomeScene());
+    }
+
     return true;
 }
 

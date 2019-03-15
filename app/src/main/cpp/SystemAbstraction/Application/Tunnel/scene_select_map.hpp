@@ -14,6 +14,7 @@
 #include <sstream>
 #include "../CapAfri/game_config.hpp"
 #include "../CapAfri/camera_safe_area.hpp"
+#include "../CapAfri/AnimateVariable.hpp"
 
 using namespace std;
 
@@ -145,4 +146,7 @@ private:
     PostProcessor* mEffects = nullptr;
 
     bool isMessageBoxVisible = false;
+    Animated<float> position_x = 0.0f;
+    Animated<float> position_y = 0.0f;
+    Animated<float> opaque = 1.0f;
 };
