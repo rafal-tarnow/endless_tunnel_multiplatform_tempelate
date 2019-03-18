@@ -159,4 +159,15 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     {
         return 12345;
     }
+
+    public String getString()
+    {
+        return "To jest string z Javy przeslany do C++ i z powrotem do Javy!";
+    }
+
+    public void getPurchases()
+    {
+        bp.listOwnedProducts();
+    }
+
 }

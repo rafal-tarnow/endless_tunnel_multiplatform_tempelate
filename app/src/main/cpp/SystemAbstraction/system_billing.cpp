@@ -36,7 +36,7 @@ int callJava()
 }
 
 
-int print_dpi() {
+string print_dpi() {
     JNIEnv* jni;
     int width;
     int height;
@@ -133,19 +133,32 @@ int print_dpi() {
     }
 
 
-
+    //GET VALUE
     jmethodID getValue = jni->GetMethodID(activityClass, "getValue", "()I");
     JNI_ASSERT(jni, getValue);
 
     width = jni->CallIntMethod(app->activity->clazz, getValue);
     JNI_ASSERT(jni, true);
 
+    //GET STRING
+    jmethodID getString = jni->GetMethodID(activityClass, "getString", "()Ljava/lang/String;");
+    JNI_ASSERT(jni, getString);
+   // "getProperty", "(Ljava/lang/String;)Ljava/lang/String;"
+    jstring joStringPropVal  = (jstring)jni->CallObjectMethod(app->activity->clazz,getString);
+
+    const char* jcVal = jni->GetStringUTFChars(joStringPropVal, nullptr);
+
+    string napis;
+    napis.assign(jcVal, strlen(jcVal));
+
+    jni->ReleaseStringUTFChars(joStringPropVal, jcVal);
+
     // TODO: Delete objects here.
     jni->DeleteLocalRef(displayMetrics);
 
     app->activity->vm->DetachCurrentThread();
 
-    return width;
+    return napis;
 }
 
 

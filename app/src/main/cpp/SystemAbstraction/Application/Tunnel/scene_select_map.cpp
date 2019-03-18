@@ -368,10 +368,11 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
         position_y = 0;
         opaque = 1.0f;
         int value = 0;
-        value = print_dpi();
+        //value = print_dpi();
+        string napis = print_dpi();
         stringstream txt;
         txt << "Value = " << value;
-        printToast(txt.str().c_str());
+        printToast(napis.c_str());
 
     }
 
