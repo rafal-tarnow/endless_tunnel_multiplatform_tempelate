@@ -157,6 +157,6 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
     public int getValue()
     {
-        return 12;
+        return 12345;
     }
 }
