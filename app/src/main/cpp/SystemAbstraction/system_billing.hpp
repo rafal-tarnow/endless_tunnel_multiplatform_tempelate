@@ -9,4 +9,6 @@
 void initPurchase(android_app * );
 #endif
 
-void purchase(const char* message);
+void printToast(const char *message);
+int callJava();
+int print_dpi();

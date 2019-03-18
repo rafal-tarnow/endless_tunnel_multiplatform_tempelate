@@ -348,7 +348,7 @@ void SelectMapScene::Button_onClicked(Button *button)
     }
     else if (button == &buttonUnlock)
     {
-        purchase("Purchase product!");
+        printToast("Purchase product!");
     }
 }
 
@@ -367,7 +367,12 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
         position_x = 0;
         position_y = 0;
         opaque = 1.0f;
-        purchase("Purchase product!");
+        int value = 0;
+        value = print_dpi();
+        stringstream txt;
+        txt << "Value = " << value;
+        printToast(txt.str().c_str());
+
     }
 
 }

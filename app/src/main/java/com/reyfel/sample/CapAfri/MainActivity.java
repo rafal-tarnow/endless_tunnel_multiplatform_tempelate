@@ -154,4 +154,9 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    public int getValue()
+    {
+        return 12;
+    }
 }
