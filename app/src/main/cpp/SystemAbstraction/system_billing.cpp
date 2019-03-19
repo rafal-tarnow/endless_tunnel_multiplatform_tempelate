@@ -143,7 +143,7 @@ string print_dpi() {
     //GET STRING
     jmethodID getString = jni->GetMethodID(activityClass, "getString", "()Ljava/lang/String;");
     JNI_ASSERT(jni, getString);
-   // "getProperty", "(Ljava/lang/String;)Ljava/lang/String;"
+
     jstring joStringPropVal  = (jstring)jni->CallObjectMethod(app->activity->clazz,getString);
 
     const char* jcVal = jni->GetStringUTFChars(joStringPropVal, nullptr);
@@ -153,12 +153,37 @@ string print_dpi() {
 
     jni->ReleaseStringUTFChars(joStringPropVal, jcVal);
 
+    //GET STRING ARRAY
+    jmethodID getStringArray = jni->GetMethodID(activityClass, "getStringArray", "()[Ljava/lang/String;");
+    JNI_ASSERT(jni, getStringArray);
+
+    jobjectArray stringArraryObject = (jobjectArray)jni->CallObjectMethod(app->activity->clazz,getStringArray);
+    JNI_ASSERT(jni, stringArraryObject);
+
+    jsize stringArrarySize = jni->GetArrayLength(stringArraryObject);
+    JNI_ASSERT(jni, true);
+
+    string tekst;
+
+    for (int i=0; i<stringArrarySize; i++)
+    {
+        jstring string = (jstring)jni->GetObjectArrayElement(stringArraryObject, i);
+        JNI_ASSERT(jni, string);
+
+        const char* text = jni->GetStringUTFChars(string, nullptr);
+
+        tekst.append(text, strlen(text));
+        tekst.append(" | ");
+
+        jni->ReleaseStringUTFChars(string, text);
+    }
+
     // TODO: Delete objects here.
     jni->DeleteLocalRef(displayMetrics);
 
     app->activity->vm->DetachCurrentThread();
 
-    return napis;
+    return tekst;
 }
 
 

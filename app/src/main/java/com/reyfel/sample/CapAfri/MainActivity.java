@@ -13,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.content.Intent;
+
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 
@@ -163,6 +165,19 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     public String getString()
     {
         return "To jest string z Javy przeslany do C++ i z powrotem do Javy!";
+    }
+
+    public String[] getStringArray()
+    {
+        List<String> supplierNames1 = bp.listOwnedProducts();
+
+        String[] s = new String[4];
+
+        s[0] = "dupa ";
+        s[1] = "dupa ";
+        s[2] = "zyzol ";
+        s[3] = "zyzol ";
+        return s;
     }
 
     public void getPurchases()
