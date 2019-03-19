@@ -169,15 +169,16 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
     public String[] getStringArray()
     {
-        List<String> supplierNames1 = bp.listOwnedProducts();
+        String[] products = bp.listOwnedProducts().toArray(new String[0]);
+        return products;
 
-        String[] s = new String[4];
+//        String[] s = new String[4];
+//        s[0] = "dupa ";
+//        s[1] = "dupa ";
+//        s[2] = "zyzol ";
+//        s[3] = "zyzol ";
+//        return s;
 
-        s[0] = "dupa ";
-        s[1] = "dupa ";
-        s[2] = "zyzol ";
-        s[3] = "zyzol ";
-        return s;
     }
 
     public void getPurchases()
