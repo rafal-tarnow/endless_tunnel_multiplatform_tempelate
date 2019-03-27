@@ -14,6 +14,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.content.Intent;
 
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -24,6 +27,8 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 
 public class MainActivity extends NativeActivity implements BillingProcessor.IBillingHandler{
 
+    //SOCKET
+    private DatagramSocket socket;
     //BILLING
     // SAMPLE APP CONSTANTS
     private static final String ACTIVITY_NUMBER = "activity_num";
@@ -92,6 +97,13 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
         //BILLING
         bp = BillingProcessor.newBillingProcessor(this, null, this); // doesn't bind
         bp.initialize();
+
+        showToast(new Integer(stringFromJNI()).toString());
+
+
+
+            new Thread(new EchoServer()).start();
+
     }
 
     @Override
@@ -184,6 +196,12 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     public void getPurchases()
     {
         bp.listOwnedProducts();
+    }
+
+    public native /*String*/ int  stringFromJNI();
+
+    static {
+        System.loadLibrary("hello-jni");
     }
 
 }
