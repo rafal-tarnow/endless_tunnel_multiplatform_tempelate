@@ -101,8 +101,24 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
         showToast(new Integer(stringFromJNI()).toString());
 
 
+            sendCommand();
 
-            new Thread(new EchoServer()).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while(true) {
+                        sendCommand();
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+
+            //new Thread(new EchoServer()).start();
+            new Thread(new LocalSocketWrapper()).start();
 
     }
 
@@ -199,6 +215,7 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     }
 
     public native /*String*/ int  stringFromJNI();
+    public native int sendCommand();
 
     static {
         System.loadLibrary("hello-jni");

@@ -30,7 +30,7 @@ private:
     CTimer * timer_1s;
     CTimer * timer_250ms;
     CTimer * timer_500ms;
-    CUnixDatagramSocket * unixSocket = nullptr;;
+    CUnixDatagramSocket * unixSendSocket = nullptr;
 };
 
 class Application_3{
@@ -61,7 +61,7 @@ void main_2(int x)
 
 void main_3(int x)
 {
-    LOGD("---- NOWY THREAD DZIALA !!!");
+//    LOGD("---- NOWY THREAD DZIALA !!!");
     Epoll epoll(true);
     Application_3 application;
     epoll.runApp();
@@ -86,7 +86,7 @@ Application_2::Application_2()
     timer_500ms->connect<Application_2, &Application_2::onTimer_500ms>(this);
     timer_500ms->start(500);
 
-    unixSocket = new CUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
+    unixSendSocket = new CUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
 }
 
 Application_2::~Application_2()
@@ -95,10 +95,10 @@ Application_2::~Application_2()
     delete timer_250ms;
     delete timer_500ms;
 
-    if(unixSocket)
+    if(unixSendSocket)
     {
-        delete unixSocket;
-        unixSocket = nullptr;
+        delete unixSendSocket;
+        unixSendSocket = nullptr;
     }
 }
 
@@ -109,8 +109,8 @@ void Application_2::onTimer_1s()
     time_1s++;
     LOGD("Application::onTimer_1s()) = ");// << time_1s*1000 << endl;
 
-    char buffer[5] = {1,2,3,4,5};
-    unixSocket->writeDatagram("com_reyfel_sample_CapAfri_to_NDK",buffer, 5);
+    char buffer[6] = {1,2,3,4,5,6};
+    //unixSocket->writeDatagram("com_reyfel_sample_CapAfri_to_NDK",buffer, 6);
 }
 
 static int time_250ms = 0;
@@ -154,6 +154,12 @@ void Application_3::dataFromUnixSocket(){
 
     std::vector<char> buffer;
     unixSocket->readDatagram(&buffer);
+
+    LOGD("    size = %d", buffer.size());
+    for(unsigned int i = 0; i < buffer.size(); i++)
+    {
+        LOGD("    buffer[%d] = %d",i, int(buffer[i]));
+    }
 }
 
 
