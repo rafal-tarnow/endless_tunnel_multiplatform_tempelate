@@ -11,10 +11,12 @@
 using std::cout;
 using std::endl;
 
-CUnixDatagramSocket::CUnixDatagramSocket(char * listenFileName)
+CUnixDatagramSocket::CUnixDatagramSocket(const char * listenFileName, bool isAbstract)
 {
+    mIsAbstractSocketNamespace = isAbstract;
     //UNLINK file
-    unlink(listenFileName);
+    if(!mIsAbstractSocketNamespace)
+        unlink(listenFileName);
 
     //CREATE SOCKET FILE DESCRIPTOR
     if ((first_socket = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
@@ -24,11 +26,26 @@ CUnixDatagramSocket::CUnixDatagramSocket(char * listenFileName)
     }
 
     //DEFINE SEND HOST
-    lenght_ofAdressStruct = sizeof(serverAddress);
+    if(!mIsAbstractSocketNamespace)
+    {
+        lenght_ofAdressStruct = sizeof(serverAddress);
+    }
+    else
+    {
+        lenght_ofAdressStruct = sizeof(serverAddress.sun_family) + sizeof(listenFileName) - 1;
+    }
 
     memset((char *) &serverAddress, 0, sizeof(serverAddress));
     serverAddress.sun_family = AF_UNIX;
-    strcpy(serverAddress.sun_path, listenFileName);
+    if(!mIsAbstractSocketNamespace)
+    {
+        strcpy(serverAddress.sun_path, listenFileName);
+    }
+    else
+    {
+        serverAddress.sun_path[0] = '\0';
+        strcpy(&(serverAddress.sun_path[1]), listenFileName);
+    }
 
     memset((char *) &clientAddress, 0, sizeof(clientAddress));
     clientAddress.sun_family = AF_UNIX;
@@ -41,7 +58,7 @@ CUnixDatagramSocket::~CUnixDatagramSocket(){
 
 bool CUnixDatagramSocket::Bind()
 {
-    ret_val = bind(first_socket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    ret_val = bind(first_socket, (struct sockaddr*)&serverAddress, lenght_ofAdressStruct);
 
     if(ret_val == 0){
         cout << "[Info | CUdpUnixSocket] sucesfull bind socket" << endl;
@@ -109,9 +126,17 @@ int64_t CUnixDatagramSocket::readDatagram(std::vector<char> *data)
     return -1;
 }
 
-int64_t CUnixDatagramSocket::writeDatagram(char * nazwaPliku, const char *data, int64_t size)
+int64_t CUnixDatagramSocket::writeDatagram(const char * nazwaPliku, const char *data, int64_t size)
 {
-    strcpy(clientAddress.sun_path, nazwaPliku);
+    if(!mIsAbstractSocketNamespace)
+    {
+        strcpy(clientAddress.sun_path, nazwaPliku);
+    }
+    else
+    {
+        clientAddress.sun_path[0] = '\0';
+        strcpy(&(clientAddress.sun_path[1]), nazwaPliku);
+    }
     ret_val = sendto(first_socket, data, size, 0, (struct sockaddr*)&clientAddress, lenght_ofAdressStruct);
 
     if(ret_val == -1){
@@ -126,8 +151,8 @@ int64_t CUnixDatagramSocket::writeDatagram(char * nazwaPliku, const char *data, 
 
 
 void CUnixDatagramSocket::Close(){
-    close(first_socket);
     Epoll::removeClient(first_socket);
+    close(first_socket);
 }
 
 bool CUnixDatagramSocket::isSet(ReadDataRecipient_t _testListener)

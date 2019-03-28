@@ -8,32 +8,31 @@ using namespace std;
 #define EPOLL_MAX_EVENTS 64
 void print_epoll_ctl_error(int errorCode);
 
-pthread_mutex_t mutex_map = PTHREAD_MUTEX_INITIALIZER;
-
+pthread_mutex_t Epoll::mutex_threadSave = PTHREAD_MUTEX_INITIALIZER;
 std::map<pid_t, Epoll *> Epoll::epoll_map;
 
 
 Epoll::Epoll(bool _verbose)
 {
     thread_id = syscall(SYS_gettid);
-    pthread_mutex_lock( &mutex_map);
+    pthread_mutex_lock( &mutex_threadSave);
     {
         epoll_map[thread_id] = this;
     }
-    pthread_mutex_unlock( &mutex_map);
+    pthread_mutex_unlock( &mutex_threadSave);
 
     init(_verbose);
 }
 
 Epoll::~Epoll()
 {
-    pthread_mutex_lock( &mutex_map);
+    pthread_mutex_lock( &mutex_threadSave);
     auto it = epoll_map.find(syscall(SYS_gettid));
     if (it != epoll_map.end())
     {
         epoll_map.erase(it);
     }
-    pthread_mutex_unlock( &mutex_map);
+    pthread_mutex_unlock( &mutex_threadSave);
 
 }
 
@@ -50,13 +49,15 @@ void Epoll::init(bool _verbose)
     }
 }
 
-static struct epoll_event event_ctl;
+
 
 bool Epoll::addEpollClient(int fileDesc)
 {
-    pthread_mutex_lock( &mutex_map);
+    struct epoll_event event_ctl;
+
+    pthread_mutex_lock( &mutex_threadSave);
     Epoll * epoll_object = epoll_map[syscall(SYS_gettid)];
-    pthread_mutex_unlock( &mutex_map);
+    pthread_mutex_unlock( &mutex_threadSave);
 
 
     if (epoll_object->_epoll_fd == -1)
@@ -85,9 +86,9 @@ bool Epoll::addEpollClient(int fileDesc)
 
 void Epoll::removeClient(int fileDesc)
 {
-    pthread_mutex_lock( &mutex_map);
+    pthread_mutex_lock( &mutex_threadSave);
     Epoll * epoll_object = epoll_map[syscall(SYS_gettid)];
-    pthread_mutex_unlock( &mutex_map);
+    pthread_mutex_unlock( &mutex_threadSave);
 
     EpollRecipientsMap_t::iterator it;
     it = epoll_object->recipientsMap.find(fileDesc);
@@ -173,9 +174,9 @@ int Epoll::runApp()
 
 void Epoll::exit(int code)
 {
-    pthread_mutex_lock( &mutex_map);
+    pthread_mutex_lock( &mutex_threadSave);
     Epoll * epoll_object = epoll_map[syscall(SYS_gettid)];
-    pthread_mutex_unlock( &mutex_map);
+    pthread_mutex_unlock( &mutex_threadSave);
 
     epoll_object->exit_code = code;
     epoll_object->run = false;

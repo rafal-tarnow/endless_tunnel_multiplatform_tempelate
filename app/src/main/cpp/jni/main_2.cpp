@@ -16,7 +16,7 @@
 #endif
 
 #include "ctimer.h"
-#include "cudpsocket.h"
+#include "cunixdatagramsocket.h"
 
 class Application_2{
 public:
@@ -30,7 +30,7 @@ private:
     CTimer * timer_1s;
     CTimer * timer_250ms;
     CTimer * timer_500ms;
-    CUdpSocket * udpSocket = nullptr;;
+    CUnixDatagramSocket * unixSocket = nullptr;;
 };
 
 class Application_3{
@@ -39,23 +39,23 @@ public:
     ~Application_3();
 
 private:
-    void dataFromCUdpSocket();
+    void dataFromUnixSocket();
     void onTimer_1s();
     void onTimer_250ms();
     void onTimer_500ms();
     CTimer * timer_1s;
     CTimer * timer_250ms;
     CTimer * timer_500ms;
-    CUdpSocket * udpSocket = nullptr;;
+    CUnixDatagramSocket * unixSocket = nullptr;;
 };
 
 
 void main_2(int x)
 {
 //    LOGD("---- NOWY THREAD DZIALA !!!");
-//    Epoll epoll(true);
-//    Application_2 application;
-//    epoll.runApp();
+    Epoll epoll(true);
+    Application_2 application;
+    epoll.runApp();
 
 }
 
@@ -86,7 +86,7 @@ Application_2::Application_2()
     timer_500ms->connect<Application_2, &Application_2::onTimer_500ms>(this);
     timer_500ms->start(500);
 
-    udpSocket = new CUdpSocket("127.0.0.1", 7001);
+    unixSocket = new CUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
 }
 
 Application_2::~Application_2()
@@ -95,10 +95,10 @@ Application_2::~Application_2()
     delete timer_250ms;
     delete timer_500ms;
 
-    if(udpSocket)
+    if(unixSocket)
     {
-        delete udpSocket;
-        udpSocket = nullptr;
+        delete unixSocket;
+        unixSocket = nullptr;
     }
 }
 
@@ -110,8 +110,7 @@ void Application_2::onTimer_1s()
     LOGD("Application::onTimer_1s()) = ");// << time_1s*1000 << endl;
 
     char buffer[5] = {1,2,3,4,5};
-    uint16_t sendPort = 7001;
-    udpSocket->writeDatagram(buffer,5,"127.0.0.1",sendPort);
+    unixSocket->writeDatagram("com_reyfel_sample_CapAfri_to_NDK",buffer, 5);
 }
 
 static int time_250ms = 0;
@@ -131,8 +130,6 @@ void Application_2::onTimer_500ms()
 }
 
 
-
-
 Application_3::Application_3()
 {
     timer_1s = new CTimer();
@@ -147,24 +144,16 @@ Application_3::Application_3()
     timer_500ms->connect<Application_3, &Application_3::onTimer_500ms>(this);
     timer_500ms->start(500);
 
-    udpSocket = new CUdpSocket("127.0.0.1", 7002);
-
-    uint16_t listen_port = 7001;
-    udpSocket->connect<Application_3, &Application_3::dataFromCUdpSocket>(this);
-    udpSocket->Bind(listen_port, CUdpSocket::ShareAddress);
+    unixSocket = new CUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
+    unixSocket->connect<Application_3, &Application_3::dataFromUnixSocket>(this);
+    unixSocket->Bind();
 }
 
-void Application_3::dataFromCUdpSocket(){
-    LOGD("Application_3::dataFromCUdpSocket()");
+void Application_3::dataFromUnixSocket(){
+    LOGD("Application_3::dataFromUnixSocket()");
 
-    uint32_t senderIP = 0;
-    uint16_t senderPort = 0;
-
-    std::vector< char> buffer;
-    udpSocket->readDatagram(&buffer,&senderIP,&senderPort);
-
-//    cout << "   senderIP = " << CUdpSocket::convert_IP4(senderIP) << endl;
-//    cout << "   senderPort = " << senderPort << endl;
+    std::vector<char> buffer;
+    unixSocket->readDatagram(&buffer);
 }
 
 
@@ -174,10 +163,10 @@ Application_3::~Application_3()
     delete timer_250ms;
     delete timer_500ms;
 
-    if(udpSocket)
+    if(unixSocket)
     {
-        delete udpSocket;
-        udpSocket = nullptr;
+        delete unixSocket;
+        unixSocket = nullptr;
     }
 }
 

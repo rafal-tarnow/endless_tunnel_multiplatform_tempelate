@@ -17,7 +17,7 @@ class Epoll
     typedef CDelegate<void, int> EpollRecipient_t;
     typedef std::map<int, EpollRecipient_t> EpollRecipientsMap_t;
 
-  public:
+public:
     Epoll(bool _verbose);
     ~Epoll();
     template <class C, void (C::*Function)(int)> static bool addClient(int fileDesc, C *instance);
@@ -28,7 +28,7 @@ class Epoll
     int runApp();
     static void exit(int code = EPOLL_EXIT_SUCCESS);
 
-  private:
+private:
     bool verbose = true;
     int _epoll_fd = -1;
     int exit_code = EPOLL_EXIT_SUCCESS;
@@ -36,8 +36,8 @@ class Epoll
     EpollRecipientsMap_t recipientsMap;
     pid_t thread_id;
 
-    static Epoll *epoll_objects;
     static std::map<pid_t, Epoll *> epoll_map;
+    static pthread_mutex_t mutex_threadSave;
 
     void init(bool _verbose = false);
 
@@ -46,7 +46,9 @@ class Epoll
 
 template <class C, void (C::*Function)(int)> bool Epoll::addClient(int fileDesc, C *instance)
 {
+    pthread_mutex_lock( &mutex_threadSave);
     Epoll *epoll_object = epoll_map[syscall(SYS_gettid)];
+    pthread_mutex_unlock( &mutex_threadSave);
 
     EpollRecipient_t newRecipient;
     if (epoll_object->recipientsMap.find(fileDesc) != epoll_object->recipientsMap.end())
@@ -69,7 +71,10 @@ template <class C, void (C::*Function)(int)> bool Epoll::addClient(int fileDesc,
 
 template <void (*Function)(int)> bool Epoll::addClient(int fileDesc)
 {
+    pthread_mutex_lock( &mutex_threadSave);
     Epoll *epoll_object = epoll_map[syscall(SYS_gettid)];
+    pthread_mutex_unlock( &mutex_threadSave);
+
     EpollRecipient_t newRecipient;
     if (epoll_object->recipientsMap.find(fileDesc) != epoll_object->recipientsMap.end())
     {

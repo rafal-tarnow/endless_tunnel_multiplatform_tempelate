@@ -35,11 +35,11 @@ public class EchoServer implements Runnable {
         while (running)
         {
 
-            try {
-                sendEcho("123456");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                sendEcho("123456");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
 //            if (received.equals("end")) {
 //                running = false;
