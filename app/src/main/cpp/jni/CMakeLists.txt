@@ -9,6 +9,8 @@ add_library(hello-jni SHARED
         cudpsocket.cpp
         cunixdatagramsocket.h
         cunixdatagramsocket.cpp
+	aunixdatagramsocket.h
+        aunixdatagramsocket.cpp
         epoll.hpp
         epoll.cpp
 	main_2.h

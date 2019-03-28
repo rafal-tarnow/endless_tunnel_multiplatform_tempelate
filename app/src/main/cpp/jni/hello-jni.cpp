@@ -21,7 +21,7 @@
 #include <pthread.h>
 #include <thread>
 #include "main_2.h"
-#include "cunixdatagramsocket.h"
+#include "aunixdatagramsocket.h"
 
 
 /* This is a trivial JNI example where we use a native method
@@ -71,9 +71,9 @@ void bar(int x)
 const char *message = "Main 2";
 
 
-std::thread second (main_2, 0);  // spawn new thread that calls bar(0)
 std::thread third (main_3, 0);
-CUnixDatagramSocket * unixSendSocket = nullptr;
+AUnixDatagramSocket * unixSendSocket = nullptr;
+
 
 extern "C" {
 JNIEXPORT /*jstring*/ int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env, jobject thiz);
@@ -109,7 +109,7 @@ Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env,
 
   //  second.join();               // pauses until second finishes
 
-    unixSendSocket = new CUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
+    unixSendSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
 
     return 14;
 }

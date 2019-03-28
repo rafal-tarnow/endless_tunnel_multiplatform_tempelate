@@ -101,19 +101,19 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
         showToast(new Integer(stringFromJNI()).toString());
 
 
-            sendCommand();
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while(true) {
-                        sendCommand();
                         try {
-                            Thread.sleep(250);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        sendCommand();
                     }
+
                 }
             }).start();
 
