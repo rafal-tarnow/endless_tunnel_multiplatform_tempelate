@@ -31,10 +31,10 @@ class CUnixDatagramSocket
 #endif
     typedef CDelegate<void> ReadDataRecipient_t;
 public:
-    CUnixDatagramSocket(const char *listenFileName, bool isAbstract = false);
+    CUnixDatagramSocket();
     ~CUnixDatagramSocket();
 
-    bool Bind();
+    bool Bind(const char * listenFileName);
     void Close();
 
     int64_t readDatagram(std::vector<char> * data);
@@ -97,18 +97,19 @@ private:
     bool isSet(ReadDataRecipient_t _testListener);
     int ret_val;
 
-    struct sockaddr_un serverAddress;
-    struct sockaddr_un clientAddress;
+    struct sockaddr_un bind_Address;
+    struct sockaddr_un send_Address;
+    struct sockaddr_un recvfrom_Address;
+
+    socklen_t bind_addr_size;
+    socklen_t send_addr_size;
+    socklen_t recvfrom_addr_size;
 
 #define BUFLEN 65000
     char first_socket_rx_buffer[BUFLEN];
     int first_socket = -1;
 
-    bool mIsAbstractSocketNamespace = false;
-    socklen_t lenght_ofAdressStruct;
-
     std::vector<ReadDataRecipient_t> listeners;
-
 
 #ifdef QT_CORE_LIB
     QSocketNotifier * socketNotifier;

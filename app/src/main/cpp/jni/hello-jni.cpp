@@ -109,7 +109,7 @@ Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env,
 
   //  second.join();               // pauses until second finishes
 
-    unixSendSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_Java", true);
+    unixSendSocket = new AUnixDatagramSocket();
 
     return 14;
 }
@@ -117,8 +117,8 @@ Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env,
 JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JNIEnv *env, jobject thiz)
 {
     char buffer[6] = {1,2,3,4,5,6};
-    unixSendSocket->writeDatagram("com_reyfel_sample_CapAfri_to_NDK",buffer, 2);
-
+    unixSendSocket->writeDatagram("\0to_NDK_1",buffer, 3);
+    unixSendSocket->writeDatagram("\0to_NDK_2",buffer, 1);
     return 14;
 
 }

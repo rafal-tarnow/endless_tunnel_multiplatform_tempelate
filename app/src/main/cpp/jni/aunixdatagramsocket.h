@@ -1,4 +1,4 @@
-#pragma  once
+#pragma once
 
 #include "cdelegate.h"
 
@@ -30,10 +30,10 @@ class AUnixDatagramSocket
 #endif
     typedef CDelegate<void> ReadDataRecipient_t;
 public:
-    AUnixDatagramSocket(const char *listenFileName, bool isAbstract = false);
+    AUnixDatagramSocket();
     ~AUnixDatagramSocket();
 
-    bool Bind();
+    bool Bind(const char * listenFileName);
     void Close();
     int getFD();
 
@@ -84,10 +84,10 @@ public:
         }
     }
 
-    void PublicReadyReadSlot(int fd);
+    void PublicReadyReadSlot(int file_fd);
 
 #ifdef QT_CORE_LIB
-private slots:
+    private slots:
     void readyReadSlot(int fd);
 #else
 private:
@@ -99,18 +99,19 @@ private:
     bool isSet(ReadDataRecipient_t _testListener);
     int ret_val;
 
-    struct sockaddr_un serverAddress;
-    struct sockaddr_un clientAddress;
+    struct sockaddr_un bind_Address;
+    struct sockaddr_un send_Address;
+    struct sockaddr_un recvfrom_Address;
+
+    socklen_t bind_addr_size;
+    socklen_t send_addr_size;
+    socklen_t recvfrom_addr_size;
 
 #define BUFLEN 65000
     char first_socket_rx_buffer[BUFLEN];
     int first_socket = -1;
 
-    bool mIsAbstractSocketNamespace = false;
-    socklen_t lenght_ofAdressStruct;
-
     std::vector<ReadDataRecipient_t> listeners;
-
 
 #ifdef QT_CORE_LIB
     QSocketNotifier * socketNotifier;

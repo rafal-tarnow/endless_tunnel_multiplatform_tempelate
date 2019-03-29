@@ -11,13 +11,8 @@
 using std::cout;
 using std::endl;
 
-AUnixDatagramSocket::AUnixDatagramSocket(const char * listenFileName, bool isAbstract)
+AUnixDatagramSocket::AUnixDatagramSocket()
 {
-    mIsAbstractSocketNamespace = isAbstract;
-    //UNLINK file
-    if(!mIsAbstractSocketNamespace)
-        unlink(listenFileName);
-
     //CREATE SOCKET FILE DESCRIPTOR
     if ((first_socket = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
         std::cout << "[Error | CUdpUnixSocket] failed to create udp socket" << std::endl;
@@ -25,30 +20,19 @@ AUnixDatagramSocket::AUnixDatagramSocket(const char * listenFileName, bool isAbs
         std::cout << "[Info | CUdpUnixSocket] sucesfull created socket" << std::endl;
     }
 
-    //DEFINE SEND HOST
-    if(!mIsAbstractSocketNamespace)
-    {
-        lenght_ofAdressStruct = sizeof(serverAddress);
-    }
-    else
-    {
-        lenght_ofAdressStruct = sizeof(serverAddress.sun_family) + sizeof(listenFileName) - 1;
-    }
+    //REMOTE
+    memset((char *) &send_Address, 0, sizeof(struct sockaddr_un));
+    send_Address.sun_family = AF_UNIX;
+    send_addr_size = sizeof(struct sockaddr_un);
 
-    memset((char *) &serverAddress, 0, sizeof(serverAddress));
-    serverAddress.sun_family = AF_UNIX;
-    if(!mIsAbstractSocketNamespace)
-    {
-        strcpy(serverAddress.sun_path, listenFileName);
-    }
-    else
-    {
-        serverAddress.sun_path[0] = '\0';
-        strcpy(&(serverAddress.sun_path[1]), listenFileName);
-    }
+    //BIND
+    memset((char *) &bind_Address, 0, sizeof(struct sockaddr_un));
+    bind_Address.sun_family = AF_UNIX;
+    bind_addr_size = sizeof(struct sockaddr_un);
 
-    memset((char *) &clientAddress, 0, sizeof(clientAddress));
-    clientAddress.sun_family = AF_UNIX;
+    //RECVFROM
+    memset((char*) &recvfrom_Address, 0, sizeof(struct sockaddr_un));
+    recvfrom_addr_size = sizeof(struct sockaddr_un);
 }
 
 AUnixDatagramSocket::~AUnixDatagramSocket(){
@@ -56,9 +40,36 @@ AUnixDatagramSocket::~AUnixDatagramSocket(){
     listeners.clear();
 }
 
-bool AUnixDatagramSocket::Bind()
+bool AUnixDatagramSocket::Bind(const char * listenFileName)
 {
-    ret_val = bind(first_socket, (struct sockaddr*)&serverAddress, lenght_ofAdressStruct);
+    bool mIsAbstractSocketNamespace;
+
+    if(listenFileName[0] == '\0')
+        mIsAbstractSocketNamespace = true;
+    else
+        mIsAbstractSocketNamespace = false;
+
+
+    //DEFINE SEND HOST
+    bind_addr_size = sizeof(struct sockaddr_un);
+
+    memset((char *) &bind_Address, 0, sizeof(bind_Address));
+    bind_Address.sun_family = AF_UNIX;
+
+    if(!mIsAbstractSocketNamespace)
+    {
+        strncpy(bind_Address.sun_path, listenFileName, strlen(listenFileName));
+    }
+    else
+    {
+        bind_Address.sun_path[0] = '\0';
+        strncpy(&(bind_Address.sun_path[1]), &(listenFileName[1]), strlen(&(listenFileName[1])));
+    }
+
+    //UNLINK file
+    unlink(listenFileName);
+
+    ret_val = bind(first_socket, (struct sockaddr*)&bind_Address, bind_addr_size);
 
     if(ret_val == 0){
         cout << "[Info | CUdpUnixSocket] sucesfull bind socket" << endl;
@@ -71,9 +82,9 @@ bool AUnixDatagramSocket::Bind()
     return false;
 }
 
-void AUnixDatagramSocket::PublicReadyReadSlot(int fd)
+void AUnixDatagramSocket::PublicReadyReadSlot(int file_fd)
 {
-    readyReadSlot(fd);
+    readyReadSlot(file_fd);
 }
 
 void AUnixDatagramSocket::readyReadSlot(int fd)
@@ -110,7 +121,7 @@ bool AUnixDatagramSocket::connectFileDescriptorToMainLoop(){
 
 int64_t AUnixDatagramSocket::readDatagram(std::vector<char> *data)
 {
-    int recv_len = recvfrom(first_socket, first_socket_rx_buffer, BUFLEN, 0, (struct sockaddr *)&clientAddress, &lenght_ofAdressStruct);
+    int recv_len = recvfrom(first_socket, first_socket_rx_buffer, BUFLEN, 0, (struct sockaddr *)&recvfrom_Address, &recvfrom_addr_size);
     //cout << clientAddress.sun_path;
     if(recv_len == -1){
         //cout << "Read Error " << endl;
@@ -133,16 +144,25 @@ int64_t AUnixDatagramSocket::readDatagram(std::vector<char> *data)
 
 int64_t AUnixDatagramSocket::writeDatagram(const char * nazwaPliku, const char *data, int64_t size)
 {
+    bool mIsAbstractSocketNamespace;
+
+    if(nazwaPliku[0] == '\0')
+        mIsAbstractSocketNamespace = true;
+    else
+        mIsAbstractSocketNamespace = false;
+
+    memset(send_Address.sun_path,0,sizeof(send_Address.sun_path));
     if(!mIsAbstractSocketNamespace)
     {
-        strcpy(clientAddress.sun_path, nazwaPliku);
+        strncpy(send_Address.sun_path, nazwaPliku, strlen(nazwaPliku));
     }
     else
     {
-        clientAddress.sun_path[0] = '\0';
-        strcpy(&(clientAddress.sun_path[1]), nazwaPliku);
+        send_Address.sun_path[0] = '\0';
+        strncpy(&(send_Address.sun_path[1]), &(nazwaPliku[1]) ,strlen(&(nazwaPliku[1])));
     }
-    ret_val = sendto(first_socket, data, size, 0, (struct sockaddr*)&clientAddress, lenght_ofAdressStruct);
+
+    ret_val = sendto(first_socket, data, size, 0, (struct sockaddr*)&send_Address, send_addr_size);
 
     if(ret_val == -1){
         //cout << "[Error | CUdpSocket] failed sendto data via udp socket" << endl;
@@ -160,7 +180,7 @@ int AUnixDatagramSocket::getFD()
 }
 
 void AUnixDatagramSocket::Close(){
-    //Epoll::removeClient(first_socket);
+    Epoll::removeClient(first_socket);
     close(first_socket);
 }
 

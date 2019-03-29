@@ -13,6 +13,8 @@ add_library(hello-jni SHARED
         aunixdatagramsocket.cpp
         epoll.hpp
         epoll.cpp
+        loop.hpp
+        loop.cpp
 	main_2.h
 	main_2.cpp)
 

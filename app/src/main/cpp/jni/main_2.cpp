@@ -3,8 +3,7 @@
 
 #ifdef __ANDROID__
 #   include <android/log.h>
-#include <android/looper.h>
-
+#   include <android/looper.h>
 #endif
 
 
@@ -22,144 +21,88 @@
 
 
 
-AUnixDatagramSocket * unixSocket = nullptr;
+AUnixDatagramSocket * unixSocket_1 = nullptr;
+AUnixDatagramSocket * unixSocket_2 = nullptr;
 
-void standaloneDataFromUnixSocket()
+void standaloneDataFromUnixSocket_1()
 {
-    LOGD("void standaloneDataFromUnixSocket()");
+    LOGD("void standaloneDataFromUnixSocket_1()");
 
     std::vector<char> buffer;
-    unixSocket->readDatagram(&buffer);
+    unixSocket_1->readDatagram(&buffer);
 
-    LOGD("    size = %d", buffer.size());
+    LOGD("    size_1 = %d", buffer.size());
     for(unsigned int i = 0; i < buffer.size(); i++)
     {
-        LOGD("    buffer[%d] = %d",i, int(buffer[i]));
+        LOGD("    buffer_1[%d] = %d",i, int(buffer[i]));
+    }
+}
+
+void standaloneDataFromUnixSocket_2()
+{
+    LOGD("void standaloneDataFromUnixSocket_2()");
+
+    std::vector<char> buffer;
+    unixSocket_2->readDatagram(&buffer);
+
+    LOGD("    size_2 = %d", buffer.size());
+    for(unsigned int i = 0; i < buffer.size(); i++)
+    {
+        LOGD("    buffer_2[%d] = %d",i, int(buffer[i]));
     }
 }
 
 
-int _epoll_fd = -1;
+
+
+int callbackFunc(int fd, int events, void* data)
+{
+    LOGD("callbackFunc");
+    if(events == ALOOPER_EVENT_INPUT)
+    {
+        LOGD("ALOOPER_EVENT_INPUT");
+        if(fd == unixSocket_1->getFD())
+        {
+            unixSocket_1->PublicReadyReadSlot(fd);
+            return 1;
+        }
+        else if(fd == unixSocket_2->getFD())
+        {
+            unixSocket_2->PublicReadyReadSlot(fd);
+            return 1;
+        }
+    }
+    return 1;
+}
 
 void main_3(int x)
 {
    LOGD("---- NOWY THREAD DZIALA !!!");
-    Epoll epoll(true);
-//
-//    unixSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
-//    unixSocket->connect<&standaloneDataFromUnixSocket>();
-//    unixSocket->Bind();
-//
-    epoll.runApp();
-//
-//
-//    delete unixSocket;
+//   Epoll epoll(true);
+//   unixSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
+//   unixSocket->connect<&standaloneDataFromUnixSocket>();
+//   unixSocket->Bind();
+//   epoll.runApp();
+//   delete unixSocket;
 
-    //----------------------------
-
-//    _epoll_fd = epoll_create(100);
-//    if (_epoll_fd == -1)
-//    {
-//        LOGD("[ERROR][EPOLL | init] Nie udało się otworzyć epoll'a");
-//        return;
-//    }
-//
-//    unixSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
-//    unixSocket->connect<&standaloneDataFromUnixSocket>();
-//    unixSocket->Bind();
-//
-//
-//    //AD FD
-//    struct epoll_event event_ctl;
-//
-//    event_ctl.data.fd = unixSocket->getFD();
-//    event_ctl.events = EPOLLIN;
-//
-//    if (epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, unixSocket->getFD(), &event_ctl) == -1)
-//    {
-//            LOGD("[ERROR][EPOLL | addClient] Nie można dodać klienta do Epoll'a fd = ");
-//            goto exit1;
-//    }
-//
-//    //RUN
-//    {
-//#define EPOLL_MAX_EVENTS 64
-//        int fileDesc_nums = -1;
-//        struct epoll_event epoll_events[EPOLL_MAX_EVENTS];
-//        bool run = true;
-//
-//        while(run) {
-//            fileDesc_nums = epoll_wait(_epoll_fd, epoll_events, EPOLL_MAX_EVENTS, -1);
-//
-//            for (int i = 0; i < fileDesc_nums; i++)
-//            {
-//                if (epoll_events[i].data.fd == unixSocket->getFD())
-//                {
-//                    LOGD("[EPOLL | eventFrom] unixSocket ");
-//                    unixSocket->PublicReadyReadSlot(epoll_events[i].data.fd);
-//                    //recipientsMap[epoll_events[i].data.fd](epoll_events[i].data.fd);
-//                }
-//
-//            }
-//        }
-//
-//    }
-//
-//
-//
-//    //DELETE FD
-//    epoll_ctl(_epoll_fd, EPOLL_CTL_DEL, unixSocket->getFD(), NULL);
-//    close(_epoll_fd);
-//    _epoll_fd = -1;
-//
-//    exit1:
-//    delete unixSocket;
    //------------------------------
 
-    unixSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
-    unixSocket->connect<&standaloneDataFromUnixSocket>();
-    unixSocket->Bind();
+    ALooper * looper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
 
-    int fd = -1;
-    int events, retVal;
+    unixSocket_1 = new AUnixDatagramSocket();
+    unixSocket_1->connect<&standaloneDataFromUnixSocket_1>();
+    unixSocket_1->Bind("\0to_NDK_1");
+    ALooper_addFd(looper, unixSocket_1->getFD(), ALOOPER_POLL_CALLBACK, ALOOPER_EVENT_INPUT, callbackFunc, NULL);
 
-    ALooper* looper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
+    unixSocket_2 = new AUnixDatagramSocket();
+    unixSocket_2->connect<&standaloneDataFromUnixSocket_2>();
+    unixSocket_2->Bind("\0to_NDK_2");
+    ALooper_addFd(looper, unixSocket_2->getFD(), ALOOPER_POLL_CALLBACK, ALOOPER_EVENT_INPUT, callbackFunc, NULL);
 
-    ALooper_addFd(looper, unixSocket->getFD(), unixSocket->getFD(), ALOOPER_EVENT_INPUT, NULL, NULL);
+    int events;
+    ALooper_pollAll(-1, NULL, &events, NULL);
 
-
-    while (1) {
-        retVal = ALooper_pollAll(-1, NULL, &events, NULL);
-
-        if(retVal == ALOOPER_POLL_WAKE)
-        {
-            LOGD("ALOOPER_POLL_WAKE");
-        }
-        else if(retVal == ALOOPER_POLL_CALLBACK)
-        {
-            LOGD("ALOOPER_POLL_CALLBACK");
-        }
-        else if(retVal == ALOOPER_POLL_TIMEOUT)
-        {
-            LOGD("ALOOPER_POLL_TIMEOUT");
-        }
-        else if(retVal == ALOOPER_POLL_ERROR)
-        {
-            LOGD("ALOOPER_POLL_ERROR");
-        }
-        else
-        {
-            LOGD("retVal == %d",retVal);
-            if(retVal == unixSocket->getFD())
-            {
-                unixSocket->PublicReadyReadSlot(retVal);
-            }
-        }
-
-
-    }
-
-delete unixSocket;
+    delete unixSocket_1;
 
 }
 
