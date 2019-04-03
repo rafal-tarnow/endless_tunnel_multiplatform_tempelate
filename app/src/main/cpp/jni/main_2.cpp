@@ -17,7 +17,8 @@
 #   define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, DEBUG_TAG, __VA_ARGS__))
 #endif
 
-#include "aunixdatagramsocket.h"
+#include "library_api/aunixdatagramsocket.h"
+#include "library_api/loop.hpp"
 
 
 
@@ -60,7 +61,6 @@ int callbackFunc(int fd, int events, void* data)
     LOGD("callbackFunc");
     if(events == ALOOPER_EVENT_INPUT)
     {
-        LOGD("ALOOPER_EVENT_INPUT");
         if(fd == unixSocket_1->getFD())
         {
             unixSocket_1->PublicReadyReadSlot(fd);
@@ -77,7 +77,7 @@ int callbackFunc(int fd, int events, void* data)
 
 void main_3(int x)
 {
-   LOGD("---- NOWY THREAD DZIALA !!!");
+    LOGD("START THREAD main_3");
 //   Epoll epoll(true);
 //   unixSocket = new AUnixDatagramSocket("com_reyfel_sample_CapAfri_to_NDK", true);
 //   unixSocket->connect<&standaloneDataFromUnixSocket>();
@@ -87,20 +87,20 @@ void main_3(int x)
 
    //------------------------------
 
-    ALooper * looper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
+
+    Loop loop;
+    ALooper *looper = loop.init(true);
 
     unixSocket_1 = new AUnixDatagramSocket();
     unixSocket_1->connect<&standaloneDataFromUnixSocket_1>();
     unixSocket_1->Bind("\0to_NDK_1");
-    ALooper_addFd(looper, unixSocket_1->getFD(), ALOOPER_POLL_CALLBACK, ALOOPER_EVENT_INPUT, callbackFunc, NULL);
+
 
     unixSocket_2 = new AUnixDatagramSocket();
     unixSocket_2->connect<&standaloneDataFromUnixSocket_2>();
     unixSocket_2->Bind("\0to_NDK_2");
-    ALooper_addFd(looper, unixSocket_2->getFD(), ALOOPER_POLL_CALLBACK, ALOOPER_EVENT_INPUT, callbackFunc, NULL);
 
-    int events;
-    ALooper_pollAll(-1, NULL, &events, NULL);
+    loop.runApp();
 
     delete unixSocket_1;
 

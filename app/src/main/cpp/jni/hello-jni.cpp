@@ -21,7 +21,7 @@
 #include <pthread.h>
 #include <thread>
 #include "main_2.h"
-#include "aunixdatagramsocket.h"
+#include "library_api/aunixdatagramsocket.h"
 
 
 /* This is a trivial JNI example where we use a native method
