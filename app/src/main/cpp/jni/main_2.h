@@ -2,3 +2,4 @@
 
 void main_2(int x);
 void main_3(int x);
+void main_4(int x);
