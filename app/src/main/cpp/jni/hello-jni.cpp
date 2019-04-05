@@ -72,7 +72,6 @@ const char *message = "Main 2";
 
 
 std::thread third (main_3, 0);
-std::thread fourth (main_4, 0);
 CUnixDatagramSocket * unixSendSocket = nullptr;
 
 

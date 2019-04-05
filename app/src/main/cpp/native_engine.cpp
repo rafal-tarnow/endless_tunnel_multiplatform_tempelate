@@ -25,6 +25,8 @@
 #include "./SystemAbstraction/system_billing.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
 #include "./SystemAbstraction/Application/libs/library_opengles_2/Resources/Resources.hpp"
+#include <library_api/loop.hpp>
+#include <library_api/cunixdatagramsocket.h>
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 0
@@ -107,34 +109,110 @@ bool NativeEngine::IsAnimating() {
     return mHasFocus && mIsVisible && mHasWindow;
 }
 
+CUnixDatagramSocket * unixSocket_1 = nullptr;
+CUnixDatagramSocket * unixSocket_2 = nullptr;
+
+void standaloneDataFromUnixSocket_1()
+{
+    static int index = 0;
+    index++;
+    if(index == 10)
+    {
+        Loop::exit(LOOP_EXIT_SUCCESS);
+        index = 0;
+    }
+    LOGD("void standaloneDataFromUnixSocket_1()");
+
+    std::vector<char> buffer;
+    unixSocket_1->readDatagram(&buffer);
+
+    LOGD("    size_1 = %d", int(buffer.size()));
+    for(unsigned int i = 0; i < buffer.size(); i++)
+    {
+        LOGD("    buffer_1[%d] = %d",i, int(buffer[i]));
+    }
+}
+
+void standaloneDataFromUnixSocket_2()
+{
+    LOGD("void standaloneDataFromUnixSocket_2()");
+
+    std::vector<char> buffer;
+    unixSocket_2->readDatagram(&buffer);
+
+    LOGD("    size_2 = %d", int(buffer.size()));
+    for(unsigned int i = 0; i < buffer.size(); i++)
+    {
+        LOGD("    buffer_2[%d] = %d",i, int(buffer[i]));
+    }
+}
+
 void NativeEngine::GameLoop() {
+    Loop * loop = new Loop();
+    loop->init(true);
+
+
+    unixSocket_1 = new CUnixDatagramSocket();
+    unixSocket_1->connect<&standaloneDataFromUnixSocket_1>();
+    unixSocket_1->Bind("\0to_NDK_1");
+
+
+    unixSocket_2 = new CUnixDatagramSocket();
+    unixSocket_2->connect<&standaloneDataFromUnixSocket_2>();
+    unixSocket_2->Bind("\0to_NDK_2");
+
+
+    /////////////////////////////////////////
     mApp->userData = this;
     mApp->onAppCmd = _handle_cmd_proxy;
     mApp->onInputEvent = _handle_input_proxy;
 
-    while (1) {
-        int ident, events;
+    while (1)
+    {
+        int ident, events, fd;
         struct android_poll_source* source;
+        void **data;
 
         // If not animating, block until we get an event; if animating, don't block.
-        while ((ident = ALooper_pollAll(IsAnimating() ? 0 : -1, NULL, &events, 
-                (void**)&source)) >= 0) {
 
+        while ((ident = ALooper_pollAll(IsAnimating() ? 0 : -1, &fd, &events, data)) >= 0)
+        {
             // process event
-            if (source != NULL) {
-                source->process(mApp, source);
-            }
+                if(data != NULL)
+                {
+                    if(*data == loop)
+                    {
+                        LOGD("LOOP EVENT");
+                        loop->processFileDescriptorEvent(fd);
+                    }
+                    else
+                    {
+                        LOGD("PIPE EVENT");
+                        source = (struct android_poll_source*)(*data);
+                        source->process(mApp, source);
+                    }
+                }
 
             // are we exiting?
-            if (mApp->destroyRequested) {
-                return;
+            if (mApp->destroyRequested)
+            {
+                goto exit_wile;
             }
         }
 
-        if (IsAnimating()) {
+        if (IsAnimating())
+        {
             DoFrame();
         }
     }
+
+exit_wile:
+    /////////////////////////////////
+    delete unixSocket_1;
+    delete unixSocket_2;
+    delete loop;
+    LOGD("CLEAN LOOP");
+    return;
 }
 
 JNIEnv* NativeEngine::GetJniEnv() {

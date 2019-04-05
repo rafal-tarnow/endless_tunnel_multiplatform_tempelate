@@ -21,6 +21,7 @@ set(CMAKE_SHARED_LINKER_FLAGS
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/jni/) #include <library_api/...>
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
@@ -52,4 +53,5 @@ target_link_libraries(game
     GLESv2
     log
     OpenSLES
+        library_api
      )
