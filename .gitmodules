@@ -1,9 +1,6 @@
 [submodule "app/src/main/cpp/SystemAbstraction/Application/libs/library_opengles_2"]
 	path = app/src/main/cpp/SystemAbstraction/Application/libs/library_opengles_2
 	url = https://github.com/rafal-tarnow/library_opengles_2.git
-[submodule "app/app/src/main/cpp/jni/library_api"]
-	path = app/app/src/main/cpp/jni/library_api
-	url = git@192.168.103.90:/srv/repos/git/4620/1180/library_api
 [submodule "app/src/main/cpp/jni/library_api"]
 	path = app/src/main/cpp/jni/library_api
 	url = git@192.168.103.90:/srv/repos/git/4620/1180/library_api
