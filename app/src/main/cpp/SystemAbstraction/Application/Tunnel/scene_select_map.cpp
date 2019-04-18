@@ -369,10 +369,14 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
         opaque = 1.0f;
         int value = 0;
         //value = print_dpi();
-        string napis = print_dpi();
-        stringstream txt;
-        txt << "Value = " << value;
-        printToast(napis.c_str());
+        list<string> produkty = Billing::listOwnedProducts();
+        string txt;
+        for(auto it = produkty.begin(); it != produkty.end(); it++)
+        {
+            txt.append(*it);
+            txt.append(" * ");
+        }
+        printToast(txt.c_str());
 
     }
 

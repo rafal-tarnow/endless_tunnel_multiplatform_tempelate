@@ -25,7 +25,6 @@
 #include "./SystemAbstraction/system_billing.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
 #include "./SystemAbstraction/Application/libs/library_opengles_2/Resources/Resources.hpp"
-#include <library_api/loop.hpp>
 #include <library_api/cunixdatagramsocket.h>
 
 // verbose debug logs on?
@@ -69,6 +68,10 @@ NativeEngine::NativeEngine(struct android_app *app) {
     VLOGD("NativeEngine: querying API level.");
     LOGD("NativeEngine: API version %d.", mApiVersion);
 
+    //////////////////////////////////////////////////////////
+    loop = new Loop();
+    loop->init(true);
+
     systemInput_initConfigPath(app->activity->internalDataPath);
 
     if(!AudioManager::GetSingletonPtr()) {
@@ -83,7 +86,12 @@ NativeEngine* NativeEngine::GetInstance() {
     return _singleton;
 }
 
-NativeEngine::~NativeEngine() {
+NativeEngine::~NativeEngine()
+{
+    uninitPurchase();
+    delete loop;
+    LOGD("CLEAN LOOP");
+
     VLOGD("NativeEngine: destructor running");
     KillContext();
     if (mJniEnv) {
@@ -148,9 +156,6 @@ void standaloneDataFromUnixSocket_2()
 }
 
 void NativeEngine::GameLoop() {
-    Loop * loop = new Loop();
-    loop->init(true);
-
 
     unixSocket_1 = new CUnixDatagramSocket();
     unixSocket_1->connect<&standaloneDataFromUnixSocket_1>();
@@ -210,8 +215,6 @@ exit_wile:
     /////////////////////////////////
     delete unixSocket_1;
     delete unixSocket_2;
-    delete loop;
-    LOGD("CLEAN LOOP");
     return;
 }
 

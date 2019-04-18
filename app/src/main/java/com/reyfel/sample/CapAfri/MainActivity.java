@@ -117,9 +117,6 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
                 }
             }).start();
 
-            //new Thread(new EchoServer()).start();
-            new Thread(new LocalSocketWrapper()).start();
-
     }
 
     @Override
@@ -197,15 +194,15 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
     public String[] getStringArray()
     {
-        String[] products = bp.listOwnedProducts().toArray(new String[0]);
-        return products;
+//        String[] products = bp.listOwnedProducts().toArray(new String[0]);
+//        return products;
 
-//        String[] s = new String[4];
-//        s[0] = "dupa ";
-//        s[1] = "dupa ";
-//        s[2] = "zyzol ";
-//        s[3] = "zyzol ";
-//        return s;
+        String[] s = new String[4];
+        s[0] = "dupa ";
+        s[1] = "dupa ";
+        s[2] = "zyzol ";
+        s[3] = "zyzol ";
+        return s;
 
     }
 
