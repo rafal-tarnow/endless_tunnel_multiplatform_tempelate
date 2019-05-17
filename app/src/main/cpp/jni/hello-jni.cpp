@@ -122,7 +122,7 @@ JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JN
     unixSendSocket->writeDatagram("\0to_NDK_3",buffer, 5);
     unixSendSocket->writeDatagram("\0to_NDK_4",buffer, 2);
 
-    string napis = "1 | 2 | 3 | 4 | 5 ";
+    string napis = "1|2|3|4|5 ";
     unixSendSocket->writeDatagram("\0to_com_reyfel_system_billing",napis.c_str(),napis.size());
 
     return 14;

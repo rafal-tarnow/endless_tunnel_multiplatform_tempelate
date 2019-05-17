@@ -43,7 +43,7 @@ SelectMapScene::SelectMapScene()
         txt.append(*it);
         txt.append("|");
     }
-    printToast("Yours products: " + txt);
+    printToast("Billing::listOwnedProducts(): " + txt);
 
     initNormalButtons();
     initRadioButtons();
@@ -122,8 +122,6 @@ void SelectMapScene::initRadioButtons()
     }
 
     radioButtonManager.setEventListener(this);
-
-
 
     initMessageBox();
 
@@ -387,11 +385,11 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
     }
     else if(widget == unlock_widget)
     {
+        Billing::purchaseProduct("android.test.purchased");
         isMessageBoxVisible = false;
         position_x = 0;
         position_y = 0;
         opaque = 1.0f;
-
     }
 
 }

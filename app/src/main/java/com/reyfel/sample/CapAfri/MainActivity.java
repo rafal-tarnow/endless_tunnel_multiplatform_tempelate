@@ -100,23 +100,6 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
         showToast(new Integer(stringFromJNI()).toString());
 
-
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while(true) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        sendCommand();
-                    }
-
-                }
-            }).start();
-
     }
 
     @Override
@@ -176,6 +159,7 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
         Toast.makeText(this, "You've purchased something!", Toast.LENGTH_LONG).show();
+        sendCommand();
     }
 
     @Override

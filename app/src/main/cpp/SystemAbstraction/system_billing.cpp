@@ -25,19 +25,47 @@ using namespace std;
 static android_app * androidApp;
 CUnixDatagramSocket * unixSocket_5 = nullptr;
 
+
+
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <iterator>
+#include <set>
+
+using namespace std;
+
+
+
+std::set<std::string> split(const std::string& s, char delimiter)
+{
+    std::set<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, delimiter))
+    {
+        tokens.insert(token);
+    }
+    return tokens;
+}
+
 void standaloneDataFromUnixSocket_5()
 {
-    LOGD("void standaloneDataFromUnixSocket_5()");
-
     std::vector<char> buffer;
     unixSocket_5->readDatagram(&buffer);
 
-    LOGD("    size_5 = %d", int(buffer.size()));
-    LOGD("    %s",buffer.data());
-    for(unsigned int i = 0; i < buffer.size(); i++)
+    string text(buffer.data());
+
+    set<string> products = split(text,'|');
+
+    string txt;
+    for(auto it = products.begin(); it != products.end(); it++)
     {
-        LOGD("    buffer_5[%d] = %d",i, int(buffer[i]));
+        txt.append(*it);
+        txt.append(" ");
     }
+    printToast("NDK callback Products(): " + txt);
 }
 
 void initPurchase(android_app * app)
