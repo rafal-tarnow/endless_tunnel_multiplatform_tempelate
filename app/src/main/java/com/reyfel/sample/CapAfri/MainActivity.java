@@ -142,12 +142,30 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     {
         final MainActivity activity = this;
 
-        this.runOnUiThread(new Runnable() {
-            public void run() {
+        this.runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
                 showToast(message);
+            }
+        });
+
+    }
+
+    // This function will be called from C++ by name and signature
+    public void purchaseProduct(final String productId)
+    {
+        final MainActivity activity = this;
+
+        this.runOnUiThread(new Runnable() {
+            public void run()
+            {
+                showToast("Want buy " + productId);
                 boolean isOneTimePurchaseSupported = bp.isOneTimePurchaseSupported();
-                if(isOneTimePurchaseSupported) {
-                    bp.purchase(activity, "android.test.purchased");
+                if(isOneTimePurchaseSupported)
+                {
+                    showToast("bp.purchase(" + productId + ")");
+                    bp.purchase(activity, productId);
                 }
             }
         });
@@ -194,15 +212,15 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
     public String[] getStringArray()
     {
-//        String[] products = bp.listOwnedProducts().toArray(new String[0]);
-//        return products;
+        String[] products = bp.listOwnedProducts().toArray(new String[0]);
+        return products;
 
-        String[] s = new String[4];
-        s[0] = "dupa ";
-        s[1] = "dupa ";
-        s[2] = "zyzol ";
-        s[3] = "zyzol ";
-        return s;
+//        String[] s = new String[4];
+//        s[0] = "dupa ";
+//        s[1] = "dupa ";
+//        s[2] = "zyzol ";
+//        s[3] = "zyzol ";
+//        return s;
 
     }
 

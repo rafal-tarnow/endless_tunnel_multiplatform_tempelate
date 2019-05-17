@@ -300,7 +300,6 @@ void MapEditor::addCoinInFramebufferCoordinates()
 
 void MapEditor::addMushroomInFramebufferCoordinates()
 {
-    glm::vec2 dimm(2.0, 2.0);
     level.mushroom_vector.push_back(new MushroomRenderer(world_current_position_0));
 }
 

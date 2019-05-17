@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <set>
 #include <list>
 
 using namespace std;
@@ -15,7 +16,10 @@ void initPurchase(android_app * );
 void uninitPurchase();
 #endif
 
-void printToast(const char *message);
+void printToast(const string message);
+
+
+
 int callJava();
 string print_dpi();
 
@@ -26,8 +30,12 @@ class BillingEventListener
 };
 
 
+//To clear purchase
+///in Terminal write: adb shell pm clear com.android.vending
+
 class Billing
 {
 public:
-    static list<string> listOwnedProducts();
+    static set<string> listOwnedProducts();
+    static void purchaseProduct(const char *product);
 };

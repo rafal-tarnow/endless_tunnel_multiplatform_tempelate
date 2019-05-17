@@ -12,6 +12,7 @@
 #include <sstream>
 #include <system_billing.hpp>
 #include <system_opengl_include.hpp>
+#include "../CapAfri/products.h"
 
 using namespace std;
 
@@ -32,6 +33,17 @@ SelectMapScene::SelectMapScene()
     shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
     DE_setShader(&safe_area_background, shader);
     DE_setModel(&safe_area_background, glm::translate(glm::mat4(1), glm::vec3(safe_area_dimension.x / 2.0f, safe_area_dimension.y / 2.0f, 0.0f)));
+
+    //List current products
+    products = Billing::listOwnedProducts();
+    string txt;
+    for(auto it = products.begin(); it != products.end(); it++)
+    {
+        txt.append("|");
+        txt.append(*it);
+        txt.append("|");
+    }
+    printToast("Yours products: " + txt);
 
     initNormalButtons();
     initRadioButtons();
@@ -73,22 +85,34 @@ void SelectMapScene::initRadioButtons()
 
     for (unsigned int i = 0; i < LEVELS_COUNT; i++)
     {
-        button_1 = new RadioButton();
+        button = new RadioButton();
         stream.str("");
         stream << i + 1;
-        button_1->setText(stream.str());
-        button_1->setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
-        button_1->setDimm(glm::vec2(200, 200));
-        button_1->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
-        button_1->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon_mark.png"));
-        button_1->setLockTexture(TextureManager::getInstance()->getTextureId("textures/lock_black.png"));
-        if (i > 0)
+        button->setText(stream.str());
+        button->setMatrices(&safeAreaCam.viewport(), &safeAreaCam.projection(), &safeAreaCam.view());
+        button->setDimm(glm::vec2(200, 200));
+        button->setNormalBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon.png"));
+        button->setPressedBackgroundTexture(TextureManager::getInstance()->getTextureId("textures/level_icon_mark.png"));
+        button->setLockTexture(TextureManager::getInstance()->getTextureId("textures/lock_black.png"));
+
+        if (i == 1)
         {
-            button_1->setLockable(true);
-            button_1->setLocked(true);
+            if(products.count(PRODUCT_UNLOCK_LEVEL_2) == 0) {
+                button->setLockable(true);
+                button->setLocked(true);
+            }
         }
 
-        buttons.push_back(button_1);
+        if (i == 2)
+        {
+            if(products.count(PRODUCT_UNLOCK_LEVEL_3) == 0) {
+                button->setLockable(true);
+                button->setLocked(true);
+            }
+        }
+
+
+        buttons.push_back(button);
     }
     buttons.at(currentMapIndex)->setRadioState(true);
 
@@ -180,7 +204,7 @@ void SelectMapScene::OnStartGraphics(int width, int height)
 
     safeAreaCam.onResize(width, height);
 
-    GLuint fontSize = GLuint(float(height) * 0.076f);
+    //GLuint fontSize = GLuint(float(height) * 0.076f);
     // Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
     // Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
@@ -348,7 +372,7 @@ void SelectMapScene::Button_onClicked(Button *button)
     }
     else if (button == &buttonUnlock)
     {
-        printToast("Purchase product!");
+        Billing::purchaseProduct("android.test.purchased");
     }
 }
 
@@ -367,16 +391,6 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
         position_x = 0;
         position_y = 0;
         opaque = 1.0f;
-        int value = 0;
-        //value = print_dpi();
-        list<string> produkty = Billing::listOwnedProducts();
-        string txt;
-        for(auto it = produkty.begin(); it != produkty.end(); it++)
-        {
-            txt.append(*it);
-            txt.append(" * ");
-        }
-        printToast(txt.c_str());
 
     }
 

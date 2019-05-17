@@ -17,6 +17,7 @@ public:
         if(gameConfig){
             return gameConfig;
         }
+        return nullptr;
     }
     static void deleteInstance()
     {

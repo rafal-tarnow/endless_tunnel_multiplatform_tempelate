@@ -46,7 +46,7 @@ void initPurchase(android_app * app)
 
     unixSocket_5 = new CUnixDatagramSocket();
     unixSocket_5->connect<&standaloneDataFromUnixSocket_5>();
-    unixSocket_5->Bind("\0to_NDK_5");
+    unixSocket_5->Bind("\0to_com_reyfel_system_billing");
 }
 
 void uninitPurchase()
@@ -213,7 +213,29 @@ string print_dpi() {
     return tekst;
 }
 
-list<string> Billing::listOwnedProducts()
+void Billing::purchaseProduct(const char *product) {
+    JNIEnv* jni;
+    androidApp->activity->vm->AttachCurrentThread(&jni, NULL);
+
+    jclass clazz = jni->GetObjectClass(androidApp->activity->clazz);
+
+    // Get the ID of the method we want to call
+    // This must match the name and signature from the Java side
+    // Signature has to match java implementation (second string hints a t a java string parameter)
+    jmethodID methodID = jni->GetMethodID(clazz, "purchaseProduct", "(Ljava/lang/String;)V");
+
+    // Strings passed to the function need to be converted to a java string object
+    jstring jmessage = jni->NewStringUTF(product);
+
+    jni->CallVoidMethod(androidApp->activity->clazz, methodID, jmessage);
+
+    // Remember to clean up passed values
+    jni->DeleteLocalRef(jmessage);
+
+    androidApp->activity->vm->DetachCurrentThread();
+}
+
+set<string> Billing::listOwnedProducts()
 {
     JNIEnv* jni;
     android_app* app = androidApp;
@@ -236,7 +258,7 @@ list<string> Billing::listOwnedProducts()
     JNI_ASSERT(jni, true);
 
 
-    list<string> products;
+    set<string> products;
 
     for (int i=0; i<stringArrarySize; i++)
     {
@@ -247,7 +269,7 @@ list<string> Billing::listOwnedProducts()
         const char* text = jni->GetStringUTFChars(string, nullptr);
 
         item.append(text, strlen(text));
-        products.push_back(item);
+        products.insert(item);
 
         jni->ReleaseStringUTFChars(string, text);
     }
@@ -259,27 +281,25 @@ list<string> Billing::listOwnedProducts()
     return products;
 }
 
-void printToast(const char *message) {
+void printToast(const string message)
+{
     JNIEnv* jni;
     androidApp->activity->vm->AttachCurrentThread(&jni, NULL);
 
     jclass clazz = jni->GetObjectClass(androidApp->activity->clazz);
 
-    // Get the ID of the method we want to call
-    // This must match the name and signature from the Java side
-    // Signature has to match java implementation (second string hints a t a java string parameter)
     jmethodID methodID = jni->GetMethodID(clazz, "showAlert", "(Ljava/lang/String;)V");
 
-    // Strings passed to the function need to be converted to a java string object
-    jstring jmessage = jni->NewStringUTF(message);
+    jstring jmessage = jni->NewStringUTF(message.c_str());
 
     jni->CallVoidMethod(androidApp->activity->clazz, methodID, jmessage);
 
-    // Remember to clean up passed values
     jni->DeleteLocalRef(jmessage);
 
     androidApp->activity->vm->DetachCurrentThread();
 }
+
+
 #else
 
 void purchase(const char* message)

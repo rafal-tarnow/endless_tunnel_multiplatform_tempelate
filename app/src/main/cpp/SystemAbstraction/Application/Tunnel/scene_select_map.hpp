@@ -87,21 +87,21 @@ public:
     SelectMapScene();
     ~SelectMapScene();
 
-    virtual void OnStartGraphics(int width, int height);
-    virtual void OnKillGraphics();
-    virtual void DoFrame();
-    virtual void OnPointerDown(int pointerId, const struct PointerCoords *coords);
-    virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords);
-    virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords);
-    virtual bool OnBackKeyPressed();
-    virtual void OnFramebufferResized(int width, int height);
-    virtual void OnJoy(float joyX, float joyY);
+    virtual void OnStartGraphics(int width, int height) override;
+    virtual void OnKillGraphics() override;
+    virtual void DoFrame() override;
+    virtual void OnPointerDown(int pointerId, const struct PointerCoords *coords) override;
+    virtual void OnPointerUp(int pointerId, const struct PointerCoords *coords) override;
+    virtual void OnPointerMove(int pointerId, const struct PointerCoords *coords) override;
+    virtual bool OnBackKeyPressed() override;
+    virtual void OnFramebufferResized(int width, int height) override;
+    virtual void OnJoy(float joyX, float joyY) override;
     virtual void OnKeyDown(int keyCode);
-    virtual void OnPause();
+    virtual void OnPause() override;
 
 
-    void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton);
-    void Button_onClicked(Button * button);
+    void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton) override;
+    void Button_onClicked(Button * button) override;
     void Widget_onClicked(Widget * widget) override;
 
 private:
@@ -116,7 +116,7 @@ private:
 
     RadioButtonManager radioButtonManager;
 
-    RadioButton *button_1;
+    RadioButton *button;
     Widget * message_widget;
     Widget * label_widget;
     Widget * explain_widget;
@@ -149,4 +149,6 @@ private:
     Animated<float> position_x = 0.0f;
     Animated<float> position_y = 0.0f;
     Animated<float> opaque = 1.0f;
+
+    set<string> products;
 };
