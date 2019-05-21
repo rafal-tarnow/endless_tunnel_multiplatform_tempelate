@@ -159,7 +159,9 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
         Toast.makeText(this, "You've purchased something!", Toast.LENGTH_LONG).show();
-        sendCommand();
+
+        String[] products = bp.listOwnedProducts().toArray(new String[0]);
+        sendCommand(products);
     }
 
     @Override
@@ -214,7 +216,7 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
     }
 
     public native /*String*/ int  stringFromJNI();
-    public native int sendCommand();
+    public native int sendCommand(String[] pStringArray);
 
     static {
         System.loadLibrary("hello-jni");

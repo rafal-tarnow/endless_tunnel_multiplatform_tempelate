@@ -20,7 +20,6 @@
 
 #include <pthread.h>
 #include <thread>
-#include "main_2.h"
 #include "library_api/cunixdatagramsocket.h"
 
 
@@ -71,13 +70,12 @@ void bar(int x)
 const char *message = "Main 2";
 
 
-std::thread third (main_3, 0);
 CUnixDatagramSocket * unixSendSocket = nullptr;
 
 
 extern "C" {
 JNIEXPORT /*jstring*/ int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env, jobject thiz);
-JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JNIEnv *env, jobject thiz);
+JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JNIEnv *env, jobject thiz, jobjectArray pStringArray);
 };
 
 JNIEXPORT /*jstring*/ int JNICALL
@@ -114,19 +112,47 @@ Java_com_reyfel_sample_CapAfri_MainActivity_stringFromJNI(JNIEnv *env,
     return 14;
 }
 
-JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JNIEnv *env, jobject thiz)
+std::string jstring2string(JNIEnv *env, jstring jStr) {
+    if (!jStr)
+        return "";
+
+    const jclass stringClass = env->GetObjectClass(jStr);
+    const jmethodID getBytes = env->GetMethodID(stringClass, "getBytes", "(Ljava/lang/String;)[B");
+    const jbyteArray stringJbytes = (jbyteArray) env->CallObjectMethod(jStr, getBytes, env->NewStringUTF("UTF-8"));
+
+    size_t length = (size_t) env->GetArrayLength(stringJbytes);
+    jbyte* pBytes = env->GetByteArrayElements(stringJbytes, NULL);
+
+    std::string ret = std::string((char *)pBytes, length);
+    env->ReleaseByteArrayElements(stringJbytes, pBytes, JNI_ABORT);
+
+    env->DeleteLocalRef(stringJbytes);
+    env->DeleteLocalRef(stringClass);
+    return ret;
+}
+
+JNIEXPORT int JNICALL Java_com_reyfel_sample_CapAfri_MainActivity_sendCommand(JNIEnv *env, jobject thiz, jobjectArray pStringArray)
 {
     char buffer[6] = {1,2,3,4,5,6};
-    unixSendSocket->writeDatagram("\0to_NDK_1",buffer, 3);
     unixSendSocket->writeDatagram("\0to_NDK_2",buffer, 1);
     unixSendSocket->writeDatagram("\0to_NDK_3",buffer, 5);
     unixSendSocket->writeDatagram("\0to_NDK_4",buffer, 2);
 
-    string napis = "1|2|3|4|5 ";
-    unixSendSocket->writeDatagram("\0to_com_reyfel_system_billing",napis.c_str(),napis.size());
+    string txt;
 
-    return 14;
+        jsize array_length = env->GetArrayLength(pStringArray);
 
+        for (int32_t i = 0; i < array_length; ++i)
+        {
+            jstring java_string = (jstring) env->GetObjectArrayElement(pStringArray, i);
+
+            txt.append(jstring2string(env, java_string));
+            txt.append("|");
+        }
+
+    unixSendSocket->writeDatagram("\0to_com_reyfel_system_billing",txt.c_str(),txt.size());
+
+    return 0;
 }
 
 

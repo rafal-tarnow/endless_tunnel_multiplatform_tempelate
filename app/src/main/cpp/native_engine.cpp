@@ -117,57 +117,9 @@ bool NativeEngine::IsAnimating() {
     return mHasFocus && mIsVisible && mHasWindow;
 }
 
-CUnixDatagramSocket * unixSocket_1 = nullptr;
-CUnixDatagramSocket * unixSocket_2 = nullptr;
-
-void standaloneDataFromUnixSocket_1()
-{
-    static int index = 0;
-    index++;
-    if(index == 10)
-    {
-        Loop::exit(LOOP_EXIT_SUCCESS);
-        index = 0;
-    }
-    LOGD("void standaloneDataFromUnixSocket_1()");
-
-    std::vector<char> buffer;
-    unixSocket_1->readDatagram(&buffer);
-
-    LOGD("    size_1 = %d", int(buffer.size()));
-    for(unsigned int i = 0; i < buffer.size(); i++)
-    {
-        LOGD("    buffer_1[%d] = %d",i, int(buffer[i]));
-    }
-}
-
-void standaloneDataFromUnixSocket_2()
-{
-    LOGD("void standaloneDataFromUnixSocket_2()");
-
-    std::vector<char> buffer;
-    unixSocket_2->readDatagram(&buffer);
-
-    LOGD("    size_2 = %d", int(buffer.size()));
-    for(unsigned int i = 0; i < buffer.size(); i++)
-    {
-        LOGD("    buffer_2[%d] = %d",i, int(buffer[i]));
-    }
-}
-
 void NativeEngine::GameLoop() {
 
-    unixSocket_1 = new CUnixDatagramSocket();
-    unixSocket_1->connect<&standaloneDataFromUnixSocket_1>();
-    unixSocket_1->Bind("\0to_NDK_1");
-
-
-    unixSocket_2 = new CUnixDatagramSocket();
-    unixSocket_2->connect<&standaloneDataFromUnixSocket_2>();
-    unixSocket_2->Bind("\0to_NDK_2");
-
-
-    /////////////////////////////////////////
+    /////////////////////////////////
     mApp->userData = this;
     mApp->onAppCmd = _handle_cmd_proxy;
     mApp->onInputEvent = _handle_input_proxy;
@@ -213,8 +165,7 @@ void NativeEngine::GameLoop() {
 
 exit_wile:
     /////////////////////////////////
-    delete unixSocket_1;
-    delete unixSocket_2;
+
     return;
 }
 
