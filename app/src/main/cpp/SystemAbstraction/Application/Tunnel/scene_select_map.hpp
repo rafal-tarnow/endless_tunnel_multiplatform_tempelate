@@ -15,6 +15,7 @@
 #include "../CapAfri/game_config.hpp"
 #include "../CapAfri/camera_safe_area.hpp"
 #include "../CapAfri/AnimateVariable.hpp"
+#include <system_billing.hpp>
 
 using namespace std;
 
@@ -82,7 +83,7 @@ private:
 };
 
 
-class SelectMapScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener, WidgetEventListener{
+class SelectMapScene : public Scene, RadioButtonManagerEventLister, ButtonEventListener, WidgetEventListener, BillingEventListener{
 public:
     SelectMapScene();
     ~SelectMapScene();
@@ -99,6 +100,7 @@ public:
     virtual void OnKeyDown(int keyCode);
     virtual void OnPause() override;
 
+    void Billing_onOwnedProductsListChanged(set<string> ownedProducts) override;
 
     void RadioButtonManager_onRadioButtonChanged(RadioButton * radioButton) override;
     void Button_onClicked(Button * button) override;

@@ -10,7 +10,6 @@
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
 #include <sstream>
-#include <system_billing.hpp>
 #include <system_opengl_include.hpp>
 #include "../CapAfri/products.h"
 
@@ -59,6 +58,7 @@ SelectMapScene::SelectMapScene()
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
 
+    Billing::setEventListener(this);
 }
 
 void SelectMapScene::initNormalButtons()
@@ -173,6 +173,7 @@ void SelectMapScene::initMessageBox()
 
 SelectMapScene::~SelectMapScene()
 {
+    Billing::setEventListener(nullptr);
 
     DE_deleteRectangle(&safe_area_background);
 
@@ -392,6 +393,17 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
         opaque = 1.0f;
     }
 
+}
+
+void SelectMapScene::Billing_onOwnedProductsListChanged(set<string> products)
+{
+    string txt;
+    for(auto it = products.begin(); it != products.end(); it++)
+    {
+        txt.append(*it);
+        txt.append(" ");
+    }
+    printToast("SMC NDK callback Products(): " + txt);
 }
 
 void SelectMapScene::RadioButtonManager_onRadioButtonChanged(RadioButton *radioButton)

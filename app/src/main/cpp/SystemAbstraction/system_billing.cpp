@@ -2,6 +2,11 @@
 #include <sstream>
 #include <library_api/cunixdatagramsocket.h>
 #include <SystemAbstraction/system_log.hpp>
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <iterator>
+#include <set>
 
 using namespace std;
 
@@ -25,15 +30,26 @@ using namespace std;
 static android_app * androidApp;
 CUnixDatagramSocket * unixSocket_5 = nullptr;
 
+static BillingEventListener * mlistener = nullptr;
 
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <iterator>
-#include <set>
+void analyzeBillingSocketCallback();
 
 using namespace std;
 
+
+void initPurchase(android_app * app)
+{
+    androidApp = app;
+
+    unixSocket_5 = new CUnixDatagramSocket();
+    unixSocket_5->connect<&analyzeBillingSocketCallback>();
+    unixSocket_5->Bind("\0to_com_reyfel_system_billing");
+}
+
+void uninitPurchase()
+{
+    delete unixSocket_5;
+}
 
 
 std::set<std::string> split(const std::string& s, char delimiter)
@@ -48,44 +64,16 @@ std::set<std::string> split(const std::string& s, char delimiter)
     return tokens;
 }
 
-void standaloneDataFromUnixSocket_5()
+void analyzeBillingSocketCallback()
 {
     std::vector<char> buffer;
     unixSocket_5->readDatagram(&buffer);
-
     string text(buffer.data());
-
     set<string> products = split(text,'|');
-
-    string txt;
-    for(auto it = products.begin(); it != products.end(); it++)
+    if(mlistener)
     {
-        txt.append(*it);
-        txt.append(" ");
+        mlistener->Billing_onOwnedProductsListChanged(products);
     }
-    printToast("NDK callback Products(): " + txt);
-}
-
-void initPurchase(android_app * app)
-{
-    androidApp = app;
-
-    unixSocket_5 = new CUnixDatagramSocket();
-    unixSocket_5->connect<&standaloneDataFromUnixSocket_5>();
-    unixSocket_5->Bind("\0to_com_reyfel_system_billing");
-}
-
-void uninitPurchase()
-{
-    delete unixSocket_5;
-}
-
-
-
-int callJava()
-{
-    JNIEnv* jni;
-    return 15;
 }
 
 void Billing::purchaseProduct(const char *product) {
@@ -99,6 +87,11 @@ void Billing::purchaseProduct(const char *product) {
     jni->DeleteLocalRef(jmessage);
 
     androidApp->activity->vm->DetachCurrentThread();
+}
+
+void Billing::setEventListener(BillingEventListener * listener)
+{
+    mlistener = listener;
 }
 
 set<string> Billing::listOwnedProducts()

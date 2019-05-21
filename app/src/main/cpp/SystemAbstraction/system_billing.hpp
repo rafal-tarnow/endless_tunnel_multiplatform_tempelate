@@ -20,13 +20,10 @@ void printToast(const string message);
 
 
 
-int callJava();
-string print_dpi();
-
-
 class BillingEventListener
 {
-    virtual void Billing_onOwnedProductsListChanged(list<string> ownedProducts);
+public:
+    virtual void Billing_onOwnedProductsListChanged(set<string> ownedProducts) = 0;
 };
 
 
@@ -38,4 +35,8 @@ class Billing
 public:
     static set<string> listOwnedProducts();
     static void purchaseProduct(const char *product);
+    static void setEventListener(BillingEventListener *);
+
+private:
+
 };
