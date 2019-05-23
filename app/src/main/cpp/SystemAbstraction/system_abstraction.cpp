@@ -59,7 +59,7 @@ void SystemAbstraction::onInit(unsigned int fb_width, unsigned int fb_height)
     GLuint fontSize = GLuint(float(fb_height)*0.020f);
     textRenderer_v2 = new TextRenderer_v2(fb_width,fb_height, glm::vec4(1.0, 1.0, 1.0, 1.0));
     Resource font_arial("fonts/arial.ttf");
-    textRenderer_v2->LoadFromMemory("Arial", font_arial.getData(), font_arial.getSize(), fontSize);
+    textRenderer_v2->LoadFromMemory("arial.ttf", font_arial.getData(), font_arial.getSize(), fontSize);
 
    text << std::fixed << std::setprecision(1);
 

@@ -25,6 +25,7 @@ protected:
     static uint32_t instancesCount;
     glm::vec3 pos;
 private:
+    Shader_m * shader;
     static GLuint coinTextureId;
     float m_radius;
     DBG_COUNT("MetaRenderer");

@@ -46,6 +46,7 @@ add_library (system_abstraction STATIC
     OpenSLWrap.cpp
     system_abstraction.cpp
     system_paths.cpp
+        system_billing.cpp
 
     Application/Tunnel/anim.cpp
     Application/Tunnel/ascii_to_geom.cpp

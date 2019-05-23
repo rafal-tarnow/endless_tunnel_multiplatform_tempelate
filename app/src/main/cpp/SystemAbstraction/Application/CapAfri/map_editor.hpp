@@ -137,5 +137,5 @@ private:
 
     bool leftMouseButtonIsPressed = false;
 
-
+    Shader_m * shader;
 };

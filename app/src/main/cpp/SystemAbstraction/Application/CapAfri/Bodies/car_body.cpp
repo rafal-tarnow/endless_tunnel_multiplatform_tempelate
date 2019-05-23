@@ -1,6 +1,8 @@
 #include "car_body.hpp"
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 
 using namespace std;
 
@@ -12,8 +14,12 @@ CarRenderer::CarRenderer(glm::vec3 position)
     mFrontWhellPos = glm::vec3(1,-1,0);
     mRearWhellPos = glm::vec3(-1,-1,0);
 
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+
     DE_initRectangle_5(&carBodyRectangle,"textures/car.png",car_body_width_const, car_body_height_const, mBodyPos.z);
+    DE_setShader(&carBodyRectangle, shader);
     DE_initRectangle_5(&carWhellRectangle, "textures/kolo.png", mFrontWhellRadius*2.0f,mFrontWhellRadius*2.0f, mBodyPos.z);
+    DE_setShader(&carWhellRectangle, shader);
 }
 
 CarRenderer::~CarRenderer()

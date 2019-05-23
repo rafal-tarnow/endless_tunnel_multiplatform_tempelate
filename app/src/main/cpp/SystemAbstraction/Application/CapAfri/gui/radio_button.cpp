@@ -27,11 +27,11 @@ void RadioButton::Render()
 
     if(isRadioActive || isTouched)
     {
-        rectangle.texture_id = touchedTexture;
+        background_rectangle.texture_id = touchedTexture;
     }
     else
     {
-        rectangle.texture_id = normalTexture;
+        background_rectangle.texture_id = normalTexture;
     }
 
     Button::Render();

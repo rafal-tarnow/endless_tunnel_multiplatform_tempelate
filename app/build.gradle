@@ -21,7 +21,8 @@ android {
 
     defaultConfig {
         applicationId 'com.reyfel.sample.CapAfri'
-        minSdkVersion 15
+        minSdkVersion 19 // 19 zeby timer_fd dzialalo
+        //minSdkVersion 15
         //minSdkVersion 14
 
         targetSdkVersion 25
@@ -51,6 +52,12 @@ android.lintOptions {
         abortOnError  = false
 }
 
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 }

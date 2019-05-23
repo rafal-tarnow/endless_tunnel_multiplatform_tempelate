@@ -22,8 +22,10 @@
 #include "./SystemAbstraction/system_abstraction.hpp"
 #include "./SystemAbstraction/system_log.hpp"
 #include "./SystemAbstraction/system_paths.hpp"
+#include "./SystemAbstraction/system_billing.hpp"
 #include "./SystemAbstraction/OpenSLWrap.hpp"
 #include "./SystemAbstraction/Application/libs/library_opengles_2/Resources/Resources.hpp"
+#include <library_api/cunixdatagramsocket.h>
 
 // verbose debug logs on?
 #define VERBOSE_LOGGING 0
@@ -66,12 +68,17 @@ NativeEngine::NativeEngine(struct android_app *app) {
     VLOGD("NativeEngine: querying API level.");
     LOGD("NativeEngine: API version %d.", mApiVersion);
 
+    //////////////////////////////////////////////////////////
+    loop = new Loop();
+    loop->init(true);
+
     systemInput_initConfigPath(app->activity->internalDataPath);
 
     if(!AudioManager::GetSingletonPtr()) {
         new AudioManager(app->activity->assetManager);
     }
     Resource::initAndroid(app->activity->assetManager);
+    initPurchase(app);
 }
 
 NativeEngine* NativeEngine::GetInstance() {
@@ -79,7 +86,12 @@ NativeEngine* NativeEngine::GetInstance() {
     return _singleton;
 }
 
-NativeEngine::~NativeEngine() {
+NativeEngine::~NativeEngine()
+{
+    uninitPurchase();
+    delete loop;
+    LOGD("CLEAN LOOP");
+
     VLOGD("NativeEngine: destructor running");
     KillContext();
     if (mJniEnv) {
@@ -106,33 +118,55 @@ bool NativeEngine::IsAnimating() {
 }
 
 void NativeEngine::GameLoop() {
+
+    /////////////////////////////////
     mApp->userData = this;
     mApp->onAppCmd = _handle_cmd_proxy;
     mApp->onInputEvent = _handle_input_proxy;
 
-    while (1) {
-        int ident, events;
+    while (1)
+    {
+        int ident, events, fd;
         struct android_poll_source* source;
+        void **data;
 
         // If not animating, block until we get an event; if animating, don't block.
-        while ((ident = ALooper_pollAll(IsAnimating() ? 0 : -1, NULL, &events, 
-                (void**)&source)) >= 0) {
 
+        while ((ident = ALooper_pollAll(IsAnimating() ? 0 : -1, &fd, &events, data)) >= 0)
+        {
             // process event
-            if (source != NULL) {
-                source->process(mApp, source);
-            }
+                if(data != NULL)
+                {
+                    if(*data == loop)
+                    {
+                        LOGD("LOOP EVENT");
+                        loop->processFileDescriptorEvent(fd);
+                    }
+                    else
+                    {
+                        LOGD("PIPE EVENT");
+                        source = (struct android_poll_source*)(*data);
+                        source->process(mApp, source);
+                    }
+                }
 
             // are we exiting?
-            if (mApp->destroyRequested) {
-                return;
+            if (mApp->destroyRequested)
+            {
+                goto exit_wile;
             }
         }
 
-        if (IsAnimating()) {
+        if (IsAnimating())
+        {
             DoFrame();
         }
     }
+
+exit_wile:
+    /////////////////////////////////
+
+    return;
 }
 
 JNIEnv* NativeEngine::GetJniEnv() {

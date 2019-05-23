@@ -9,6 +9,8 @@
 #include "../system_abstraction.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include "../Tunnel/scene_manager.hpp"
 #include "../Tunnel/play_capafri_scene.hpp"
 
@@ -26,11 +28,15 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+
     redDotTextureId = TextureManager::getInstance()->getTextureId("textures/red_dot.png");
     DE_initRectangle_7(&redDotPointerRectangle, &redDotTextureId,0.25f, 0.25f, 0.0f);
+    DE_setShader(&redDotPointerRectangle, shader);
 
     yellowDotTextureId = TextureManager::getInstance()->getTextureId("textures/yellow_dot.png");
     DE_initRectangle_7(&yellowDotRectangle, &yellowDotTextureId, 0.25f, 0.25f, 0.0f);
+    DE_setShader(&yellowDotRectangle, shader);
 
     gridLines = new CGridLines(0, 1000, 50, 0);
 
@@ -38,7 +44,7 @@ MapEditor::MapEditor(int fb_width, int fb_height) : camera(fb_width, fb_height)
     textRenderer_v2 = new TextRenderer_v2(fb_width, fb_height);
     Resource font_design_graffiti_agentorange("fonts/design_graffiti_agentorange_www_myfontfree_com.ttf");
 
-    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fb_height*0.06);
+    textRenderer_v2->LoadFromMemory("design_graffiti_agentorange_www_myfontfree_com.ttf", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fb_height*0.06);
 
     //COORDINATES LINES
     glm::vec4 green_color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -294,7 +300,6 @@ void MapEditor::addCoinInFramebufferCoordinates()
 
 void MapEditor::addMushroomInFramebufferCoordinates()
 {
-    glm::vec2 dimm(2.0, 2.0);
     level.mushroom_vector.push_back(new MushroomRenderer(world_current_position_0));
 }
 

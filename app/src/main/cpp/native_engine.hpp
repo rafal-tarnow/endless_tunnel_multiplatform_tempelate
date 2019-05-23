@@ -17,8 +17,10 @@
 #define endlesstunnel_native_engine_hpp
 
 #include "SystemAbstraction/Application/Tunnel/common.hpp"
+#include <library_api/loop.hpp>
 
 struct NativeEngineSavedState {};
+
 
 class NativeEngine {
     public:
@@ -39,6 +41,7 @@ class NativeEngine {
         static NativeEngine* GetInstance();
 
     private:
+        Loop * loop;
         // variables to track Android lifecycle:
         bool mHasFocus, mIsVisible, mHasWindow;
 

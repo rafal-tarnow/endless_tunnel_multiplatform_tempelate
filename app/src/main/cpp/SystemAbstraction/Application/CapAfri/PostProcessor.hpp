@@ -22,11 +22,12 @@ public:
     LShader PostProcessingShader;
     GLuint Width, Height;
     // Options
-    GLboolean Confuse, Chaos, Shake, Spin, Black;
+    GLboolean Confuse, Chaos, Shake, Spin, Black, Background;
+    GLfloat opaque = 1.0f;
     // Constructor
     PostProcessor(GLuint width, GLuint height);
-    // Prepares the postprocessor's framebuffer operations before rendering the game
-    void BeginRender();
+    // Prepares the postprocessor's framebuffer operations before rendering the game   
+    void BeginRender(glm::vec4 clearColour = glm::vec4(0.0f,0.0f,0.0f,1.0f));
     // Should be called after rendering the game, so it stores all the rendered data into a texture object
     void EndRender();
     // Renders the PostProcessor texture quad (as a screen-encompassing large sprite)

@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include "../../../system_log.hpp"
 
 using namespace std;
@@ -26,7 +28,9 @@ CircleCoinRender::CircleCoinRender(float x, float y, float z, float radius)
     if(instancesCount == 1)
     {
         coinTextureId = TextureManager::getInstance()->getTextureId("textures/coin_2.png");
+        shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
         DE_initRectangle_7(&rectangle, &coinTextureId, radius*2.0f, radius*2, mPos.z);
+        DE_setShader(&rectangle, shader);
     }
 }
 CircleCoinRender::~CircleCoinRender()

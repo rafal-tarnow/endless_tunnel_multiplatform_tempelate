@@ -1,5 +1,7 @@
 #include "mushroom.hpp"
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 
 
 uint32_t MushroomRenderer::instanceCount = 0;
@@ -20,7 +22,10 @@ MushroomRenderer::MushroomRenderer(glm::vec3 position)
     if(instanceCount == 1)
     {
         mushroomTextureId = TextureManager::getInstance()->getTextureId("textures/Tango_Style_Mushroom_icon.svg.png");
-        DE_initRectangle_4(&rectangle, mushroomTextureId, mDimm);
+        shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+
+        DE_initRectangle_3(&rectangle, mushroomTextureId, mDimm);
+        DE_setShader(&rectangle, shader);
     }
 }
 

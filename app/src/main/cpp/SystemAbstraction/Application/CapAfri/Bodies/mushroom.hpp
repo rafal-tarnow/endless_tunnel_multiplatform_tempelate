@@ -22,6 +22,7 @@ protected:
 
 private:
     static GLuint mushroomTextureId;
+    Shader_m * shader;
     DBG_COUNT("MushroomRenderer");
 };
 

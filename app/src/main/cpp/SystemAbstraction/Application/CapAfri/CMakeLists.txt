@@ -23,11 +23,15 @@ add_library (CapAfri STATIC
     level.cpp
     demo.cpp
     debug_draw.cpp
+    gui/gui_v2/widget.hpp
+    gui/gui_v2/widget.cpp
     gui/button.cpp
     gui/radio_button.cpp
     gui/radio_button_manager.cpp
     PostProcessor.cpp
     Shader.cpp
+    AnimateVariable.hpp
+    AnimateVariable.cpp
 )
 target_include_directories(CapAfri PRIVATE
     ${ANDROID_NDK}/sources/android/native_app_glue)

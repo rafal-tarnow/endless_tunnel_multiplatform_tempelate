@@ -4,20 +4,22 @@
 #include <string>
 #include <library_opengles_2/TextRenderer/TextRenderer_v2.hpp>
 #include <library_opengles_2/Debug/Debug.hpp>
+#include <library_opengles_2/ShaderManager/shader_manager.hpp>
 
 using namespace std;
 
 class Button;
 
 class ButtonEventListener{
-  public:
+public:
     virtual void Button_onClicked(Button * button) = 0;
 };
 
 class Button{
-  public:
+public:
     Button();
     virtual ~Button();
+
 
     void setText(string text);
     string getText();
@@ -28,6 +30,9 @@ class Button{
     void setMatrices(glm::vec4 *Viewport, glm::mat4 *Projection, glm::mat4 *View);
 
     void setEventListener(ButtonEventListener * listener);
+    void setLockable(bool lockable);
+    void setLocked(bool locked);
+    bool isLocked();
 
     virtual void Render();
 
@@ -36,15 +41,18 @@ class Button{
 
     void setNormalBackgroundTexture(GLuint textureId);
     void setPressedBackgroundTexture(GLuint textureId);
+    void setLockTexture(GLuint textureId);
 
 protected:
-      bool isTouched = false;
-      GLuint normalTexture;
-      GLuint touchedTexture;
-      glm::mat4 *mProjection;
-      glm::mat4 *mView;
-      glm::mat4 mModel;
-      DE_Rectangle rectangle;
+    bool isTouched = false;
+    GLuint normalTexture;
+    GLuint touchedTexture;
+    glm::mat4 *mProjection;
+    glm::mat4 *mView;
+    glm::mat4 mModel;
+    Shader_m * shader = nullptr;
+    DE_Rectangle background_rectangle;
+    DE_Rectangle lock_rectangle;
 
 
 
@@ -57,6 +65,9 @@ private:
     glm::vec4 *mViewport;
     glm::vec3 mPosition;
     glm::vec2 mDimm;
+
+    bool isLockable = false;
+    bool locked = false;
 
     DBG_COUNT("Button");
 };

@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-
+#add_library(hello-jni SHARED
+#            jni/hello-jni.c)
+#
+## Include libraries needed for hello-jni lib
+#target_link_libraries(hello-jni
+#                      android
+#                      log)
 
 add_library(native_app_glue STATIC
      ${ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c)
@@ -15,12 +21,14 @@ set(CMAKE_SHARED_LINKER_FLAGS
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall")
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/jni/) #include <library_api/...>
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SystemAbstraction/Application/libs/)
 
 
 add_subdirectory(SystemAbstraction)
+add_subdirectory(jni)
 
 
 add_library(game SHARED
@@ -45,4 +53,5 @@ target_link_libraries(game
     GLESv2
     log
     OpenSLES
+        library_api
      )

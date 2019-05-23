@@ -4,6 +4,7 @@
 #include "play_capafri_scene.hpp"
 #include <library_opengles_2/Resources/Resources.hpp>
 #include <library_opengles_2/TextureManager/texture_manager.hpp>
+#include <library_opengles_2/Shader/ShadersSources/texture_shader_source.hpp>
 #include "scene_select_map.hpp"
 #include <iostream>
 #include <sstream>
@@ -24,6 +25,8 @@ TuningVehicleScene::TuningVehicleScene()
 
     GLuint txtId = TextureManager::getInstance()->getTextureId("textures/garage.png");
     DE_initRectangle_3(&safe_area_background, txtId ,safe_area_dimension);
+    shader = ShaderManager::getInstance()->getShaderFromSource("texture_shader_source.hpp", texture_vertex_shader_source, texture_fragment_shader_source);
+    DE_setShader(&safe_area_background, shader);
     DE_setModel(&safe_area_background, glm::translate(glm::mat4(1),glm::vec3(safe_area_dimension.x/2.0f, safe_area_dimension.y/2.0f, 0.0f)));
 
     initNormalButtons();
@@ -40,6 +43,7 @@ TuningVehicleScene::TuningVehicleScene()
     AudioManager& audioManager = AudioManager::GetSingleton();
     std::string musicName("sounds/music_menu.wav");
     menuMusicHandle = audioManager.CreateSFX(musicName, true);
+
 }
 
 void TuningVehicleScene::initNormalButtons()
@@ -144,7 +148,7 @@ void TuningVehicleScene::OnStartGraphics(int width, int height)
     //Resource font_design_graffiti_agentorange("fonts/arial.ttf");
 
     textRenderer_v2 = new TextRenderer_v2(width,height, glm::vec4(1,0,0,1));
-    textRenderer_v2->LoadFromMemory("Design graffiti agentorange", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
+    textRenderer_v2->LoadFromMemory("design_graffiti_agentorange_www_myfontfree_com.ttf", font_design_graffiti_agentorange.getData(), font_design_graffiti_agentorange.getSize(), fontSize);
 }
 
 void TuningVehicleScene::OnKillGraphics()
@@ -154,6 +158,11 @@ void TuningVehicleScene::OnKillGraphics()
 
 void TuningVehicleScene::DoFrame()
 {
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
