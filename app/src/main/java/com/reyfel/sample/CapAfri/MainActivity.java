@@ -93,13 +93,11 @@ public class MainActivity extends NativeActivity implements BillingProcessor.IBi
 
         }
 
-
-        //BILLING
-        bp = BillingProcessor.newBillingProcessor(this, null, this); // doesn't bind
-        bp.initialize();
-
         showToast(new Integer(stringFromJNI()).toString());
 
+        //BILLING -- na koncu onCreate zeby uniknac race condition
+        bp = BillingProcessor.newBillingProcessor(this, null, this); // doesn't bind
+        bp.initialize();
     }
 
     @Override

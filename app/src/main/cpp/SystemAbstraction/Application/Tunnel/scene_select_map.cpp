@@ -397,13 +397,22 @@ void SelectMapScene::Widget_onClicked(Widget * widget)
 
 void SelectMapScene::Billing_onOwnedProductsListChanged(set<string> products)
 {
-    string txt;
-    for(auto it = products.begin(); it != products.end(); it++)
+    for (unsigned int i = 0; i < LEVELS_COUNT; i++)
     {
-        txt.append(*it);
-        txt.append(" ");
+        if (i == 1)
+        {
+            if(products.count(PRODUCT_UNLOCK_LEVEL_2) > 0) {
+                buttons.at(i)->setLocked(false);
+            }
+        }
+
+        if (i == 2)
+        {
+            if(products.count(PRODUCT_UNLOCK_LEVEL_3) > 0) {
+                buttons.at(i)->setLocked(false);
+            }
+        }
     }
-    printToast("SMC NDK callback Products(): " + txt);
 }
 
 void SelectMapScene::RadioButtonManager_onRadioButtonChanged(RadioButton *radioButton)
